@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Graphics.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Elements.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{7a890157-257a-4912-8b0a-b6e9e65c3b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{b7f1e800-bc2f-4ab3-b2cc-bdfb01bdbd7c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
