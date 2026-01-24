@@ -18,6 +18,18 @@ namespace Color {
 		color.blue = hexValue & 0xFF;
 		return color;
 	}
+	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha = 255) {
+		CL_Color color;
+
+		// TODO: implement HSL to RGB conversion
+		color.red = 255;
+		color.green = 255;
+		color.blue = 255;
+		color.alpha = alpha;
+
+		return color;
+
+	}
 
 
 	void fill(int red, int green, int blue, int alpha) {
