@@ -61,12 +61,12 @@ namespace Shapes {
 		if (!sRectMesh) {
 			AEGfxMeshStart();
 
-			AEGfxTriAdd(-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-						0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-						-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-			AEGfxTriAdd(0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-						0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-						-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
+			AEGfxTriAdd(-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
+						0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+						-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
+			AEGfxTriAdd(0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+						0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+						-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
 
 			sRectMesh = AEGfxMeshEnd();
 		}
@@ -75,11 +75,11 @@ namespace Shapes {
 			AEGfxMeshStart();
 
 			AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
+				1.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
+				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 1.0f);
+			AEGfxTriAdd(1.0f, -1.0f, 0xFFFFFFFF, 0.0f, 0.0f,
 				1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				0.0f, 1.0f, 0xFFFFFFFF, 0.0f, 0.0f);
-			AEGfxTriAdd(1.0f, 1.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				0.0f, 1.0f, 0xFFFFFFFF, 0.0f, 0.0f);
+				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 0.0f);
 
 			sRectCornerMesh = AEGfxMeshEnd();
 		}
@@ -99,9 +99,15 @@ namespace Shapes {
 				float x1 = RADIUS * cosf(angle1);
 				float y1 = RADIUS * sinf(angle1);
 
-				AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-							x0, y0, 0xFFFFFFFF, 0.0f, 0.0f,
-							x1, y1, 0xFFFFFFFF, 0.0f, 0.0f);
+				// without texture mapping
+				//AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
+				//			x0, y0, 0xFFFFFFFF, 0.0f, 0.0f,
+				//			x1, y1, 0xFFFFFFFF, 0.0f, 0.0f);
+
+				// with texture mapping
+				AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.5f, 0.5f,
+							x0, y0, 0xFFFFFFFF, (x0 / RADIUS + 1.0f) * 0.5f, (y0 / RADIUS + 1.0f) * 0.5f,
+							x1, y1, 0xFFFFFFFF, (x1 / RADIUS + 1.0f) * 0.5f, (y1 / RADIUS + 1.0f) * 0.5f);
 			}
 
 			sEllipseMesh = AEGfxMeshEnd();

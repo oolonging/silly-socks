@@ -4,7 +4,6 @@
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
 
-
 class Player {
     public:
         float x;
@@ -75,7 +74,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     int gGameRunning = 1;
 
     AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
-    AESysSetWindowTitle("Saahil | 2503543 | Solo Project 1");
+    AESysSetWindowTitle("Silly Socks | Meowijuana");
 
     // initialize shapes helper
     Shapes::init();
@@ -121,6 +120,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         int32_t wh = AEGfxGetWindowHeight();
         float worldX = mx - ww * 0.5f;
         float worldY = wh * 0.5f - my;
+
+        //test rects
+        Color::fill(0, 0, 255);
+		Shapes::rect(worldX, worldY, 50.0f, 50.0f, Shapes::CENTER);
+        Color::fill(255, 0, 0);
+        Shapes::rect(worldX, worldY, 50.0f, 50.0f, Shapes::CORNER);
 
 
 
