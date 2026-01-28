@@ -87,42 +87,6 @@ AE_API s32       AEIsF32Zero(f32 x);
 /******************************************************************************/
 AE_API s32       AEIsF32Equal(f32 a, f32 b);
 
-/******************************************************************************/
-/*!
-\fn         s32 AEIsF64NearZero(f64 x)
-
-\brief      Checks if x is either 0 or so close to 0 that it can be considered 0.
-
-\param      [in] x
-            f64 value to check.
-
-\retval     s32
-            Returns 1 if x is or close to 0.
-            Otherwise, it will return 0.
-*/
-/******************************************************************************/
-AE_API s32       AEIsF64NearZero(f64 x);
-
-/******************************************************************************/
-/*!
-\fn         s32 AEIsF64Equal(f64 a, f64 b)
-
-\brief      Checks whether a is equal to OR so close to b that they can
-            be considered equal.
-
-\param      [in] a
-            f64 value to check
-
-\param      [in] b
-            f64 value to check
-
-\retval     s32
-            Returns 1 if a is or close to b.
-            Otherwise, it will return 0.
-*/
-/******************************************************************************/
-AE_API s32       AEIsF64Equal(f64 a, f64 b);
-
 
 
 #ifdef __cplusplus 
