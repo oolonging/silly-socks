@@ -2,7 +2,7 @@
 #include "Graphics.hpp"
 
 namespace Color {
-	CL_Color CL_Color_Create(int red, int green, int blue, int alpha = 255) {
+	CL_Color CL_Color_Create(int red, int green, int blue, int alpha) {
 		CL_Color color;
 		color.red = red;
 		color.green = green;
@@ -45,6 +45,10 @@ namespace Color {
 	void noStroke(void) {
 		// TODO: implement
 	}
+
+	void background(CL_Color color) {
+		AEGfxSetBackgroundColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f);
+	}
 }
 
 namespace Shapes {
@@ -77,8 +81,8 @@ namespace Shapes {
 				1.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
 				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 1.0f);
 			AEGfxTriAdd(1.0f, -1.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 0.0f);
+				1.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
+				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 1.0f);
 
 			sRectCornerMesh = AEGfxMeshEnd();
 		}
@@ -195,12 +199,9 @@ namespace Shapes {
 
 		AEGfxSetTransform(transformation.m);
 
-		if (mode == CENTER) {
-			AEGfxMeshDraw(sRectMesh, AE_GFX_MDM_TRIANGLES);
-		}
-		else {
-			AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES);
-		}
+		if (mode == CENTER) { AEGfxMeshDraw(sRectMesh, AE_GFX_MDM_TRIANGLES); }
+		else if(mode == CORNER) { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
+		else { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
 	}
 
 	void ellipse(float x, float y, float width, float height, SHAPE_MODE mode) {

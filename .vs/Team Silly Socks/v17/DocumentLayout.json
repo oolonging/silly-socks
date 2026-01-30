@@ -7,10 +7,6 @@
       "RelativeMoniker": "D:0:0:{7DB5FCC6-1CE9-4C89-80B2-048E7E6067F6}|Meowijuana\\Meowijuana.vcxproj|solutionrelative:Meowijuana\\Graphics.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7DB5FCC6-1CE9-4C89-80B2-048E7E6067F6}|Meowijuana\\Meowijuana.vcxproj|C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Graphics.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{7DB5FCC6-1CE9-4C89-80B2-048E7E6067F6}|Meowijuana\\Meowijuana.vcxproj|solutionrelative:Meowijuana\\Graphics.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7DB5FCC6-1CE9-4C89-80B2-048E7E6067F6}|Meowijuana\\Meowijuana.vcxproj|C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7DB5FCC6-1CE9-4C89-80B2-048E7E6067F6}|Meowijuana\\Meowijuana.vcxproj|solutionrelative:Meowijuana\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -22,21 +18,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Graphics.hpp",
-              "DocumentMoniker": "C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Graphics.hpp",
-              "RelativeDocumentMoniker": "Meowijuana\\Graphics.hpp",
-              "ToolTip": "C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Graphics.hpp",
-              "RelativeToolTip": "Meowijuana\\Graphics.hpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-01-29T10:45:55.506Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -45,20 +28,20 @@
               "RelativeDocumentMoniker": "Meowijuana\\Graphics.cpp",
               "ToolTip": "C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Graphics.cpp",
               "RelativeToolTip": "Meowijuana\\Graphics.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAAAFQAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-01-29T10:45:30.024Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Main.cpp",
               "DocumentMoniker": "C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Main.cpp",
               "RelativeDocumentMoniker": "Meowijuana\\Main.cpp",
               "ToolTip": "C:\\Users\\Saahil\\Desktop\\CSD1401\\silly-socks\\Meowijuana\\Main.cpp",
               "RelativeToolTip": "Meowijuana\\Main.cpp",
-              "ViewState": "AgIAACAAAAAAAAAAAAAAAD4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAkwEkAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-01-29T10:25:47.499Z",
               "EditorCaption": ""

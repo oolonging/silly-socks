@@ -14,7 +14,7 @@ namespace Color {
 	static CL_Color gCurrentFillColor = { 255, 255, 255, 255 };
 	static CL_Color gCurrentStrokeColor = { 0, 0, 0, 255 };
 
-	CL_Color CL_Color_Create(int red, int green, int blue, int alpha);
+	CL_Color CL_Color_Create(int red, int green, int blue, int alpha = 255);
 	CL_Color CL_Color_Create_Hex(int hexValue);
 	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha);
 
@@ -23,6 +23,7 @@ namespace Color {
 	void stroke(int red, int green, int blue, int alpha = 255);
 	void noFill(void);
 	void noStroke(void);
+	void background(CL_Color color);
 }
 
 namespace Shapes {

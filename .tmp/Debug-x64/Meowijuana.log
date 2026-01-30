@@ -1,4 +1,13 @@
-﻿  Main.cpp
+﻿  Graphics.cpp
+C:\Users\Saahil\Desktop\CSD1401\silly-socks\Meowijuana\Graphics.hpp(30,17): warning C4091: 'typedef ': ignored on left of 'Shapes::Point' when no variable is declared
+  (compiling source file 'Graphics.cpp')
+  
+C:\Users\Saahil\Desktop\CSD1401\silly-socks\Meowijuana\Graphics.hpp(35,17): warning C4091: 'typedef ': ignored on left of 'Shapes::Quad' when no variable is declared
+  (compiling source file 'Graphics.cpp')
+  
+C:\Users\Saahil\Desktop\CSD1401\silly-socks\Meowijuana\Graphics.hpp(41,17): warning C4091: 'typedef ': ignored on left of 'Shapes::Circle' when no variable is declared
+  (compiling source file 'Graphics.cpp')
+  
   Meowijuana.vcxproj -> C:\Users\Saahil\Desktop\CSD1401\silly-socks\bin\Debug-x64\Meowijuana.exe
   8 File(s) copied
   1 File(s) copied
