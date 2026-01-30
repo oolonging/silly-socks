@@ -36,7 +36,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	Shapes::init();
-	AEGfxTexture* pTex = AEGfxTextureLoad("Assets/PlanetTexture.png");
+	AEGfxTexture* pTex = AEGfxTextureLoad("Assets/Images/debug.png");
 
 	// Game Loop
 	while (gGameRunning)
@@ -61,7 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		AEGfxTextureSet(pTex, 0, 0);
 
-		Shapes::rect(0, 0, 50, 50);
+		Shapes::ellipse(0, 0, 300, 300, Shapes::CENTER);
 
 		// Your own rendering logic goes here
 

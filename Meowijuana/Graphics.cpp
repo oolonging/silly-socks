@@ -1,5 +1,6 @@
 
 #include "Graphics.hpp"
+#include "Settings.hpp"
 
 namespace Color {
 	CL_Color CL_Color_Create(int red, int green, int blue, int alpha) {
@@ -32,7 +33,11 @@ namespace Color {
 
 
 	void fill(int red, int green, int blue, int alpha) {
+		Settings::gFillColor = CL_Color_Create(red, green, blue, alpha);
 		AEGfxSetColorToMultiply(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f);
+	}
+	void fill(CL_Color color) {
+		fill(color.red, color.green, color.blue, color.alpha);
 	}
 
 
@@ -252,5 +257,13 @@ namespace Shapes {
 		AEGfxMeshDraw(sTriangleMesh, AE_GFX_MDM_TRIANGLES);*/
 
 		// nvm ill redo this another time
+	}
+}
+
+namespace Graphics {
+	void image(float x, float y, float width, float height, AEGfxTexture* texture) {
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxTextureSet(texture, 0, 0);
+		Shapes::rect(x, y, width, height, Shapes::CORNER);
 	}
 }
