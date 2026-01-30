@@ -71,7 +71,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	}
 
+	// Free shapes
 	Shapes::exit();
+
+	// Free textures
+	AEGfxTextureUnload(pTex);
+
 	// free the system
 	AESysExit();
 }

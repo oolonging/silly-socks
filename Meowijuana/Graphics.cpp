@@ -167,8 +167,8 @@ namespace Shapes {
 			sEllipseMesh = nullptr;
 		}
 
-		if (sRectCornerMesh) {
-			AEGfxMeshFree(sRectCornerMesh);
+		if (sEllipseCornerMesh) {
+			AEGfxMeshFree(sEllipseCornerMesh);
 			sRectCornerMesh = nullptr;
 		}
 
