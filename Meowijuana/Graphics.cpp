@@ -21,15 +21,44 @@ namespace Color {
 		return color;
 	}
 	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha) {
+		// TODO: Untested but should work fine
 		CL_Color color;
 
-		// TODO: implement HSL to RGB conversion
-		color.red = 255;
-		color.green = 255;
-		color.blue = 255;
-		color.alpha = alpha;
+		float h = hue / 360.0f;
+		float s = saturation / 100.0f;
+		float l = lightness / 100.0f;
 
-		return color;
+		if (s < 0.0f) s = 0.0f;
+		if (s > 1.0f) s = 1.0f;
+		if (l < 0.0f) l = 0.0f;
+		if (l > 1.0f) l = 1.0f;
+
+		float r, g, b;
+		if (s == 0.0f) {
+			r = g = b = l; // achromatic
+		}
+		else {
+			auto hue2rgb = [](float p, float q, float t) -> float {
+				if (t < 0.0f) t += 1.0f;
+				if (t > 1.0f) t -= 1.0f;
+				if (t < 1.0f / 6.0f) return p + (q - p) * 6.0f * t;
+				if (t < 1.0f / 2.0f) return q;
+				if (t < 2.0f / 3.0f) return p + (q - p) * (2.0f / 3.0f - t) * 6.0f;
+				return p;
+			};
+			float q = (l < 0.5f) ? (l * (1.0f + s)) : (l + s - l * s);
+			float p = 2.0f * l - q;
+			r = hue2rgb(p, q, h + 1.0f / 3.0f);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1.0f / 3.0f);
+		}
+
+		return CL_Color_Create(
+			static_cast<int>(r * 255.0f),
+			static_cast<int>(g * 255.0f),
+			static_cast<int>(b * 255.0f),
+			alpha
+		);
 	}
 
 
@@ -46,18 +75,25 @@ namespace Color {
 	}
 
 
-	void stroke(int red, int green, int blue, int alpha) {}
+	void stroke(int red, int green, int blue, int alpha) {
+		Settings::gStrokeColor = CL_Color_Create(red, green, blue, alpha);
+	}
+	void stroke(CL_Color color) {
+		stroke(color.red, color.green, color.blue, color.alpha);
+	}
 
 	void noFill(void) {
 		fill(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-
 	void noStroke(void) {
 		stroke(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 
+	void background(int red, int green, int blue) {
+		AEGfxSetBackgroundColor(red / 255.0f, green / 255.0f, blue / 255.0f);
+	}
 	void background(CL_Color color) {
-		AEGfxSetBackgroundColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f);
+		background(color.red, color.green, color.blue);
 	}
 }
 
@@ -90,7 +126,7 @@ namespace Shapes {
 			AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
 				1.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
 				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 1.0f);
-			AEGfxTriAdd(1.0f, -1.0f, 0xFFFFFFFF, 0.0f, 0.0f,
+			AEGfxTriAdd(1.0f, -1.0f, 0xFFFFFFFF, 1.0f, 1.0f,
 				1.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
 				0.0f, -1.0f, 0xFFFFFFFF, 0.0f, 1.0f);
 
@@ -208,6 +244,10 @@ namespace Shapes {
 		else if(mode == CORNER) { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
 		else { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
 	}
+	void rect(Quad quad, SHAPE_MODE mode) {
+		rect(quad.position.x, quad.position.y, quad.width, quad.height, mode);
+	}
+
 
 	void ellipse(float x, float y, float width, float height, SHAPE_MODE mode) {
 		if (!sEllipseMesh) return;
@@ -236,50 +276,52 @@ namespace Shapes {
 			AEGfxMeshDraw(sEllipseCornerMesh, AE_GFX_MDM_TRIANGLES);
 		}
 	}
+	void ellipse(Circle circle, SHAPE_MODE mode) {
+		ellipse(circle.position.x, circle.position.y, circle.radius * 2.0f, circle.radius * 2.0f, mode);
+	}
+
 
 	void square(float x, float y, float size, SHAPE_MODE mode) {
 		rect(x, y, size, size, mode);
 	}
-
 	void circle(float x, float y, float size, SHAPE_MODE mode) {
 		ellipse(x, y, size, size, mode);
 	}
 
 	void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
-		/*if (!sTriangleMesh) return;
-
-		AEMtx33 translation = { 0 };
-		AEMtx33 transformation = { 0 };
-
-		AEMtx33Trans(&translation, x1, y1);
-		AEMtx33Concat(&transformation, &translation, &translation);
-		AEGfxSetTransform(transformation.m);
-		AEGfxMeshDraw(sTriangleMesh, AE_GFX_MDM_TRIANGLES);*/
-
-		// nvm ill redo this another time
+		// TODO: Bruh i still cant figure this out
 	}
 }
 
 namespace Graphics {
-	void image(float x, float y, float width, float height, AEGfxTexture* texture) {
+	void image(float x, float y, float width, float height, AEGfxTexture* texture, Shapes::SHAPE_MODE mode) {
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
 		AEGfxTextureSet(texture, 0, 0);
-		Shapes::rect(x, y, width, height, Shapes::CORNER);
+		Shapes::rect(x, y, width, height, mode);
+	}
+	void image(Shapes::Quad quad, AEGfxTexture* texture, Shapes::SHAPE_MODE mode) {
+		image(quad.position.x, quad.position.y, quad.width, quad.height, texture, mode);
 	}
 }
 
 namespace Text {
 	
+	// This one is pretty much good to go
 	void setFont(char const* fontPath, float fontSize) {
-		if (pCurrentFont) {
-			AEGfxDestroyFont(Text::pCurrentFont);
-			Text::pCurrentFont = 0;
+		if (Settings::pCurrentFont) {
+			AEGfxDestroyFont(Settings::pCurrentFont);
+			Settings::pCurrentFont = 0;
 		}
-		pCurrentFont = AEGfxCreateFont(fontPath, fontSize);
+		Settings::pCurrentFont = AEGfxCreateFont(fontPath, fontSize);
 	}
 
+	// REEEEEEEEEEEEE
 	void text(char const* pText, float x, float y) {
-		if (!pCurrentFont) return;
+		if (!Settings::pCurrentFont) {
+
+		}
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		
 		//int32_t ww = AEGfxGetWindowWidth();
@@ -289,14 +331,15 @@ namespace Text {
 
 		Color::CL_Color textFillColor = Settings::textFillColor; // change for now
 		
-		AEGfxPrint(pCurrentFont, pText, x, y, 1.0f, 
+		AEGfxPrint(Settings::pCurrentFont, pText, x, y, 1.0f,
 		textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
 	}
 
+	// This is also good to go
 	void unloadFont(void) {
-		if (pCurrentFont) {
-			AEGfxDestroyFont(Text::pCurrentFont);
-			Text::pCurrentFont = 0;
+		if (Settings::pCurrentFont) {
+			AEGfxDestroyFont(Settings::pCurrentFont);
+			Settings::pCurrentFont = 0;
 		}
 	}
 }
