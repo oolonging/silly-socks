@@ -19,7 +19,7 @@ namespace Color {
 		color.blue = hexValue & 0xFF;
 		return color;
 	}
-	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha = 255) {
+	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha) {
 		CL_Color color;
 
 		// TODO: implement HSL to RGB conversion
