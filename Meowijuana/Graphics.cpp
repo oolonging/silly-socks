@@ -44,11 +44,11 @@ namespace Color {
 	void stroke(int red, int green, int blue, int alpha) {}
 
 	void noFill(void) {
-		AEGfxSetColorToMultiply(0.0f, 0.0f, 0.0f, 0.0f);
+		fill(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 
 	void noStroke(void) {
-		// TODO: implement
+		stroke(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 
 	void background(CL_Color color) {
@@ -107,11 +107,6 @@ namespace Shapes {
 				float x1 = RADIUS * cosf(angle1);
 				float y1 = RADIUS * sinf(angle1);
 
-				// without texture mapping
-				//AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-				//			x0, y0, 0xFFFFFFFF, 0.0f, 0.0f,
-				//			x1, y1, 0xFFFFFFFF, 0.0f, 0.0f);
-
 				// with texture mapping
 				AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.5f, 0.5f,
 					x0, y0, 0xFFFFFFFF, (x0 / RADIUS + 1.0f) * 0.5f, (y0 / RADIUS + 1.0f) * 0.5f,
@@ -137,8 +132,8 @@ namespace Shapes {
 				float y1 = RADIUS * sinf(angle1);
 
 				AEGfxTriAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f,
-					x0, y0, 0xFFFFFFFF, 0.0f, 0.0f,
-					x1, y1, 0xFFFFFFFF, 0.0f, 0.0f);
+					x0, y0, 0xFFFFFFFF, (x0 / RADIUS + 1.0f) * 0.5f, (y0 / RADIUS + 1.0f) * 0.5f,
+					x1, y1, 0xFFFFFFFF, (x1 / RADIUS + 1.0f) * 0.5f, (y1 / RADIUS + 1.0f) * 0.5f);
 			}
 
 			sEllipseCornerMesh = AEGfxMeshEnd();
@@ -266,4 +261,8 @@ namespace Graphics {
 		AEGfxTextureSet(texture, 0, 0);
 		Shapes::rect(x, y, width, height, Shapes::CORNER);
 	}
+}
+
+namespace Text {
+	// TODO: implement text rendering
 }
