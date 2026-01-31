@@ -6,6 +6,7 @@
 
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
+#include "Entity.hpp"
 
 
 
@@ -37,10 +38,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	Shapes::init();
-	AEGfxTexture* pTex = AEGfxTextureLoad("Assets/Images/debug.png");
 
 	// test button
 	UI_Elements::Button testButton;
+
+	// test player
+	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
 
 	// set the button to the center of the screen
 	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, Shapes::CORNER);
@@ -66,10 +69,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
 
-		AEGfxTextureSet(pTex, 0, 0);
 
 		// Test button
 		testButton.draw();
+
+		// Test player
+		testPlayer.draw();
 
 		// Your own rendering logic goes here
 
@@ -83,7 +88,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::exit();
 
 	// Free textures
-	AEGfxTextureUnload(pTex);
 
 	// free the system
 	AESysExit();
