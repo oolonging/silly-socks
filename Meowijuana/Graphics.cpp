@@ -40,6 +40,10 @@ namespace Color {
 	void fill(CL_Color color) {
 		fill(color.red, color.green, color.blue, color.alpha);
 	}
+	void textFill(int red, int green, int blue, int alpha) {
+		Settings::textFillColor = CL_Color_Create(red, green, blue, alpha);
+		AEGfxSetColorToMultiply(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f);
+	}
 
 
 	void stroke(int red, int green, int blue, int alpha) {}
@@ -277,9 +281,16 @@ namespace Text {
 	void text(char const* pText, float x, float y) {
 		if (!pCurrentFont) return;
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		Color::CL_Color fillColor = Settings::gFillColor;
+		
+		//int32_t ww = AEGfxGetWindowWidth();
+		//int32_t wh = AEGfxGetWindowHeight();
+		//float x = x + ww * 0.5f;
+		//float y = wh * 0.5f - y;
+
+		Color::CL_Color textFillColor = Settings::textFillColor; // change for now
+		
 		AEGfxPrint(pCurrentFont, pText, x, y, 1.0f, 
-		fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
+		textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
 	}
 
 	void unloadFont(void) {

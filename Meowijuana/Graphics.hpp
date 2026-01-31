@@ -19,6 +19,7 @@ namespace Color {
 	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha = 255);
 
 	void fill(int red, int green, int blue, int alpha = 255);
+	void textFill(int red, int green, int blue, int alpha = 255);
 
 	void stroke(int red, int green, int blue, int alpha = 255);
 	void noFill(void);

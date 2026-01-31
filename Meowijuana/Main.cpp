@@ -38,6 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	Shapes::init();
+	Text::setFont("Assets/Fonts/buggy-font.ttf", 20);
 
 	// test button
 	UI_Elements::Button testButton;
@@ -46,7 +47,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
 
 	// set the button to the center of the screen
-	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, Shapes::CORNER);
+	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "tada", Shapes::CORNER);
+	
 
 	// Game Loop
 	while (gGameRunning)
@@ -88,6 +90,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::exit();
 
 	// Free textures
+
+	// free font (it's free?)
+	Text::unloadFont();
 
 	// free the system
 	AESysExit();

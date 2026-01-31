@@ -10,6 +10,7 @@ namespace Settings {
 	// colors
 	static Color::CL_Color gFillColor{};
 	static Color::CL_Color gStrokeColor{};
+	static Color::CL_Color textFillColor{};
 
 	// World
 	static int gridSize = 50;

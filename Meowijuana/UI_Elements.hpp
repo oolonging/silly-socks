@@ -1,6 +1,7 @@
 #ifndef UI_ELEMENTS_HPP
 #define UI_ELEMENTS_HPP
 
+#include <string>
 #include "Graphics.hpp"
 
 namespace UI_Elements {
@@ -11,6 +12,7 @@ namespace UI_Elements {
 			float width{};
 			float height{};
 			Shapes::SHAPE_MODE drawMode;
+			char const* msg{};
 
 		public:
 			bool isHovering(void) {
@@ -47,16 +49,40 @@ namespace UI_Elements {
 				}
 
 				Shapes::rect(Button::x, Button::y, Button::width, Button::height, Button::drawMode);
+
+
+				if (isHovering) {
+					Color::textFill(0, 0, 0);
+				}
+				else {
+					Color::textFill(255, 255, 255);
+				}
+
+
+				if (drawMode == Shapes::CORNER) {
+					//float textX = Button::x + width * 0.5f;
+					//float textY = Button::y - height * 0.5f;
+					//Text::text(msg, textX, textY);
+
+					Text::text(msg, 0, 0);
+				}
+				else {
+					float textX = Button::x;
+					float textY = Button::y;
+					Text::text(msg, textX, textY);
+
+				}
+
 			}
 
 			// Constructors
 
-			Button(float x, float y, float width, float height, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(x), y(y), width(width), height(height), drawMode(mode) {
+			Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+				: x(x), y(y), width(width), height(height), drawMode(mode), msg(msg) {
 			}
 
-			Button(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(quad.position.x), y(quad.position.y), width(quad.width), height(quad.height), drawMode(mode) {
+			Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+				: x(quad.position.x), y(quad.position.y), width(quad.width), height(quad.height), drawMode(mode), msg(msg) {
 			}
 
 			Button(void)
