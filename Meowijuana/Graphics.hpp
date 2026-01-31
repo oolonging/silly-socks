@@ -77,8 +77,14 @@ namespace Graphics {
 namespace Text {
 	// Still WIP, nothing works yet
 
+	enum TEXT_ALIGN {
+		ALIGN_LEFT = 25,
+		ALIGN_CENTER = 26,
+		ALIGN_RIGHT = 27,
+	};
+
 	void setFont(char const* fontPath, float fontSize);
-	void text(const char* pText, float x, float y);
+	void text(const char* pText, float x, float y, TEXT_ALIGN align = ALIGN_LEFT);
 	void unloadFont(void);
 }
 

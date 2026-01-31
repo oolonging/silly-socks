@@ -50,27 +50,27 @@ namespace UI_Elements {
 
 				Shapes::rect(Button::x, Button::y, Button::width, Button::height, Button::drawMode);
 
-
-				if (isHovering) {
-					Color::textFill(0, 0, 0);
-				}
-				else {
-					Color::textFill(255, 255, 255);
-				}
+				// set text to black for now
+				Color::textFill(0, 0, 0);
 
 
-				if (drawMode == Shapes::CORNER) {
-					//float textX = Button::x + width * 0.5f;
-					//float textY = Button::y - height * 0.5f;
-					//Text::text(msg, textX, textY);
-
-					Text::text(msg, 0, 0);
+				/*if (drawMode == Shapes::CORNER) {
+					Text::text(msg, Button::x, Button::y);
 				}
 				else {
 					float textX = Button::x;
 					float textY = Button::y;
 					Text::text(msg, textX, textY);
 
+				}*/
+
+				if(Button::drawMode == Shapes::CORNER) {
+					float textX = Button::x + Button::width / 2;
+					float textY = Button::y - Button::height / 2;
+					Text::text(msg, textX, textY, Text::ALIGN_CENTER);
+				}
+				else {
+					Text::text(msg, Button::x, Button::y, Text::ALIGN_CENTER);
 				}
 
 			}

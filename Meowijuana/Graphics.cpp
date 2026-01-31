@@ -318,10 +318,8 @@ namespace Text {
 	}
 
 	// REEEEEEEEEEEEE
-	void text(char const* pText, float x, float y) {
-		if (!Settings::pCurrentFont) {
-
-		}
+	void text(char const* pText, float x, float y, TEXT_ALIGN align) {
+		if (!Settings::pCurrentFont) return;
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		
 		//int32_t ww = AEGfxGetWindowWidth();
@@ -330,10 +328,19 @@ namespace Text {
 		//float y = wh * 0.5f - y;
 
 		Color::CL_Color textFillColor = Settings::textFillColor; // change for now
+
+		// convert x and y to normalized device coordinates
+		float wx = x / (AEGfxGetWindowWidth() / 2.0f);
+		float wy = y / (AEGfxGetWindowHeight() / 2.0f);
 		
-		AEGfxPrint(Settings::pCurrentFont, pText, x, y, 1.0f,
+		AEGfxPrint(Settings::pCurrentFont, pText, 0, 0, 1.0f,
 		textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+		AEGfxPrint(Settings::pCurrentFont, "10", 0.5, 0, 1.0f,
+			textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+		AEGfxPrint(Settings::pCurrentFont, "01", 0, 0.5, 1.0f,
+			textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
 	}
+
 
 	// This is also good to go
 	void unloadFont(void) {
