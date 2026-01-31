@@ -61,7 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		AEGfxTextureSet(pTex, 0, 0);
 
-		Shapes::ellipse(0, 0, 300, 300, Shapes::CENTER);
+		Shapes::ellipse(0, 0, 300, 300, Shapes::CORNER);
 
 		// Your own rendering logic goes here
 
