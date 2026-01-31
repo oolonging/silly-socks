@@ -5,6 +5,7 @@
 #include "AEEngine.h"
 
 #include "Graphics.hpp"
+#include "UI_Elements.hpp"
 
 
 
@@ -38,6 +39,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::init();
 	AEGfxTexture* pTex = AEGfxTextureLoad("Assets/Images/debug.png");
 
+	// test button
+	UI_Elements::Button testButton;
+
+	// set the button to the center of the screen
+	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, Shapes::CORNER);
+
 	// Game Loop
 	while (gGameRunning)
 	{
@@ -53,7 +60,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			gGameRunning = 0;
 
 		// Your own update logic goes here
-		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -61,7 +68,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		AEGfxTextureSet(pTex, 0, 0);
 
-		Shapes::ellipse(0, 0, 300, 300, Shapes::CORNER);
+		// Test button
+		testButton.draw();
 
 		// Your own rendering logic goes here
 
