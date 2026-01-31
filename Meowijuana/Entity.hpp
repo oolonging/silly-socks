@@ -3,6 +3,8 @@
 #define ENTITY_HPP
 
 #include "Graphics.hpp"
+#include <vector>
+#include <string>
 
 namespace Entity {
 	// Entities:: Player, Enemy, NPC, etc.
@@ -17,6 +19,7 @@ namespace Entity {
 			float maxHp;
 			float speed;
 			float armor;
+			AEGfxTexture* sprite;
 
 		public:
 			// Getters
@@ -70,10 +73,10 @@ namespace Entity {
 				// movement
 				Player::handleMovement();
 
-				// Just a red rect for now
+				// Just a blue rect for now
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-				Color::fill(255, 0, 0);
-				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CORNER);
+				Color::fill(0, 0, 255);
+				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CENTER);
 			}
 
 			// Constructors
@@ -82,6 +85,54 @@ namespace Entity {
 			}
 
 			Player() : Entity() {
+			}
+	};
+
+	class Enemy : public Entity {
+		public:
+			void movement(void) {
+				// Simple AI movement can be implemented here with random wandering or chasing the player
+				// For now, enemies will just stay still
+			}
+
+			void draw(void) {
+				// Just a red rect for now
+				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+				Color::fill(255, 0, 0);
+				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CENTER);
+			}
+			// Constructors
+			Enemy(float posX, float posY, float w, float h, float health, float spd, float arm)
+				: Entity(posX, posY, w, h, health, spd, arm) {
+			}
+			Enemy() : Entity() {
+			}
+	};
+
+	class NPC : public Entity {
+		private:
+			std::vector<std::string> dialogLines;
+
+		public:
+			// Getters and Setters for dialogLines
+			const std::vector<std::string>& getDialogLines() const { return dialogLines; }
+			void setDialogLines(const std::vector<std::string>& lines) { dialogLines = lines; }
+
+			// Add a dialog line
+			void addDialogLine(const std::string& line) { dialogLines.push_back(line); }
+
+
+			void draw(void) {
+				// Just a green rect for now
+				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+				Color::fill(0, 255, 0);
+				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CENTER);
+			}
+			// Constructors
+			NPC(float posX, float posY, float w, float h, float health, float spd, float arm)
+				: Entity(posX, posY, w, h, health, spd, arm) {
+			}
+			NPC() : Entity() {
 			}
 	};
 }
