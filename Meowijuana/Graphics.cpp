@@ -1,6 +1,7 @@
 
 #include "Graphics.hpp"
 #include "Settings.hpp"
+#include "AEEngine.h"
 
 namespace Color {
 	CL_Color CL_Color_Create(int red, int green, int blue, int alpha) {
@@ -264,5 +265,27 @@ namespace Graphics {
 }
 
 namespace Text {
-	// TODO: implement text rendering
+	
+	void setFont(char const* fontPath, float fontSize) {
+		if (pCurrentFont) {
+			AEGfxDestroyFont(Text::pCurrentFont);
+			Text::pCurrentFont = 0;
+		}
+		pCurrentFont = AEGfxCreateFont(fontPath, fontSize);
+	}
+
+	void text(char const* pText, float x, float y) {
+		if (!pCurrentFont) return;
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Color::CL_Color fillColor = Settings::gFillColor;
+		AEGfxPrint(pCurrentFont, pText, x, y, 1.0f, 
+		fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
+	}
+
+	void unloadFont(void) {
+		if (pCurrentFont) {
+			AEGfxDestroyFont(Text::pCurrentFont);
+			Text::pCurrentFont = 0;
+		}
+	}
 }

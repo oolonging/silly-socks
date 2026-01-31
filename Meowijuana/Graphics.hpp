@@ -58,4 +58,13 @@ namespace Shapes {
 	void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
 }
 
+namespace Text {
+	// Still WIP, nothing works yet
+	static int8_t pCurrentFont = 0;
+
+	void setFont(char const* fontPath, float fontSize);
+	void text(const char* pText, float x, float y);
+	void unloadFont(void);
+}
+
 #endif // GRAPHICS_HPP
