@@ -38,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	Shapes::init();
-	Text::setFont("Assets/Fonts/buggy-font.ttf", 20);
+	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
 	// test button
 	UI_Elements::Button testButton;

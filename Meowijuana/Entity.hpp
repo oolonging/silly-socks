@@ -76,6 +76,7 @@ namespace Entity {
 				// Just a blue rect for now
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				Color::fill(0, 0, 255);
+				Color::stroke(0, 0, 0);
 				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CENTER);
 			}
 
