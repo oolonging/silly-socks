@@ -47,6 +47,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// test player
 	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
+	Entity::Enemy testEnemy = Entity::Enemy(200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);;
 
 	// set the button to the center of the screen
 	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
@@ -84,6 +85,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Test player
 		testPlayer.draw();
+		testEnemy.draw(testPlayer);
 
 		// Your own rendering logic goes here
 
