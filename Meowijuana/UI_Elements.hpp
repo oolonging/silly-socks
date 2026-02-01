@@ -5,6 +5,21 @@
 #include "Graphics.hpp"
 
 namespace UI_Elements {
+	typedef struct ElementStyle {
+		Color::CL_Color primaryColor;
+		Color::CL_Color secondaryColor;
+		Color::CL_Color strokeColor;
+		float strokeWeight;
+	};
+
+	typedef struct TextStyle {
+		Color::CL_Color primaryColor;
+		Color::CL_Color secondaryColor;
+		int fontSize;
+		std::string fontPath;
+	};
+
+
 	class Button {
 		private:
 			float x{};
@@ -54,24 +69,19 @@ namespace UI_Elements {
 				Color::textFill(0, 0, 0);
 
 
-				/*if (drawMode == Shapes::CORNER) {
-					Text::text(msg, Button::x, Button::y);
-				}
-				else {
-					float textX = Button::x;
-					float textY = Button::y;
-					Text::text(msg, textX, textY);
-
-				}*/
+				float textX{};
+				float textY{};
 
 				if(Button::drawMode == Shapes::CORNER) {
-					float textX = Button::x + Button::width / 2;
-					float textY = Button::y - Button::height / 2;
-					Text::text(msg, textX, textY, Text::ALIGN_CENTER);
+					textX = Button::x + Button::width / 2;
+					textY = Button::y - Button::height / 2;
 				}
 				else {
-					Text::text(msg, Button::x, Button::y, Text::ALIGN_CENTER);
+					textX = Button::x;
+					textY = Button::y;
 				}
+				
+				Text::text(msg, textX, textY, Text::ALIGN_CENTER);
 
 			}
 
