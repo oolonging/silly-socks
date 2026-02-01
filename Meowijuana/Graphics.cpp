@@ -322,23 +322,28 @@ namespace Text {
 		if (!Settings::pCurrentFont) return;
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		
-		//int32_t ww = AEGfxGetWindowWidth();
-		//int32_t wh = AEGfxGetWindowHeight();
-		//float x = x + ww * 0.5f;
-		//float y = wh * 0.5f - y;
 
 		Color::CL_Color textFillColor = Settings::textFillColor; // change for now
 
 		// convert x and y to normalized device coordinates
 		float wx = x / (AEGfxGetWindowWidth() / 2.0f);
 		float wy = y / (AEGfxGetWindowHeight() / 2.0f);
+
+		float padW{};
+		float padH{};
 		
-		AEGfxPrint(Settings::pCurrentFont, pText, 0, 0, 1.0f,
-		textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
-		AEGfxPrint(Settings::pCurrentFont, "10", 0.5, 0, 1.0f,
-			textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
-		AEGfxPrint(Settings::pCurrentFont, "01", 0, 0.5, 1.0f,
-			textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+		AEGfxGetPrintSize(Settings::pCurrentFont, pText, 1.0f, &padW, &padH);
+
+		if (align == ALIGN_CENTER) {
+			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5), wy, 1.0f,
+				textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+		}
+
+		// thanks for debug text eee 
+		//AEGfxPrint(Settings::pCurrentFont, "10", 0.5, 0, 1.0f,
+		//	textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+		//AEGfxPrint(Settings::pCurrentFont, "01", 0, 0.5, 1.0f,
+		//	textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
 	}
 
 

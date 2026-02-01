@@ -42,12 +42,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// test button
 	UI_Elements::Button testButton;
+	UI_Elements::Button testButton1;
+	UI_Elements::Button thirdtest;
 
 	// test player
 	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
 
 	// set the button to the center of the screen
-	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "tada", Shapes::CORNER);
+	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
+	testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
+	thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
+
 	
 
 	// Game Loop
@@ -74,6 +79,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Test button
 		testButton.draw();
+		testButton1.draw();
+		thirdtest.draw();
 
 		// Test player
 		testPlayer.draw();
