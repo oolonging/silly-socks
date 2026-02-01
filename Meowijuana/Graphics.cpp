@@ -270,8 +270,8 @@ namespace Shapes {
 	}
 
 
-	void ellipse(float x, float y, float width, float height, SHAPE_MODE mode) {
-		if (!sEllipseMesh) return;
+	void ellipseDraw(float x, float y, float width, float height, SHAPE_MODE mode) {
+		if (!sEllipseMesh || !sEllipseCornerMesh) return;
 
 		AEMtx33 scale = { 0 };
 		AEMtx33 rotation = { 0 };
@@ -290,12 +290,28 @@ namespace Shapes {
 
 		AEGfxSetTransform(transformation.m);
 
-		if (mode == CENTER) {
-			AEGfxMeshDraw(sEllipseMesh, AE_GFX_MDM_TRIANGLES);
+		if (mode == CENTER) AEGfxMeshDraw(sEllipseMesh, AE_GFX_MDM_TRIANGLES);
+		else AEGfxMeshDraw(sEllipseCornerMesh, AE_GFX_MDM_TRIANGLES);
+	}
+	void ellipse(float x, float y, float width, float height, SHAPE_MODE mode) {
+		bool drawStroke = (Settings::gStrokeColor.alpha > 0 && Settings::gStrokeWeight > 0.0f);
+		if (drawStroke) {
+			float halfStroke = Settings::gStrokeWeight / 2.0f;
+			float strokeWidth = width + Settings::gStrokeWeight * 2;
+			float strokeHeight = height + Settings::gStrokeWeight * 2;
+			AEGfxSetColorToMultiply(Settings::gStrokeColor.red / 255.0f,
+									Settings::gStrokeColor.green / 255.0f,
+									Settings::gStrokeColor.blue / 255.0f,
+									Settings::gStrokeColor.alpha / 255.0f);
+			if (mode == CENTER) ellipseDraw(x, y, strokeWidth, strokeHeight, CENTER);
+			else ellipseDraw(x - halfStroke, y + halfStroke, strokeWidth, strokeHeight, CORNER);
 		}
-		else {
-			AEGfxMeshDraw(sEllipseCornerMesh, AE_GFX_MDM_TRIANGLES);
-		}
+		AEGfxSetColorToMultiply(Settings::gFillColor.red / 255.0f,
+								Settings::gFillColor.green / 255.0f,
+								Settings::gFillColor.blue / 255.0f,
+								Settings::gFillColor.alpha / 255.0f);
+		if (mode == CENTER) ellipseDraw(x, y, width, height, CENTER);
+		else ellipseDraw(x, y, width, height, CORNER);
 	}
 	void ellipse(Circle circle, SHAPE_MODE mode) {
 		ellipse(circle.position.x, circle.position.y, circle.radius * 2.0f, circle.radius * 2.0f, mode);
