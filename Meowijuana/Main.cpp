@@ -7,6 +7,7 @@
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
 #include "Entity.hpp"
+#include "World.hpp"
 
 
 
@@ -40,6 +41,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::init();
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
+	World::Grid WorldGrid;
+
+	World::initGrid(&WorldGrid, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
+
 	// test button
 	UI_Elements::Button testButton;
 	UI_Elements::Button testButton1;
@@ -54,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
 	thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
 
-	
+	bool drawGrid = false;
 
 	// Game Loop
 	while (gGameRunning)
@@ -77,6 +82,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
 
+		// Testing the grid drawing 
+		if (AEInputCheckTriggered(AEVK_F4))
+		{
+			drawGrid = !drawGrid;
+		}
+
+		if (drawGrid)
+		{
+			Color::fill(Color::CL_Color_Create(255, 255, 0));
+			World::drawGrid(WorldGrid);
+		}
 
 		// Test button
 		testButton.draw();
@@ -102,6 +118,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// free font (it's free?)
 	Text::unloadFont();
+
+	// Free the grid
+	World::freeGrid(&WorldGrid);
 
 	// free the system
 	AESysExit();
