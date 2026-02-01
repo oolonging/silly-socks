@@ -19,7 +19,7 @@ namespace Entity {
 			float maxHp;
 			float speed;
 			float armor;
-			AEGfxTexture* sprite;
+			AEGfxTexture* sprite = nullptr;
 
 		public:
 			// Getters
@@ -31,16 +31,18 @@ namespace Entity {
 			float getMaxHp() const { return maxHp; }
 			float getSpeed() const { return speed; }
 			float getArmor() const { return armor; }
+			
 			// Setters
 			void setPosition(float posX, float posY) { x = posX; y = posY; }
 			void setHp(float health) { hp = (health > maxHp) ? maxHp : health; }
 			void setSpeed(float spd) { speed = spd; }
 			void setArmor(float arm) { armor = arm; }
-			// Other methods can be added as needed
+			void setSprite(AEGfxTexture* tex) { sprite = tex; }
 
 			// Constructors
 			Entity(float posX, float posY, float w, float h, float health, float spd, float arm)
 				: x(posX), y(posY), width(w), height(h), hp(health), maxHp(health), speed(spd), armor(arm) {
+
 			}
 
 			Entity() : x(0), y(0), width(50), height(50), hp(100), maxHp(100), speed(1), armor(0) {

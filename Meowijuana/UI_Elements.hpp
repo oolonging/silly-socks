@@ -5,19 +5,19 @@
 #include "Graphics.hpp"
 
 namespace UI_Elements {
-	typedef struct ElementStyle {
+	typedef struct {
 		Color::CL_Color primaryColor;
 		Color::CL_Color secondaryColor;
 		Color::CL_Color strokeColor;
 		float strokeWeight;
-	};
+	} ElementStyle;
 
-	typedef struct TextStyle {
+	typedef struct {
 		Color::CL_Color primaryColor;
 		Color::CL_Color secondaryColor;
 		int fontSize;
 		std::string fontPath;
-	};
+	} TextStyle;
 
 
 	class Button {

@@ -34,21 +34,21 @@ namespace Color {
 }
 
 namespace Shapes {
-	typedef struct Point {
+	typedef struct {
 		float x;
 		float y;
-	};
+	} Point;
 
-	typedef struct Quad {
+	typedef struct {
 		Shapes::Point position;
 		float width;
 		float height;
-	};
+	} Quad;
 
-	typedef struct Circle {
+	typedef struct {
 		Point position;
 		float radius;
-	};
+	} Circle;
 
 	enum SHAPE_MODE {
 		CENTER = 15,
@@ -71,7 +71,7 @@ namespace Shapes {
 
 namespace Graphics {
 	void image(float x, float y, float width, float height, AEGfxTexture* texture, Shapes::SHAPE_MODE mode = Shapes::CORNER);
-	void image(Shapes::Quad quad, AEGfxTexture* texture);
+	void image(Shapes::Quad quad, AEGfxTexture* texture, Shapes::SHAPE_MODE mode);
 }
 
 namespace Text {
@@ -83,7 +83,7 @@ namespace Text {
 		ALIGN_RIGHT = 27,
 	};
 
-	void setFont(char const* fontPath, float fontSize);
+	void setFont(char const* fontPath, int fontSize);
 	void text(const char* pText, float x, float y, TEXT_ALIGN align = ALIGN_LEFT);
 	void unloadFont(void);
 }

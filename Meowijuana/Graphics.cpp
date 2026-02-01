@@ -22,8 +22,6 @@ namespace Color {
 	}
 	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha) {
 		// TODO: Untested but should work fine
-		CL_Color color;
-
 		float h = hue / 360.0f;
 		float s = saturation / 100.0f;
 		float l = lightness / 100.0f;
@@ -83,10 +81,10 @@ namespace Color {
 	}
 
 	void noFill(void) {
-		fill(0.0f, 0.0f, 0.0f, 0.0f);
+		fill(0, 0, 0, 0);
 	}
 	void noStroke(void) {
-		stroke(0.0f, 0.0f, 0.0f, 0.0f);
+		stroke(0, 0, 0, 0);
 	}
 
 	void background(int red, int green, int blue) {
@@ -332,7 +330,7 @@ namespace Graphics {
 namespace Text {
 	
 	// This one is pretty much good to go
-	void setFont(char const* fontPath, float fontSize) {
+	void setFont(char const* fontPath, int fontSize) {
 		if (Settings::pCurrentFont) {
 			AEGfxDestroyFont(Settings::pCurrentFont);
 			Settings::pCurrentFont = 0;
@@ -358,8 +356,8 @@ namespace Text {
 		AEGfxGetPrintSize(Settings::pCurrentFont, pText, 1.0f, &padW, &padH);
 
 		if (align == ALIGN_CENTER) {
-			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5), wy, 1.0f,
-				textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
+			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
+				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
 		}
 
 		// thanks for debug text eee 

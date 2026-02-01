@@ -20,6 +20,10 @@ namespace Settings {
 	// World
 	static int gridSize = 50;
 
+	// Sprites
+	// TODO: set this to something generic later, then input it into the constructors of entities that don't have a specific sprite
+	static AEGfxTexture* defaultSprite = nullptr;
+
 	// Switches
 	void toggleDebugMode(void);
 }
