@@ -45,6 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	World::initGrid(&WorldGrid, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 
+
 	// test button
 	UI_Elements::Button testButton;
 	UI_Elements::Button testButton1;
@@ -90,7 +91,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		if (drawGrid)
 		{
-			Color::fill(Color::CL_Color_Create(255, 255, 0));
 			World::drawGrid(WorldGrid);
 		}
 

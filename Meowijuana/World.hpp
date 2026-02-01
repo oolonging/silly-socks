@@ -20,6 +20,7 @@ namespace World
 
 	//};
 
+
 	typedef struct Tile
 	{
 		int x, y;
