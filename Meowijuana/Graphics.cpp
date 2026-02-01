@@ -219,8 +219,8 @@ namespace Shapes {
 		}
 	}
 
-	void rect(float x, float y, float width, float height, SHAPE_MODE mode) {
-		if (!sRectMesh) return;
+	void rectDraw(float x, float y, float width, float height, SHAPE_MODE mode) {
+		if (!sRectMesh || !sRectCornerMesh) return;
 
 		AEMtx33 scale = { 0 };
 		AEMtx33 rotation = { 0 };
@@ -243,6 +243,29 @@ namespace Shapes {
 		if (mode == CENTER) { AEGfxMeshDraw(sRectMesh, AE_GFX_MDM_TRIANGLES); }
 		else if(mode == CORNER) { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
 		else { AEGfxMeshDraw(sRectCornerMesh, AE_GFX_MDM_TRIANGLES); }
+	}
+	void rect(float x, float y, float width, float height, SHAPE_MODE mode) {
+		bool drawStroke = (Settings::gStrokeColor.alpha > 0 && Settings::gStrokeWeight > 0.0f);
+
+		if (drawStroke) {
+			float halfStroke = Settings::gStrokeWeight / 2.0f;
+			float strokeWidth = width + Settings::gStrokeWeight;
+			float strokeHeight = height + Settings::gStrokeWeight;
+
+			AEGfxSetColorToMultiply(Settings::gStrokeColor.red / 255.0f,
+									Settings::gStrokeColor.green / 255.0f,
+									Settings::gStrokeColor.blue / 255.0f,
+									Settings::gStrokeColor.alpha / 255.0f);
+			if (mode == CENTER) rectDraw(x, y, strokeWidth, strokeHeight, CENTER);
+			else rectDraw(x - halfStroke, y + halfStroke, strokeWidth, strokeHeight, CORNER);
+		}
+		
+		AEGfxSetColorToMultiply(Settings::gFillColor.red / 255.0f,
+								Settings::gFillColor.green / 255.0f,
+								Settings::gFillColor.blue / 255.0f,
+								Settings::gFillColor.alpha / 255.0f);
+		if (mode == CENTER) rectDraw(x, y, width, height, CENTER);
+		else rectDraw(x, y, width, height, CORNER);
 	}
 	void rect(Quad quad, SHAPE_MODE mode) {
 		rect(quad.position.x, quad.position.y, quad.width, quad.height, mode);

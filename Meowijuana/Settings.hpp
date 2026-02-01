@@ -8,9 +8,11 @@ namespace Settings {
 	static bool debugMode = false;
 
 	// colors
-	static Color::CL_Color gFillColor{};
-	static Color::CL_Color gStrokeColor{};
-	static Color::CL_Color textFillColor{};
+	static Color::CL_Color gFillColor{255, 255, 255, 255};
+	static Color::CL_Color textFillColor{0, 0, 0, 255};
+
+	static Color::CL_Color gStrokeColor{0, 0, 0, 255};
+	static float gStrokeWeight = 5.0f;
 
 	// Text
 	static int8_t pCurrentFont = 0;
