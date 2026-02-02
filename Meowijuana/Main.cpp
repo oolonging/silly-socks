@@ -52,8 +52,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
 	testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
 	thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
-
 	
+	UI_Elements::Slider testbar;
+	UI_Elements::Slider testbar1;
+	testbar = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
+	testbar1 = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
+
 
 	// Game Loop
 	while (gGameRunning)
@@ -84,6 +88,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Test player
 		testPlayer.draw();
+
+		// Test slider
+		testbar.bgDraw();
+		testbar1.fgUpdate(static_cast<float>(AEFrameRateControllerGetFrameTime()));
+		testbar1.fgDraw();
 
 		// Your own rendering logic goes here
 

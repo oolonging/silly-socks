@@ -99,6 +99,57 @@ namespace UI_Elements {
 				: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER) {
 			}
 	};
+
+	class Slider {
+		private:
+			float x;
+			float y;
+			float minValue;
+			float maxValue;		
+			float height;
+			Shapes::SHAPE_MODE drawMode;
+			ElementStyle style{};
+
+		public:
+
+			float velocity;
+			float currValue;
+			
+			float clampValue(void) {
+				if (currValue < minValue) {
+					currValue = minValue;
+				}
+				if (currValue > maxValue) {
+					currValue = maxValue;
+				}
+				return currValue;
+			};
+			
+
+			void bgDraw(void) {
+				clampValue();
+				Shapes::rect(Slider::x, Slider::y, maxValue, height, Shapes::CORNER);
+			};
+
+			void fgDraw(void) {
+				clampValue();
+				Shapes::rect(Slider::x, Slider::y, currValue, height, Shapes::CORNER);
+			};
+
+			void fgUpdate(float deltaTime) {
+				clampValue();
+				currValue += velocity * deltaTime;
+			};
+
+			Slider(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+				: x(quad.position.x), y(quad.position.y), minValue(0.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
+				  drawMode(mode), style{} {
+			}
+
+			Slider(void)
+				: x(0), y(0), minValue(0.0f), maxValue(100), currValue(0.0f), velocity(0.0f), height(50), drawMode(Shapes::CORNER), style{} {
+			}
+	};
 }
 
 
