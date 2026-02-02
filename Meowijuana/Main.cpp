@@ -41,9 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::init();
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
-	World::Grid WorldGrid;
-
-	World::initGrid(&WorldGrid, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
+	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 
 
 	// test button
@@ -91,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		if (drawGrid)
 		{
-			World::drawGrid(WorldGrid);
+			World::drawGrid();
 		}
 
 		// Test button
@@ -120,7 +118,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::unloadFont();
 
 	// Free the grid
-	World::freeGrid(&WorldGrid);
+	World::freeGrid();
 
 	// free the system
 	AESysExit();

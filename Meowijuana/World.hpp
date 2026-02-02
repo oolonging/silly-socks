@@ -38,9 +38,10 @@ namespace World
 
 	} Grid;
 
-	void initGrid(Grid* grid, int width, int height, float tileSize);
-	void drawGrid(Grid const& grid);
-	void freeGrid(Grid* grid);
+	void initGrid(int width, int height, float tileSize);
+	/*void updatGridSize(float tileSize);*/
+	void drawGrid();
+	void freeGrid();
 	
 }
 
