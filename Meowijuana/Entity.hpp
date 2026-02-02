@@ -3,6 +3,7 @@
 #define ENTITY_HPP
 
 #include "Graphics.hpp"
+#include "Collision.hpp"
 #include <vector>
 #include <string>
 
@@ -92,13 +93,45 @@ namespace Entity {
 	};
 
 	class Enemy : public Entity {
+		private:
+			float fov = 500.0f; 
+
+			float deltaX = 0.0f;
+			float deltaY = 0.0f;
+			float wanderTime = 0.0f;
+			
 		public:
-			void movement(void) {
+			void movement (const Player& player) {
 				// Simple AI movement can be implemented here with random wandering or chasing the player
 				// For now, enemies will just stay still
+
+				bool playerSpotted = Collision::collidedWith(getX(), getY(), player.getX(), player.getY(), fov, player.getWidth(), player.getHeight());
+
+				if (playerSpotted) {
+					float diffX = player.getX() - getX();  
+					float diffY = player.getY() - getY();
+
+					// if this doesn't work i will cry (threat)
+					float dist = sqrtf((diffX * diffX) + (diffY * diffY));
+
+					if (dist > 1.0f) {
+						diffX /= dist;
+						diffY /= dist;
+					}
+
+					if (dist >= 70) {
+						setPosition(getX() + diffX * getSpeed(), getY() + diffY * getSpeed());
+					}
+
+
+				}
+				
+
 			}
 
-			void draw(void) {
+			void draw(const Player& player) {
+				Enemy::movement(player);
+
 				// Just a red rect for now
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				Color::fill(255, 0, 0);

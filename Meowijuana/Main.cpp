@@ -7,6 +7,7 @@
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
 #include "Entity.hpp"
+#include "World.hpp"
 
 
 
@@ -40,6 +41,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::init();
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
+	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
+
+
 	// test button
 	UI_Elements::Button testButton;
 	UI_Elements::Button testButton1;
@@ -47,6 +51,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// test player
 	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
+	Entity::Enemy testEnemy = Entity::Enemy(200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);;
 
 	// set the button to the center of the screen
 	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
@@ -58,6 +63,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	testbar = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
 	testbar1 = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
 
+
+	bool drawGrid = false;
 
 	// Game Loop
 	while (gGameRunning)
@@ -80,6 +87,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
 
+		// Testing the grid drawing 
+		if (AEInputCheckTriggered(AEVK_F4))
+		{
+			drawGrid = !drawGrid;
+		}
+
+		if (drawGrid)
+		{
+			World::drawGrid();
+		}
 
 		// Test button
 		testButton.draw();
@@ -88,6 +105,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Test player
 		testPlayer.draw();
+		testEnemy.draw(testPlayer);
 
 		// Test slider
 		testbar.bgDraw();
@@ -109,6 +127,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// free font (it's free?)
 	Text::unloadFont();
+
+	// Free the grid
+	World::freeGrid();
 
 	// free the system
 	AESysExit();

@@ -21,8 +21,27 @@ namespace World
 	//};
 
 
-	void initGrid(void);
+	typedef struct Tile
+	{
+		int x, y;
+		bool traversable, interactable;
+		// Maybe can put pointer to entity
+		// Tile texture maybe
 
+	} Tile;
+
+	typedef struct Grid
+	{
+		int width, height;
+		float tileSize;
+		Tile** tiles;   // 2D array of tiles
+
+	} Grid;
+
+	void initGrid(int width, int height, float tileSize);
+	/*void updatGridSize(float tileSize);*/
+	void drawGrid();
+	void freeGrid();
 	
 }
 
