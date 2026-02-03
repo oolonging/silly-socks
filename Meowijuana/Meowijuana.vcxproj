@@ -105,6 +105,8 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="Pathfinding.hpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="UI_Elements.cpp" />
     <ClCompile Include="World.cpp" />
