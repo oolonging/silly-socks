@@ -30,7 +30,7 @@ Weapon::Sword weapon;
 
 void Level1_Load()
 {
-    std::cout << "Level1:Load\n";
+    return;
 }
 
 // Initialize some stuff
@@ -40,15 +40,15 @@ void Level1_Initialize()
 
     // Initialize player & enemy (NO redeclaration)
     testPlayer = Entity::Player(
-        0.0f, 0.0f,
+        -400.0f, -400.0f,
         50.0f, 50.0f,
         100.0f, 5.0f, 0.0f
     );
 
     testEnemy = Entity::Enemy(
-        200.0f, 200.0f,
+        000.0f, 0.0f,
         50.0f, 50.0f,
-        100.0f, 5.0f, 0.0f
+        100.0f, 2.0f, 0.0f
     );
 
     // Buttons
@@ -143,6 +143,7 @@ void Level1_Update()
 // 
 void Level1_Draw()
 {
+
     if (drawGrid)
         World::drawGrid();
 
@@ -172,5 +173,5 @@ void Level1_Free()
 //
 void Level1_Unload()
 {
-    std::cout << "Level1:Unload\n";
+    return;
 }

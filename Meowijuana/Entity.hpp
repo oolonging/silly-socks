@@ -4,6 +4,7 @@
 
 #include "Graphics.hpp"
 #include "Collision.hpp"
+#include "Pathfinding.hpp"
 #include <vector>
 #include <string>
 
@@ -98,14 +99,54 @@ namespace Entity {
 
 			float deltaX = 0.0f;
 			float deltaY = 0.0f;
-			float wanderTime = 0.0f;
+			
+			// wamder
+			bool walking = false;
+			float endAtX = 0.0f;
+			float endAtY = 0.0f;
+			float wait = 2.0f;
+			float waited = 0.0f;
+			
 			
 		public:
-			void movement (const Player& player) {
-				// Simple AI movement can be implemented here with random wandering or chasing the player
-				// For now, enemies will just stay still
+
+			void movement (const Player& player, float deltaTime) {
 
 				bool playerSpotted = Collision::collidedWith(getX(), getY(), player.getX(), player.getY(), fov, player.getWidth(), player.getHeight());
+
+				if (!playerSpotted) {
+					if (!walking) {
+						Path::Vect set = Path::randPoint();
+						endAtX = getX() + set.x;
+						endAtY = getY() + set.y;
+						walking = true;
+						waited = 0.0f;
+					}
+
+					float dirX = endAtX - getX();
+					float dirY = endAtY - getY();
+					float dist = sqrtf(dirX * dirX + dirY * dirY);
+
+
+					if (dist > getSpeed()) {
+						dirX /= dist;
+						dirY /= dist;
+						setPosition(getX() + dirX * getSpeed(), getY() + dirY * getSpeed() );
+					}
+
+					else {
+
+						waited += deltaTime;
+						if (waited >= wait) {
+							walking = false;
+							waited = 0.0f;
+						}
+
+					}
+					
+	
+				}
+
 
 				if (playerSpotted) {
 					float diffX = player.getX() - getX();  
@@ -122,15 +163,18 @@ namespace Entity {
 					if (dist >= 70) {
 						setPosition(getX() + diffX * getSpeed(), getY() + diffY * getSpeed());
 					}
-
-
+					
 				}
+
+			
+
+
 				
 
 			}
 
 			void draw(const Player& player) {
-				Enemy::movement(player);
+				Enemy::movement(player, AEFrameRateControllerGetFrameTime());
 
 				// Just a red rect for now
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);

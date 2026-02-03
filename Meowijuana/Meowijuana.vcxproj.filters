@@ -46,6 +46,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Attack.cpp">
+    <ClCompile Include="Pathfinding.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
