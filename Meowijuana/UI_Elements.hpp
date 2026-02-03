@@ -104,14 +104,14 @@ namespace UI_Elements {
 		private:
 			float x;
 			float y;
-			float minValue;
+			
 			float maxValue;		
 			float height;
 			Shapes::SHAPE_MODE drawMode;
 			ElementStyle style{};
 
 		public:
-
+			float minValue;
 			float velocity;
 			float currValue;
 			
@@ -136,13 +136,13 @@ namespace UI_Elements {
 				Shapes::rect(Slider::x, Slider::y, currValue, height, Shapes::CORNER);
 			};
 
-			void fgUpdate(float deltaTime) {
+			void fgUpdate(float velocity, float deltaTime) {
 				clampValue();
-				currValue += velocity * deltaTime;
+				currValue -= velocity * deltaTime;
 			};
 
 			Slider(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(quad.position.x), y(quad.position.y), minValue(0.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
+				: x(quad.position.x), y(quad.position.y), minValue(100.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
 				  drawMode(mode), style{} {
 			}
 
