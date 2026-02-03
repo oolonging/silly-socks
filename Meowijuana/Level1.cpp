@@ -27,7 +27,7 @@ UI_Elements::Slider testbar1;
 
 void Level1_Load()
 {
-    std::cout << "Level1:Load\n";
+    return;
 }
 
 // Initialize some stuff
@@ -98,6 +98,7 @@ void Level1_Update()
 // 
 void Level1_Draw()
 {
+
     if (drawGrid)
         World::drawGrid();
 
@@ -118,5 +119,5 @@ void Level1_Free()
 //
 void Level1_Unload()
 {
-    std::cout << "Level1:Unload\n";
+    return;
 }

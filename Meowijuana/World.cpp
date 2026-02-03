@@ -31,10 +31,10 @@ namespace World {
 			}
 		}
 
-		float minX = -(grid.width / 2);
-		float maxX = (grid.width / 2);
-		float minY = -(grid.height / 2);
-		float maxY = (grid.height / 2);
+		float minX = -(static_cast<float>(grid.width / 2));
+		float maxX = (static_cast<float>(grid.width / 2));
+		float minY = -(static_cast<float>(grid.height / 2));
+		float maxY = (static_cast<float>(grid.height / 2));
 
 		// If empty then initialise the grid meshes stuff
 		if (gridMesh == nullptr)
@@ -80,6 +80,7 @@ namespace World {
 
 		// Draw
 		if (gridMesh) // SAFETY CHECK
+
 			AEGfxMeshDraw(gridMesh, AE_GFX_MDM_LINES);
 
 	}
