@@ -6,9 +6,12 @@
 
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
+#include "GameStateManager.hpp"
 #include "Entity.hpp"
 #include "World.hpp"
 
+extern int current, previous, next;
+extern FP fpLoad, fpInitialize, fpUpdate, fpDraw, fpFree, fpUnload;
 
 
 // ---------------------------------------------------------------------------
@@ -43,82 +46,126 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 
+	GSM_Initialize(GS_LEVEL1);
 
-	// test button
-	UI_Elements::Button testButton;
-	UI_Elements::Button testButton1;
-	UI_Elements::Button thirdtest;
-
-	// test player
-	Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
-	Entity::Enemy testEnemy = Entity::Enemy(200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);;
-
-	// set the button to the center of the screen
-	testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
-	testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
-	thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
-	
-	UI_Elements::Slider testbar;
-	UI_Elements::Slider testbar1;
-	testbar = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
-	testbar1 = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
-
-
-	bool drawGrid = false;
-
-	// Game Loop
-	while (gGameRunning)
+	while (current != GS_QUIT)
 	{
-		// Informing the system about the loop's start
-		AESysFrameStart();
-
-		// reset background
-		Color::background(Color::CL_Color_Create(255, 255, 0));
-
-		// Basic way to trigger exiting the application
-		// when ESCAPE is hit or when the window is closed
-		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			gGameRunning = 0;
-
-		// Your own update logic goes here
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
-		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-		AEGfxSetTransparency(1.0f);
-
-		// Testing the grid drawing 
-		if (AEInputCheckTriggered(AEVK_F4))
+		if (current != GS_RESTART)
 		{
-			drawGrid = !drawGrid;
+			GSM_Update();
+			fpLoad();
+		}
+		else
+		{
+			next = previous;
+			current = previous;
 		}
 
-		if (drawGrid)
+		fpInitialize();
+
+		// -------- LEVEL LOOP --------
+		while (next == current)
 		{
-			World::drawGrid();
+			AESysFrameStart();
+
+			Color::background(Color::CL_Color_Create(255, 255, 0));
+
+			if (AEInputCheckTriggered(AEVK_ESCAPE) ||
+				0 == AESysDoesWindowExist())
+			{
+				next = GS_QUIT;
+			}
+
+			fpUpdate();
+			fpDraw();
+
+			AESysFrameEnd();
 		}
+		// ----------------------------
 
-		// Test button
-		testButton.draw();
-		testButton1.draw();
-		thirdtest.draw();
+		fpFree();
 
-		// Test player
-		testPlayer.draw();
-		testEnemy.draw(testPlayer);
+		if (next != GS_RESTART)
+			fpUnload();
 
-		// Test slider
-		testbar.bgDraw();
-		testbar1.fgUpdate(static_cast<float>(AEFrameRateControllerGetFrameTime()));
-		testbar1.fgDraw();
-
-		// Your own rendering logic goes here
-
-
-		// Informing the system about the loop's end
-		AESysFrameEnd();
-
+		previous = current;
+		current = next;
 	}
+
+	//// test button
+	//UI_Elements::Button testButton;
+	//UI_Elements::Button testButton1;
+	//UI_Elements::Button thirdtest;
+
+	//// test player
+	//Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
+	//Entity::Enemy testEnemy = Entity::Enemy(200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);;
+
+	//// set the button to the center of the screen
+	//testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
+	//testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
+	//thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
+	//
+	//UI_Elements::Slider testbar;
+	//UI_Elements::Slider testbar1;
+	//testbar = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
+	//testbar1 = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
+
+	//bool drawGrid = false;
+
+	//// Game Loop
+	//while (gGameRunning)
+	//{
+	//	// Informing the system about the loop's start
+	//	AESysFrameStart();
+
+	//	// reset background
+	//	Color::background(Color::CL_Color_Create(255, 255, 0));
+
+	//	// Basic way to trigger exiting the application
+	//	// when ESCAPE is hit or when the window is closed
+	//	if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+	//		gGameRunning = 0;
+
+	//	// Your own update logic goes here
+	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	//	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+	//	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
+	//	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	//	AEGfxSetTransparency(1.0f);
+
+	//	// Testing the grid drawing 
+	//	if (AEInputCheckTriggered(AEVK_F4))
+	//	{
+	//		drawGrid = !drawGrid;
+	//	}
+
+	//	if (drawGrid)
+	//	{
+	//		World::drawGrid();
+	//	}
+
+	//	// Test button
+	//	/*testButton.draw();
+	//	testButton1.draw();
+	//	thirdtest.draw();*/
+
+	//	// Test player
+	//	testPlayer.draw();
+	//	testEnemy.draw(testPlayer);
+
+	//	// Test slider
+	//	testbar.bgDraw();
+	//	testbar1.fgUpdate(static_cast<float>(AEFrameRateControllerGetFrameTime()));
+	//	testbar1.fgDraw();
+
+	//	// Your own rendering logic goes here
+
+
+	//	// Informing the system about the loop's end
+	//	AESysFrameEnd();
+
+	//}
 
 	// Free shapes
 	Shapes::exit();

@@ -6,7 +6,7 @@ namespace World {
 
 	AEGfxVertexList* gridMesh;
 
-	Grid grid;
+	static Grid grid;
 
 	// Will use stated values so that it can be able to zoom
 	void initGrid(int width, int height, float tileSize)
@@ -64,19 +64,23 @@ namespace World {
 
 	void drawGrid()
 	{
+		// Ensure render state is valid
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(1.0f);
 
-		// If not just draw the shit
-
-		// Basically resets the render transform state so it doesn't follow ennemy
+		// Reset transform so grid doesn't follow entities
 		AEMtx33 identity;
 		AEMtx33Identity(&identity);
-
 		AEGfxSetTransform(identity.m);
 
+		// Black grid
 		AEGfxSetColorToMultiply(0.f, 0.f, 0.f, 1.f);
 		AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.f);
 
-		AEGfxMeshDraw(gridMesh, AE_GFX_MDM_LINES);
+		// Draw
+		if (gridMesh) // SAFETY CHECK
+			AEGfxMeshDraw(gridMesh, AE_GFX_MDM_LINES);
 
 	}
 
