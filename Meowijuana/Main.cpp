@@ -43,13 +43,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	Shapes::init();
+	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
-
 	AEGfxTexture* dungeonTile = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
 
-	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 
 	GSM_Initialize(GS_LEVEL1);
+
 
 	while (current != GS_QUIT)
 	{
@@ -191,7 +191,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Free shapes
 	Shapes::exit();
 
-	// Free textures
+	// Free texture dungeonTile
+	AEGfxTextureUnload(dungeonTile);
 
 	// free font (it's free?)
 	Text::unloadFont();
