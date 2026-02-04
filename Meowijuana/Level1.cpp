@@ -25,6 +25,8 @@ UI_Elements::Slider testbar1;
 
 Weapon::Sword weapon;
 
+bool firstTime = true;
+
 // -----------------------------------------------------------------------------
 // Load: file IO, textures, assets
 
@@ -39,11 +41,23 @@ void Level1_Initialize()
     drawGrid = false;
 
     // Initialize player & enemy (NO redeclaration)
-    testPlayer = Entity::Player(
-        -400.0f, -400.0f,
-        50.0f, 50.0f,
-        100.0f, 5.0f, 0.0f
-    );
+    if (firstTime) {
+        testPlayer = Entity::Player(
+            -400.0f, -400.0f,
+            50.0f, 50.0f,
+            100.0f, 5.0f, 0.0f
+        );
+
+        firstTime = false;
+    }
+
+    else {
+        testPlayer.setPosition(
+            testPlayer.getX() + 1600, testPlayer.getY()
+        ); 
+    }
+
+
 
     testEnemy = Entity::Enemy(
         000.0f, 0.0f,
