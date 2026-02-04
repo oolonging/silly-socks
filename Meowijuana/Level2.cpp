@@ -6,6 +6,7 @@
 #include "UI_Elements.hpp"
 #include "Entity.hpp"
 #include "World.hpp"
+#include "Level1.hpp"
 
 // -----------------------------------------------------------------------------
 // Level-scope state (persists while Level1 is active)
@@ -29,8 +30,11 @@ void Level2_Initialize()
 {
     drawGrid = false;
 
+    float oriX = testPlayer.getX() - 1600;
+    float oriY = testPlayer.getY();
+
     testPlayer = Entity::Player(
-        -800.0f, 0.0f,
+        oriX, oriY,
         50.0f, 50.0f,
         100.0f, 5.0f, 0.0f
     );
