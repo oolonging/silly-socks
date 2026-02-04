@@ -2,7 +2,8 @@
 
 enum GS_STATES
 {
-	GS_LEVEL1 = 0,
+	Splash,
+	GS_LEVEL1,
 	GS_LEVEL2,
 
 	GS_QUIT,

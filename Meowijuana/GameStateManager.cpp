@@ -1,7 +1,8 @@
 #include <iostream>
 #include "GameStateManager.hpp"
 #include "Level1.hpp"
-
+#include "Level2.hpp"
+#include "SplashPage.hpp"
 
 int current = 0, previous = 0, next = 0;
 
@@ -17,6 +18,15 @@ void GSM_Update()
 
 	switch (current)
 	{
+	case Splash:
+		fpLoad = Splash_Load;
+		fpInitialize = Splash_Initialize;
+		fpUpdate = Splash_Update;
+		fpDraw = Splash_Draw;
+		fpFree = Splash_Free;
+		fpUnload = Splash_Unload;
+		break;
+
 	case GS_LEVEL1:
 		fpLoad = Level1_Load;
 		fpInitialize = Level1_Initialize;
@@ -26,14 +36,14 @@ void GSM_Update()
 		fpUnload = Level1_Unload;
 		break;
 		
-	/*case GS_LEVEL2:
+	case GS_LEVEL2:
 		fpLoad = Level2_Load;
 		fpInitialize = Level2_Initialize;
 		fpUpdate = Level2_Update;
 		fpDraw = Level2_Draw;
 		fpFree = Level2_Free;
 		fpUnload = Level2_Unload;
-		break;*/
+		break;
 
 	case GS_RESTART:
 		break;

@@ -55,7 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UI_Elements::Button sampleButton = UI_Elements::Button(Shapes::Quad{ {-800.0, -350.0f}, 200.0f, 100.0f }, "Sample Button", Shapes::CORNER);
 	sampleButton.setOnClick(meow);
 
-	GSM_Initialize(GS_LEVEL1);
+	GSM_Initialize(Splash);
 
 
 	while (current != GS_QUIT)
@@ -73,6 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		fpInitialize();
 		Color::noStroke();
+
 		// -------- LEVEL LOOP --------
 		while (next == current)
 		{

@@ -13,9 +13,9 @@
 
 bool drawGrid = false;
 
-UI_Elements::Button testButton;
-UI_Elements::Button testButton1;
-UI_Elements::Button thirdtest;
+//UI_Elements::Button testButton;
+//UI_Elements::Button testButton1;
+//UI_Elements::Button thirdtest;
 
 Entity::Player testPlayer;
 Entity::Enemy  testEnemy;
@@ -52,7 +52,7 @@ void Level1_Initialize()
     );
 
     // Buttons
-    testButton = UI_Elements::Button(
+    /*testButton = UI_Elements::Button(
         Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f },
         "corner tada",
         Shapes::CORNER
@@ -68,7 +68,7 @@ void Level1_Initialize()
         Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f },
         "just in case tada",
         Shapes::CORNER
-    );
+    );*/
 
     // Sliders
     testbar = UI_Elements::Slider(
@@ -94,10 +94,10 @@ void Level1_Initialize()
 void Level1_Update()
 {
     // Toggle grid
-    if (AEInputCheckTriggered(AEVK_F3))
+    /*if (AEInputCheckTriggered(AEVK_F3))
     {
         drawGrid = !drawGrid;
-    }
+    }*/
 
 
 	// Weapon update
@@ -137,6 +137,10 @@ void Level1_Update()
 		}
     }
 
+    if (testPlayer.getX() > (AEGfxGetWindowWidth() / 2))
+    {
+        next += 1;
+    }
 	
 }
 
@@ -144,8 +148,9 @@ void Level1_Update()
 void Level1_Draw()
 {
 
-    if (drawGrid)
-        World::drawGrid();
+ /*   if (drawGrid)*/
+        
+    World::drawGrid();
 
     testPlayer.draw();
 
