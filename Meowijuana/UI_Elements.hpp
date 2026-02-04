@@ -28,8 +28,13 @@ namespace UI_Elements {
 			float height{};
 			Shapes::SHAPE_MODE drawMode;
 			char const* msg{};
+			void (*onClick)(void) { nullptr };
 
 		public:
+			void setOnClick(void (*func)(void)) {
+				Button::onClick = func;
+			}
+
 			bool isHovering(void) {
 				int32_t mx = 0, my = 0;
 				AEInputGetCursorPosition(&mx, &my);
@@ -57,6 +62,12 @@ namespace UI_Elements {
 				bool isHovering = Button::isHovering();
 
 				if (isHovering) {
+					// see if clicked
+					if(AEInputCheckTriggered(AEVK_LBUTTON)) {
+						if(Button::onClick != nullptr) {
+							Button::onClick();
+						}
+					}
 					Color::fill(255, 0, 0);
 				}
 				else {
