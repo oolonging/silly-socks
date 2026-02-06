@@ -37,26 +37,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int gGameRunning = 1;
 
-	// Initialization of your own variables go here
-
-	// Using custom window procedure
+	// Create a 1600 x 900 windowed application at 60 FPS
 	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
-
-	// Changing the window title
 	AESysSetWindowTitle("Silly Socks | Meowijuana");
 
 	// reset the system modules
 	AESysReset();
 
+	// Init globals
 	Shapes::init();
 	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
+
 	AEGfxTexture* dungeonTile = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
 	UI_Elements::Button sampleButton = UI_Elements::Button(Shapes::Quad{ {-800.0, -350.0f}, 200.0f, 100.0f }, "Sample Button", Shapes::CORNER);
 	sampleButton.setOnClick(meow);
 
 	GSM_Initialize(Splash);
-
 
 	while (current != GS_QUIT)
 	{
@@ -115,81 +112,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		previous = current;
 		current = next;
 	}
-
-	//// test button
-	//UI_Elements::Button testButton;
-	//UI_Elements::Button testButton1;
-	//UI_Elements::Button thirdtest;
-
-	//// test player
-	//Entity::Player testPlayer = Entity::Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);
-	//Entity::Enemy testEnemy = Entity::Enemy(200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 5.0f, 0.0f);;
-
-	//// set the button to the center of the screen
-	//testButton = UI_Elements::Button(Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f }, "corner tada", Shapes::CORNER);
-	//testButton1 = UI_Elements::Button(Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f }, "center tada", Shapes::CENTER);
-	//thirdtest = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "just in case tada", Shapes::CORNER);
-	//
-	//UI_Elements::Slider testbar;
-	//UI_Elements::Slider testbar1;
-	//testbar = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
-	//testbar1 = UI_Elements::Slider(Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f }, Shapes::CORNER);
-
-	//bool drawGrid = false;
-
-	//// Game Loop
-	//while (gGameRunning)
-	//{
-	//	// Informing the system about the loop's start
-	//	AESysFrameStart();
-
-	//	// reset background
-	//	Color::background(Color::CL_Color_Create(255, 255, 0));
-
-	//	// Basic way to trigger exiting the application
-	//	// when ESCAPE is hit or when the window is closed
-	//	if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-	//		gGameRunning = 0;
-
-	//	// Your own update logic goes here
-	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-	//	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
-	//	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	//	AEGfxSetTransparency(1.0f);
-
-	//	// Testing the grid drawing 
-	//	if (AEInputCheckTriggered(AEVK_F4))
-	//	{
-	//		drawGrid = !drawGrid;
-	//	}
-
-	//	if (drawGrid)
-	//	{
-	//		World::drawGrid();
-	//	}
-
-	//	// Test button
-	//	/*testButton.draw();
-	//	testButton1.draw();
-	//	thirdtest.draw();*/
-
-	//	// Test player
-	//	testPlayer.draw();
-	//	testEnemy.draw(testPlayer);
-
-	//	// Test slider
-	//	testbar.bgDraw();
-	//	testbar1.fgUpdate(static_cast<float>(AEFrameRateControllerGetFrameTime()));
-	//	testbar1.fgDraw();
-
-	//	// Your own rendering logic goes here
-
-
-	//	// Informing the system about the loop's end
-	//	AESysFrameEnd();
-
-	//}
 
 	// Free shapes
 	Shapes::exit();

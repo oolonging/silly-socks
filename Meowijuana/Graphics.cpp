@@ -333,8 +333,10 @@ namespace Shapes {
 namespace Graphics {
 	void image(float x, float y, float width, float height, AEGfxTexture* texture, Shapes::SHAPE_MODE mode) {
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(2.0f);
+		Color::fill(255, 255, 255);
+		Color::noStroke();
 		AEGfxTextureSet(texture, 0, 0);
 		Shapes::rect(x, y, width, height, mode);
 	}
