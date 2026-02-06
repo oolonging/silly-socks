@@ -79,6 +79,8 @@ void Splash_Draw()
 
 	AEGfxMeshDraw(splashMesh, AE_GFX_MDM_TRIANGLES);
 
+	AEGfxTextureMode(AE_GFX_RM_COLOR);
+	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	testButton.draw();
 	testButton1.draw();
 	thirdtest.draw();

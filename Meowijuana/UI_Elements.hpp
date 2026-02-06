@@ -26,8 +26,8 @@ namespace UI_Elements {
 			float y{};
 			float width{};
 			float height{};
-			Shapes::SHAPE_MODE drawMode;
 			char const* msg{};
+			Shapes::SHAPE_MODE drawMode;
 			void (*onClick)(void) { nullptr };
 
 		public:

@@ -174,7 +174,7 @@ namespace Entity {
 			}
 
 			void draw(const Player& player) {
-				Enemy::movement(player, AEFrameRateControllerGetFrameTime());
+				Enemy::movement(player, (float) AEFrameRateControllerGetFrameTime());
 
 				// Just a red rect for now
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
