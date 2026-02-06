@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAMESTATEMANAGER_HPP
+#define GAMESTATEMANAGER_HPP
+
 
 enum GS_STATES
 {
@@ -18,3 +20,5 @@ extern FP fpLoad, fpInitialize, fpUpdate, fpDraw, fpFree, fpUnload;
 
 void GSM_Initialize(int startingState);
 void GSM_Update();
+
+#endif // GAMESTATEMANAGER_HPP

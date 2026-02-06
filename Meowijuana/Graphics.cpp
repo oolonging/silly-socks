@@ -334,7 +334,7 @@ namespace Graphics {
 	void image(float x, float y, float width, float height, AEGfxTexture* texture, Shapes::SHAPE_MODE mode) {
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-		AEGfxSetTransparency(2.0f);
+		AEGfxSetTransparency(1.0f);
 		Color::fill(255, 255, 255);
 		Color::noStroke();
 		AEGfxTextureSet(texture, 0, 0);
