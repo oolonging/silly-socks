@@ -5,6 +5,7 @@
 #include "Graphics.hpp"
 #include "Collision.hpp"
 #include "Pathfinding.hpp"
+#include "UI_Elements.hpp"
 #include <vector>
 #include <string>
 
@@ -22,8 +23,20 @@ namespace Entity {
 			float speed;
 			float armor;
 			AEGfxTexture* sprite = nullptr;
+			
 
 		public:
+			// health bar
+			UI_Elements::ProgressBar healthBar = UI_Elements::ProgressBar(
+				0.0f, 0.0f,
+				50.0f, 5.0f,
+				Entity::hp,
+				0.0f,
+				Entity::maxHp,
+				Shapes::CORNER
+			);
+
+
 			// Getters
 			float getX() const { return x; }
 			float getY() const { return y; }
@@ -180,6 +193,11 @@ namespace Entity {
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				Color::fill(255, 0, 0);
 				Shapes::rect(getX(), getY(), getWidth(), getHeight(), Shapes::CENTER);
+
+				// draw the health bar
+				healthBar.draw(getX() - getWidth() / 2.0f, (getY() + getHeight() / 2.0f) + 10.0f, getWidth(), 10.0f);
+				healthBar.setValue(getHp());
+
 			}
 			// Constructors
 			Enemy(float posX, float posY, float w, float h, float health, float spd, float arm)

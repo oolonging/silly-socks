@@ -20,9 +20,6 @@ bool drawGrid = false;
 Entity::Player testPlayer;
 Entity::Enemy  testEnemy;
 
-UI_Elements::Slider testbar;
-UI_Elements::Slider testbar1;
-
 Weapon::Sword weapon;
 
 bool firstTime = true;
@@ -65,36 +62,6 @@ void Level1_Initialize()
         100.0f, 2.0f, 0.0f
     );
 
-    // Buttons
-    /*testButton = UI_Elements::Button(
-        Shapes::Quad{ {0.0f, 0.0f}, 200.0f, 100.0f },
-        "corner tada",
-        Shapes::CORNER
-    );
-
-    testButton1 = UI_Elements::Button(
-        Shapes::Quad{ {-150.0f, 0.0f}, 200.0f, 100.0f },
-        "center tada",
-        Shapes::CENTER
-    );
-
-    thirdtest = UI_Elements::Button(
-        Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f },
-        "just in case tada",
-        Shapes::CORNER
-    );*/
-
-    // Sliders
-    testbar = UI_Elements::Slider(
-        Shapes::Quad{ {-100.0f, 200.0f}, 300.0f, 50.0f },
-        Shapes::CORNER
-    );
-
-    testbar1 = UI_Elements::Slider(
-        Shapes::Quad{ {200.0f, 200.0f}, 300.0f, 50.0f },
-        Shapes::CORNER
-    );
-    
     //test
     weapon = Weapon::Sword(
         testPlayer.getX() + 20, testPlayer.getY(),
@@ -129,17 +96,10 @@ void Level1_Update()
         weapon.setPosition(testPlayer.getX(), testPlayer.getY() - 30);
     }
 
-	testbar1.minValue = -1000;
-
 	// Attack enemy
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && testEnemy.getHp() > 0) {
 
         if (weapon.attack(testEnemy)) {
-            // Slider update
-            testbar1.fgUpdate(
-                4500.f,
-                static_cast<float>(AEFrameRateControllerGetFrameTime())
-            );
         }
 
 		std::cout << "Enemy HP: " << testEnemy.getHp() << "\n";
@@ -173,11 +133,6 @@ void Level1_Draw()
     if (enemyAlive) {
 		testEnemy.draw(testPlayer);
     }
-
-    Color::fill(0, 255, 0);
-    testbar.bgDraw();
-	Color::fill(255, 0, 0);
-    testbar1.fgDraw();
 
     weapon.draw();
 }

@@ -44,6 +44,9 @@
     <ClCompile Include="Level2.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -76,6 +79,7 @@
     <ClInclude Include="Level2.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Inventory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">

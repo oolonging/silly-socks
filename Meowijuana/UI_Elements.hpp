@@ -161,6 +161,53 @@ namespace UI_Elements {
 				: x(0), y(0), minValue(0.0f), maxValue(100), currValue(0.0f), velocity(0.0f), height(50), drawMode(Shapes::CORNER), style{} {
 			}
 	};
+
+	class ProgressBar {
+		private:
+			float x;
+			float y;
+			float width;
+			float height;
+			float value;
+			float minValue;
+			float maxValue;
+			Shapes::SHAPE_MODE drawMode;
+			//ElementStyle style{};
+
+		public:
+			void clampValue(void) {
+				// might not actually use this to allow for things like overheal etc.
+				if(ProgressBar::value < minValue) {
+					ProgressBar::value = minValue;
+				}
+
+				if (ProgressBar::value > maxValue) { ProgressBar::value = maxValue; }
+			}
+
+			void setValue(float newValue) {
+				ProgressBar::value = newValue;
+				//clampValue();s
+			}
+
+			void draw(float x, float y, float width, float height) {
+				float filledWidth = (ProgressBar::value / ProgressBar::maxValue) * width;
+
+
+				// draw background
+				Color::fill(Color::CL_Color_Create(0, 0, 0));
+				Shapes::rect(x, y, width, height, drawMode);
+				// draw foreground
+				Color::fill(Color::CL_Color_Create(255, 0, 0));
+				Shapes::rect(x, y, filledWidth, height, drawMode);
+
+			}
+
+			// Ctors
+			ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+				: x(x), y(y), width(width), height(height), value(valRef), minValue(minVal), maxValue(maxVal), drawMode(mode) {
+			}
+
+	};
 }
 
 
