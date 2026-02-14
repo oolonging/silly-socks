@@ -31,6 +31,7 @@ UI_Elements::Slider testSlider = UI_Elements::Slider(
     Shapes::CORNER
 );
 UI_Elements::ProgressBar testProgressBar;
+UI_Elements::TextBox testTextBox;
 
 bool firstTime = true;
 
@@ -125,6 +126,23 @@ void Level1_Initialize()
     progressStyle.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
     progressStyle.strokeWeight = 2.0f;
     testProgressBar.setStyle(progressStyle);
+
+    // TextBox (for entering player name or other text)
+    testTextBox = UI_Elements::TextBox(
+        -300.0f, 0.0f,
+        300.0f, 50.0f,
+        "Enter your name...",
+        30,
+        Shapes::CORNER
+    );
+
+    // Custom style for textbox
+    UI_Elements::ElementStyle textBoxStyle;
+    textBoxStyle.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
+    textBoxStyle.secondaryColor = Color::CL_Color_Create(230, 240, 255, 255);
+    textBoxStyle.strokeColor = Color::CL_Color_Create(150, 150, 150, 255);
+    textBoxStyle.strokeWeight = 2.0f;
+    testTextBox.setStyle(textBoxStyle);
 }
 
 // Update per frame
@@ -174,6 +192,11 @@ void Level1_Update()
     progressValue -= 5.0f * static_cast<float>(AEFrameRateControllerGetFrameTime());
     if (progressValue < 0.0f) progressValue = 0.0f;
 
+    // Print textbox content when Enter is pressed (for demonstration)
+    if (AEInputCheckTriggered(AEVK_RETURN) && testTextBox.getIsSelected()) {
+        std::cout << "TextBox content: " << testTextBox.getText() << "\n";
+    }
+
     // Level transition check
     if (testPlayer.getX() > (AEGfxGetWindowWidth() / 2)) {
         next += 1;
@@ -189,6 +212,7 @@ void Level1_Draw()
     testButton.draw();
     testSlider.draw();
     testProgressBar.draw();
+    testTextBox.draw();
 
     // Draw game objects
     testPlayer.draw();
@@ -200,11 +224,14 @@ void Level1_Draw()
 
     weapon.draw();
 
-    // Draw UI labels using text (if font is set)
-    Color::textFill(255, 255, 255, 255);
-    // Note: Uncomment these when font is loaded
-    // Text::text("Speed Control:", -300, 240, Text::ALIGN_LEFT);
-    // Text::text("Progress:", -300, 140, Text::ALIGN_LEFT);
+    // Draw UI labels
+    Color::textFill(0, 0, 0, 255);
+    Text::text("Click to add progress:", -300.0f, 330.0f, Text::ALIGN_LEFT);
+    Text::text("Speed Control:", -300.0f, 240.0f, Text::ALIGN_LEFT);
+    Text::text("Progress (auto-drains):", -300.0f, 150.0f, Text::ALIGN_LEFT);
+    Text::text("Text Input:", -300.0f, 60.0f, Text::ALIGN_LEFT);
+    Text::text("Press Enter to print text", -300.0f, -60.0f, Text::ALIGN_LEFT);
+	Text::text("Testing text", 0, 0, Text::ALIGN_CENTER);
 }
 
 // Free
