@@ -22,6 +22,16 @@ Entity::Enemy  testEnemy;
 
 Weapon::Sword weapon;
 
+// testing slider
+float sliderValue = 0.0f;
+
+UI_Elements::Slider testSlider = UI_Elements::Slider(
+    -200.0f, 200.0f,
+    400.0f, 20.0f,
+    sliderValue, 100.0f, 0.0f,
+    Shapes::CORNER
+);
+
 bool firstTime = true;
 
 // -----------------------------------------------------------------------------
@@ -127,6 +137,8 @@ void Level1_Draw()
     World::drawGrid();
 
     testPlayer.draw();
+
+    testSlider.draw();
 
 	//enemy disappears when dead
 	bool enemyAlive = (testEnemy.getHp() > 0);

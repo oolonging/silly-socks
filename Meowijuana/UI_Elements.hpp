@@ -111,56 +111,56 @@ namespace UI_Elements {
 			}
 	};
 
-	class Slider {
-		private:
-			float x;
-			float y;
-			
-			float maxValue;		
-			float height;
-			Shapes::SHAPE_MODE drawMode;
-			ElementStyle style{};
+	//class Slider {
+	//	private:
+	//		float x;
+	//		float y;
+	//		
+	//		float maxValue;		
+	//		float height;
+	//		Shapes::SHAPE_MODE drawMode;
+	//		ElementStyle style{};
 
-		public:
-			float minValue;
-			float velocity;
-			float currValue;
-			
-			float clampValue(void) {
-				if (currValue < minValue) {
-					currValue = minValue;
-				}
-				if (currValue > maxValue) {
-					currValue = maxValue;
-				}
-				return currValue;
-			};
-			
+	//	public:
+	//		float minValue;
+	//		float velocity;
+	//		float currValue;
+	//		
+	//		float clampValue(void) {
+	//			if (currValue < minValue) {
+	//				currValue = minValue;
+	//			}
+	//			if (currValue > maxValue) {
+	//				currValue = maxValue;
+	//			}
+	//			return currValue;
+	//		};
+	//		
 
-			void bgDraw(void) {
-				clampValue();
-				Shapes::rect(Slider::x, Slider::y, maxValue, height, Shapes::CORNER);
-			};
+	//		void bgDraw(void) {
+	//			clampValue();
+	//			Shapes::rect(Slider::x, Slider::y, maxValue, height, Shapes::CORNER);
+	//		};
 
-			void fgDraw(void) {
-				clampValue();
-				Shapes::rect(Slider::x, Slider::y, currValue, height, Shapes::CORNER);
-			};
+	//		void fgDraw(void) {
+	//			clampValue();
+	//			Shapes::rect(Slider::x, Slider::y, currValue, height, Shapes::CORNER);
+	//		};
 
-			void fgUpdate(float velocity, float deltaTime) {
-				clampValue();
-				currValue -= velocity * deltaTime;
-			};
+	//		void fgUpdate(float velocity, float deltaTime) {
+	//			clampValue();
+	//			currValue -= velocity * deltaTime;
+	//		};
 
-			Slider(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(quad.position.x), y(quad.position.y), minValue(100.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
-				  drawMode(mode), style{} {
-			}
+	//		Slider(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+	//			: x(quad.position.x), y(quad.position.y), minValue(100.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
+	//			  drawMode(mode), style{} {
+	//		}
 
-			Slider(void)
-				: x(0), y(0), minValue(0.0f), maxValue(100), currValue(0.0f), velocity(0.0f), height(50), drawMode(Shapes::CORNER), style{} {
-			}
-	};
+	//		Slider(void)
+	//			: x(0), y(0), minValue(0.0f), maxValue(100), currValue(0.0f), velocity(0.0f), height(50), drawMode(Shapes::CORNER), style{} {
+	//		}
+	//};
 
 	class ProgressBar {
 		private:
@@ -208,6 +208,95 @@ namespace UI_Elements {
 			}
 
 	};
+
+	class Slider {
+		private:
+			float x;
+			float y;
+			float width;
+			float height;
+			float& valueRef;
+			float minValue;
+			float maxValue;
+			Shapes::SHAPE_MODE drawMode;
+
+		public:
+			void clampValue(void) {
+				if (Slider::valueRef < minValue) {
+					Slider::valueRef = minValue;
+				}
+				if (Slider::valueRef > maxValue) {
+					Slider::valueRef = maxValue;
+				}
+			}
+
+			bool isHovering(void) {
+				int32_t mx = 0, my = 0;
+				AEInputGetCursorPosition(&mx, &my);
+				int32_t ww = AEGfxGetWindowWidth();
+				int32_t wh = AEGfxGetWindowHeight();
+				float worldX = mx - ww * 0.5f;
+				float worldY = wh * 0.5f - my;
+				bool xOverlap{}, yOverlap{};
+				if (Slider::drawMode == Shapes::CORNER) {
+					xOverlap = ((worldX >= Slider::x) && (worldX <= (Slider::x + Slider::width)));
+					yOverlap = ((worldY <= Slider::y) && (worldY >= (Slider::y - Slider::height)));
+				}
+				else if (Slider::drawMode == Shapes::CENTER) {
+					xOverlap = ((worldX >= (Slider::x - Slider::width / 2)) && (worldX <= (Slider::x + Slider::width / 2)));
+					yOverlap = ((worldY >= (Slider::y - Slider::height / 2)) && (worldY <= (Slider::y + Slider::height / 2)));
+				}
+				return (xOverlap && yOverlap);
+			}
+
+			void updateValue(void) {
+				if(this->isHovering() && AEInputCheckCurr(AEVK_LBUTTON)) {
+					int32_t mx = 0, my = 0;
+					AEInputGetCursorPosition(&mx, &my);
+					int32_t ww = AEGfxGetWindowWidth();
+					int32_t wh = AEGfxGetWindowHeight();
+					float worldX = mx - ww * 0.5f;
+
+					float relativeX = worldX - Slider::x;
+					if (Slider::drawMode == Shapes::CENTER) {
+						relativeX += Slider::width / 2;
+					}
+					else {
+						// TODO: make sure this works
+						relativeX = worldX - Slider::x;
+					}
+					float newValue = (relativeX / Slider::width) * (maxValue - minValue) + minValue;
+					Slider::valueRef = newValue;
+				}
+			}
+
+			void draw(void) {
+				this->updateValue();
+				//this->clampValue();
+				float filledWidth = ((Slider::valueRef - minValue) / (maxValue - minValue)) * width;
+				// draw background
+				Color::fill(Color::CL_Color_Create(0, 0, 0));
+				Shapes::rect(x, y, width, height, drawMode);
+				// draw foreground
+				if (isHovering() && AEInputCheckCurr(AEVK_LBUTTON)) {
+					Color::fill(Color::CL_Color_Create(0, 255, 0));
+				}
+				else {
+					Color::fill(Color::CL_Color_Create(255, 0, 0));
+				}
+				Shapes::rect(x, y, filledWidth, height, drawMode);
+			}
+
+			// Ctors
+			Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER)
+				: x(x), y(y), width(width), height(height), valueRef(valRef), minValue(minVal), maxValue(maxVal), drawMode(mode) {
+			}
+				Slider(void)
+				: x(0), y(0), width(100), height(20), valueRef(*(new float(0))), minValue(0), maxValue(100), drawMode(Shapes::CORNER) {
+				}
+
+	};
+
 }
 
 
