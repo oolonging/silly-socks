@@ -97,6 +97,34 @@ namespace UI_Elements {
 		Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		Slider(void);
 	};
+
+	class TextBox : public UI_Element {
+	private:
+		std::string text;
+		std::string placeholderText;
+		size_t maxLength;
+		bool isSelected;
+		float cursorBlinkTimer;
+		bool showCursor;
+
+		static TextBox* currentlySelected;
+
+		void handleInput();
+		void updateCursor(float deltaTime);
+
+	public:
+		void draw(void) override;
+		void select();
+		void deselect();
+		bool getIsSelected() const;
+		std::string getText() const;
+		void setText(const std::string& newText);
+		void setPlaceholder(const std::string& placeholder);
+
+		// Constructors
+		TextBox(float x, float y, float width, float height, const std::string& placeholder = "", size_t maxLen = 50, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		TextBox(void);
+	};
 }
 
 #endif // UI_ELEMENTS_HPP
