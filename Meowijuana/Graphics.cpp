@@ -382,6 +382,18 @@ namespace Text {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
 				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
 		}
+		else if (align == ALIGN_LEFT) {
+			AEGfxPrint(Settings::pCurrentFont, pText, wx, wy, 1.0f,
+				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+		}
+		else if (align == ALIGN_RIGHT) {
+			AEGfxPrint(Settings::pCurrentFont, pText, wx -= padW, wy, 1.0f,
+				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+		}
+		else {
+			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
+				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+		}
 
 		// thanks for debug text eee 
 		//AEGfxPrint(Settings::pCurrentFont, "10", 0.5, 0, 1.0f,
