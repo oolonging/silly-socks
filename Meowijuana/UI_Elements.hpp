@@ -19,285 +19,84 @@ namespace UI_Elements {
 		std::string fontPath;
 	} TextStyle;
 
+	// Base class for all UI elements
+	class UI_Element {
+	protected:
+		float x;
+		float y;
+		float width;
+		float height;
+		Shapes::SHAPE_MODE drawMode;
+		ElementStyle style;
 
-	class Button {
-		private:
-			float x{};
-			float y{};
-			float width{};
-			float height{};
-			char const* msg{};
-			Shapes::SHAPE_MODE drawMode;
-			void (*onClick)(void) { nullptr };
+		// Default style initialization
+		static ElementStyle getDefaultStyle();
 
-		public:
-			void setOnClick(void (*func)(void)) {
-				Button::onClick = func;
-			}
+	public:
+		// Common functionality
+		bool isHovering(void) const;
+		void setStyle(ElementStyle newStyle);
+		ElementStyle getStyle(void) const;
+		
+		// Virtual destructor for proper cleanup
+		virtual ~UI_Element() = default;
 
-			bool isHovering(void) {
-				int32_t mx = 0, my = 0;
-				AEInputGetCursorPosition(&mx, &my);
+		// Pure virtual - must be implemented by derived classes
+		virtual void draw(void) = 0;
 
-				int32_t ww = AEGfxGetWindowWidth();
-				int32_t wh = AEGfxGetWindowHeight();
-				float worldX = mx - ww * 0.5f;
-				float worldY = wh * 0.5f - my;
-
-				bool xOverlap{}, yOverlap{};
-
-				if (Button::drawMode == Shapes::CORNER) {
-					xOverlap = ((worldX >= Button::x) && (worldX <= (Button::x + Button::width)));
-					yOverlap = ((worldY <= Button::y) && (worldY >= (Button::y - Button::height)));
-				}
-				else if (Button::drawMode == Shapes::CENTER) {
-					xOverlap = ((worldX >= (Button::x - Button::width / 2)) && (worldX <= (Button::x + Button::width / 2)));
-					yOverlap = ((worldY >= (Button::y - Button::height / 2)) && (worldY <= (Button::y + Button::height / 2)));
-				}
-
-				return (xOverlap && yOverlap);
-			}
-
-			void draw(void) {
-				bool isHovering = Button::isHovering();
-
-				if (isHovering) {
-					// see if clicked
-					if(AEInputCheckTriggered(AEVK_LBUTTON)) {
-						if(Button::onClick != nullptr) {
-							Button::onClick();
-						}
-					}
-					Color::fill(255, 0, 0);
-				}
-				else {
-					Color::fill(0, 255, 0);
-				}
-
-				Shapes::rect(Button::x, Button::y, Button::width, Button::height, Button::drawMode);
-
-				// set text to black for now
-				Color::textFill(0, 0, 0);
-
-
-				float textX{};
-				float textY{};
-
-				if(Button::drawMode == Shapes::CORNER) {
-					textX = Button::x + Button::width / 2;
-					textY = Button::y - Button::height / 2;
-				}
-				else {
-					textX = Button::x;
-					textY = Button::y;
-				}
-				
-				Text::text(msg, textX, textY, Text::ALIGN_CENTER);
-
-			}
-
-			// Constructors
-
-			Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(x), y(y), width(width), height(height), drawMode(mode), msg(msg) {
-			}
-
-			Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(quad.position.x), y(quad.position.y), width(quad.width), height(quad.height), drawMode(mode), msg(msg) {
-			}
-
-			Button(void)
-				: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER) {
-			}
+	protected:
+		// Constructor for derived classes
+		UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode);
+		UI_Element();
 	};
 
-	//class Slider {
-	//	private:
-	//		float x;
-	//		float y;
-	//		
-	//		float maxValue;		
-	//		float height;
-	//		Shapes::SHAPE_MODE drawMode;
-	//		ElementStyle style{};
+	class Button : public UI_Element {
+	private:
+		char const* msg;
+		void (*onClick)(void);
 
-	//	public:
-	//		float minValue;
-	//		float velocity;
-	//		float currValue;
-	//		
-	//		float clampValue(void) {
-	//			if (currValue < minValue) {
-	//				currValue = minValue;
-	//			}
-	//			if (currValue > maxValue) {
-	//				currValue = maxValue;
-	//			}
-	//			return currValue;
-	//		};
-	//		
+	public:
+		void setOnClick(void (*func)(void));
+		void draw(void) override;
 
-	//		void bgDraw(void) {
-	//			clampValue();
-	//			Shapes::rect(Slider::x, Slider::y, maxValue, height, Shapes::CORNER);
-	//		};
-
-	//		void fgDraw(void) {
-	//			clampValue();
-	//			Shapes::rect(Slider::x, Slider::y, currValue, height, Shapes::CORNER);
-	//		};
-
-	//		void fgUpdate(float velocity, float deltaTime) {
-	//			clampValue();
-	//			currValue -= velocity * deltaTime;
-	//		};
-
-	//		Slider(Shapes::Quad quad, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-	//			: x(quad.position.x), y(quad.position.y), minValue(100.0f), maxValue(quad.width), currValue(0.0f), velocity(50.0f), height(quad.height),
-	//			  drawMode(mode), style{} {
-	//		}
-
-	//		Slider(void)
-	//			: x(0), y(0), minValue(0.0f), maxValue(100), currValue(0.0f), velocity(0.0f), height(50), drawMode(Shapes::CORNER), style{} {
-	//		}
-	//};
-
-	class ProgressBar {
-		private:
-			float x;
-			float y;
-			float width;
-			float height;
-			float value;
-			float minValue;
-			float maxValue;
-			Shapes::SHAPE_MODE drawMode;
-			//ElementStyle style{};
-
-		public:
-			void clampValue(void) {
-				// might not actually use this to allow for things like overheal etc.
-				if(ProgressBar::value < minValue) {
-					ProgressBar::value = minValue;
-				}
-
-				if (ProgressBar::value > maxValue) { ProgressBar::value = maxValue; }
-			}
-
-			void setValue(float newValue) {
-				ProgressBar::value = newValue;
-				//clampValue();s
-			}
-
-			void draw(float x, float y, float width, float height) {
-				float filledWidth = (ProgressBar::value / ProgressBar::maxValue) * width;
-
-
-				// draw background
-				Color::fill(Color::CL_Color_Create(0, 0, 0));
-				Shapes::rect(x, y, width, height, drawMode);
-				// draw foreground
-				Color::fill(Color::CL_Color_Create(255, 0, 0));
-				Shapes::rect(x, y, filledWidth, height, drawMode);
-
-			}
-
-			// Ctors
-			ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(x), y(y), width(width), height(height), value(valRef), minValue(minVal), maxValue(maxVal), drawMode(mode) {
-			}
-
+		// Constructors
+		Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Button(void);
 	};
 
-	class Slider {
-		private:
-			float x;
-			float y;
-			float width;
-			float height;
-			float& valueRef;
-			float minValue;
-			float maxValue;
-			Shapes::SHAPE_MODE drawMode;
+	class ProgressBar : public UI_Element {
+	private:
+		float value;
+		float minValue;
+		float maxValue;
 
-		public:
-			void clampValue(void) {
-				if (Slider::valueRef < minValue) {
-					Slider::valueRef = minValue;
-				}
-				if (Slider::valueRef > maxValue) {
-					Slider::valueRef = maxValue;
-				}
-			}
+	public:
+		void clampValue(void);
+		void setValue(float newValue);
+		void draw(void) override;
 
-			bool isHovering(void) {
-				int32_t mx = 0, my = 0;
-				AEInputGetCursorPosition(&mx, &my);
-				int32_t ww = AEGfxGetWindowWidth();
-				int32_t wh = AEGfxGetWindowHeight();
-				float worldX = mx - ww * 0.5f;
-				float worldY = wh * 0.5f - my;
-				bool xOverlap{}, yOverlap{};
-				if (Slider::drawMode == Shapes::CORNER) {
-					xOverlap = ((worldX >= Slider::x) && (worldX <= (Slider::x + Slider::width)));
-					yOverlap = ((worldY <= Slider::y) && (worldY >= (Slider::y - Slider::height)));
-				}
-				else if (Slider::drawMode == Shapes::CENTER) {
-					xOverlap = ((worldX >= (Slider::x - Slider::width / 2)) && (worldX <= (Slider::x + Slider::width / 2)));
-					yOverlap = ((worldY >= (Slider::y - Slider::height / 2)) && (worldY <= (Slider::y + Slider::height / 2)));
-				}
-				return (xOverlap && yOverlap);
-			}
-
-			void updateValue(void) {
-				if(this->isHovering() && AEInputCheckCurr(AEVK_LBUTTON)) {
-					int32_t mx = 0, my = 0;
-					AEInputGetCursorPosition(&mx, &my);
-					int32_t ww = AEGfxGetWindowWidth();
-					int32_t wh = AEGfxGetWindowHeight();
-					float worldX = mx - ww * 0.5f;
-
-					float relativeX = worldX - Slider::x;
-					if (Slider::drawMode == Shapes::CENTER) {
-						relativeX += Slider::width / 2;
-					}
-					else {
-						// TODO: make sure this works
-						relativeX = worldX - Slider::x;
-					}
-					float newValue = (relativeX / Slider::width) * (maxValue - minValue) + minValue;
-					Slider::valueRef = newValue;
-				}
-			}
-
-			void draw(void) {
-				this->updateValue();
-				//this->clampValue();
-				float filledWidth = ((Slider::valueRef - minValue) / (maxValue - minValue)) * width;
-				// draw background
-				Color::fill(Color::CL_Color_Create(0, 0, 0));
-				Shapes::rect(x, y, width, height, drawMode);
-				// draw foreground
-				if (isHovering() && AEInputCheckCurr(AEVK_LBUTTON)) {
-					Color::fill(Color::CL_Color_Create(0, 255, 0));
-				}
-				else {
-					Color::fill(Color::CL_Color_Create(255, 0, 0));
-				}
-				Shapes::rect(x, y, filledWidth, height, drawMode);
-			}
-
-			// Ctors
-			Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER)
-				: x(x), y(y), width(width), height(height), valueRef(valRef), minValue(minVal), maxValue(maxVal), drawMode(mode) {
-			}
-				Slider(void)
-				: x(0), y(0), width(100), height(20), valueRef(*(new float(0))), minValue(0), maxValue(100), drawMode(Shapes::CORNER) {
-				}
-
+		// Constructor
+		ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		ProgressBar(void);
 	};
 
+	class Slider : public UI_Element {
+	private:
+		float& valueRef;
+		float minValue;
+		float maxValue;
+
+		void updateValue(void);
+
+	public:
+		void clampValue(void);
+		void draw(void) override;
+
+		// Constructors
+		Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Slider(void);
+	};
 }
-
 
 #endif // UI_ELEMENTS_HPP

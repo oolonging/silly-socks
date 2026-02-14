@@ -25,6 +25,8 @@ namespace Color {
 	void stroke(int red, int green, int blue, int alpha = 255);
 	void stroke(CL_Color color);
 
+	void strokeWeight(float weight);
+
 	void noFill(void);
 	void noStroke(void);
 

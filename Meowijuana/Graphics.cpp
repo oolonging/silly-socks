@@ -80,6 +80,11 @@ namespace Color {
 		stroke(color.red, color.green, color.blue, color.alpha);
 	}
 
+	void strokeWeight(float weight) {
+		Settings::gStrokeWeight = weight;
+	}
+
+
 	void noFill(void) {
 		fill(0, 0, 0, 0);
 	}
