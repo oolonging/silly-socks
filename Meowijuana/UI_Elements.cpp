@@ -1,5 +1,7 @@
 #include "UI_Elements.hpp"
 #include "AEEngine.h"
+#include <algorithm>
+#include <vector>
 
 namespace UI_Elements {
 
@@ -8,6 +10,7 @@ namespace UI_Elements {
 // -------------------------------------------------------------------------
 
 TextBox* TextBox::currentlySelected = nullptr;
+std::vector<RadioButton*> RadioButton::radioGroups[10];
 
 // -------------------------------------------------------------------------
 // UI_Element Base Class Implementation
@@ -369,4 +372,224 @@ TextBox* TextBox::currentlySelected = nullptr;
 			Text::text(displayText.c_str(), textX, textY, Text::ALIGN_LEFT);
 		}
 	}
+
+	// -------------------------------------------------------------------------
+	// Checkbox Implementation
+	// -------------------------------------------------------------------------
+
+	Checkbox::Checkbox(float x, float y, float boxSize, char const* label, bool initialState, Shapes::SHAPE_MODE mode)
+		: UI_Element(x, y, boxSize + 100, boxSize, mode), isChecked(initialState), label(label), boxSize(boxSize), onChange(nullptr) {
+		// Custom default style for checkbox
+		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
+		style.secondaryColor = Color::CL_Color_Create(100, 200, 100, 255);
+		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.strokeWeight = 2.0f;
+	}
+
+	Checkbox::Checkbox(void)
+		: UI_Element(), isChecked(false), label("Checkbox"), boxSize(20), onChange(nullptr) {
+		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
+		style.secondaryColor = Color::CL_Color_Create(100, 200, 100, 255);
+		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.strokeWeight = 2.0f;
+	}
+
+	void Checkbox::toggle() {
+		isChecked = !isChecked;
+		if (onChange != nullptr) {
+			onChange(isChecked);
+		}
+	}
+
+	bool Checkbox::getChecked() const {
+		return isChecked;
+	}
+
+	void Checkbox::setChecked(bool checked) {
+		if (isChecked != checked) {
+			isChecked = checked;
+			if (onChange != nullptr) {
+				onChange(isChecked);
+			}
+		}
+	}
+
+	void Checkbox::setOnChange(void (*func)(bool)) {
+		onChange = func;
+	}
+
+	void Checkbox::draw(void) {
+		// Check if checkbox area is hovered (just the box, not the label)
+		int32_t mx = 0, my = 0;
+		AEInputGetCursorPosition(&mx, &my);
+		int32_t ww = AEGfxGetWindowWidth();
+		int32_t wh = AEGfxGetWindowHeight();
+		float worldX = mx - ww * 0.5f;
+		float worldY = wh * 0.5f - my;
+
+		bool boxHovered = false;
+		if (drawMode == Shapes::CORNER) {
+			boxHovered = ((worldX >= x) && (worldX <= (x + boxSize)) &&
+						  (worldY <= y) && (worldY >= (y - boxSize)));
+		}
+		else {
+			boxHovered = ((worldX >= (x - boxSize / 2)) && (worldX <= (x + boxSize / 2)) &&
+						  (worldY >= (y - boxSize / 2)) && (worldY <= (y + boxSize / 2)));
+		}
+
+		// Handle click
+		if (boxHovered && AEInputCheckTriggered(AEVK_LBUTTON)) {
+			toggle();
+		}
+
+		// Draw checkbox box
+		Color::stroke(style.strokeColor);
+		Color::strokeWeight(style.strokeWeight);
+
+		if (isChecked) {
+			Color::fill(style.secondaryColor);
+		}
+		else {
+			Color::fill(style.primaryColor);
+		}
+
+		Shapes::rect(x, y, boxSize, boxSize, drawMode);
+
+		// Draw checkmark if checked
+		if (isChecked) {
+			Color::noStroke();
+			Color::fill(0, 0, 0, 255);
+			float checkX = (drawMode == Shapes::CORNER) ? (x + boxSize / 2) : x;
+			float checkY = (drawMode == Shapes::CORNER) ? (y - boxSize / 2) : y;
+			Shapes::rect(checkX - boxSize * 0.15f, checkY, boxSize * 0.3f, boxSize * 0.3f, Shapes::CENTER);
+		}
+
+		// Draw label
+		Color::textFill(0, 0, 0, 255);
+		float labelX = (drawMode == Shapes::CORNER) ? (x + boxSize + 10) : (x + boxSize / 2 + 10);
+		float labelY = (drawMode == Shapes::CORNER) ? (y - boxSize / 2) : y;
+		Text::text(label, labelX, labelY, Text::ALIGN_LEFT);
+	}
+
+	// -------------------------------------------------------------------------
+	// RadioButton Implementation
+	// -------------------------------------------------------------------------
+
+	RadioButton::RadioButton(float x, float y, float circleSize, char const* label, int groupId, bool initialState, Shapes::SHAPE_MODE mode)
+		: UI_Element(x, y, circleSize + 100, circleSize, mode), isSelected(initialState), label(label), 
+		  circleSize(circleSize), groupId(groupId), onSelect(nullptr) {
+		// Custom default style for radio button
+		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
+		style.secondaryColor = Color::CL_Color_Create(100, 150, 255, 255);
+		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.strokeWeight = 2.0f;
+
+		// Add to radio group
+		if (groupId >= 0 && groupId < 10) {
+			radioGroups[groupId].push_back(this);
+		}
+	}
+
+	RadioButton::RadioButton(void)
+		: UI_Element(), isSelected(false), label("Radio"), circleSize(20), groupId(0), onSelect(nullptr) {
+		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
+		style.secondaryColor = Color::CL_Color_Create(100, 150, 255, 255);
+		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.strokeWeight = 2.0f;
+
+		radioGroups[0].push_back(this);
+	}
+
+	RadioButton::~RadioButton() {
+		// Remove from radio group
+		if (groupId >= 0 && groupId < 10) {
+			auto& group = radioGroups[groupId];
+			group.erase(std::remove(group.begin(), group.end(), this), group.end());
+		}
+	}
+
+	void RadioButton::select() {
+		if (!isSelected) {
+			// Deselect all other radio buttons in the same group
+			if (groupId >= 0 && groupId < 10) {
+				for (RadioButton* radio : radioGroups[groupId]) {
+					if (radio != this) {
+						radio->isSelected = false;
+					}
+				}
+			}
+
+			isSelected = true;
+			if (onSelect != nullptr) {
+				onSelect();
+			}
+		}
+	}
+
+	bool RadioButton::getSelected() const {
+		return isSelected;
+	}
+
+	void RadioButton::setOnSelect(void (*func)(void)) {
+		onSelect = func;
+	}
+
+	void RadioButton::draw(void) {
+		// Check if radio button area is hovered (just the circle, not the label)
+		int32_t mx = 0, my = 0;
+		AEInputGetCursorPosition(&mx, &my);
+		int32_t ww = AEGfxGetWindowWidth();
+		int32_t wh = AEGfxGetWindowHeight();
+		float worldX = mx - ww * 0.5f;
+		float worldY = wh * 0.5f - my;
+
+		bool circleHovered = false;
+		if (drawMode == Shapes::CORNER) {
+			float centerX = x + circleSize / 2;
+			float centerY = y - circleSize / 2;
+			float dist = sqrtf((worldX - centerX) * (worldX - centerX) + 
+							   (worldY - centerY) * (worldY - centerY));
+			circleHovered = (dist <= circleSize / 2);
+		}
+		else {
+			float dist = sqrtf((worldX - x) * (worldX - x) + (worldY - y) * (worldY - y));
+			circleHovered = (dist <= circleSize / 2);
+		}
+
+		// Handle click
+		if (circleHovered && AEInputCheckTriggered(AEVK_LBUTTON)) {
+			select();
+		}
+
+		// Draw radio button circle
+		Color::stroke(style.strokeColor);
+		Color::strokeWeight(style.strokeWeight);
+		Color::fill(style.primaryColor);
+
+		if (drawMode == Shapes::CORNER) {
+			Shapes::circle(x + circleSize / 2, y - circleSize / 2, circleSize, Shapes::CENTER);
+		}
+		else {
+			Shapes::circle(x, y, circleSize, Shapes::CENTER);
+		}
+
+		// Draw inner circle if selected
+		if (isSelected) {
+			Color::noStroke();
+			Color::fill(style.secondaryColor);
+			if (drawMode == Shapes::CORNER) {
+				Shapes::circle(x + circleSize / 2, y - circleSize / 2, circleSize * 0.5f, Shapes::CENTER);
+			}
+			else {
+				Shapes::circle(x, y, circleSize * 0.5f, Shapes::CENTER);
+			}
+		}
+
+		// Draw label
+		Color::textFill(0, 0, 0, 255);
+		float labelX = (drawMode == Shapes::CORNER) ? (x + circleSize + 10) : (x + circleSize / 2 + 10);
+		float labelY = (drawMode == Shapes::CORNER) ? (y - circleSize / 2) : y;
+		Text::text(label, labelX, labelY, Text::ALIGN_LEFT);
+	}
 }
+

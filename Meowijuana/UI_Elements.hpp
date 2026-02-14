@@ -2,6 +2,7 @@
 #define UI_ELEMENTS_HPP
 
 #include <string>
+#include <vector>
 #include "Graphics.hpp"
 
 namespace UI_Elements {
@@ -124,6 +125,47 @@ namespace UI_Elements {
 		// Constructors
 		TextBox(float x, float y, float width, float height, const std::string& placeholder = "", size_t maxLen = 50, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		TextBox(void);
+	};
+
+	class Checkbox : public UI_Element {
+	private:
+		bool isChecked;
+		char const* label;
+		float boxSize;
+		void (*onChange)(bool);
+
+	public:
+		void draw(void) override;
+		void toggle();
+		bool getChecked() const;
+		void setChecked(bool checked);
+		void setOnChange(void (*func)(bool));
+
+		// Constructors
+		Checkbox(float x, float y, float boxSize, char const* label, bool initialState = false, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Checkbox(void);
+	};
+
+	class RadioButton : public UI_Element {
+	private:
+		bool isSelected;
+		char const* label;
+		float circleSize;
+		int groupId;
+		void (*onSelect)(void);
+
+		static std::vector<RadioButton*> radioGroups[10]; // Support up to 10 groups
+
+	public:
+		void draw(void) override;
+		void select();
+		bool getSelected() const;
+		void setOnSelect(void (*func)(void));
+
+		// Constructors
+		RadioButton(float x, float y, float circleSize, char const* label, int groupId = 0, bool initialState = false, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		RadioButton(void);
+		~RadioButton();
 	};
 }
 

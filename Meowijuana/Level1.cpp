@@ -32,6 +32,10 @@ UI_Elements::Slider testSlider = UI_Elements::Slider(
 );
 UI_Elements::ProgressBar testProgressBar;
 UI_Elements::TextBox testTextBox;
+UI_Elements::Checkbox testCheckbox;
+//UI_Elements::RadioButton testRadio1;
+//UI_Elements::RadioButton testRadio2;
+//UI_Elements::RadioButton testRadio3;
 
 bool firstTime = true;
 
@@ -143,6 +147,56 @@ void Level1_Initialize()
     textBoxStyle.strokeColor = Color::CL_Color_Create(150, 150, 150, 255);
     textBoxStyle.strokeWeight = 2.0f;
     testTextBox.setStyle(textBoxStyle);
+
+    // Checkbox (toggle debug grid)
+    testCheckbox = UI_Elements::Checkbox(
+        -300.0f, -100.0f,
+        25.0f,
+        "Show Grid",
+        false,
+        Shapes::CORNER
+    );
+    testCheckbox.setOnChange([](bool checked) {
+        drawGrid = checked;
+        std::cout << "Grid " << (checked ? "enabled" : "disabled") << "\n";
+    });
+
+    // Radio Buttons (difficulty selection)
+    //testRadio1 = UI_Elements::RadioButton(
+    //    -300.0f, -180.0f,
+    //    20.0f,
+    //    "Easy",
+    //    0,  // Group 0
+    //    true,
+    //    Shapes::CORNER
+    //);
+    //testRadio1.setOnSelect([]() {
+    //    std::cout << "Difficulty: Easy\n";
+    //});
+
+    //testRadio2 = UI_Elements::RadioButton(
+    //    -300.0f, -220.0f,
+    //    20.0f,
+    //    "Normal",
+    //    0,  // Group 0
+    //    false,
+    //    Shapes::CORNER
+    //);
+    //testRadio2.setOnSelect([]() {
+    //    std::cout << "Difficulty: Normal\n";
+    //});
+
+    //testRadio3 = UI_Elements::RadioButton(
+    //    -300.0f, -260.0f,
+    //    20.0f,
+    //    "Hard",
+    //    0,  // Group 0
+    //    false,
+    //    Shapes::CORNER
+    //);
+    //testRadio3.setOnSelect([]() {
+    //    std::cout << "Difficulty: Hard\n";
+    //});
 }
 
 // Update per frame
@@ -206,6 +260,7 @@ void Level1_Update()
 // Draw
 void Level1_Draw()
 {
+    if(drawGrid)
     World::drawGrid();
 
     // Draw UI Elements first (behind game objects)
@@ -213,6 +268,10 @@ void Level1_Draw()
     testSlider.draw();
     testProgressBar.draw();
     testTextBox.draw();
+    testCheckbox.draw();
+    //testRadio1.draw();
+    //testRadio2.draw();
+    //testRadio3.draw();
 
     // Draw game objects
     testPlayer.draw();
@@ -231,7 +290,7 @@ void Level1_Draw()
     Text::text("Progress (auto-drains):", -300.0f, 150.0f, Text::ALIGN_LEFT);
     Text::text("Text Input:", -300.0f, 60.0f, Text::ALIGN_LEFT);
     Text::text("Press Enter to print text", -300.0f, -60.0f, Text::ALIGN_LEFT);
-	Text::text("Testing text", 0, 0, Text::ALIGN_CENTER);
+    Text::text("Difficulty:", -300.0f, -140.0f, Text::ALIGN_LEFT);
 }
 
 // Free
