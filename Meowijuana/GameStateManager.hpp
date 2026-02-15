@@ -4,7 +4,9 @@
 
 enum GS_STATES
 {
-	Splash,
+	GS_SPLASH_SCREEN,
+	GS_MAIN_MENU,
+
 	GS_LEVEL1,
 	GS_LEVEL2,
 

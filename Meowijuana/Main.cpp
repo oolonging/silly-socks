@@ -15,12 +15,6 @@
 extern int current, previous, next;
 extern FP fpLoad, fpInitialize, fpUpdate, fpDraw, fpFree, fpUnload;
 
-
-// void meow
-void meow(void) {
-	std::cout << "Meow" << std::endl;
-}
-
 // ---------------------------------------------------------------------------
 // main
 
@@ -50,10 +44,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
 	AEGfxTexture* dungeonTile = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
-	UI_Elements::Button sampleButton = UI_Elements::Button(Shapes::Quad{ {-800.0, -350.0f}, 200.0f, 100.0f }, "Sample Button", Shapes::CORNER);
-	sampleButton.setOnClick(meow);
 
-	GSM_Initialize(Splash);
+	GSM_Initialize(GS_MAIN_MENU);
 
 	while (current != GS_QUIT)
 	{
@@ -69,7 +61,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 
 		fpInitialize();
-		Color::noStroke();
 
 		// -------- LEVEL LOOP --------
 		while (next == current)
@@ -78,17 +69,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			// the fuck? why does removing this line break it
 			Graphics::image(-800.0f, 450.0f, 1600.0f, 900.0f, dungeonTile, Shapes::CORNER);
-			Color::fill(255, 255, 255);
 
-			// try tiling it
-
-			for (int i = 0; i < 16; i++) {
-				for (int j = 0; j < 9; j++) {
-					Graphics::image(-800.0f + i * 100.0f, 450.0f - j * 100.0f, 100.0f, 100.0f, dungeonTile, Shapes::CORNER);
-				}
-			}
-
-			sampleButton.draw();
 
 			if (AEInputCheckTriggered(AEVK_ESCAPE) ||
 				0 == AESysDoesWindowExist())

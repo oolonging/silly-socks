@@ -23,9 +23,6 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Level1.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Pathfinding.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -38,14 +35,20 @@
     <ClCompile Include="World.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="SplashPage.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="Level2.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashPage.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Mainmenu.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Level2.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Level1.cpp">
+      <Filter>Source files\Screens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +59,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level1.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="GameStateManager.hpp">
@@ -73,14 +73,20 @@
     <ClInclude Include="Graphics.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="SplashPage.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level2.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.hpp">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mainmenu.hpp">
+      <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1.hpp">
+      <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Level2.hpp">
+      <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashPage.hpp">
+      <Filter>Header files\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +95,12 @@
     </Filter>
     <Filter Include="Header files">
       <UniqueIdentifier>{f643d418-133a-4833-8cac-b2cf3cbb923c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Screens">
+      <UniqueIdentifier>{acde8de7-6e33-4bd9-8723-20a5b94f43cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Screens">
+      <UniqueIdentifier>{a6cfd654-62d1-46f8-863b-2ed23026e2b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

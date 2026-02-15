@@ -1,8 +1,9 @@
 #include <iostream>
-#include "GameStateManager.hpp"
+#include "SplashPage.hpp"
+#include "Mainmenu.hpp"
 #include "Level1.hpp"
 #include "Level2.hpp"
-#include "SplashPage.hpp"
+#include "GameStateManager.hpp"
 
 int current = 0, previous = 0, next = 0;
 
@@ -18,13 +19,22 @@ void GSM_Update()
 
 	switch (current)
 	{
-	case Splash:
+	case GS_SPLASH_SCREEN:
 		fpLoad = Splash_Load;
 		fpInitialize = Splash_Initialize;
 		fpUpdate = Splash_Update;
 		fpDraw = Splash_Draw;
 		fpFree = Splash_Free;
 		fpUnload = Splash_Unload;
+		break;
+
+	case GS_MAIN_MENU:
+		fpLoad = Mainmenu_Load;
+		fpInitialize = Mainmenu_Initialize;
+		fpUpdate = Mainmenu_Update;
+		fpDraw = Mainmenu_Draw;
+		fpFree = Mainmenu_Free;
+		fpUnload = Mainmenu_Unload;
 		break;
 
 	case GS_LEVEL1:
