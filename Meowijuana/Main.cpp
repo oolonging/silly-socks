@@ -43,7 +43,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
-	AEGfxTexture* dungeonTile = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
 
 	GSM_Initialize(GS_MAIN_MENU);
 
@@ -66,10 +65,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		while (next == current)
 		{
 			AESysFrameStart();
-
-			// the fuck? why does removing this line break it
-			Graphics::image(-800.0f, 450.0f, 1600.0f, 900.0f, dungeonTile, Shapes::CORNER);
-
 
 			if (AEInputCheckTriggered(AEVK_ESCAPE) ||
 				0 == AESysDoesWindowExist())
@@ -96,9 +91,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Free shapes
 	Shapes::exit();
-
-	// Free texture dungeonTile
-	AEGfxTextureUnload(dungeonTile);
 
 	// free font (it's free?)
 	Text::unloadFont();

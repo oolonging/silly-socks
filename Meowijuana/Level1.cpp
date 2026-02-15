@@ -37,19 +37,22 @@ UI_Elements::Checkbox testCheckbox;
 //UI_Elements::RadioButton testRadio2;
 //UI_Elements::RadioButton testRadio3;
 
+// that image
+AEGfxTexture* dungeonTile;
+
+
 bool firstTime = true;
 
 // -----------------------------------------------------------------------------
 // Load: file IO, textures, assets
 
-void Level1_Load()
-{
-    return;
+void Level1_Load() {
+    dungeonTile = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
 }
 
-// Initialize some stuff
 void Level1_Initialize()
 {
+
     drawGrid = false;
 
     // Initialize player & enemy (NO redeclaration)
@@ -199,9 +202,10 @@ void Level1_Initialize()
     //});
 }
 
-// Update per frame
 void Level1_Update()
 {
+	Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
+
     // Weapon position update based on player movement direction
     if (AEInputCheckCurr(AEVK_A)) {
         weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
@@ -257,7 +261,6 @@ void Level1_Update()
     }
 }
 
-// Draw
 void Level1_Draw()
 {
     if(drawGrid)
@@ -293,14 +296,8 @@ void Level1_Draw()
     Text::text("Difficulty:", -300.0f, -140.0f, Text::ALIGN_LEFT);
 }
 
-// Free
-void Level1_Free()
-{
-    std::cout << "Level1:Free\n";
-}
+void Level1_Free() {}
 
-// Unload
-void Level1_Unload()
-{
-    return;
+void Level1_Unload() {
+	AEGfxTextureUnload(dungeonTile);
 }
