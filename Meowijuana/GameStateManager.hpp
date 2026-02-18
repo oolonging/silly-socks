@@ -2,17 +2,28 @@
 #define GAMESTATEMANAGER_HPP
 
 
-enum GS_STATES
+enum GSM_STATES
 {
-	GS_SPLASH_SCREEN,
+	// Starting states
+	GS_SPLASH,
 	GS_MAIN_MENU,
 
-	GS_LEVEL1,
-	GS_LEVEL2,
-
+	// Post main menu states
 	GS_SETTINGS,
 	GS_CREDITS,
 
+	// Gameplay states
+	GS_FARM,
+	GS_DUNGEON,
+
+	// Testing states for individual game mechanics
+	GS_TESTING,
+
+	// Legacy states for testing purposes, will be removed soon
+	GS_LEVEL1,
+	GS_LEVEL2,
+
+	// Utility states
 	GS_QUIT,
 	GS_RESTART
 };
@@ -20,7 +31,6 @@ enum GS_STATES
 typedef void(*FP)(void);
 
 extern int current, previous, next;
-
 extern FP fpLoad, fpInitialize, fpUpdate, fpDraw, fpFree, fpUnload;
 
 void GSM_Initialize(int startingState);

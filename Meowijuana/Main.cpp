@@ -7,16 +7,46 @@
 
 #include "Graphics.hpp"
 #include "UI_Elements.hpp"
-#include "GameStateManager.hpp"
 #include "Entity.hpp"
 #include "World.hpp"
 #include "Settings.hpp"
-
-extern int current, previous, next;
-extern FP fpLoad, fpInitialize, fpUpdate, fpDraw, fpFree, fpUnload;
+#include "GameStateManager.hpp"
 
 // ---------------------------------------------------------------------------
 // main
+
+// Temporary function to help navigate between the screens
+void screenSwitcher(void) {
+	if (AEInputCheckTriggered(AEVK_1)) // Works
+		next = GS_SPLASH;
+
+	if (AEInputCheckTriggered(AEVK_2)) // DOESNT WORK ON RELOAD
+		next = GS_MAIN_MENU;
+
+	if (AEInputCheckTriggered(AEVK_3)) // Works: but doesnt go from menu
+		next = GS_SETTINGS;
+
+	if (AEInputCheckTriggered(AEVK_4)) // Works
+		next = GS_CREDITS;
+
+	if (AEInputCheckTriggered(AEVK_5)) // Works
+		next = GS_FARM;
+
+	if (AEInputCheckTriggered(AEVK_6)) // Works
+		next = GS_DUNGEON;
+
+	if (AEInputCheckTriggered(AEVK_7)) // Works
+		next = GS_TESTING;
+
+	if (AEInputCheckTriggered(AEVK_8)) // Problem when reloading
+		next = GS_LEVEL1;
+
+	if (AEInputCheckTriggered(AEVK_9)) // Works I guess?
+		next = GS_LEVEL2;
+
+	if (AEInputCheckTriggered(AEVK_0)) // Crashes when done on main menu
+		next = GS_RESTART;
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -46,58 +76,50 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	GSM_Initialize(GS_MAIN_MENU);
 
-	while (current != GS_QUIT)
-	{
-		if (current != GS_RESTART)
-		{
-			GSM_Update();
-			fpLoad();
-		}
-		else
-		{
-			next = previous;
-			current = previous;
-		}
+	// fixed the loop
+	while (current != GS_QUIT) {
+		// set the function pointers for current state
+		GSM_Update();
 
+		// Enter state
+		fpLoad();
 		fpInitialize();
 
-		// -------- LEVEL LOOP --------
-		while (next == current)
-		{
+		// Level loop
+		while (current == next) {
 			AESysFrameStart();
 
-			if (AEInputCheckTriggered(AEVK_ESCAPE) ||
-				0 == AESysDoesWindowExist())
-			{
+			// temporary  during the debugging phase
+			screenSwitcher();
+			if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 				next = GS_QUIT;
 			}
 
 			fpUpdate();
-			
 			fpDraw();
 
 			AESysFrameEnd();
+
+			// Handle restart
+			if (next == GS_RESTART) {
+				fpFree();
+				fpInitialize();
+				next = current;
+			}
 		}
-		// ----------------------------
 
+		// Exit state
 		fpFree();
-
-		if (next != GS_RESTART)
-			fpUnload();
+		fpUnload();
 
 		previous = current;
 		current = next;
 	}
 
-	// Free shapes
+	// Free resources
 	Shapes::exit();
-
-	// free font (it's free?)
 	Text::unloadFont();
-
-	// Free the grid
 	World::freeGrid();
 
-	// free the system
 	AESysExit();
 }

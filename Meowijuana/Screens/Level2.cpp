@@ -1,11 +1,11 @@
-#include "GameStateManager.hpp"
+#include "../GameStateManager.hpp"
 #include "AEEngine.h"
 
 #include <iostream>
-#include "Graphics.hpp"
-#include "UI_Elements.hpp"
-#include "Entity.hpp"
-#include "World.hpp"
+#include "../Graphics.hpp"
+#include "../UI_Elements.hpp"
+#include "../Entity.hpp"
+#include "../World.hpp"
 #include "Level1.hpp"
 
 // -----------------------------------------------------------------------------
@@ -39,17 +39,17 @@ void Level2_Initialize()
         100.0f, 5.0f, 0.0f
     );
 
-   /* testEnemy2 = Entity::Enemy(
-        000.0f, 0.0f,
-        50.0f, 50.0f,
-        100.0f, 2.0f, 0.0f
-    );
+    /* testEnemy2 = Entity::Enemy(
+         000.0f, 0.0f,
+         50.0f, 50.0f,
+         100.0f, 2.0f, 0.0f
+     );
 
-    testEnemy3 = Entity::Enemy(
-        000.0f, 0.0f,
-        50.0f, 50.0f,
-        100.0f, 2.0f, 0.0f
-    );*/
+     testEnemy3 = Entity::Enemy(
+         000.0f, 0.0f,
+         50.0f, 50.0f,
+         100.0f, 2.0f, 0.0f
+     );*/
 }
 
 // Initialize (update per frame?)

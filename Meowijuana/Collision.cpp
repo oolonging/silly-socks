@@ -84,10 +84,12 @@ namespace Collision {
 		return (distance <= circle.radius);
 	}
 
-	bool circleInCircle(Shapes::Circle circle1) {
+	bool circleInCircle(Shapes::Circle circle1, Shapes::Circle circle2) {
 		// double check the math here, might not work for differently sized ellipses
-		float distance = sqrt((circle1.position.x - circle1.position.x) * (circle1.position.x - circle1.position.x) +
-			(circle1.position.y - circle1.position.y) * (circle1.position.y - circle1.position.y));
+		float dy = circle1.position.y - circle2.position.y;
+		float dx = circle1.position.x - circle2.position.x;
+
+		float distance = sqrt(dx * dx + dy * dy);
 
 		return (distance <= (circle1.radius + circle1.radius));
 	}

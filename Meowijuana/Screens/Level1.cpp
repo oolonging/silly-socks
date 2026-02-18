@@ -1,24 +1,26 @@
-#include "GameStateManager.hpp"
-#include "AEEngine.h"
+// TODO: go over best practices when arranging includes in order
+#include "Level1.hpp"
 
 #include <iostream>
-#include "Graphics.hpp"
-#include "UI_Elements.hpp"
-#include "Entity.hpp"
-#include "World.hpp"
-#include "Attack.h"
+#include "AEEngine.h"
 
-// -----------------------------------------------------------------------------
-// Level-scope state (persists while Level1 is active)
+#include "../GameStateManager.hpp"
+#include "../Graphics.hpp"
+#include "../UI_Elements.hpp"
+#include "../Entity.hpp"
+#include "../World.hpp"
+#include "../Attack.h"
+
 
 bool drawGrid = false;
 
+// Entities player and enemy
 Entity::Player testPlayer;
 Entity::Enemy testEnemy;
 
 Weapon::Sword weapon;
 
-// UI Element Tests
+// Testing UI Elements
 float sliderValue = 50.0f;
 float progressValue = 75.0f;
 
@@ -33,9 +35,7 @@ UI_Elements::Slider testSlider = UI_Elements::Slider(
 UI_Elements::ProgressBar testProgressBar;
 UI_Elements::TextBox testTextBox;
 UI_Elements::Checkbox testCheckbox;
-//UI_Elements::RadioButton testRadio1;
-//UI_Elements::RadioButton testRadio2;
-//UI_Elements::RadioButton testRadio3;
+
 
 // that image
 AEGfxTexture* dungeonTile;
@@ -53,8 +53,6 @@ void Level1_Load() {
 void Level1_Initialize()
 {
 
-    drawGrid = false;
-
     // Initialize player & enemy (NO redeclaration)
     if (firstTime) {
         testPlayer = Entity::Player(
@@ -68,7 +66,7 @@ void Level1_Initialize()
     else {
         testPlayer.setPosition(
             testPlayer.getX() + 1600, testPlayer.getY()
-        ); 
+        );
     }
 
     testEnemy = Entity::Enemy(
@@ -86,7 +84,7 @@ void Level1_Initialize()
     );
 
     // Initialize UI Elements for testing
-    
+
     // Button with callback
     testButton = UI_Elements::Button(
         -300.0f, 300.0f,
@@ -98,7 +96,7 @@ void Level1_Initialize()
         std::cout << "Button clicked! Progress increased.\n";
         progressValue += 10.0f;
         if (progressValue > 100.0f) progressValue = 100.0f;
-    });
+        });
 
     // Custom style for button
     UI_Elements::ElementStyle buttonStyle;
@@ -162,73 +160,35 @@ void Level1_Initialize()
     testCheckbox.setOnChange([](bool checked) {
         drawGrid = checked;
         std::cout << "Grid " << (checked ? "enabled" : "disabled") << "\n";
-    });
-
-    // Radio Buttons (difficulty selection)
-    //testRadio1 = UI_Elements::RadioButton(
-    //    -300.0f, -180.0f,
-    //    20.0f,
-    //    "Easy",
-    //    0,  // Group 0
-    //    true,
-    //    Shapes::CORNER
-    //);
-    //testRadio1.setOnSelect([]() {
-    //    std::cout << "Difficulty: Easy\n";
-    //});
-
-    //testRadio2 = UI_Elements::RadioButton(
-    //    -300.0f, -220.0f,
-    //    20.0f,
-    //    "Normal",
-    //    0,  // Group 0
-    //    false,
-    //    Shapes::CORNER
-    //);
-    //testRadio2.setOnSelect([]() {
-    //    std::cout << "Difficulty: Normal\n";
-    //});
-
-    //testRadio3 = UI_Elements::RadioButton(
-    //    -300.0f, -260.0f,
-    //    20.0f,
-    //    "Hard",
-    //    0,  // Group 0
-    //    false,
-    //    Shapes::CORNER
-    //);
-    //testRadio3.setOnSelect([]() {
-    //    std::cout << "Difficulty: Hard\n";
-    //});
+        });
 }
 
 void Level1_Update()
 {
-	Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
+    Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
 
     // Weapon position update based on player movement direction
     if (AEInputCheckCurr(AEVK_A)) {
         weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
     }
-    else if (AEInputCheckCurr(AEVK_D)) {
+    
+    if (AEInputCheckCurr(AEVK_D)) {
         weapon.setPosition(testPlayer.getX() + 30, testPlayer.getY());
     }
-    else if (AEInputCheckCurr(AEVK_W)) {
+    
+    if (AEInputCheckCurr(AEVK_W)) {
         weapon.setPosition(testPlayer.getX(), testPlayer.getY() + 50);
     }
-    else if (AEInputCheckCurr(AEVK_S)) {
+    
+    if (AEInputCheckCurr(AEVK_S)) {
         weapon.setPosition(testPlayer.getX(), testPlayer.getY() - 30);
-    }
-    else {
-        // Default position (right side)
-        weapon.setPosition(testPlayer.getX() + 30, testPlayer.getY());
     }
 
     // Attack enemy
     if (AEInputCheckTriggered(AEVK_LBUTTON) && testEnemy.getHp() > 0) {
         if (weapon.attack(testEnemy)) {
             std::cout << "Hit! Enemy HP: " << testEnemy.getHp() << "\n";
-            
+
             if (testEnemy.getHp() <= 0) {
                 testEnemy.setHp(0);
                 std::cout << "Enemy defeated!\n";
@@ -257,14 +217,15 @@ void Level1_Update()
 
     // Level transition check
     if (testPlayer.getX() > (AEGfxGetWindowWidth() / 2)) {
-        next += 1;
+        next = GS_LEVEL2;
     }
 }
 
+float heightOffset = -80.0f;
 void Level1_Draw()
 {
-    if(drawGrid)
-    World::drawGrid();
+    if (drawGrid)
+        World::drawGrid();
 
     // Draw UI Elements first (behind game objects)
     testButton.draw();
@@ -272,9 +233,7 @@ void Level1_Draw()
     testProgressBar.draw();
     testTextBox.draw();
     testCheckbox.draw();
-    //testRadio1.draw();
-    //testRadio2.draw();
-    //testRadio3.draw();
+
 
     // Draw game objects
     testPlayer.draw();
@@ -284,20 +243,22 @@ void Level1_Draw()
         testEnemy.draw(testPlayer);
     }
 
+
     weapon.draw();
 
     // Draw UI labels
-    Color::textFill(0, 0, 0, 255);
-    Text::text("Click to add progress:", -300.0f, 330.0f, Text::ALIGN_LEFT);
-    Text::text("Speed Control:", -300.0f, 240.0f, Text::ALIGN_LEFT);
-    Text::text("Progress (auto-drains):", -300.0f, 150.0f, Text::ALIGN_LEFT);
-    Text::text("Text Input:", -300.0f, 60.0f, Text::ALIGN_LEFT);
-    Text::text("Press Enter to print text", -300.0f, -60.0f, Text::ALIGN_LEFT);
-    Text::text("Difficulty:", -300.0f, -140.0f, Text::ALIGN_LEFT);
+    Color::textFill(0, 0, 0, 255); // set text color to black
+    Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Speed Control:", -300.0f, 240.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Progress (auto-drains):", -300.0f, 150.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Text Input:", -300.0f, 60.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Difficulty:", -300.0f, -140.0f + heightOffset, Text::ALIGN_LEFT);
 }
 
 void Level1_Free() {}
 
 void Level1_Unload() {
-	AEGfxTextureUnload(dungeonTile);
+    AEGfxTextureUnload(dungeonTile);
+    dungeonTile = nullptr;
 }
