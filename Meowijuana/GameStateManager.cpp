@@ -80,7 +80,7 @@ void GSM_Update()
 			fpUnload = Farm_Unload;
 			break;
 
-		case GS_DUNGEON:
+		case GS_DUNGEON: 
 			fpLoad = Dungeon_Load;
 			fpInitialize = Dungeon_Initialize;
 			fpUpdate = Dungeon_Update;

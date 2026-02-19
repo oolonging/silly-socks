@@ -24,11 +24,13 @@ namespace World
 	typedef struct Tile
 	{
 		int x, y;
-		bool traversable, interactable;
+		int tileID;
 		// Maybe can put pointer to entity
 		// Tile texture maybe
 
 	} Tile;
+
+
 
 	typedef struct Grid
 	{

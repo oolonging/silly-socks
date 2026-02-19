@@ -26,8 +26,6 @@ namespace World {
 				Tile& tile = grid.tiles[y][x];
 				tile.x = x;
 				tile.y = y;
-				tile.traversable = true;
-				tile.interactable = false;
 			}
 		}
 

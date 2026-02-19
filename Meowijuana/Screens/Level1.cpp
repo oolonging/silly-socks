@@ -219,6 +219,11 @@ void Level1_Update()
     if (testPlayer.getX() > (AEGfxGetWindowWidth() / 2)) {
         next = GS_LEVEL2;
     }
+
+    if (testPlayer.getX() < -(AEGfxGetWindowWidth() / 2))
+    {
+        next = GS_DUNGEON;
+    }
 }
 
 float heightOffset = -80.0f;
