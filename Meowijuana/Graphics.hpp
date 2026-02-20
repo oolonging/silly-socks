@@ -21,6 +21,7 @@ namespace Color {
 	void fill(CL_Color color);
 
 	void textFill(int red, int green, int blue, int alpha = 255);
+	void textFill(CL_Color color);
 	
 	void stroke(int red, int green, int blue, int alpha = 255);
 	void stroke(CL_Color color);
@@ -33,6 +34,24 @@ namespace Color {
 	// Background function
 	void background(int red, int green, int blue);
 	void background(CL_Color color);
+
+	// Preset colors namespace
+	namespace Preset {
+		extern const CL_Color Black;
+		extern const CL_Color White;
+		extern const CL_Color Red;
+		extern const CL_Color Green;
+		extern const CL_Color Blue;
+		extern const CL_Color Yellow;
+		extern const CL_Color Cyan;
+		extern const CL_Color Magenta;
+		extern const CL_Color Orange;
+		extern const CL_Color Purple;
+		extern const CL_Color Gray;
+		extern const CL_Color DarkGray;
+		extern const CL_Color LightGray;
+		extern const CL_Color Transparent;
+	}
 }
 
 namespace Shapes {

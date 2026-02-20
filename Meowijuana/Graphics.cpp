@@ -1,4 +1,3 @@
-
 #include "Graphics.hpp"
 #include "Settings.hpp"
 #include "AEEngine.h"
@@ -69,7 +68,9 @@ namespace Color {
 	}
 	void textFill(int red, int green, int blue, int alpha) {
 		Settings::textFillColor = CL_Color_Create(red, green, blue, alpha);
-		AEGfxSetColorToMultiply(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f);
+	}
+	void textFill(CL_Color color) {
+		textFill(color.red, color.green, color.blue, color.alpha);
 	}
 
 
@@ -97,6 +98,24 @@ namespace Color {
 	}
 	void background(CL_Color color) {
 		background(color.red, color.green, color.blue);
+	}
+
+	// Preset colors definitions
+	namespace Preset {
+		const CL_Color Black       = {   0,   0,   0, 255 };
+		const CL_Color White       = { 255, 255, 255, 255 };
+		const CL_Color Red         = { 255,   0,   0, 255 };
+		const CL_Color Green       = {   0, 255,   0, 255 };
+		const CL_Color Blue        = {   0,   0, 255, 255 };
+		const CL_Color Yellow      = { 255, 255,   0, 255 };
+		const CL_Color Cyan        = {   0, 255, 255, 255 };
+		const CL_Color Magenta     = { 255,   0, 255, 255 };
+		const CL_Color Orange      = { 255, 165,   0, 255 };
+		const CL_Color Purple      = { 128,   0, 128, 255 };
+		const CL_Color Gray        = { 128, 128, 128, 255 };
+		const CL_Color DarkGray    = {  64,  64,  64, 255 };
+		const CL_Color LightGray   = { 192, 192, 192, 255 };
+		const CL_Color Transparent = {   0,   0,   0,   0 };
 	}
 }
 
@@ -213,7 +232,7 @@ namespace Shapes {
 
 		if (sEllipseCornerMesh) {
 			AEGfxMeshFree(sEllipseCornerMesh);
-			sRectCornerMesh = nullptr;
+			sEllipseCornerMesh = nullptr;
 		}
 
 		if (sTriangleMesh) {
@@ -380,15 +399,15 @@ namespace Text {
 
 		if (align == ALIGN_CENTER) {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
-				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+				textFillColor.red / 255.0f, textFillColor.green / 255.0f, textFillColor.blue / 255.0f, textFillColor.alpha / 255.0f);
 		}
 		else if (align == ALIGN_LEFT) {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx, wy, 1.0f,
-				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+				textFillColor.red / 255.0f, textFillColor.green / 255.0f, textFillColor.blue / 255.0f, textFillColor.alpha / 255.0f);
 		}
 		else if (align == ALIGN_RIGHT) {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx -= padW, wy, 1.0f,
-				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+				textFillColor.red / 255.0f, textFillColor.green / 255.0f, textFillColor.blue / 255.0f, textFillColor.alpha / 255.0f);
 		}
 		else {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
