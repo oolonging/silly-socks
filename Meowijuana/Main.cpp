@@ -17,34 +17,37 @@
 
 // Temporary function to help navigate between the screens
 void screenSwitcher(void) {
-	if (AEInputCheckTriggered(AEVK_1)) // Works
+	if (AEInputCheckTriggered(AEVK_1))
 		next = GS_SPLASH;
 
-	if (AEInputCheckTriggered(AEVK_2)) // DOESNT WORK ON RELOAD
+	if (AEInputCheckTriggered(AEVK_2))
 		next = GS_MAIN_MENU;
 
-	if (AEInputCheckTriggered(AEVK_3)) // Works: but doesnt go from menu
+	if (AEInputCheckTriggered(AEVK_3))
 		next = GS_SETTINGS;
 
-	if (AEInputCheckTriggered(AEVK_4)) // Works
+	if (AEInputCheckTriggered(AEVK_4))
 		next = GS_CREDITS;
 
-	if (AEInputCheckTriggered(AEVK_5)) // Works
+	if (AEInputCheckTriggered(AEVK_5))
 		next = GS_FARM;
 
-	if (AEInputCheckTriggered(AEVK_6)) // Works
+	if (AEInputCheckTriggered(AEVK_6))
 		next = GS_DUNGEON;
 
-	if (AEInputCheckTriggered(AEVK_7)) // Works
+	if (AEInputCheckTriggered(AEVK_7))
 		next = GS_TESTING;
 
-	if (AEInputCheckTriggered(AEVK_8)) // Problem when reloading
+	if (AEInputCheckTriggered(AEVK_8))
 		next = GS_LEVEL1;
 
-	if (AEInputCheckTriggered(AEVK_9)) // Works I guess?
+	if (AEInputCheckTriggered(AEVK_9))
 		next = GS_LEVEL2;
 
-	if (AEInputCheckTriggered(AEVK_0)) // Crashes when done on main menu
+	if(AEInputCheckTriggered(AEVK_0))
+		next = GS_BACK;
+
+	if (AEInputCheckTriggered(AEVK_R))
 		next = GS_RESTART;
 }
 
@@ -74,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
 
 
-	GSM_Initialize(GS_MAIN_MENU);
+	GSM_Initialize(GS_TESTING);
 
 	// fixed the loop
 	while (current != GS_QUIT) {
@@ -94,6 +97,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 				next = GS_QUIT;
 			}
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 			fpUpdate();
 			fpDraw();
@@ -105,6 +109,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				fpFree();
 				fpInitialize();
 				next = current;
+			}
+
+			if(next == GS_BACK) {
+				next = previous;
 			}
 		}
 

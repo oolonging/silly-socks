@@ -4,6 +4,56 @@
 #include "../UI_Elements.hpp"
 #include "TestingScreen.hpp"
 
+// import other testing pages here
+#include "Testing/testing-andrea.hpp"
+#include "Testing/testing-jun.hpp"
+#include "Testing/testing-saahil.hpp"
+#include "Testing/testing-xuan.hpp"
+
+// temporary routing to individual testing pages
+void rerouteTesting(void) {
+	
+	// Routes to saahils testing page
+	if (AEInputCheckTriggered(AEVK_NUMPAD1)) {
+		fpLoad = Saahil_Load;
+		fpInitialize = Saahil_Initialize;
+		fpUpdate = Saahil_Update;
+		fpDraw = Saahil_Draw;
+		fpFree = Saahil_Free;
+		fpUnload = Saahil_Unload;
+	}
+
+	// Routes to xuans testing page
+	if(AEInputCheckTriggered(AEVK_NUMPAD2)) {
+		fpLoad = Xuan_Load;
+		fpInitialize = Xuan_Initialize;
+		fpUpdate = Xuan_Update;
+		fpDraw = Xuan_Draw;
+		fpFree = Xuan_Free;
+		fpUnload = Xuan_Unload;
+	}
+
+	// Routes to andreas testing page
+	if(AEInputCheckTriggered(AEVK_NUMPAD3)) {
+		fpLoad = Andrea_Load;
+		fpInitialize = Andrea_Initialize;
+		fpUpdate = Andrea_Update;
+		fpDraw = Andrea_Draw;
+		fpFree = Andrea_Free;
+		fpUnload = Andrea_Unload;
+	}
+
+	// Routes to juns testing page
+	if(AEInputCheckTriggered(AEVK_NUMPAD4)) {
+		fpLoad = Jun_Load;
+		fpInitialize = Jun_Initialize;
+		fpUpdate = Jun_Update;
+		fpDraw = Jun_Draw;
+		fpFree = Jun_Free;
+		fpUnload = Jun_Unload;
+	}
+}
+
 // Lets say this class isnt in the file and is being imported
 class Fella {
 	private:
@@ -77,6 +127,8 @@ void Testing_Initialize() {
 
 void Testing_Update() {
 	fella.handleMovement();
+
+	rerouteTesting();
 }
 
 void Testing_Draw() {

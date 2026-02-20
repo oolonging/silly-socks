@@ -71,6 +71,18 @@
     <ClCompile Include="TileTypes.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-andrea.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-jun.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-saahil.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-xuan.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -130,6 +142,18 @@
     <ClInclude Include="TileTypes.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-saahil.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-xuan.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-andrea.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-jun.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
@@ -143,6 +167,12 @@
     </Filter>
     <Filter Include="Header files\Screens">
       <UniqueIdentifier>{a6cfd654-62d1-46f8-863b-2ed23026e2b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Screens\Testing">
+      <UniqueIdentifier>{502e56ee-d5f7-4281-919e-e279c822d731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Screens\Testing">
+      <UniqueIdentifier>{eadd3c22-b173-406f-84f9-c4fac29f3864}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

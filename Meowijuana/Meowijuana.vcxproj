@@ -117,6 +117,10 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\SettingsScreen.cpp" />
     <ClCompile Include="Screens\SplashScreen.cpp" />
     <ClCompile Include="Screens\TestingScreen.cpp" />
+    <ClCompile Include="Screens\Testing\testing-andrea.cpp" />
+    <ClCompile Include="Screens\Testing\testing-jun.cpp" />
+    <ClCompile Include="Screens\Testing\testing-saahil.cpp" />
+    <ClCompile Include="Screens\Testing\testing-xuan.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TileTypes.cpp" />
     <ClCompile Include="UI_Elements.cpp" />
@@ -138,6 +142,10 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\SettingsScreen.hpp" />
     <ClInclude Include="Screens\SplashScreen.hpp" />
     <ClInclude Include="Screens\TestingScreen.hpp" />
+    <ClInclude Include="Screens\Testing\testing-andrea.hpp" />
+    <ClInclude Include="Screens\Testing\testing-jun.hpp" />
+    <ClInclude Include="Screens\Testing\testing-saahil.hpp" />
+    <ClInclude Include="Screens\Testing\testing-xuan.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="TileTypes.hpp" />
     <ClInclude Include="UI_Elements.hpp" />

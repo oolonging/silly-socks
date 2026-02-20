@@ -25,7 +25,9 @@ enum GSM_STATES
 
 	// Utility states
 	GS_QUIT,
-	GS_RESTART
+	GS_RESTART,
+	GS_BACK
+
 };
 
 typedef void(*FP)(void);
