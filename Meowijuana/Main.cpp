@@ -74,7 +74,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Init globals
 	Shapes::init();
 	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
-	Text::setFont("Assets/Fonts/buggy-font.ttf", 10);
+	// TODO: that init function that loads all fonts into memory and gives them proper names too
+	Text::createFont("Assets/Fonts/buggy-font.ttf", 10, "default");
+
+	// set text align
+	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
 
 	GSM_Initialize(GS_TESTING);
@@ -126,7 +130,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Free resources
 	Shapes::exit();
-	Text::unloadFont();
+	Text::exit();
 	World::freeGrid();
 
 	AESysExit();

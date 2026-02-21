@@ -52,7 +52,6 @@ void Level1_Load() {
 
 void Level1_Initialize()
 {
-
     // Initialize player & enemy (NO redeclaration)
     if (firstTime) {
         testPlayer = Entity::Player(
@@ -100,18 +99,18 @@ void Level1_Initialize()
 
     // Custom style for button
     UI_Elements::ElementStyle buttonStyle;
-    buttonStyle.primaryColor = Color::CL_Color_Create(50, 150, 200, 255);
-    buttonStyle.secondaryColor = Color::CL_Color_Create(100, 200, 255, 255);
-    buttonStyle.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+    buttonStyle.primaryColor = Color::createColorRGB(50, 150, 200, 255);
+    buttonStyle.secondaryColor = Color::createColorRGB(100, 200, 255, 255);
+    buttonStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
     buttonStyle.strokeWeight = 3.0f;
     testButton.setStyle(buttonStyle);
 
     // Slider is already initialized at global scope with sliderValue reference
     // Just set custom style
     UI_Elements::ElementStyle sliderStyle;
-    sliderStyle.primaryColor = Color::CL_Color_Create(150, 150, 150, 255);
-    sliderStyle.secondaryColor = Color::CL_Color_Create(255, 150, 0, 255);
-    sliderStyle.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+    sliderStyle.primaryColor = Color::createColorRGB(150, 150, 150, 255);
+    sliderStyle.secondaryColor = Color::createColorRGB(255, 150, 0, 255);
+    sliderStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
     sliderStyle.strokeWeight = 2.0f;
     testSlider.setStyle(sliderStyle);
 
@@ -126,9 +125,9 @@ void Level1_Initialize()
 
     // Custom style for progress bar
     UI_Elements::ElementStyle progressStyle;
-    progressStyle.primaryColor = Color::CL_Color_Create(80, 80, 80, 255);
-    progressStyle.secondaryColor = Color::CL_Color_Create(0, 255, 100, 255);
-    progressStyle.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+    progressStyle.primaryColor = Color::createColorRGB(80, 80, 80, 255);
+    progressStyle.secondaryColor = Color::createColorRGB(0, 255, 100, 255);
+    progressStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
     progressStyle.strokeWeight = 2.0f;
     testProgressBar.setStyle(progressStyle);
 
@@ -143,9 +142,9 @@ void Level1_Initialize()
 
     // Custom style for textbox
     UI_Elements::ElementStyle textBoxStyle;
-    textBoxStyle.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-    textBoxStyle.secondaryColor = Color::CL_Color_Create(230, 240, 255, 255);
-    textBoxStyle.strokeColor = Color::CL_Color_Create(150, 150, 150, 255);
+    textBoxStyle.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+    textBoxStyle.secondaryColor = Color::createColorRGB(230, 240, 255, 255);
+    textBoxStyle.strokeColor = Color::createColorRGB(150, 150, 150, 255);
     textBoxStyle.strokeWeight = 2.0f;
     testTextBox.setStyle(textBoxStyle);
 
@@ -165,23 +164,25 @@ void Level1_Initialize()
 
 void Level1_Update()
 {
-    Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
 
-    testPlayer.update();
+    // TODO: do better i guess
+    AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+    Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
 
     // Weapon position update based on player movement direction
     if (AEInputCheckCurr(AEVK_A)) {
         weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
     }
-    
+
     if (AEInputCheckCurr(AEVK_D)) {
         weapon.setPosition(testPlayer.getX() + 30, testPlayer.getY());
     }
-    
+
     if (AEInputCheckCurr(AEVK_W)) {
         weapon.setPosition(testPlayer.getX(), testPlayer.getY() + 50);
     }
-    
+
     if (AEInputCheckCurr(AEVK_S)) {
         weapon.setPosition(testPlayer.getX(), testPlayer.getY() - 30);
     }
@@ -234,6 +235,9 @@ void Level1_Draw()
     if (drawGrid)
         World::drawGrid();
 
+    // TODO: fix the rendering jazz in UI_ELEMENTS which doesnt default to color render
+    AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
     // Draw UI Elements first (behind game objects)
     testButton.draw();
     testSlider.draw();
@@ -255,12 +259,12 @@ void Level1_Draw()
 
     // Draw UI labels
     Color::textFill(0, 0, 0, 255); // set text color to black
-    Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset, Text::ALIGN_LEFT);
-    Text::text("Speed Control:", -300.0f, 240.0f + heightOffset, Text::ALIGN_LEFT);
-    Text::text("Progress (auto-drains):", -300.0f, 150.0f + heightOffset, Text::ALIGN_LEFT);
-    Text::text("Text Input:", -300.0f, 60.0f + heightOffset, Text::ALIGN_LEFT);
-    Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset, Text::ALIGN_LEFT);
-    Text::text("Difficulty:", -300.0f, -140.0f + heightOffset, Text::ALIGN_LEFT);
+    Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset);
+    Text::text("Speed Control:", -300.0f, 240.0f + heightOffset);
+    Text::text("Progress (auto-drains):", -300.0f, 150.0f + heightOffset);
+    Text::text("Text Input:", -300.0f, 60.0f + heightOffset);
+    Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset);
+    Text::text("Difficulty:", -300.0f, -140.0f + heightOffset);
 }
 
 void Level1_Free() {}
