@@ -7,15 +7,15 @@
 
 namespace UI_Elements {
 	typedef struct {
-		Color::CL_Color primaryColor;
-		Color::CL_Color secondaryColor;
-		Color::CL_Color strokeColor;
+		Color::Color primaryColor;
+		Color::Color secondaryColor;
+		Color::Color strokeColor;
 		float strokeWeight;
 	} ElementStyle;
 
 	typedef struct {
-		Color::CL_Color primaryColor;
-		Color::CL_Color secondaryColor;
+		Color::Color primaryColor;
+		Color::Color secondaryColor;
 		int fontSize;
 		std::string fontPath;
 	} TextStyle;
@@ -38,7 +38,7 @@ namespace UI_Elements {
 		bool isHovering(void) const;
 		void setStyle(ElementStyle newStyle);
 		ElementStyle getStyle(void) const;
-		
+
 		// Virtual destructor for proper cleanup
 		virtual ~UI_Element() = default;
 

@@ -1,32 +1,31 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
+#include "AETypes.h"
+#include <map>
+#include <string>
 #include "Graphics.hpp"
 
 namespace Settings {
-	// Debug
-	static bool debugMode = false;
+	// Color settings
+	extern Color::Color gFillColor;
+	extern Color::Color gStrokeColor;
+	extern int gStrokeWeight;
 
-	// colors
-	static Color::CL_Color gFillColor{255, 255, 255, 255};
-	static Color::CL_Color textFillColor{0, 0, 0, 255};
+	// Text settings
+	extern Color::Color gTextFillColor;
+	extern float gTextSize;
+	extern Text::TEXT_ALIGN_HORIZONTAL gTextAlignHorizontal;
+	extern Text::TEXT_ALIGN_VERTICAL gTextAlignVertical;
+	extern s8 gCurrentFontId;
 
-	static Color::CL_Color gStrokeColor{0, 0, 0, 255};
-	static float gStrokeWeight = 5.0f;
-
-	// Text
-	static int8_t pCurrentFont = 0;
-
-	// World
-	static int gridSize = 50;
-
-	// Sprites
-	// TODO: set this to something generic later, then input it into the constructors of entities that don't have a specific sprite
-	static AEGfxTexture* defaultSprite = nullptr;
-
-	// Switches
-	void toggleDebugMode(void);
+	// Font storage (fontName -> fontId)
+	extern std::map<std::string, s8> gFonts;
 }
 
-
 #endif // SETTINGS_HPP
+
+//TODO: missing
+// debugmode toggle and bool
+// grid size for world
+// some other default values like sprites

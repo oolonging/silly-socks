@@ -5,22 +5,22 @@
 
 namespace UI_Elements {
 
-// -------------------------------------------------------------------------
-// Static Member Initialization
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Static Member Initialization
+	// -------------------------------------------------------------------------
 
-TextBox* TextBox::currentlySelected = nullptr;
-std::vector<RadioButton*> RadioButton::radioGroups[10];
+	TextBox* TextBox::currentlySelected = nullptr;
+	std::vector<RadioButton*> RadioButton::radioGroups[10];
 
-// -------------------------------------------------------------------------
-// UI_Element Base Class Implementation
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// UI_Element Base Class Implementation
+	// -------------------------------------------------------------------------
 
 	ElementStyle UI_Element::getDefaultStyle() {
 		ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::CL_Color_Create(200, 200, 200, 255);
-		defaultStyle.secondaryColor = Color::CL_Color_Create(100, 150, 255, 255);
-		defaultStyle.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		defaultStyle.primaryColor = { 200.0f, 200.0f, 200.0f, 255.0f };
+		defaultStyle.secondaryColor = { 100.0f, 150.0f, 255.0f, 255.0f };
+		defaultStyle.strokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
 		defaultStyle.strokeWeight = 2.0f;
 		return defaultStyle;
 	}
@@ -110,7 +110,7 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		float textX = (drawMode == Shapes::CORNER) ? (x + width / 2) : x;
 		float textY = (drawMode == Shapes::CORNER) ? (y - height / 2) : y;
 
-		Text::text(msg, textX, textY, Text::ALIGN_CENTER);
+		Text::text(msg, textX, textY);
 	}
 
 	// -------------------------------------------------------------------------
@@ -174,8 +174,8 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 			int32_t ww = AEGfxGetWindowWidth();
 			float worldX = mx - ww * 0.5f;
 
-			float relativeX = (drawMode == Shapes::CENTER) 
-				? (worldX - x + width / 2) 
+			float relativeX = (drawMode == Shapes::CENTER)
+				? (worldX - x + width / 2)
 				: (worldX - x);
 
 			float newValue = (relativeX / width) * (maxValue - minValue) + minValue;
@@ -199,7 +199,7 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 
 		// Foreground
 		if (isHovering() && AEInputCheckCurr(AEVK_LBUTTON)) {
-			Color::fill(Color::CL_Color_Create(0, 255, 0, 255));
+			Color::fill(Color::createColorRGB(0, 255, 0, 255));
 		}
 		else {
 			Color::fill(style.secondaryColor);
@@ -212,21 +212,21 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 	// -------------------------------------------------------------------------
 
 	TextBox::TextBox(float x, float y, float width, float height, const std::string& placeholder, size_t maxLen, Shapes::SHAPE_MODE mode)
-		: UI_Element(x, y, width, height, mode), text(""), placeholderText(placeholder), maxLength(maxLen), 
-		  isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
+		: UI_Element(x, y, width, height, mode), text(""), placeholderText(placeholder), maxLength(maxLen),
+		isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
 		// Custom default style for textbox
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(200, 230, 255, 255);
-		style.strokeColor = Color::CL_Color_Create(100, 100, 100, 255);
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
+		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
 		style.strokeWeight = 2.0f;
 	}
 
 	TextBox::TextBox(void)
 		: UI_Element(), text(""), placeholderText("Enter text..."), maxLength(50),
-		  isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(200, 230, 255, 255);
-		style.strokeColor = Color::CL_Color_Create(100, 100, 100, 255);
+		isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
+		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
 		style.strokeWeight = 2.0f;
 	}
 
@@ -337,7 +337,7 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 
 		// Apply stroke (highlight if selected)
 		if (isSelected) {
-			Color::stroke(Color::CL_Color_Create(0, 120, 255, 255)); // Blue when selected
+			Color::stroke(Color::createColorRGB(0, 120, 255, 255)); // Blue when selected
 			Color::strokeWeight(style.strokeWeight + 1.0f);
 			Color::fill(style.secondaryColor);
 		}
@@ -357,19 +357,19 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		if (text.empty()) {
 			// Draw placeholder in gray
 			Color::textFill(150, 150, 150, 255);
-			Text::text(placeholderText.c_str(), textX, textY, Text::ALIGN_LEFT);
+			Text::text(placeholderText.c_str(), textX, textY);
 		}
 		else {
 			// Draw actual text in black
 			Color::textFill(0, 0, 0, 255);
 			std::string displayText = text;
-			
+
 			// Add cursor if selected
 			if (isSelected && showCursor) {
 				displayText += "|";
 			}
-			
-			Text::text(displayText.c_str(), textX, textY, Text::ALIGN_LEFT);
+
+			Text::text(displayText.c_str(), textX, textY);
 		}
 	}
 
@@ -380,17 +380,17 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 	Checkbox::Checkbox(float x, float y, float boxSize, char const* label, bool initialState, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, boxSize + 100, boxSize, mode), isChecked(initialState), label(label), boxSize(boxSize), onChange(nullptr) {
 		// Custom default style for checkbox
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(100, 200, 100, 255);
-		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
+		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 		style.strokeWeight = 2.0f;
 	}
 
 	Checkbox::Checkbox(void)
 		: UI_Element(), isChecked(false), label("Checkbox"), boxSize(20), onChange(nullptr) {
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(100, 200, 100, 255);
-		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
+		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 		style.strokeWeight = 2.0f;
 	}
 
@@ -430,11 +430,11 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		bool boxHovered = false;
 		if (drawMode == Shapes::CORNER) {
 			boxHovered = ((worldX >= x) && (worldX <= (x + boxSize)) &&
-						  (worldY <= y) && (worldY >= (y - boxSize)));
+				(worldY <= y) && (worldY >= (y - boxSize)));
 		}
 		else {
 			boxHovered = ((worldX >= (x - boxSize / 2)) && (worldX <= (x + boxSize / 2)) &&
-						  (worldY >= (y - boxSize / 2)) && (worldY <= (y + boxSize / 2)));
+				(worldY >= (y - boxSize / 2)) && (worldY <= (y + boxSize / 2)));
 		}
 
 		// Handle click
@@ -468,7 +468,7 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		Color::textFill(0, 0, 0, 255);
 		float labelX = (drawMode == Shapes::CORNER) ? (x + boxSize + 10) : (x + boxSize / 2 + 10);
 		float labelY = (drawMode == Shapes::CORNER) ? (y - boxSize / 2) : y;
-		Text::text(label, labelX, labelY, Text::ALIGN_LEFT);
+		Text::text(label, labelX, labelY);
 	}
 
 	// -------------------------------------------------------------------------
@@ -476,12 +476,12 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 	// -------------------------------------------------------------------------
 
 	RadioButton::RadioButton(float x, float y, float circleSize, char const* label, int groupId, bool initialState, Shapes::SHAPE_MODE mode)
-		: UI_Element(x, y, circleSize + 100, circleSize, mode), isSelected(initialState), label(label), 
-		  circleSize(circleSize), groupId(groupId), onSelect(nullptr) {
+		: UI_Element(x, y, circleSize + 100, circleSize, mode), isSelected(initialState), label(label),
+		circleSize(circleSize), groupId(groupId), onSelect(nullptr) {
 		// Custom default style for radio button
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(100, 150, 255, 255);
-		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(100, 150, 255, 255);
+		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 		style.strokeWeight = 2.0f;
 
 		// Add to radio group
@@ -492,9 +492,9 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 
 	RadioButton::RadioButton(void)
 		: UI_Element(), isSelected(false), label("Radio"), circleSize(20), groupId(0), onSelect(nullptr) {
-		style.primaryColor = Color::CL_Color_Create(255, 255, 255, 255);
-		style.secondaryColor = Color::CL_Color_Create(100, 150, 255, 255);
-		style.strokeColor = Color::CL_Color_Create(0, 0, 0, 255);
+		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.secondaryColor = Color::createColorRGB(100, 150, 255, 255);
+		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 		style.strokeWeight = 2.0f;
 
 		radioGroups[0].push_back(this);
@@ -547,8 +547,8 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		if (drawMode == Shapes::CORNER) {
 			float centerX = x + circleSize / 2;
 			float centerY = y - circleSize / 2;
-			float dist = sqrtf((worldX - centerX) * (worldX - centerX) + 
-							   (worldY - centerY) * (worldY - centerY));
+			float dist = sqrtf((worldX - centerX) * (worldX - centerX) +
+				(worldY - centerY) * (worldY - centerY));
 			circleHovered = (dist <= circleSize / 2);
 		}
 		else {
@@ -589,7 +589,6 @@ std::vector<RadioButton*> RadioButton::radioGroups[10];
 		Color::textFill(0, 0, 0, 255);
 		float labelX = (drawMode == Shapes::CORNER) ? (x + circleSize + 10) : (x + circleSize / 2 + 10);
 		float labelY = (drawMode == Shapes::CORNER) ? (y - circleSize / 2) : y;
-		Text::text(label, labelX, labelY, Text::ALIGN_LEFT);
+		Text::text(label, labelX, labelY);
 	}
 }
-

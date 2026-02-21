@@ -4,57 +4,70 @@
 #include "AEEngine.h"
 
 namespace Color {
-	typedef struct CL_Color {
-		int red;
-		int green;
-		int blue;
-		int alpha;
-	} CL_Color;
+	struct Color {
+		float red;
+		float green;
+		float blue;
+		float alpha;
 
-	// Color creation functions
-	CL_Color CL_Color_Create(int red, int green, int blue, int alpha = 255);
-	CL_Color CL_Color_Create_Hex(int hexValue);
-	CL_Color CL_Color_Create_HSL(int hue, int saturation, int lightness, int alpha = 255);
+		// Ctor with default values
+		Color(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 255.0f) :
+			red(red), green(green), blue(blue), alpha(alpha) {
+		}
+	};
 
-	// Fill and stroke functions
-	void fill(int red, int green, int blue, int alpha = 255);
-	void fill(CL_Color color);
+	// Create colors
+	Color createColorRGB(float red, float green, float blue, float alpha = 255.0f);
+	Color createColorHex(int hexValue);
 
-	void textFill(int red, int green, int blue, int alpha = 255);
-	void textFill(CL_Color color);
-	
-	void stroke(int red, int green, int blue, int alpha = 255);
-	void stroke(CL_Color color);
-
-	void strokeWeight(float weight);
-
+	// Fill
+	void fill(float red, float green, float blue, float alpha = 255.0f);
+	void fill(Color color);
 	void noFill(void);
+
+	// Stroke
+	void stroke(float red, float green, float blue, float alpha = 255.0f);
+	void stroke(Color color);
 	void noStroke(void);
 
-	// Background function
-	void background(int red, int green, int blue);
-	void background(CL_Color color);
+	// Text fill
+	void textFill(float red, float green, float blue, float alpha = 255.0f);
+	void textFill(Color color);
 
-	// Preset colors namespace
+	// Stroke weight
+	void strokeWeight(int value);
+
+	// background functions
+	void background(float red, float green, float blue);
+	void background(Color color);
+
+	// Preset colors
 	namespace Preset {
-		extern const CL_Color Black;
-		extern const CL_Color White;
-		extern const CL_Color Red;
-		extern const CL_Color Green;
-		extern const CL_Color Blue;
-		extern const CL_Color Yellow;
-		extern const CL_Color Cyan;
-		extern const CL_Color Magenta;
-		extern const CL_Color Orange;
-		extern const CL_Color Purple;
-		extern const CL_Color Gray;
-		extern const CL_Color DarkGray;
-		extern const CL_Color LightGray;
-		extern const CL_Color Transparent;
+		extern const Color Black;
+		extern const Color White;
+		extern const Color Red;
+		extern const Color Green;
+		extern const Color Blue;
+		extern const Color Yellow;
+		extern const Color Cyan;
+		extern const Color Magenta;
+		extern const Color Orange;
+		extern const Color Purple;
+		extern const Color Gray;
+		extern const Color DarkGray;
+		extern const Color LightGray;
+		extern const Color Transparent;
 	}
+
 }
 
 namespace Shapes {
+	// TODO: missing
+	// Removed the enums for now since they werent doign much good
+	// removed the triangle function since it wasnt working so ill add it back when it is
+	// removed square and circle functions cause they were pretty useless. Might add it back if i see the need for them when I fix strokes
+
+	// TODO: temporary added back the structs to avoid conflicts with other files
 	typedef struct {
 		float x;
 		float y;
@@ -73,40 +86,56 @@ namespace Shapes {
 
 	enum SHAPE_MODE {
 		CENTER = 15,
-		CORNER = 16,
+		CORNER = 16
 	};
 
-	bool init(void);
-	void exit(void);
+	bool init(void); // Initialize shapes
+	void exit(void); // Destroy shape objects
 
-	void rect(float x, float y, float width, float height, SHAPE_MODE mode = CORNER);
-	void rect(Quad quad, SHAPE_MODE mode = CORNER);
+	// TODO: figure out what to do with square and circle
+	void rectAdvanced(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CORNER);
+	void rect(float x, float y, float width, float height, SHAPE_MODE drawMode = CORNER);
+	void square(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
 
-	void ellipse(float x, float y, float width, float height, SHAPE_MODE mode = CENTER);
-	void ellipse(Circle circle, SHAPE_MODE mode = CENTER);
-
-	void square(float x, float y, float size, SHAPE_MODE mode = CENTER);
-	void circle(float x, float y, float size, SHAPE_MODE mode = CENTER);
-	void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
+	void ellipseAdvanced(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CENTER);
+	void ellipse(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CENTER);
+	void circle(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
 }
 
 namespace Graphics {
-	void image(float x, float y, float width, float height, AEGfxTexture* texture, Shapes::SHAPE_MODE mode = Shapes::CORNER);
-	void image(Shapes::Quad quad, AEGfxTexture* texture, Shapes::SHAPE_MODE mode);
+	// image function
+	void image(float x, float y, float width, float height, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
 }
 
 namespace Text {
-	// Still WIP, nothing works yet
-
-	enum TEXT_ALIGN {
-		ALIGN_LEFT = 25,
-		ALIGN_CENTER = 26,
-		ALIGN_RIGHT = 27,
+	enum TEXT_ALIGN_HORIZONTAL {
+		LEFT = 0,
+		CENTER_H = 1,
+		RIGHT = 2,
 	};
 
-	void setFont(char const* fontPath, int fontSize);
-	void text(const char* pText, float x, float y, TEXT_ALIGN align = ALIGN_LEFT);
-	void unloadFont(void);
+	enum TEXT_ALIGN_VERTICAL {
+		TOP = 0,
+		CENTER_V = 1,
+		BOTTOM = 2,
+		BASELINE = 3,
+	};
+
+	// Font management
+	bool createFont(const char* fontPath, int fontSize, const char* fontName = "default");
+	void setFont(const char* fontName);
+	void destroyFont(const char* fontName);
+	void exit(void); // Clean up all font related items
+	// TODO: Maybe have an init that loads multiple fonts and sets a default as well
+	// Basically this just needs to be cleaned up more too, add a unified init and exit for graphics
+
+	// Render text
+	// TODO: test if string type works here
+	void text(const char* str, float x, float y);
+
+	// Text styling
+	void textSize(float size);
+	void textAlign(TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical);
 }
 
 #endif // GRAPHICS_HPP
