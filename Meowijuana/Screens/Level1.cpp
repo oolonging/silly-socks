@@ -169,6 +169,7 @@ void Level1_Update()
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
     Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
+    testPlayer.update();
 
     // Weapon position update based on player movement direction
     if (AEInputCheckCurr(AEVK_A)) {
