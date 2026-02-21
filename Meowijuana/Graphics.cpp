@@ -15,10 +15,10 @@ namespace Color {
 	Color createColorHex(int hexValue) {
 		// Color looks like: AARRGGBB
 		Color color;
-		color.alpha = (hexValue >> 24) & 0xFF;
-		color.red = (hexValue >> 16) & 0xFF;
-		color.green = (hexValue >> 8) & 0xFF;
-		color.blue = hexValue & 0xFF;
+		color.alpha = (float)((hexValue >> 24) & 0xFF);
+		color.red = (float)((hexValue >> 16) & 0xFF);
+		color.green = (float)((hexValue >> 8) & 0xFF);
+		color.blue = (float)(hexValue & 0xFF);
 		return color;
 	}
 
@@ -293,7 +293,7 @@ namespace Shapes {
 			AEGfxMeshDraw(sEllipseStrokeMesh, AE_GFX_MDM_LINES_STRIP);
 		}
 	}
-	void ellipse(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode) {
+	void ellipse(float x, float y, float width, float height, SHAPE_MODE drawMode) {
 		ellipseAdvanced(x, y, width, height, 0.0f, drawMode);
 	}
 	void circle(float x, float y, float size, SHAPE_MODE drawMode) {

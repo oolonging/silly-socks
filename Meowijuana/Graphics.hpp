@@ -68,20 +68,32 @@ namespace Shapes {
 	// removed square and circle functions cause they were pretty useless. Might add it back if i see the need for them when I fix strokes
 
 	// TODO: temporary added back the structs to avoid conflicts with other files
-	typedef struct {
+	typedef struct Point {
 		float x;
 		float y;
+
+		Point(float x = 0.0f, float y = 0.0f)
+			: x(x), y(y) {
+		}
 	} Point;
 
-	typedef struct {
+	typedef struct Quad {
 		Shapes::Point position;
 		float width;
 		float height;
+
+		Quad(float x = 0.0f, float y = 0.0f, float width = 0.0f, float height = 0.0f)
+			: position(x, y), width(width), height(height) {
+		}
 	} Quad;
 
-	typedef struct {
+	typedef struct Circle {
 		Point position;
 		float radius;
+
+		Circle(float x = 0.0f, float y = 0.0f, float radius = 0.0f)
+			: position(x, y), radius(radius) {
+		}
 	} Circle;
 
 	enum SHAPE_MODE {
@@ -98,7 +110,7 @@ namespace Shapes {
 	void square(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
 
 	void ellipseAdvanced(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CENTER);
-	void ellipse(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CENTER);
+	void ellipse(float x, float y, float width, float height, SHAPE_MODE drawMode = CENTER);
 	void circle(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
 }
 
