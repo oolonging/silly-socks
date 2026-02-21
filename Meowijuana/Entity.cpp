@@ -193,25 +193,6 @@ namespace Entity {
 	}
 
 
-	// ================================= collision ver
-
-	//void Player::drawd(LevelSystem::Level& level) {
-	//	
-
-	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-	//	// Apply stroke and fill
-	//	Color::stroke(0, 0, 0, 255);
-	//	Color::strokeWeight(2.0f);
-	//	Color::fill(0, 0, 255, 255);
-
-	//	Shapes::rect(x, y, width, height, Shapes::CENTER);
-
-	//	// Draw health bar if HP is less than max
-	//	if (hp < maxHp) {
-	//		drawHealthBar();
-	//	}
-	//}
 
 	// -------------------------------------------------------------------------
 	// Enemy Implementation

@@ -61,6 +61,8 @@ void Level2_Update()
         drawGrid = !drawGrid;
     }*/
 
+    testPlayer.update();
+
 
     // Go to the farm outside instead
     if (testPlayer.getX() < -(AEGfxGetWindowWidth() / 2))

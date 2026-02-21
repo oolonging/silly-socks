@@ -29,6 +29,10 @@ namespace LevelSystem {
 		int getWidth() const;
 		int getHeight() const;
 
+		int worldToTileX(float x);
+
+		int worldToTileY(float x);
+
 		bool isBlocked(int x, int y);
 		int checkBinaryCollision(float posX, float posY, float scaleX, float scaleY);
 

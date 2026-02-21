@@ -1,6 +1,7 @@
 #include "AEEngine.h"
 #include "LevelSystem.hpp"
 #include "TileTypes.hpp"
+#include <cmath> // floorf
 
 
 namespace LevelSystem {
@@ -72,124 +73,55 @@ namespace LevelSystem {
 	}
 
 
-	// yes this is my soroor assignment code (tweaked)
+	// well this is just no longer my soroor assignment code
 
-	int Level::checkBinaryCollision(float posX, float posY, float scaleX, float scaleY) {
-		float tileSize = 50.0f;
-		int tileX1{}, tileY1{}, tileX2{}, tileY2{};
 
-		// to store which sides are colliding
+	int Level::worldToTileX(float x){
+
+		return (int)(x / 100.0f + WIDTH * 0.5f);
+
+	}
+
+	int Level::worldToTileY(float y){
+
+		return (int)(HEIGHT * 0.5f - y / 100.0f);
+	
+	}
+
+
+
+	int Level::checkBinaryCollision(float x, float y, float w, float h){
+
+		float halfW = w * 0.5f;
+		float halfH = h * 0.5f;
+
+		int left = worldToTileX(x - halfW);
+		int right = worldToTileX(x + halfW);
+		int top = worldToTileY(y + halfH);
+		int bottom = worldToTileY(y - halfH);
+
 		int flag = 0;
 
-		// hotspot coords
-		float x1{ 0.0f }, x2{ 0.0f }, y1{ 0.0f }, y2{ 0.0f };
-
-		// left: hotspots 1/4 above and below center
-		x1 = posX - scaleX / 2.0f;		// To reach the left side
-		y1 = posY + scaleY / 4.0f;		// To go up 1/4 of the height
-
-
-		x2 = posX - scaleX / 2.0f;		// To reach the left side
-		y2 = posY - scaleY / 4.0f;		// To go down 1/4 of the height
-
-
-		// conversions 
-		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
-		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
-
-		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
-		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
-		
-
-		// if touches, mark left collision
-		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
-			flag |= COLLISION_LEFT;
+		for (int ty = top; ty <= bottom; ty++)
+		{
+			for (int tx = left; tx <= right; tx++)
+			{
+				if (isBlocked(tx, ty))
+				{
+					if (tx == left)   flag |= COLLISION_LEFT;
+					if (tx == right)  flag |= COLLISION_RIGHT;
+					if (ty == top)    flag |= COLLISION_TOP;
+					if (ty == bottom) flag |= COLLISION_BOTTOM;
+				}
+			}
 		}
-
-
-
-		// same thing but right side
-		x1 = posX + scaleX / 2.0f;		// right edge
-		y1 = posY + scaleY / 4.0f;		// topside
-
-
-		x2 = posX + scaleX / 2.0f;		// right edge
-		y2 = posY - scaleY / 4.0f;		// botside
-
-
-
-		// conversions 
-		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
-		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
-
-		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
-		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
-
-
-		// if touches, mark left collision
-		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
-			flag |= COLLISION_RIGHT;
-		}
-
-
-
-
-		// top side: 1/4 right and left of center
-		x1 = posX + scaleX / 4.0f;		// right hotspot
-		y1 = posY + scaleY / 2.0f;		// top edge
-
-
-		x2 = posX - scaleX / 4.0f;		// left hotspot
-		y2 = posY + scaleY / 2.0f;		// top edge
-
-
-
-		// conversions 
-		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
-		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
-
-		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
-		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
-
-
-		// if touches, mark left collision
-		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
-			flag |= COLLISION_TOP;
-		}
-
-
-
-		// bottom side
-		x1 = posX + scaleX / 4.0f;		// right hotspot
-		y1 = posY - scaleY / 2.0f;		// bottom edge
-
-
-		x2 = posX - scaleX / 4.0f;		// left hotspot
-		y2 = posY - scaleY / 2.0f;		// bottom edge
-
-
-
-		// conversions 
-		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
-		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
-
-		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
-		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
-
-
-		// if touches, mark left collision
-		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
-			flag |= COLLISION_BOTTOM;
-		}
-
-
 
 		return flag;
 	}
 
 
 
-	// yeah nah im gonna give up and go eat for now
+
 
 	void Level::draw(AEGfxVertexList* mesh)
 	{
@@ -203,7 +135,7 @@ namespace LevelSystem {
 				TileTypes::TileDetail& def = TileTypes::tiledetail[tileID];
 				if (!def.texture) continue;
 
-				float tileSize = 50.0f;
+				float tileSize = 100.0f;
 
 				float worldX = (x - WIDTH / 2.0f + 0.5f);
 				float worldY = (HEIGHT / 2.0f - y - 0.5f);

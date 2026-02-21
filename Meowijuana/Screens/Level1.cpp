@@ -167,6 +167,8 @@ void Level1_Update()
 {
     Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
 
+    testPlayer.update();
+
     // Weapon position update based on player movement direction
     if (AEInputCheckCurr(AEVK_A)) {
         weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
