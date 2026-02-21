@@ -6,7 +6,7 @@ namespace Settings {
 	// Color
 	Color::Color gFillColor = { 255.0f, 255.0f, 255.0f, 255.0f };
 	Color::Color gStrokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
-	int gStrokeWeight = 1.0f;
+	int gStrokeWeight = 1;
 
 	// Text
 	Color::Color gTextFillColor = { 0.0f, 0.0f, 0.0f, 255.0f };

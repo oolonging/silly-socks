@@ -10,7 +10,7 @@ namespace UI_Elements {
 		Color::Color primaryColor;
 		Color::Color secondaryColor;
 		Color::Color strokeColor;
-		float strokeWeight;
+		int strokeWeight;
 	} ElementStyle;
 
 	typedef struct {
@@ -96,7 +96,6 @@ namespace UI_Elements {
 
 		// Constructors
 		Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
-		Slider(void);
 	};
 
 	class TextBox : public UI_Element {

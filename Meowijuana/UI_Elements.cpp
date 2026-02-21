@@ -21,7 +21,7 @@ namespace UI_Elements {
 		defaultStyle.primaryColor = { 200.0f, 200.0f, 200.0f, 255.0f };
 		defaultStyle.secondaryColor = { 100.0f, 150.0f, 255.0f, 255.0f };
 		defaultStyle.strokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
-		defaultStyle.strokeWeight = 2.0f;
+		defaultStyle.strokeWeight = 2;
 		return defaultStyle;
 	}
 
@@ -158,9 +158,7 @@ namespace UI_Elements {
 		: UI_Element(x, y, width, height, mode), valueRef(valRef), minValue(minVal), maxValue(maxVal) {
 	}
 
-	Slider::Slider(void)
-		: UI_Element(), valueRef(*(new float(0))), minValue(0), maxValue(100) {
-	}
+	// TODO: ensure that the removal of the default constructor didnt break anything (for slider UI element)
 
 	void Slider::clampValue(void) {
 		if (valueRef < minValue) valueRef = minValue;
@@ -218,7 +216,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
 		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 	}
 
 	TextBox::TextBox(void)
@@ -227,7 +225,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
 		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 	}
 
 	void TextBox::select() {
@@ -338,7 +336,7 @@ namespace UI_Elements {
 		// Apply stroke (highlight if selected)
 		if (isSelected) {
 			Color::stroke(Color::createColorRGB(0, 120, 255, 255)); // Blue when selected
-			Color::strokeWeight(style.strokeWeight + 1.0f);
+			Color::strokeWeight(style.strokeWeight + 1);
 			Color::fill(style.secondaryColor);
 		}
 		else {
@@ -383,7 +381,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
 		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 	}
 
 	Checkbox::Checkbox(void)
@@ -391,7 +389,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
 		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 	}
 
 	void Checkbox::toggle() {
@@ -482,7 +480,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(100, 150, 255, 255);
 		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 
 		// Add to radio group
 		if (groupId >= 0 && groupId < 10) {
@@ -495,7 +493,7 @@ namespace UI_Elements {
 		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
 		style.secondaryColor = Color::createColorRGB(100, 150, 255, 255);
 		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2.0f;
+		style.strokeWeight = 2;
 
 		radioGroups[0].push_back(this);
 	}
