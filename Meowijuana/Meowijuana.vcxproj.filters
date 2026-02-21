@@ -83,6 +83,9 @@
     <ClCompile Include="Screens\Testing\testing-xuan.cpp">
       <Filter>Source files\Screens\Testing</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -154,6 +157,7 @@
     <ClInclude Include="Screens\Testing\testing-jun.hpp">
       <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
