@@ -1,25 +1,18 @@
 #include "AEEngine.h"
 #include "LevelSystem.hpp"
 #include "TileTypes.hpp"
-#include <vector>
 
 
 namespace LevelSystem {
 
-	static int width = 16;
-	static int height = 9;
-
-	static std::vector<int> tiles (144);
-	static std::vector<bool> collision (144);
-
 	// ok in my defense this sounded rational at the time 
 	//TileTypes::TileDetail tiledetail[TileTypes::TILECOUNT];
 
-	static int index(int x, int y) {
-		return y * width + x;
+	int Level::index(int x, int y) const {
+		return y * WIDTH + x;
 	}
 
-	bool LevelSystem::loadLevel(const char* filename) {
+	bool Level::loadLevel(const char* filename) {
 		FILE* file;
 		fopen_s(&file, filename, "r");
 
@@ -27,9 +20,12 @@ namespace LevelSystem {
 			return false;
 		}
 
-		for (int y = 0; y < height; ++y) {
+		tiles.assign(WIDTH * HEIGHT, 0);
+		collision.assign(WIDTH * HEIGHT, false);
 
-			for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < HEIGHT; ++y) {
+
+			for (int x = 0; x < WIDTH; ++x) {
 				int id; 
 				fscanf_s(file, "%d", &id);
 
@@ -49,33 +45,26 @@ namespace LevelSystem {
 	}
 
 
-	void freeLevel() {
 
-		tiles.clear();
-		collision.clear();
-
+	int Level::getWidth() const {
+		return WIDTH;
 	}
 
-
-	int LevelSystem::getWidth() {
-		return width;
-	}
-
-	int LevelSystem::getHeight() {
-		return height;
+	int Level::getHeight() const {
+		return HEIGHT;
 	}
 
 
 
-	int getTile(int x, int y) {
-		if (x < 0 || y < 0 || x >= width || y >= height) return -1;
+	int Level::getTile(int x, int y) {
+		if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return -1;
 		return tiles[index(x, y)];
 	}
 
 
 
-	bool isBlocked(int x, int y) {
-		if (x < 0 || y < 0 || x >= width || y >= height)
+	bool Level::isBlocked(int x, int y) {
+		if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT)
 			return false;
 
 		return collision[index(x, y)];
@@ -85,7 +74,7 @@ namespace LevelSystem {
 	// yes this is my soroor assignment code
 	// no, don't ask
 
-	int checkBinaryCollision(float posX, float posY, float scaleX, float scaleY) {
+	int Level::checkBinaryCollision(float posX, float posY, float scaleX, float scaleY) {
 		// to store which sides are colliding
 		int flag = 0;
 
@@ -164,11 +153,11 @@ namespace LevelSystem {
 
 	// yeah nah im gonna give up and go eat for now
 
-	void draw(AEGfxVertexList* mesh)
+	void Level::draw(AEGfxVertexList* mesh)
 	{
-		for (int y = 0; y < height; ++y)
+		for (int y = 0; y < HEIGHT; ++y)
 		{
-			for (int x = 0; x < width; ++x)
+			for (int x = 0; x < WIDTH; ++x)
 			{
 				int tileID = getTile(x, y);
 				if (tileID < 0) continue;
@@ -178,8 +167,8 @@ namespace LevelSystem {
 
 				float tileSize = 50.0f;
 
-				float worldX = (x - width / 2.0f + 0.5f);
-				float worldY = (height / 2.0f - y - 0.5f);
+				float worldX = (x - WIDTH / 2.0f + 0.5f);
+				float worldY = (HEIGHT / 2.0f - y - 0.5f);
 
 				AEMtx33 transform;
 				AEMtx33Identity(&transform);

@@ -11,9 +11,13 @@
 extern Entity::Player testPlayer;
 static AEGfxVertexList* sTileMesh = nullptr;
 
+// its technically level 1 right
+static LevelSystem::Level Level1;
+
+
 void Dungeon_Load() {
 
-	LevelSystem::loadLevel("Assets/LevelMaps/l1test.txt");
+	Level1.loadLevel("Assets/LevelMaps/l1test.txt");
 
 	AEGfxTexture* floorTex = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
 	AEGfxTexture* wallTex = AEGfxTextureLoad("Assets/Tiles/DIRT_TILE.png");
@@ -47,9 +51,9 @@ void Dungeon_Load() {
 }
 
 void Dungeon_Initialize() {
-	World::initGrid(LevelSystem::getWidth(), LevelSystem::getHeight(), 100.0f);
+	World::initGrid(Level1.getWidth(), Level1.getHeight(), 100.0f);
 
-	float oriX = testPlayer.getX() - 1600;
+	float oriX = testPlayer.getX();
 	float oriY = testPlayer.getY();
 
 	testPlayer = Entity::Player(
@@ -75,8 +79,8 @@ void Dungeon_Draw() {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetColorToMultiply(1, 1, 1, 1);
 
-	// WHAT AM I DOIFN WRONG A FUEBFUOWBFOWInefopw
-	LevelSystem::draw(sTileMesh);
+	
+	Level1.draw(sTileMesh);
 	testPlayer.draw();
 
 
@@ -88,6 +92,5 @@ void Dungeon_Free() {
 
 void Dungeon_Unload() {
 
-	LevelSystem::freeLevel();
 
 }
