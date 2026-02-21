@@ -411,14 +411,8 @@ namespace Text {
 		}
 		else {
 			AEGfxPrint(Settings::pCurrentFont, pText, wx -= (padW * 0.5f), wy, 1.0f,
-				(float)textFillColor.red, (float)textFillColor.green, (float)textFillColor.blue, (float)textFillColor.alpha);
+				textFillColor.red / 255.0f, textFillColor.green / 255.0f, textFillColor.blue / 255.0f, textFillColor.alpha / 255.0f);
 		}
-
-		// thanks for debug text eee 
-		//AEGfxPrint(Settings::pCurrentFont, "10", 0.5, 0, 1.0f,
-		//	textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
-		//AEGfxPrint(Settings::pCurrentFont, "01", 0, 0.5, 1.0f,
-		//	textFillColor.red, textFillColor.green, textFillColor.blue, textFillColor.alpha);
 	}
 
 
