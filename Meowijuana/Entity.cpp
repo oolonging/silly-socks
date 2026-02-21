@@ -1,5 +1,6 @@
 #include "AEEngine.h"
 #include "Entity.hpp"
+//#include "LevelSystem.hpp"
 
 namespace Entity {
 
@@ -122,8 +123,59 @@ namespace Entity {
 		setPosition(x + deltaX, y + deltaY);
 	}
 
-	void Player::draw() {
+
+	// ==================================== additional (for collision)
+
+	void Player::handleMovement(LevelSystem::Level& level) {
+		movingDirections[0] = AEInputCheckCurr(AEVK_W); // up
+		movingDirections[1] = AEInputCheckCurr(AEVK_S); // down
+		movingDirections[2] = AEInputCheckCurr(AEVK_A); // left
+		movingDirections[3] = AEInputCheckCurr(AEVK_D); // right
+
+		float deltaX = 0.0f;
+		float deltaY = 0.0f;
+
+		if (movingDirections[0]) deltaY += speed;
+		if (movingDirections[1]) deltaY -= speed;
+		if (movingDirections[2]) deltaX -= speed;
+		if (movingDirections[3]) deltaX += speed;
+
+		// Normalize diagonal movement
+		if (deltaX != 0.0f && deltaY != 0.0f) {
+			float length = sqrtf(deltaX * deltaX + deltaY * deltaY);
+			deltaX = (deltaX / length) * speed;
+			deltaY = (deltaY / length) * speed;
+		}
+
+		// --------------------- Collision stuffs ------------------------
+
+		int colX = level.checkBinaryCollision(x + deltaX, y, width, height);
+		if (!(colX & (LevelSystem::Level::COLLISION_LEFT | LevelSystem::Level::COLLISION_RIGHT))) {
+			x += deltaX;
+		}
+
+		int colY = level.checkBinaryCollision(x, y + deltaY, width, height);
+		if (!(colY & (LevelSystem::Level::COLLISION_TOP | LevelSystem::Level::COLLISION_BOTTOM))) {
+			y += deltaY;
+		}
+
+		setPosition(x, y);
+
+	}
+	
+
+	void Player::update() {
 		handleMovement();
+	}
+
+	void Player::update(LevelSystem::Level& level) {
+		handleMovement(level);
+	}
+
+
+	void Player::draw() {
+		// this + override made me add a player update im so sorry
+		// handleMovement();
 
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		
@@ -139,6 +191,27 @@ namespace Entity {
 			drawHealthBar();
 		}
 	}
+
+
+	// ================================= collision ver
+
+	//void Player::drawd(LevelSystem::Level& level) {
+	//	
+
+	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+	//	// Apply stroke and fill
+	//	Color::stroke(0, 0, 0, 255);
+	//	Color::strokeWeight(2.0f);
+	//	Color::fill(0, 0, 255, 255);
+
+	//	Shapes::rect(x, y, width, height, Shapes::CENTER);
+
+	//	// Draw health bar if HP is less than max
+	//	if (hp < maxHp) {
+	//		drawHealthBar();
+	//	}
+	//}
 
 	// -------------------------------------------------------------------------
 	// Enemy Implementation

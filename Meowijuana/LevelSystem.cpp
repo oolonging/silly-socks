@@ -65,16 +65,19 @@ namespace LevelSystem {
 
 	bool Level::isBlocked(int x, int y) {
 		if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT)
-			return false;
+			return true;
 
 		return collision[index(x, y)];
 
 	}
 
-	// yes this is my soroor assignment code
-	// no, don't ask
+
+	// yes this is my soroor assignment code (tweaked)
 
 	int Level::checkBinaryCollision(float posX, float posY, float scaleX, float scaleY) {
+		float tileSize = 50.0f;
+		int tileX1{}, tileY1{}, tileX2{}, tileY2{};
+
 		// to store which sides are colliding
 		int flag = 0;
 
@@ -90,8 +93,16 @@ namespace LevelSystem {
 		y2 = posY - scaleY / 4.0f;		// To go down 1/4 of the height
 
 
+		// conversions 
+		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
+		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
+
+		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
+		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
+		
+
 		// if touches, mark left collision
-		if (isBlocked(int(x1), int(y1)) || isBlocked(int(x2), int(y2))) {
+		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
 			flag |= COLLISION_LEFT;
 		}
 
@@ -106,8 +117,17 @@ namespace LevelSystem {
 		y2 = posY - scaleY / 4.0f;		// botside
 
 
-		// if touches, mark right collision
-		if (isBlocked(int(x1), int(y1)) || isBlocked(int(x2), int(y2))) {
+
+		// conversions 
+		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
+		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
+
+		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
+		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
+
+
+		// if touches, mark left collision
+		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
 			flag |= COLLISION_RIGHT;
 		}
 
@@ -123,8 +143,17 @@ namespace LevelSystem {
 		y2 = posY + scaleY / 2.0f;		// top edge
 
 
-		// if touches, mark top collision
-		if (isBlocked(int(x1), int(y1)) || isBlocked(int(x2), int(y2))) {
+
+		// conversions 
+		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
+		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
+
+		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
+		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
+
+
+		// if touches, mark left collision
+		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
 			flag |= COLLISION_TOP;
 		}
 
@@ -139,8 +168,17 @@ namespace LevelSystem {
 		y2 = posY - scaleY / 2.0f;		// bottom edge
 
 
-		// if touches, mark bottom collision
-		if (isBlocked(int(x1), int(y1)) || isBlocked(int(x2), int(y2))) {
+
+		// conversions 
+		tileX1 = int((x1 / tileSize) + WIDTH / 2.0f);
+		tileY1 = int((HEIGHT / 2.0f) - (y1 / tileSize));
+
+		tileX2 = int((x2 / tileSize) + WIDTH / 2.0f);
+		tileY2 = int((HEIGHT / 2.0f) - (y2 / tileSize));
+
+
+		// if touches, mark left collision
+		if (isBlocked(int(tileX1), int(tileY1)) || isBlocked(int(tileX2), int(tileY2))) {
 			flag |= COLLISION_BOTTOM;
 		}
 

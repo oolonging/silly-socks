@@ -5,6 +5,7 @@
 #include "Collision.hpp"
 #include "Pathfinding.hpp"
 #include "UI_Elements.hpp"
+#include "LevelSystem.hpp"
 #include <vector>
 #include <string>
 
@@ -66,8 +67,11 @@ namespace Entity {
 		bool movingDirections[4]; // up, down, left, right
 
 		void handleMovement();
+		void handleMovement(LevelSystem::Level& level);
 
 	public:
+		void update();
+		void update(LevelSystem::Level& level);
 		void draw() override;
 
 		// Constructors

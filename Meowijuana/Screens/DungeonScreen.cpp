@@ -51,7 +51,7 @@ void Dungeon_Load() {
 }
 
 void Dungeon_Initialize() {
-	World::initGrid(Level1.getWidth(), Level1.getHeight(), 100.0f);
+	World::initGrid(Level1.getWidth(), Level1.getHeight(), 50.0f);
 
 	float oriX = testPlayer.getX();
 	float oriY = testPlayer.getY();
@@ -66,6 +66,8 @@ void Dungeon_Initialize() {
 
 void Dungeon_Update() {
 	// Nothing to init just a plain background and some text
+
+	testPlayer.update(Level1);
 
 	//AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	//Color::textFill(255, 255, 255);
