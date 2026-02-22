@@ -11,6 +11,7 @@
 #include "World.hpp"
 #include "Settings.hpp"
 #include "GameStateManager.hpp"
+#include "InputManager.hpp"
 
 // ---------------------------------------------------------------------------
 // main
@@ -80,7 +81,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// set text align
 	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
-
 	GSM_Initialize(GS_TESTING);
 
 	// fixed the loop
@@ -96,6 +96,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		while (current == next) {
 			AESysFrameStart();
 
+
 			// temporary  during the debugging phase
 			screenSwitcher();
 			if (AEInputCheckTriggered(AEVK_ESCAPE)) {
@@ -105,6 +106,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			fpUpdate();
 			fpDraw();
+
+			// Update input manager every frame
+			Input::update();
 
 			AESysFrameEnd();
 
