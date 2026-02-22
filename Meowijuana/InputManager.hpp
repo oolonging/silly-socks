@@ -7,8 +7,15 @@
 //	return AEInputCheckCurr(key) != 0; // only place that knows about AE engine so I wont have to change it in like 100 places
 // }
 
+#include <deque>
+#include <vector>
+
 
 namespace Input {
+	// input buffer
+	constexpr size_t MAX_BUFFER_SIZE = 10;
+	extern std::deque<unsigned char> keyHistory;
+
 	// bounds checker
 	bool isMouseInBounds(float x, float y, float width, float height);
 
@@ -23,8 +30,15 @@ namespace Input {
 	// Cache functions
 	void update(void);
 
+	// Key sequence tracking
+	// TODO: nothing, just noticed char key sounds like car key if you say it incorrectly
+	void recordKey(unsigned char key);
+	bool checkSequence(const std::vector<unsigned char>& sequence); // TODO: actually create the sequences to dump through here
+	void clearHistory(); // Me when I end up in the emergency room
+
 	// debugging functions
 	void printMousePosition(void);
+	void printKeyHistory(void);
 
 	// TODO: mousewheeldelta (for scrolling and also another delta function for mouseMovement to get direction)
 }

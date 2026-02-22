@@ -4,6 +4,11 @@
 #include "Graphics.hpp"
 
 namespace Input {
+	// input buffer
+	std::deque<unsigned char> keyHistory{};
+	static bool sPrevKeyStates[256]{}; // Track prev frame key states to detect keypress (and not hold)
+
+
 	static float sWorldMouseX{};
 	static float sWorldMouseY{};
 	static float sScreenMouseX{};
@@ -33,6 +38,30 @@ namespace Input {
 
 	float getScreenMouseY() {
 		return sScreenMouseY;
+	}
+
+	void recordKey(unsigned char key) {
+		keyHistory.push_back(key);
+
+		// keep buffer at maximum size
+		if (keyHistory.size() > MAX_BUFFER_SIZE) {
+			keyHistory.pop_front();
+		}
+	}
+
+	bool checkSequence(const std::vector<unsigned char>& sequence) {
+		// if the sequence is unset or if in the unlikely event the sequence is longer than the history size
+		// TODO: maybe dynamically allocate the memory based on the sequence size, but we'll have to first decide on the sequence at least
+		if (sequence.empty() || sequence.size() > keyHistory.size()) {
+			return false;
+		}
+
+		auto historyStart = keyHistory.end() - sequence.size();
+		return std::equal(sequence.begin(), sequence.end(), historyStart); // TODO: a bit shady, but I need a better way to compare since it could be a ooooxxxxxx kind of situation
+	}
+
+	void clearHistory() {
+		keyHistory.clear();
 	}
 
 	void update() {
@@ -66,6 +95,25 @@ namespace Input {
 		else {
 			AEInputShowCursor(true);
 		}
+
+		// track all possible keys for new presses
+		// TODO: this tracks mouse inputs as well so that messes with what I had in mind, index the keys and exclude manually later
+		for (int key = 0; key < 256; key++) {
+			bool currentState = AEInputCheckCurr(static_cast<unsigned char>(key)) != 0;
+			bool wasPressed = !sPrevKeyStates[key] && currentState;
+
+			if (wasPressed) {
+				recordKey(static_cast<unsigned char>(key));
+			}
+
+			sPrevKeyStates[key] = currentState;
+		}
+
+		// just to quickly debug
+		if (AEInputCheckTriggered(AEVK_LBUTTON)) {
+			printMousePosition();
+			printKeyHistory();
+		}
 	}
 
 	// debugging functions
@@ -73,5 +121,13 @@ namespace Input {
 	void printMousePosition(void) {
 		printf("Screen: (%.0f, %.0f) | World: (%.2f, %.2f)\n",
 			sScreenMouseX, sScreenMouseY, sWorldMouseX, sWorldMouseY);
+	}
+
+	void printKeyHistory() {
+		printf("Key History: ");
+		for (unsigned char key : keyHistory) {
+			printf("%c", key);
+		}
+		printf("\n");
 	}
 }
