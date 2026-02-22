@@ -21,11 +21,14 @@ namespace Settings {
 
 	// Font storage (fontName -> fontId)
 	extern std::map<std::string, s8> gFonts;
+
+	// Debug mode
+	extern bool gDebugMode;
+	void toggleDebugMode(void);
 }
 
 #endif // SETTINGS_HPP
 
 //TODO: missing
-// debugmode toggle and bool
 // grid size for world
 // some other default values like sprites

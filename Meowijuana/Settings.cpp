@@ -16,4 +16,14 @@ namespace Settings {
 	s8 gCurrentFontId = -1; // No font selected
 
 	std::map<std::string, s8> gFonts;
+
+	// Debug mode
+	bool gDebugMode = false; // Defaults to off, change it here for now if the toggle doesnt work
+
+	void toggleDebugMode(void) {
+		gDebugMode = !gDebugMode;
+		printf("Debug mode is now ");
+		if (gDebugMode) printf("on\n");
+		else printf("off\n");
+	}
 }

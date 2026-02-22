@@ -102,6 +102,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 				next = GS_QUIT;
 			}
+
+			// testing out the debugging feature before I implement it into the rest of the modules, its F3 to toggle
+			if (AEInputCheckTriggered(AEVK_F3)) {
+				Settings::toggleDebugMode();
+			}
+
+			// also temporary in case soemthing breaks without it
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 			fpUpdate();
