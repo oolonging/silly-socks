@@ -1,6 +1,7 @@
 #include "AEEngine.h"
 #include "../../GameStateManager.hpp"
 #include "../../Graphics.hpp"
+#include "../../World.hpp"
 #include "testing-andrea.hpp"
 
 void Andrea_Load() {}

@@ -16,6 +16,8 @@
 // ---------------------------------------------------------------------------
 // main
 
+extern World::worldGrid grid;
+
 // Temporary function to help navigate between the screens
 void screenSwitcher(void) {
 	if (AEInputCheckTriggered(AEVK_1))
@@ -74,7 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Init globals
 	Shapes::init();
-	World::initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
 	// TODO: that init function that loads all fonts into memory and gives them proper names too
 	Text::createFont("Assets/Fonts/buggy-font.ttf", 10, "default");
 

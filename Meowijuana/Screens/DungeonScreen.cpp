@@ -9,6 +9,7 @@
 #include "DungeonScreen.hpp"
 
 extern Entity::Player testPlayer;
+extern World::worldGrid grid;
 static AEGfxVertexList* sTileMesh = nullptr;
 
 // its technically level 1 right
@@ -45,13 +46,13 @@ void Dungeon_Load() {
 
 	//AEGfxTexture* chestTex = AEGfxTextureLoad("Assets/chest.png");
 	//AEGfxTexture* enemyn1Tex = AEGfxTextureLoad("Assets/enemy1.png");
-	//AEGfxTexture* enemyn2Tex = AEGfxTextureLoad("Assets/enemy2.png");
+	//AEGfxTexture* enemyn2Tex = AEGfxTextureLoad("Assets/enemy2.png");1
 
 
 }
 
 void Dungeon_Initialize() {
-	World::initGrid(Level1.getWidth(), Level1.getHeight(), 50.0f);
+	grid.initGrid(Level1.getWidth(), Level1.getHeight(), 50.0f);
 
 	float oriX = testPlayer.getX();
 	float oriY = testPlayer.getY();
