@@ -27,11 +27,16 @@ void Splash_Update() {
 
 	if (SplashScreen::opacity >= 255.0f)
 		next = GS_MAIN_MENU;
+
+	// If the user clicks mouse button then just skip the whole sequence
+	if (AEInputCheckTriggered(AEVK_LBUTTON))
+		next = GS_MAIN_MENU;
 }
 
 void Splash_Draw() {
 	if (SplashScreen::digipenLogo)
 		Graphics::image(0.0f, 0.0f, 1525.0f, 445.0f, SplashScreen::digipenLogo, Shapes::CENTER);
+		// TODO: Add functions that gets the width and height of an image. (see also: texture atlas)
 	else {
 		Color::textFill(255.0f, 0.0f, 0.0f);
 		Text::text("Digipen", 0.0f, 0.0f);
