@@ -166,6 +166,50 @@ namespace UI_Elements {
 		RadioButton(void);
 		~RadioButton();
 	};
+
+	class DialogueBox : public UI_Element {
+		private:
+			std::string message;
+
+			// Entity stuff
+			char const* speakerName;
+			AEGfxTexture* characterSprite;
+
+			bool showSprite; // The sprite should be optional in case nobody is speaking
+			bool isActive; // TODO: potentially remove this, im including this just in case
+
+			// Misc designer stuff
+			float spriteSize;
+			float textPadding;
+			float nameBoxHeight;
+
+			// When the person clicks 
+			void (*onDismiss)(void);
+
+			// Temporary wrapping helper
+			std::vector<std::string> wrapText(const std::string& text, float maxWidth);
+
+	public:
+		void draw(void) override;
+		void setText(const std::string& text);
+		void setSpeaker(char const* name);
+		void setCharacterSprite(AEGfxTexture* pSprite);
+		void setShowSprite(bool showSprite);
+		void activate();
+		void dismiss();
+		bool getIsActive() const;
+		void setOnDismiss(void(*func)(void));
+
+		// Ctors
+		DialogueBox(float x, float y, float width, float height, char const* speakerName = nullptr,
+			const std::string& message = "You arent supposed to be seeing this but if you are, congrats. You broke something",
+			AEGfxTexture* sprite = nullptr, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
+		DialogueBox(void);
+	};
 }
 
 #endif // UI_ELEMENTS_HPP
+
+
+
+
