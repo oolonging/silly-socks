@@ -21,7 +21,7 @@ extern World::worldGrid grid;
 // Temporary function to help navigate between the screens
 void screenSwitcher(void) {
 	if (AEInputCheckTriggered(AEVK_1))
-		next = GS_SPLASH;
+		next = GS_TUTORIAL;
 
 	if (AEInputCheckTriggered(AEVK_2))
 		next = GS_MAIN_MENU;
