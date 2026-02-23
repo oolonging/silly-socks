@@ -86,7 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// init custom cursor(s);
 	Input::init();
 
-	GSM_Initialize(GS_TESTING);
+	GSM_Initialize(GS_SPLASH);
 
 	// fixed the loop
 	while (current != GS_QUIT) {

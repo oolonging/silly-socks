@@ -17,7 +17,7 @@ void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
 
 void Mainmenu_Load() {
-	CatastropheLogo = AEGfxTextureLoad("Assets/Cat.png");
+	CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
 }
 
 void Mainmenu_Initialize()
