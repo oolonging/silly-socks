@@ -2,6 +2,9 @@
 #define INVENTORY_HPP
 
 #include <string>
+#include <map>
+#include <memory>
+#include <functional>
 
 namespace Inventory {
 	// Item hierarchy: Item -> Weapon (Melee/Ranged/Placeable/Defensive)
@@ -20,6 +23,26 @@ namespace Inventory {
 		SpeedBoost,       // Temporary speed increase (Chilli)
 		StrengthBuff      // Temporary damage increase (Spinach)
 	};
+
+	// Forward declarations
+	class Item;
+	class MeleeWeapon;
+	class RangedWeapon;
+	class PlaceableWeapon;
+	class DefensiveWeapon;
+	class Consumable;
+
+	// Item IDs for easy reference
+	namespace ItemID {
+		const int CARROT_SWORD = 1;
+		const int POTATO_GRENADE = 2;
+		const int CHERRY_BOMB = 3;
+		const int WALNUT_SHIELD = 4;
+		const int STRAWBERRY = 5;
+		const int CHILLI = 6;
+		const int SPINACH = 7;
+		const int GOLDEN_CARROT_SWORD = 8; // Merged version
+	}
 
 	class Item {
 	private:
@@ -51,6 +74,9 @@ namespace Inventory {
 
 		// Virtual destructor for proper cleanup of derived classes
 		virtual ~Item() {}
+
+		// Virtual clone method for creating copies
+		virtual Item* clone() const { return new Item(*this); }
 	};
 
 	class Weapon : public Item {
@@ -83,6 +109,8 @@ namespace Inventory {
 			: Item(id, name, description, value),
 			damage(damage), attackSpeed(attackSpeed), range(range), rarity(rarity) {
 		}
+
+		virtual Item* clone() const override { return new Weapon(*this); }
 	};
 
 	class MeleeWeapon : public Weapon {
@@ -106,6 +134,8 @@ namespace Inventory {
 			: Weapon(id, name, description, value, damage, attackSpeed, range, rarity),
 			knockback(knockback) {
 		}
+
+		virtual Item* clone() const override { return new MeleeWeapon(*this); }
 	};
 
 	class RangedWeapon : public Weapon {
@@ -133,6 +163,8 @@ namespace Inventory {
 			: Weapon(id, name, description, value, damage, attackSpeed, range, rarity),
 			ammoCapacity(ammoCapacity), projectileSpeed(projectileSpeed) {
 		}
+
+		virtual Item* clone() const override { return new RangedWeapon(*this); }
 	};
 
 	class PlaceableWeapon : public Weapon {
@@ -160,9 +192,10 @@ namespace Inventory {
 			: Weapon(id, name, description, value, damage, attackSpeed, range, rarity),
 			explosionRadius(explosionRadius), fuseTime(fuseTime) {
 		}
+
+		virtual Item* clone() const override { return new PlaceableWeapon(*this); }
 	};
 
-	// TODO: will probably not use this
 	class DefensiveWeapon : public Weapon {
 	private:
 		float blockAmount;   // Percentage or flat damage reduction
@@ -188,6 +221,8 @@ namespace Inventory {
 			: Weapon(id, name, description, value, damage, attackSpeed, range, rarity),
 			blockAmount(blockAmount), durability(durability) {
 		}
+
+		virtual Item* clone() const override { return new DefensiveWeapon(*this); }
 	};
 
 	class Consumable : public Item {
@@ -218,15 +253,36 @@ namespace Inventory {
 			type(type), effectAmount(effectAmount), effectDuration(effectDuration) {
 		}
 
+		virtual Item* clone() const override { return new Consumable(*this); }
+
 		// Use method - to be implemented in game logic
 		// void use(Player* player); // Apply effect to player
 	};
 
-	// Initializes all items
+	// Item Registry and Factory
+	class ItemRegistry {
+	private:
+		static std::map<int, Item*> prototypes;
+
+	public:
+		// Register an item prototype
+		static void registerItem(Item* prototype);
+
+		// Create a new instance of an item by ID
+		static Item* createItem(int itemID);
+
+		// Check if item exists
+		static bool hasItem(int itemID);
+
+		// Clean up prototypes (call on shutdown)
+		static void cleanup();
+	};
+
+	// Initialize all items
 	void init(void);
 
-	// does clean up (might not be needed until the images get involved)
-	void exit(void);
+	// Helper function to get item by ID (returns nullptr if not found)
+	Item* getItemPrototype(int itemID);
 }
 
 #endif // INVENTORY_HPP
