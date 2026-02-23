@@ -13,6 +13,7 @@ enum GSM_STATES
 	GS_CREDITS,
 
 	// Gameplay states
+	GS_TUTORIAL,
 	GS_FARM,
 	GS_DUNGEON,
 

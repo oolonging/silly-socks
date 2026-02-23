@@ -6,6 +6,7 @@
 #include "Screens/MainMenu.hpp"
 #include "Screens/SettingsScreen.hpp"
 #include "Screens/CreditsScreen.hpp"
+#include "Screens/TutorialScreen.hpp"
 #include "Screens/FarmScreen.hpp"
 #include "Screens/DungeonScreen.hpp"
 #include "Screens/TestingScreen.hpp"
@@ -71,6 +72,15 @@ void GSM_Update()
 			break;
 
 		// Gameplay states
+		case GS_TUTORIAL:
+			fpLoad = Tutorial_Load;
+			fpInitialize = Tutorial_Initialize;
+			fpUpdate = Tutorial_Update;
+			fpDraw = Tutorial_Draw;
+			fpFree = Tutorial_Free;
+			fpUnload = Tutorial_Unload;
+			break;
+
 		case GS_FARM:
 			fpLoad = Farm_Load;
 			fpInitialize = Farm_Initialize;
