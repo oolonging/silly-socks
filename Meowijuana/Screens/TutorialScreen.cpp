@@ -13,9 +13,12 @@ namespace TutorialScreen {
 
 	// test 1
 	UI_Elements::DialogueBox testDialogue;
+
+	AEGfxTexture* pTex;
 }
 
 void Tutorial_Load() {
+	TutorialScreen::pTex = AEGfxTextureLoad("Assets/mycat.png");
 }
 
 void Tutorial_Initialize() {
@@ -23,13 +26,13 @@ void Tutorial_Initialize() {
 	float dialogueWidth = 1200.0f;
 	float dialogueHeight = 250.0f;
 	float dialogueX = -dialogueWidth * 0.5f;
-	float dialogueY = -300.0f;
+	float dialogueY = 0.0f;
 
 
 	TutorialScreen::testDialogue = UI_Elements::DialogueBox(
 		dialogueX, dialogueY, dialogueWidth, dialogueHeight,
-		"Tutorial Guide", "Welcome to the tutorial. Dis da tutorial",
-		nullptr, // No sprites available to test yet,
+		"Tutorial Guide", "Hey, you. You’re finally awake. You were trying to cross the border, right? Walked right into that Imperial ambush, same as us, and that thief over there",
+		TutorialScreen::pTex, // No sprites available to test yet,
 		Shapes::CORNER
 	);
 
@@ -61,4 +64,7 @@ void Tutorial_Draw() {
 
 void Tutorial_Free() {}
 
-void Tutorial_Unload() {}
+void Tutorial_Unload() {
+	AEGfxTextureUnload(TutorialScreen::pTex);
+	TutorialScreen::pTex = nullptr;
+}
