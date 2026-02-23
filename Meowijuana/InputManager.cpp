@@ -8,6 +8,8 @@ namespace Input {
 	std::deque<unsigned char> keyHistory{};
 	static bool sPrevKeyStates[256]{}; // Track prev frame key states to detect keypress (and not hold)
 
+	// custom cursor
+	static AEGfxTexture* customCursor = nullptr;
 
 	static float sWorldMouseX{};
 	static float sWorldMouseY{};
@@ -64,6 +66,16 @@ namespace Input {
 		keyHistory.clear();
 	}
 
+	// custom cursor functions
+	void init(void) {
+		customCursor = AEGfxTextureLoad("Assets/Images/Cursors/Pointer.png");
+	}
+
+	void exit(void) {
+		AEGfxTextureUnload(customCursor);
+		customCursor = nullptr;
+	}
+
 	void update() {
 		s32 screenX{};
 		s32 screenY{};
@@ -86,11 +98,16 @@ namespace Input {
 			AEInputShowCursor(false);
 
 			// instead of a cursor just show a blue ellipse
-			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-			Color::fill(255.0f, 0.0f, 0.0f, 255.0f * 0.5f);
-			Shapes::ellipse(sWorldMouseX, sWorldMouseY, 30, 30);
-			Color::fill(0.0f, 0.0f, 255.0f, 255.0f);
-			Shapes::ellipse(sWorldMouseX, sWorldMouseY, 10, 10);
+			if (customCursor) {
+				Graphics::image(sWorldMouseX, sWorldMouseY, 32.0f, 32.0f, customCursor);
+			}
+			else {
+				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+				Color::fill(255.0f, 0.0f, 0.0f, 255.0f * 0.5f);
+				Shapes::ellipse(sWorldMouseX, sWorldMouseY, 30, 30);
+				Color::fill(0.0f, 0.0f, 255.0f, 255.0f);
+				Shapes::ellipse(sWorldMouseX, sWorldMouseY, 10, 10);
+			}
 		}
 		else {
 			AEInputShowCursor(true);

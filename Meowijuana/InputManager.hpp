@@ -27,6 +27,10 @@ namespace Input {
 	float getScreenMouseX();
 	float getScreenMouseY();
 
+	// custom cursor functions
+	void init(void);
+	void exit(void);
+
 	// Cache functions
 	void update(void);
 

@@ -83,6 +83,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// set text align
 	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
+	// init custom cursor(s);
+	Input::init();
+
 	GSM_Initialize(GS_TESTING);
 
 	// fixed the loop
@@ -145,6 +148,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::exit();
 	Text::exit();
 	World::freeGrid();
+	Input::exit();
 
 	AESysExit();
 }
