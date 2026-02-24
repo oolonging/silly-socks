@@ -303,6 +303,9 @@ namespace Shapes {
 
 namespace Graphics {
 	void image(float x, float y, float width, float height, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode) {
+		//float imageWidth = (float)AEGfxTextureGetPaddedWidth(pTex);
+		//float imageWidth = AEGfxTextureGet
+
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
@@ -348,7 +351,7 @@ namespace Text {
 	}
 
 	// Render text
-	void text(const char* str, float x, float y) {
+	void text(const char* str, float x, float y, TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical) {
 		if (Settings::gCurrentFontId == -1) return; // No font has been set
 
 		// TODO: interesting question that came up is that is there a difference between multiplying a float by 0.5f or dividing it by 2.0f
@@ -364,12 +367,12 @@ namespace Text {
 		float offsetX = 0.0f, offsetY = 0.0f;
 
 		// Horizontal alignment
-		if (Settings::gTextAlignHorizontal == CENTER_H) offsetX = -width * 0.5f;
-		else if (Settings::gTextAlignHorizontal == RIGHT) offsetX = -width;
+		if (horizontal == CENTER_H) offsetX = -width * 0.5f;
+		else if (horizontal == RIGHT) offsetX = -width;
 
 		// Vertical alignment
-		if (Settings::gTextAlignVertical == CENTER_V) offsetY = -height * 0.5f;
-		else if (Settings::gTextAlignVertical == BOTTOM) offsetY = -height;
+		if (vertical == CENTER_V) offsetY = -height * 0.5f;
+		else if (vertical == BOTTOM) offsetY = -height;
 		// TODO: add the one more i forgot what I called it
 
 		// Set blend mode for text
@@ -384,6 +387,10 @@ namespace Text {
 			Settings::gTextFillColor.blue / 255.0f,
 			Settings::gTextFillColor.alpha / 255.0f
 		);
+	}
+
+	void text(const char* str, float x, float y) {
+		text(str, x, y, Settings::gTextAlignHorizontal, Settings::gTextAlignVertical);
 	}
 
 	void textSize(float size) {

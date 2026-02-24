@@ -130,8 +130,13 @@ namespace Text {
 	// Basically this just needs to be cleaned up more too, add a unified init and exit for graphics
 
 	// Render text
+
+	// overloaded text to manually specify alignment
+	void text(const char* str, float x, float y, TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical);
+	
 	// TODO: test if string type works here
 	void text(const char* str, float x, float y);
+
 
 	// Text styling
 	void textSize(float size);
