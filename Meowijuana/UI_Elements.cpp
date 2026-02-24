@@ -34,10 +34,10 @@ namespace UI_Elements {
 
 	TextStyle UI_Element::getDefaultTextStyle() {
 		TextStyle defaultStyle;
-		textStyle.primaryColor = Color::Preset::Black;
-		textStyle.secondaryColor = Color::Preset::White;
-		textStyle.fontSize = 24;
-		textStyle.fontPath = "default"; // TODO: change to fontName
+		defaultStyle.primaryColor = Color::Preset::Black;
+		defaultStyle.secondaryColor = Color::Preset::White;
+		defaultStyle.fontSize = 24;
+		defaultStyle.fontPath = "default"; // TODO: change to fontName
 		return defaultStyle;
 	}
 
