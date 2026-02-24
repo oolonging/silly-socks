@@ -25,6 +25,22 @@ namespace UI_Elements {
 		return defaultStyle;
 	}
 
+	ElementTexture UI_Element::getDefaultTexture() {
+		ElementTexture defaultTexture;
+		defaultTexture.primaryTexture = nullptr; // TODO: add texture when it gets added
+		defaultTexture.secondaryTexture = nullptr; // TODO: add texture when it gets added
+		return defaultTexture;
+	}
+
+	TextStyle UI_Element::getDefaultTextStyle() {
+		TextStyle defaultStyle;
+		textStyle.primaryColor = Color::Preset::Black;
+		textStyle.secondaryColor = Color::Preset::White;
+		textStyle.fontSize = 24;
+		textStyle.fontPath = "default"; // TODO: change to fontName
+		return defaultStyle;
+	}
+
 	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
 		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()) {
 	}
@@ -107,10 +123,12 @@ namespace UI_Elements {
 		// Draw text
 		Color::textFill(0, 0, 0);
 
-		float textX = (drawMode == Shapes::CORNER) ? (x + width / 2) : x;
-		float textY = (drawMode == Shapes::CORNER) ? (y - height / 2) : y;
-
-		Text::text(msg, textX, textY);
+		if (drawMode == Shapes::CORNER) {
+			Text::text(msg, x + (width / 2), y - (height / 2), Text::CENTER_H, Text::CENTER_V);
+		}
+		else if (drawMode == Shapes::CENTER) {
+			Text::text(msg, x, y, Text::CENTER_H, Text::CENTER_V);
+		}
 	}
 
 	// -------------------------------------------------------------------------

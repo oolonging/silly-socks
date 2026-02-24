@@ -20,6 +20,11 @@ namespace UI_Elements {
 		std::string fontPath;
 	} TextStyle;
 
+	typedef struct {
+		AEGfxTexture* primaryTexture;
+		AEGfxTexture* secondaryTexture;
+	} ElementTexture;
+
 	// Base class for all UI elements
 	class UI_Element {
 	protected:
@@ -29,15 +34,20 @@ namespace UI_Elements {
 		float height;
 		Shapes::SHAPE_MODE drawMode;
 		ElementStyle style;
+		ElementTexture texture;
+		TextStyle textStyle;
 
 		// Default style initialization
 		static ElementStyle getDefaultStyle();
+		static ElementTexture getDefaultTexture(); // TODO: define
+		static TextStyle getDefaultTextStyle(); // TODO: define
 
 	public:
 		// Common functionality
 		bool isHovering(void) const;
 		void setStyle(ElementStyle newStyle);
 		ElementStyle getStyle(void) const;
+		ElementTexture getTexture(void) const;
 
 		// Virtual destructor for proper cleanup
 		virtual ~UI_Element() = default;
@@ -55,6 +65,7 @@ namespace UI_Elements {
 	private:
 		char const* msg;
 		void (*onClick)(void);
+		TextStyle textStyle;
 
 	public:
 		void setOnClick(void (*func)(void));
@@ -82,6 +93,7 @@ namespace UI_Elements {
 		ProgressBar(void);
 	};
 
+	// TODO: Corner render is broken
 	class Slider : public UI_Element {
 	private:
 		float& valueRef;
