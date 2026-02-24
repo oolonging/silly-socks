@@ -4,6 +4,9 @@
 #include "../UI_Elements.hpp"
 #include "TestingScreen.hpp"
 
+// stuff i need
+#include "../Entity.hpp"
+
 // import other testing pages here
 #include "Testing/testing-andrea.hpp"
 #include "Testing/testing-jun.hpp"
@@ -54,103 +57,87 @@ void rerouteTesting(void) {
 	}
 }
 
-// Lets say this class isnt in the file and is being imported
-class Fella {
-	private:
-		float x;
-		float y;
+namespace Cashew {
+	// Player object
+	Entity::Player player;
 
-		float size = 50.0f;
-		float speed = 2.0f;
+	// heal and hurt functions
+	void heal() {
+		player.setHp(player.getHp() + 5.0f);
+	}
 
-		AEGfxTexture* image;
+	void hurt() {
+		player.setHp(player.getHp() - 5.0f);
+	}
 
-	public:
-		// getters
-		float getX() { return this->x; }
-		float getY() { return this->y; }
+	// UI Elements
 
-		// Setters
-		void setImage(AEGfxTexture* image) {
-			this->image = image;
-		}
+	// Button
+	UI_Elements::Button healButton = UI_Elements::Button(300.0f, 300.0f, 100.0f, 50.0f, "Heal", Shapes::CORNER);
+	UI_Elements::Button hurtButton = UI_Elements::Button(450.0f, 300.0f, 100.0f, 50.0f, "Hurt", Shapes::CORNER);
 
-		void setPosition(float x, float y) {
-			this->x = x;
-			this->y = y;
-		}
+	// Slider
+	float sliderValue = 5.0f;
+	UI_Elements::Slider speedSlider = UI_Elements::Slider(300.0f, 200.0f, 250.0f, 50.0f, sliderValue, 0.0f, 10.0f, Shapes::CORNER);
 
-		void handleMovement(void) {
-			if (AEInputCheckCurr(AEVK_W))
-				this->y += this->speed;
+	// Checkbox
+	UI_Elements::Checkbox drawGrid;
 
-			if (AEInputCheckCurr(AEVK_S))
-				this->y -= this->speed;
+	// Text box
+	UI_Elements::TextBox chatBox;
 
-			if (AEInputCheckCurr(AEVK_A))
-				this->x -= this->speed;
 
-			if (AEInputCheckCurr(AEVK_D))
-				this->x += this->speed;
-		}
-
-		void draw(void) {
-			if(this->image)
-			Graphics::image(this->x, this->y, this->size, this->size, this->image);
-			else {
-				// draw a blue rect instead
-				Color::fill(0, 0, 255);
-				Shapes::rect(this->x, this->y, this->size, this->size);
-			}
-		}
-
-		// Ctors
-		Fella(float x, float y, AEGfxTexture* image) : x(x), y(y), image(image) {}
-		Fella() : x(0.0f), y(0.0f), image(nullptr) {}
-
-};
-
-// Fella
-Fella fella{};
-
-// Image
-AEGfxTexture* image;
+}
 
 void Testing_Load() {
-	image = AEGfxTextureLoad("Assets/mycat.png");
+
 }
 
 void Testing_Initialize() {
-	fella.setImage(image);
-	fella.setPosition(0.0f, 0.0f);
+	// Init player
+	Cashew::player.setPosition(0.0f, 0.0f);
+	Cashew::player.setSpeed(5.0f);
+
+	// Init buttons
+	Cashew::healButton.setOnClick(Cashew::heal);
+	Cashew::hurtButton.setOnClick(Cashew::hurt);
 }
 
 void Testing_Update() {
-	fella.handleMovement();
-
+	// reroute testing
 	rerouteTesting();
+
+	// Update player position
+	Cashew::player.update();
+
+	// Update player speed;
+	Cashew::player.setSpeed(Cashew::sliderValue);
 }
 
 void Testing_Draw() {
-	// reset background to black
-	Color::background({ 0, 0, 0, 255 });
+	// reset background
+	Color::background(Color::Preset::White);
 
-	// set the render mode to color so shapes in front can render
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	// Draw player
+	Cashew::player.draw();
 
-	// testing text, just thought of something
-	Color::textFill(255, 255, 255);
-	Text::text("Testing screen", 0.0f, 0.0f);
+	// Draw text
+	Color::textFill(Color::Preset::Blue);
+	Text::text("UI Elements Playground", 0.0f, 400.0f, Text::CENTER_H, Text::CENTER_V);
 
-	// Draw fella
-	fella.draw();
+	// UI Elements
+
+	// Draw buttons
+	Cashew::hurtButton.draw();
+	Cashew::healButton.draw();
+
+	// Draw slider
+	Cashew::speedSlider.draw();
+
 }
 
 void Testing_Free() {
-	fella.setImage(nullptr);
 }
 
 void Testing_Unload() {
-	AEGfxTextureUnload(image);
-	image = nullptr;
 }
