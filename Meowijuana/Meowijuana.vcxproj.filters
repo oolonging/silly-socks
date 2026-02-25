@@ -29,9 +29,6 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Elements.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -89,12 +86,33 @@
     <ClCompile Include="Screens\TutorialScreen.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Elements\Button.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\CheckBox.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\DialogueBox.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\ProgressBar.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\RadioButton.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\Slider.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\TextBox.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\UI_elements.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Elements.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.hpp">
@@ -164,6 +182,9 @@
     <ClInclude Include="Screens\TutorialScreen.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
+    <ClInclude Include="UI_Elements\UI_Elements.hpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
@@ -183,6 +204,9 @@
     </Filter>
     <Filter Include="Source files\Screens\Testing">
       <UniqueIdentifier>{eadd3c22-b173-406f-84f9-c4fac29f3864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\UI Elements">
+      <UniqueIdentifier>{f6aa4019-5a0e-4895-89bc-a2c45ccd4ef1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

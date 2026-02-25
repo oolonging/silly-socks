@@ -1,9 +1,11 @@
 #ifndef UI_ELEMENTS_HPP
 #define UI_ELEMENTS_HPP
 
+#include "AEEngine.h"
 #include <string>
 #include <vector>
-#include "Graphics.hpp"
+#include <algorithm>
+#include "../Graphics.hpp"
 
 namespace UI_Elements {
 	typedef struct {
@@ -46,7 +48,11 @@ namespace UI_Elements {
 		// Common functionality
 		bool isHovering(void) const;
 		void setStyle(ElementStyle newStyle);
+		void setTextStyle(TextStyle newStyle);
+		void setTexture(ElementTexture newTexture);
+
 		ElementStyle getStyle(void) const;
+		TextStyle getTextStyle(void) const;
 		ElementTexture getTexture(void) const;
 
 		// Virtual destructor for proper cleanup
@@ -221,7 +227,3 @@ namespace UI_Elements {
 }
 
 #endif // UI_ELEMENTS_HPP
-
-
-
-
