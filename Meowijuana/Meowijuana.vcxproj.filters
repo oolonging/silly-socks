@@ -110,6 +110,9 @@
     <ClCompile Include="UI_Elements\UI_elements.cpp">
       <Filter>Source files\UI Elements</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="UI_Elements\UI_Elements.hpp">
       <Filter>Source files\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.hpp">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

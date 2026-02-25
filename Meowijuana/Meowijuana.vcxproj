@@ -124,6 +124,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\Testing\testing-xuan.cpp" />
     <ClCompile Include="Screens\TutorialScreen.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="TileTypes.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="UI_Elements\Button.cpp" />
@@ -158,6 +159,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\Testing\testing-xuan.hpp" />
     <ClInclude Include="Screens\TutorialScreen.hpp" />
     <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="TileTypes.hpp" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="UI_Elements\UI_Elements.hpp" />

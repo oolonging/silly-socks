@@ -3,10 +3,12 @@
 #include "../Graphics.hpp"
 #include "SettingsScreen.hpp"
 #include "../UI_Elements/UI_Elements.hpp"
+#include "../AudioManager.hpp"
 
-//just testing audio for settings screen, should we make an audio manager file?
-AEAudio bgMusic;
-AEAudioGroup bgm;
+//testing audio manager
+//global object for audio management
+AudioManager::Audio audio;
+
 
 float bgVolume = 50.0f;
 UI_Elements::Slider bgVolumeSlider = UI_Elements::Slider(
@@ -19,12 +21,8 @@ UI_Elements::Slider bgVolumeSlider = UI_Elements::Slider(
 
 void Settings_Load() {
 
-	//load bg music
-	bgMusic = AEAudioLoadMusic("Assets/testaudio.mp3");
-
-	// Creates an audio group named 'bgm'
-	bgm = AEAudioCreateGroup();
-
+	audio.init();
+	audio.loadBGM("Assets/testaudio.mp3");
 }
 
 void Settings_Initialize() {
@@ -38,8 +36,7 @@ void Settings_Initialize() {
 	sliderStyle.strokeWeight = 2.0f;
 	bgVolumeSlider.setStyle(sliderStyle);
 
-	// play bg music
-	AEAudioPlay(bgMusic, bgm, 0.5f, 1.f, -1);
+	audio.playBGM(bgVolume / 100.0f, true);
 
 }
 
@@ -52,7 +49,7 @@ void Settings_Update() {
 
 
 	float newVolume = bgVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
-	AEAudioSetGroupVolume(bgm, newVolume);
+	audio.setBGMVolume(newVolume);
 }
 
 void Settings_Draw() {
@@ -67,7 +64,5 @@ void Settings_Free() {
 
 void Settings_Unload() {
 
-	AEAudioUnloadAudio(bgMusic);
-	AEAudioUnloadAudioGroup(bgm);
-
+	audio.exit();
 }
