@@ -1,4 +1,5 @@
 #include "UI_Elements.hpp"
+#include "../InputManager.hpp"
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
@@ -37,37 +38,27 @@ namespace UI_Elements {
 		return defaultStyle;
 	}
 
-	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
-		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()) {
-	}
-
-	UI_Element::UI_Element()
-		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()) {
-	}
-
+	// New implementation of isHover using input manager
 	bool UI_Element::isHovering(void) const {
-		int32_t mx = 0, my = 0;
-		AEInputGetCursorPosition(&mx, &my);
+		bool xOverlap{};
+		bool yOverlap{};
 
-		int32_t ww = AEGfxGetWindowWidth();
-		int32_t wh = AEGfxGetWindowHeight();
-		float worldX = mx - ww * 0.5f;
-		float worldY = wh * 0.5f - my;
-
-		bool xOverlap{}, yOverlap{};
+		float mouseX = Input::getMouseX();
+		float mouseY = Input::getMouseY();
 
 		if (drawMode == Shapes::CORNER) {
-			xOverlap = ((worldX >= x) && (worldX <= (x + width)));
-			yOverlap = ((worldY <= y) && (worldY >= (y - height)));
+			xOverlap = (mouseX > this->x && mouseX <= (this->x + this->width));
+			yOverlap = (mouseY < this->y && mouseY >= (this->y - this->height));
 		}
 		else if (drawMode == Shapes::CENTER) {
-			xOverlap = ((worldX >= (x - width / 2)) && (worldX <= (x + width / 2)));
-			yOverlap = ((worldY >= (y - height / 2)) && (worldY <= (y + height / 2)));
+			xOverlap = (mouseX > (this->x - this->width / 2) && mouseX <= (this->x + (this->width / 2)));
+			yOverlap = (mouseY < (this->y + this->height / 2) && mouseY >= (this->y - (this->height / 2)));
 		}
 
-		return (xOverlap && yOverlap);
+		return xOverlap && yOverlap;
 	}
 
+	// Getters and Setters
 	void UI_Element::setStyle(ElementStyle newStyle) {
 		this->style = newStyle;
 	}
@@ -90,5 +81,15 @@ namespace UI_Elements {
 
 	ElementTexture UI_Element::getTexture(void) const {
 		return this->texture;
+	}
+
+
+	// Ctors
+	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
+		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()) {
+	}
+
+	UI_Element::UI_Element()
+		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()) {
 	}
 }
