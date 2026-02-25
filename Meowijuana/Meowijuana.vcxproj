@@ -124,9 +124,17 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\Testing\testing-xuan.cpp" />
     <ClCompile Include="Screens\TutorialScreen.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="TileTypes.cpp" />
-    <ClCompile Include="UI_Elements.cpp" />
     <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="UI_Elements\Button.cpp" />
+    <ClCompile Include="UI_Elements\CheckBox.cpp" />
+    <ClCompile Include="UI_Elements\DialogueBox.cpp" />
+    <ClCompile Include="UI_Elements\ProgressBar.cpp" />
+    <ClCompile Include="UI_Elements\RadioButton.cpp" />
+    <ClCompile Include="UI_Elements\Slider.cpp" />
+    <ClCompile Include="UI_Elements\TextBox.cpp" />
+    <ClCompile Include="UI_Elements\UI_elements.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +159,10 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\Testing\testing-xuan.hpp" />
     <ClInclude Include="Screens\TutorialScreen.hpp" />
     <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="TileTypes.hpp" />
-    <ClInclude Include="UI_Elements.hpp" />
     <ClInclude Include="Attack.h" />
+    <ClInclude Include="UI_Elements\UI_Elements.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

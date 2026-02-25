@@ -1,7 +1,9 @@
+#include <iostream>
+
 #include "AEEngine.h"
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
-#include "../UI_Elements.hpp"
+#include "../UI_Elements/UI_Elements.hpp"
 #include "TestingScreen.hpp"
 
 // stuff i need
@@ -70,6 +72,11 @@ namespace Cashew {
 		player.setHp(player.getHp() - 5.0f);
 	}
 
+	void toggleGrid(bool) {
+		std::cout << "Grid draw toggled" << std::endl;
+		//return !drawGrid.getChecked();
+	}
+
 	// UI Elements
 
 	// Button
@@ -81,9 +88,10 @@ namespace Cashew {
 	UI_Elements::Slider speedSlider = UI_Elements::Slider(300.0f, 200.0f, 250.0f, 50.0f, sliderValue, 0.0f, 10.0f, Shapes::CORNER);
 
 	// Checkbox
-	UI_Elements::Checkbox drawGrid;
+	UI_Elements::Checkbox drawGrid{};
 
 	// Text box
+	std::string myText{};
 	UI_Elements::TextBox chatBox;
 
 
@@ -101,6 +109,23 @@ void Testing_Initialize() {
 	// Init buttons
 	Cashew::healButton.setOnClick(Cashew::heal);
 	Cashew::hurtButton.setOnClick(Cashew::hurt);
+
+	UI_Elements::ElementTexture buttonTexture = {
+		AEGfxTextureLoad("Assets/Images/UI_Elements/Button/button_normal.png"),
+		AEGfxTextureLoad("Assets/Images/UI_Elements/Button/button_pressed.png")
+	};
+	Cashew::healButton.setTexture(buttonTexture);
+
+	// Init checkbox
+	Cashew::drawGrid = UI_Elements::Checkbox(600.0f, -400.0f, 15.0f, "Draw Grid", false, Shapes::CENTER); // TODO: test the other draw mode
+	// TODO: The default draw Mode doesnt work
+	// 
+
+	Cashew::drawGrid.setOnChange(Cashew::toggleGrid);
+
+	// Init text box
+	Cashew::chatBox = UI_Elements::TextBox(-750.0f, -350.0f, 200.0f, 50.0f, Cashew::myText); // TODO: change maxlen and also test the other draw mode
+	//TODO: change parameter name placeholder so its less ambiguous
 }
 
 void Testing_Update() {
@@ -116,7 +141,7 @@ void Testing_Update() {
 
 void Testing_Draw() {
 	// reset background
-	Color::background(Color::Preset::White);
+	Color::background(Color::Preset::Orange);
 
 	// Draw player
 	Cashew::player.draw();
@@ -134,6 +159,11 @@ void Testing_Draw() {
 	// Draw slider
 	Cashew::speedSlider.draw();
 
+	// Draw checkbox
+	Cashew::drawGrid.draw();
+
+	// Draw text box
+	Cashew::chatBox.draw();
 }
 
 void Testing_Free() {
