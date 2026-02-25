@@ -5,7 +5,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+
 #include "../Graphics.hpp"
+#include "../InputManager.hpp"
 
 namespace UI_Elements {
 	typedef struct {

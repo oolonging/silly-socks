@@ -86,10 +86,10 @@ namespace UI_Elements {
 
 	// Ctors
 	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
-		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()) {
+		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
 	}
 
 	UI_Element::UI_Element()
-		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()) {
+		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
 	}
 }
