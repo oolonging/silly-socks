@@ -6,6 +6,11 @@
 #include <memory>
 #include <functional>
 
+
+namespace Entity {
+	class Entity;
+}
+
 namespace Inventory {
 	// Item hierarchy: Item -> Weapon (Melee/Ranged/Placeable/Defensive)
 	//                 Item -> Consumable
@@ -89,6 +94,9 @@ namespace Inventory {
 	public:
 		// Getters
 		float getDamage() const { return this->damage; }
+
+		virtual void onAttack(Entity::Entity& attacker, Entity::Entity& target);
+
 		float getAttackSpeed() const { return this->attackSpeed; }
 		float getRange() const { return this->range; }
 		Rarity getRarity() const { return this->rarity; }
@@ -98,6 +106,7 @@ namespace Inventory {
 		void setAttackSpeed(float attackSpeed) { this->attackSpeed = attackSpeed; }
 		void setRange(float range) { this->range = range; }
 		void setRarity(Rarity rarity) { this->rarity = rarity; }
+
 
 		// Ctors
 		Weapon()

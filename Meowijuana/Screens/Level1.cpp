@@ -4,12 +4,13 @@
 #include <iostream>
 #include "AEEngine.h"
 
+#include "../Inventory.hpp"
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
 #include "../UI_Elements.hpp"
 #include "../Entity.hpp"
 #include "../World.hpp"
-#include "../Attack.h"
+//#include "../Attack.h"
 
 
 bool drawGrid = false;
@@ -18,7 +19,7 @@ bool drawGrid = false;
 Entity::Player testPlayer;
 Entity::Enemy testEnemy;
 
-Weapon::Sword weapon;
+Inventory::MeleeWeapon carrotSword;
 
 // Testing UI Elements
 float sliderValue = 50.0f;
@@ -52,6 +53,7 @@ void Level1_Load() {
 
 void Level1_Initialize()
 {
+
     // Initialize player & enemy (NO redeclaration)
     if (firstTime) {
         testPlayer = Entity::Player(
@@ -74,13 +76,24 @@ void Level1_Initialize()
         100.0f, 2.0f, 0.0f
     );
 
+
+    Inventory::init();
+    Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
+
+    Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
+
+    if (weapon)
+    {
+        testPlayer.setWeapon(weapon);
+    }
+
     // Initialize weapon
-    weapon = Weapon::Sword(
+   /* weapon = Weapon::Sword(
         testPlayer.getX() + 20, testPlayer.getY(),
         100.0f, 20.0f,
         25.0f, 0.0f, 45.0f,
         Shapes::CORNER
-    );
+    );*/
 
     // Initialize UI Elements for testing
 
@@ -171,32 +184,32 @@ void Level1_Update()
     Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
     testPlayer.update();
 
-    // Weapon position update based on player movement direction
-    if (AEInputCheckCurr(AEVK_A)) {
-        weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
-    }
+    //// Weapon position update based on player movement direction
+    //if (AEInputCheckCurr(AEVK_A)) {
+    //    weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
+    //}
 
-    if (AEInputCheckCurr(AEVK_D)) {
-        weapon.setPosition(testPlayer.getX() + 30, testPlayer.getY());
-    }
+    //if (AEInputCheckCurr(AEVK_D)) {
+    //    weapon.setPosition(testPlayer.getX() + 30, testPlayer.getY());
+    //}
 
-    if (AEInputCheckCurr(AEVK_W)) {
-        weapon.setPosition(testPlayer.getX(), testPlayer.getY() + 50);
-    }
+    //if (AEInputCheckCurr(AEVK_W)) {
+    //    weapon.setPosition(testPlayer.getX(), testPlayer.getY() + 50);
+    //}
 
-    if (AEInputCheckCurr(AEVK_S)) {
-        weapon.setPosition(testPlayer.getX(), testPlayer.getY() - 30);
-    }
+    //if (AEInputCheckCurr(AEVK_S)) {
+    //    weapon.setPosition(testPlayer.getX(), testPlayer.getY() - 30);
+    //}
 
     // Attack enemy
     if (AEInputCheckTriggered(AEVK_LBUTTON) && testEnemy.getHp() > 0) {
-        if (weapon.attack(testEnemy)) {
-            std::cout << "Hit! Enemy HP: " << testEnemy.getHp() << "\n";
+        testPlayer.attack(testEnemy);
+        std::cout << "Hit! Enemy HP: " << testEnemy.getHp() << "\n";
 
-            if (testEnemy.getHp() <= 0) {
-                testEnemy.setHp(0);
-                std::cout << "Enemy defeated!\n";
-            }
+        if (testEnemy.getHp() <= 0) {
+            testEnemy.setHp(0);
+            std::cout << "Enemy defeated!\n";
+            
         }
         else {
             std::cout << "Missed!\n";
@@ -256,7 +269,7 @@ void Level1_Draw()
     }
 
 
-    weapon.draw();
+ /*   weapon.draw();*/
 
     // Draw UI labels
     Color::textFill(0, 0, 0, 255); // set text color to black

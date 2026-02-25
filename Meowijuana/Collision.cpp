@@ -12,7 +12,7 @@ namespace Collision {
 		float left = playerX - playerW * 0.5f;
 		float right = playerX + playerW * 0.5f;
 		float up = playerY - playerH * 0.5f;
-		float down = playerY - playerH * 0.5f;
+		float down = playerY + playerH * 0.5f;
 
 		float closestX = enemyX;
 		float closestY = enemyY;

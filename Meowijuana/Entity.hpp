@@ -8,6 +8,7 @@
 #include "LevelSystem.hpp"
 #include <vector>
 #include <string>
+#include "Inventory.hpp"
 
 namespace Entity {
 
@@ -27,6 +28,7 @@ namespace Entity {
 		float armor;
 		AEGfxTexture* sprite;
 		UI_Elements::ProgressBar healthBar;
+		Inventory::Weapon* equippedWeapon = nullptr;
 
 	public:
 		// Getters
@@ -46,9 +48,18 @@ namespace Entity {
 		void setArmor(float arm);
 		void setSprite(AEGfxTexture* tex);
 
+
 		// Health bar management
 		void updateHealthBar();
 		void drawHealthBar();
+
+
+		void takeDamage(float rawDamage);
+
+		void setWeapon(Inventory::Weapon* weapon) { equippedWeapon = weapon; }
+		Inventory::Weapon* getEquippedWeapon() const { return equippedWeapon; }
+		void attack(Entity& target);
+
 
 		// Virtual destructor for proper cleanup
 		virtual ~Entity() = default;

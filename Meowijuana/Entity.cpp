@@ -1,6 +1,7 @@
+#include <iostream>
 #include "AEEngine.h"
 #include "Entity.hpp"
-//#include "LevelSystem.hpp"
+#include "Collision.hpp"
 
 namespace Entity {
 
@@ -60,6 +61,7 @@ namespace Entity {
 		float fillPercentage = (maxHp > 0) ? (hp / maxHp) : 0.0f;
 		float filledWidth = width * fillPercentage;
 
+
 		// Draw background
 		Color::stroke(0, 0, 0, 255);
 		Color::strokeWeight(1.0f);
@@ -76,6 +78,43 @@ namespace Entity {
 			Color::fill(255, 0, 0, 255); // Red
 		}
 		Shapes::rect(barX, barY, filledWidth, 10.0f, Shapes::CORNER);
+	}
+
+	void Entity::takeDamage(float rawDamage) {
+		float effectiveDamage = rawDamage - armor;
+		if (effectiveDamage < 0) effectiveDamage = 0;
+
+		hp -= effectiveDamage;
+		if (hp < 0) hp = 0;
+
+		updateHealthBar();
+
+	}
+
+	void Entity::attack(Entity& target) {
+		if (!equippedWeapon) {
+			std::cout << "No weapon\n";
+			return;
+		}
+
+		std::cout << "Attack called\n";
+
+		float range = equippedWeapon->getRange();
+		float dx = target.getX() - x;
+		float dy = target.getY() - y;
+		float dist = sqrt(dx * dx + dy * dy);
+
+		std::cout << "Distance: " << dist << " | Range: " << range << "\n";
+
+		bool hit = Collision::collidedWith(x, y, target.getX(), target.getY(), range, target.getWidth(), target.getHeight());
+
+		if (!hit)
+			return;
+
+		std::cout << "Collision non-issue\n";
+		
+		equippedWeapon->onAttack(*this, target);
+
 	}
 
 	void Entity::draw() {

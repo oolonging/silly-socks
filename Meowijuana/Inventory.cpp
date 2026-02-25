@@ -1,4 +1,5 @@
 #include "Inventory.hpp"
+#include "Entity.hpp"
 
 namespace Inventory {
 	// Static member initialization
@@ -37,6 +38,10 @@ namespace Inventory {
 		return getItemPrototype(itemID);
 	}
 
+	void Weapon::onAttack(Entity::Entity& attacker, Entity::Entity& target) {
+		target.takeDamage(getDamage());
+	}
+
 	void init(void) {
 		// Register all weapons
 		ItemRegistry::registerItem(new MeleeWeapon(
@@ -46,7 +51,7 @@ namespace Inventory {
 			10.0f,      // value
 			15.0f,      // damage
 			1.2f,       // attackSpeed
-			2.0f,       // range
+			80.0f,       // range
 			Common,     // rarity
 			5.0f        // knockback
 		));
