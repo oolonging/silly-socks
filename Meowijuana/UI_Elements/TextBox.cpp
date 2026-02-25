@@ -148,8 +148,8 @@ void TextBox::draw(void) {
 	Shapes::rect(x, y, width, height, drawMode);
 
 	// Draw text or placeholder
-	float textX = (drawMode == Shapes::CORNER) ? (x + 10) : (x - width / 2 + 10);
-	float textY = (drawMode == Shapes::CORNER) ? (y - height / 2) : y;
+	float textX = (drawMode == Shapes::CORNER) ? this->x + (this->width * 0.5f) : this->x;
+	float textY = (drawMode == Shapes::CORNER) ? this->y - (this->height * 0.5f) : this->y;
 
 	if (text.empty()) {
 		// Draw placeholder in gray
