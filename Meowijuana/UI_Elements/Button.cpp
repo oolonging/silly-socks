@@ -83,6 +83,11 @@ namespace UI_Elements {
 			Text::text(msg, x, y, Text::CENTER_H, Text::CENTER_V);
 		}
 
+		// Completely forgot to handle clicks
+		if (hovering && AEInputCheckTriggered(AEVK_LBUTTON)) {
+			if (this->onClick != nullptr) this->onClick();
+		}
+
 		// Temporary balm to soothe the sting of being a dumbass
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	}
