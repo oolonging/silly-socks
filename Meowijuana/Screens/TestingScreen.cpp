@@ -85,7 +85,9 @@ namespace Cashew {
 
 	// Slider
 	float sliderValue = 5.0f;
+	float anotherSliderValue = 5.0f;
 	UI_Elements::Slider speedSlider = UI_Elements::Slider(300.0f, 200.0f, 250.0f, 50.0f, sliderValue, 0.0f, 10.0f, Shapes::CORNER);
+	UI_Elements::Slider anotherSlider = UI_Elements::Slider(300.0f, 100.0f, 250.0f, 50.0f, anotherSliderValue, 0.0f, 10.0f, Shapes::CORNER);
 
 	// Checkbox
 	UI_Elements::Checkbox drawGrid{};
@@ -158,6 +160,7 @@ void Testing_Draw() {
 
 	// Draw slider
 	Cashew::speedSlider.draw();
+	Cashew::anotherSlider.draw();
 
 	// Draw checkbox
 	Cashew::drawGrid.draw();

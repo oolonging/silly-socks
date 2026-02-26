@@ -9,47 +9,6 @@ namespace UI_Elements {
 		this->onClick = func;
 	}
 
-	//void Button::draw(void) {
-	//	bool hovering = this->isHovering();
-
-	//	// Apply stroke
-	//	Color::stroke(style.strokeColor);
-	//	Color::strokeWeight(style.strokeWeight);
-
-	//	// Handle click
-	//	if (hovering) {
-	//		if (AEInputCheckTriggered(AEVK_LBUTTON) && onClick != nullptr) {
-	//			onClick();
-	//		}
-	//		Color::fill(style.secondaryColor);
-	//	}
-	//	else {
-	//		Color::fill(style.primaryColor);
-	//	}
-
-	//	if (this->texture.primaryTexture != nullptr) {
-	//		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	//		Graphics::image(x, y, width, height, this->texture.primaryTexture, drawMode);
-	//	}
-	//	else {
-	//		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//		Shapes::rect(x, y, width, height, drawMode);
-	//	}
-
-	//	// Draw text
-	//	Color::textFill(0, 0, 0);
-
-	//	if (drawMode == Shapes::CORNER) {
-	//		Text::text(msg, x + (width / 2), y - (height / 2), Text::CENTER_H, Text::CENTER_V);
-	//	}
-	//	else if (drawMode == Shapes::CENTER) {
-	//		Text::text(msg, x, y, Text::CENTER_H, Text::CENTER_V);
-	//	}
-
-	//	// temporary balm to soothe the sting of being a moron
-	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//}
-
 	// New draw function that can handle graphics
 	void Button::draw(void) {
 		bool hovering = this->isHovering();

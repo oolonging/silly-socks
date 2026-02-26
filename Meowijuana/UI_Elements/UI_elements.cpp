@@ -6,7 +6,13 @@ namespace UI_Elements {
 	// Static Member Initialization
 	// -------------------------------------------------------------------------
 
+	// For text box
 	TextBox* TextBox::currentlySelected = nullptr;
+
+	// For slider
+	Slider* Slider::currentlySelected = nullptr;
+	
+	// For radio button
 	std::vector<RadioButton*> RadioButton::radioGroups[10];
 
 	// -------------------------------------------------------------------------

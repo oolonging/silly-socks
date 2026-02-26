@@ -107,10 +107,25 @@ namespace UI_Elements {
 		float& valueRef;
 		float minValue;
 		float maxValue;
+		bool isSelected = false;
+
+		// slider static member
+		static Slider* currentlySelected;
+		// TODO: Remove when resolved
+		// this makes it so that only one slider can be modified at a time
+		// Preventing the edge case when 2 sliders happen to be over each other
+		// It also allows for the slider to be modified even when the mouse is no longer hovering over the element
+		// i.e you can click and start sliding, then the value only stops updating after the mouse button has been released.
+		// This allows you to set the value all the way to the max or min removing the error associated with the mouse movement
 
 		void updateValue(void);
 
 	public:
+		// Expiremental functions. TODO: remove this comment when its confirmed to be working
+		void select();
+		void deselect();
+		// 
+
 		void clampValue(void);
 		void draw(void) override;
 
@@ -123,10 +138,11 @@ namespace UI_Elements {
 		std::string text;
 		std::string placeholderText;
 		size_t maxLength;
-		bool isSelected;
+		bool isSelected = false; // not selected by default upon creation
 		float cursorBlinkTimer;
 		bool showCursor;
-
+		
+		// textbox static member
 		static TextBox* currentlySelected;
 
 		void handleInput();
