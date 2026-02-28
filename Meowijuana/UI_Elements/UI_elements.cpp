@@ -32,6 +32,11 @@ namespace UI_Elements {
 		ElementTexture defaultTexture;
 		defaultTexture.primaryTexture = nullptr; // TODO: add texture when it gets added
 		defaultTexture.secondaryTexture = nullptr; // TODO: add texture when it gets added
+
+		// testing default textures
+		//defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/argyle.png");
+		//defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/arabesque.png");
+
 		return defaultTexture;
 	}
 
@@ -40,7 +45,7 @@ namespace UI_Elements {
 		defaultStyle.primaryColor = Color::Preset::Black;
 		defaultStyle.secondaryColor = Color::Preset::White;
 		defaultStyle.fontSize = 24;
-		defaultStyle.fontPath = "default"; // TODO: change to fontName
+		defaultStyle.fontName = "default";
 		return defaultStyle;
 	}
 
@@ -87,6 +92,19 @@ namespace UI_Elements {
 
 	ElementTexture UI_Element::getTexture(void) const {
 		return this->texture;
+	}
+
+	// clear textures
+	void UI_Element::clearTextures(void) {
+		if (this->texture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(this->texture.primaryTexture);
+			this->texture.primaryTexture = nullptr;
+		}
+
+		if (this->texture.secondaryTexture != nullptr) {
+			AEGfxTextureUnload(this->texture.secondaryTexture);
+			this->texture.secondaryTexture = nullptr;
+		}
 	}
 
 

@@ -21,7 +21,7 @@ namespace UI_Elements {
 		Color::Color primaryColor;
 		Color::Color secondaryColor;
 		int fontSize;
-		std::string fontPath;
+		std::string fontName;
 	} TextStyle;
 
 	typedef struct {
@@ -43,8 +43,8 @@ namespace UI_Elements {
 
 		// Default style initialization
 		static ElementStyle getDefaultStyle();
-		static ElementTexture getDefaultTexture(); // TODO: define
-		static TextStyle getDefaultTextStyle(); // TODO: define
+		static ElementTexture getDefaultTexture();
+		static TextStyle getDefaultTextStyle();
 
 	public:
 		// Common functionality
@@ -56,6 +56,9 @@ namespace UI_Elements {
 		ElementStyle getStyle(void) const;
 		TextStyle getTextStyle(void) const;
 		ElementTexture getTexture(void) const;
+
+		// to clean textures
+		void clearTextures(void);
 
 		// Virtual destructor for proper cleanup
 		virtual ~UI_Element() = default;
