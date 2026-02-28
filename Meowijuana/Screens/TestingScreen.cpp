@@ -35,23 +35,13 @@ void Testing_Initialize() {
 	// Adjust x and y positions based on your screen resolution
 	auto* player = EntityManager::getPlayer("player");
 	Cashew::inventoryUI = UI_Elements::PlayerInventory(
-		0.0f,  // x position (adjust to center on your screen)
-		0.0f,  // y position (near bottom of screen)
+		-250.0f,  // x position (adjust to center on your screen)
+		-350.0f,  // y position (near bottom of screen)
 		50.0f,    // slot size
 		10.0f,    // spacing between slots
 		player,   // player reference
 		Shapes::CENTER
 	);
-
-	// style the inventory UI
-	Cashew::inventoryUI.setStyle({
-		{ 0.2f, 0.2f, 0.2f, 0.8f }, // primaryColor
-		{ 0.4f, 0.4f, 0.4f, 1.0f }, // secondaryColor
-		{ 1.0f, 1.0f, 1.0f, 1.0f }, // strokeColor
-		2 // strokeWeight
-		});
-
-
 
 }
 

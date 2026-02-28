@@ -20,31 +20,31 @@ extern World::worldGrid grid;
 
 // Temporary function to help navigate between the screens
 void screenSwitcher(void) {
-	if (AEInputCheckTriggered(AEVK_1))
+	if (AEInputCheckTriggered(AEVK_NUMPAD1))
 		next = GS_TUTORIAL;
 
-	if (AEInputCheckTriggered(AEVK_2))
+	if (AEInputCheckTriggered(AEVK_NUMPAD2))
 		next = GS_MAIN_MENU;
 
-	if (AEInputCheckTriggered(AEVK_3))
+	if (AEInputCheckTriggered(AEVK_NUMPAD3))
 		next = GS_SETTINGS;
 
-	if (AEInputCheckTriggered(AEVK_4))
+	if (AEInputCheckTriggered(AEVK_NUMPAD4))
 		next = GS_CREDITS;
 
-	if (AEInputCheckTriggered(AEVK_5))
+	if (AEInputCheckTriggered(AEVK_NUMPAD5))
 		next = GS_FARM;
 
-	if (AEInputCheckTriggered(AEVK_6))
+	if (AEInputCheckTriggered(AEVK_NUMPAD6))
 		next = GS_DUNGEON;
 
-	if (AEInputCheckTriggered(AEVK_7))
+	if (AEInputCheckTriggered(AEVK_NUMPAD7))
 		next = GS_TESTING;
 
-	if (AEInputCheckTriggered(AEVK_8))
+	if (AEInputCheckTriggered(AEVK_NUMPAD8))
 		next = GS_LEVEL1;
 
-	if (AEInputCheckTriggered(AEVK_9))
+	if (AEInputCheckTriggered(AEVK_NUMPAD9))
 		next = GS_LEVEL2;
 
 	if(AEInputCheckTriggered(AEVK_0))
