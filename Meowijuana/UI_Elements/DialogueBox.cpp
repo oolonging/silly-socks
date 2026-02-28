@@ -22,7 +22,7 @@ DialogueBox::DialogueBox(float x, float y, float width, float height, char const
 
 // TODO: set up the position properly, add easter egg message here too, add graphical rendering if assets are available
 DialogueBox::DialogueBox(void)
-	: UI_Element(0, 0, 800, 200, Shapes::CORNER), message(""), speakerName(nullptr),
+	: UI_Element(0, 0, 800, 200, Shapes::CORNER), message("You found a hidden easter egg"), speakerName(nullptr),
 	characterSprite(nullptr), showSprite(false), isActive(false),
 	spriteSize(120.0f), textPadding(20.0f), nameBoxHeight(40.0f), onDismiss(nullptr) {
 	style.primaryColor = Color::createColorRGB(240, 240, 240, 255);
@@ -122,6 +122,8 @@ std::vector<std::string> DialogueBox::wrapText(const std::string& text, float ma
 
 void DialogueBox::draw(void) {
 	if (!isActive) return;
+	// set render mode to color for shapes and text
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 	// set text align
 	Text::textAlign(Text::LEFT, Text::TOP);
