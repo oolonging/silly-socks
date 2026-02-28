@@ -1,0 +1,11 @@
+0 0 wall
+1 0 wall
+2 0 wall
+0 1 wall
+2 1 wall
+0 2 wall
+1 2 door
+2 2 wall
+5 5 water
+5 6 water
+5 7 water
