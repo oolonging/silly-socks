@@ -77,6 +77,11 @@ namespace Shapes {
 		Shapes::Point position;
 		float width;
 		float height;
+
+		// Ctors
+		Quad() : position({ 0.0f, 0.0f }), width(0.0f), height(0.0f) {}
+		Quad(Shapes::Point position, float width, float height) : position(position), width(width), height(height) {}
+		Quad(float x, float y, float width, float height) : position({ x, y }), width(width), height(height) {}
 	} Quad;
 
 	typedef struct Circle {
