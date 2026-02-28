@@ -21,54 +21,54 @@ namespace World {
 
 	// Tile class
 	class Tile {
-		private:
-			float worldX;
-			float worldY;
-			float gridX;
-			float gridY;
+	private:
+		float worldX;
+		float worldY;
+		float gridX;
+		float gridY;
 
-			TileObject* pTileObject;
+		TileObject* pTileObject;
 
 
-		public:
+	public:
 
-			// testing
-			Color::Color tileColor = Color::createColorRGB(0.0f, 0.0f, 0.0f);
-			
-			// Getters
-			float getWorldX() const { return this->worldX; }
-			float getWorldY() const { return this->worldY; }
-			int getGridX() const { return this->gridX; }
-			int getGridY() const { return this->gridY; }
-			TileObject* getTileObject() const { return this->pTileObject; }
-			
-			// checks to see if pointing to valid tile object
-			bool hasTileObject(void) { return (this->pTileObject != nullptr); }
+		// testing
+		Color::Color tileColor = Color::createColorRGB(0.0f, 0.0f, 0.0f);
 
-			// Clears tile object
-			void clearTileObject(void) {
-				this->pTileObject = nullptr;
-			}
+		// Getters
+		float getWorldX() const { return this->worldX; }
+		float getWorldY() const { return this->worldY; }
+		int getGridX() const { return this->gridX; }
+		int getGridY() const { return this->gridY; }
+		TileObject* getTileObject() const { return this->pTileObject; }
 
-			// Setters
-			void setWorldPosition(float x, float y);
-			void setGridPosition(int x, int y);
-			void setTileObject(TileObject* pTileObject);
+		// checks to see if pointing to valid tile object
+		bool hasTileObject(void) { return (this->pTileObject != nullptr); }
 
-			// draw function
-			void draw(void);
+		// Clears tile object
+		void clearTileObject(void) {
+			this->pTileObject = nullptr;
+		}
 
-			// Ctor
-			Tile();
+		// Setters
+		void setWorldPosition(float x, float y);
+		void setGridPosition(int x, int y);
+		void setTileObject(TileObject* pTileObject);
+
+		// draw function
+		void draw(void);
+
+		// Ctor
+		Tile();
 	};
 
 	// Grid stuff
 	constexpr int GRID_SIZE = 50;
 	constexpr int GRID_WIDTH = 32;
 	constexpr int GRID_HEIGHT = 24;
-	
-	static Tile grid[GRID_HEIGHT][GRID_WIDTH];
-	
+
+	extern Tile grid[GRID_HEIGHT][GRID_WIDTH];
+
 	// see if the mouse is over a tile
 	bool mouseOnTile(Tile& const tile);
 	// get a tile from world coordinates

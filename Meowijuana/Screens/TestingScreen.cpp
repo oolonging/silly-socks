@@ -3,6 +3,7 @@
 #include "../Tiles.hpp"
 #include "../Entity.hpp"
 #include "../Managers/EntityManager.hpp"
+#include "../Managers/TileManager.hpp"
 
 namespace Cashew {
 	// UI_Element Dialogue box
@@ -14,13 +15,17 @@ void Testing_Load() {
 }
 
 void Testing_Initialize() {
+	// Initialize tile system (this calls World::init() internally)
+	TileManager::init();
+
+	// Load tile layout from file AFTER init
+	TileManager::loadTileLayout("Assets/Maps/testing_other.txt");
+
+	// Initialize entities
 	EntityManager::init();
 
 	// Initialize dialogue box
-	Cashew::dialogueBox = UI_Elements::DialogueBox(-600.0f, -300.0f, 1200.0f, 100.0f, "Prasanna", "Hello there! Welcome to Meowijuana!", EntityManager::getNPC("prasanna")->getSprite(), Shapes::CORNER);
-
-	// Initialize world
-	World::init();
+	Cashew::dialogueBox = UI_Elements::DialogueBox(-600.0f, -300.0f, 1200.0f, 100.0f, "", "", nullptr, Shapes::CORNER);
 }
 
 void Testing_Update() {
@@ -33,7 +38,7 @@ void Testing_Update() {
 	player->update();
 
 	// Check for interaction with Prasanna
-	if (Collision::collidedWith(
+	if (prasanna && Collision::collidedWith(
 		player->getX(), player->getY(),
 		prasanna->getX(), prasanna->getY(),
 		75.0f,
@@ -43,7 +48,7 @@ void Testing_Update() {
 	}
 
 	// Check for interaction with Soroor
-	if (Collision::collidedWith(
+	if (soroor && Collision::collidedWith(
 		player->getX(), player->getY(),
 		soroor->getX(), soroor->getY(),
 		75.0f,
@@ -51,11 +56,17 @@ void Testing_Update() {
 	)) {
 		soroor->speak(Cashew::dialogueBox);
 	}
+
+	// Save map when pressing F5
+	if (AEInputCheckTriggered(AEVK_F5)) {
+		std::cout << "F5 pressed - Saving tile layout..." << std::endl;
+		TileManager::saveTileLayout("Assets/Maps/testing_other.txt");
+	}
 }
 
 void Testing_Draw() {
-	// Draw the grid
-	World::draw();
+	// Draw the grid (use TileManager for consistency)
+	TileManager::draw();
 
 	// Draw all entities (automatically includes player and NPCs)
 	EntityManager::drawAll();
@@ -70,5 +81,5 @@ void Testing_Free() {
 
 void Testing_Unload() {
 	EntityManager::clear();
-	World::exit();
+	TileManager::exit(); // Use TileManager::exit() instead of World::exit()
 }
