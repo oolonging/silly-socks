@@ -11,13 +11,13 @@ UI_Elements::PlayerInventory::PlayerInventory(float x, float y, float slotSize, 
 	selectedSlot(0) {
 
 	// Set default selected slot color (bright yellow/gold for visibility)
-	selectedColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+	selectedColor = { 255.0f, 255.0f, 0.0f, 255.0f };
 	selectedBorderThickness = 4.0f;
 
 	// Set default style for inventory slots
-	style.primaryColor = { 0.2f, 0.2f, 0.2f, 0.8f }; // Dark semi-transparent background
-	style.secondaryColor = { 0.4f, 0.4f, 0.4f, 1.0f }; // Lighter gray for items
-	style.strokeColor = { 1.0f, 1.0f, 1.0f, 1.0f }; // White border
+	style.primaryColor = { 51.0f, 51.0f, 51.0f, 204.0f }; // Dark semi-transparent background
+	style.secondaryColor = { 102.0f, 102.0f, 102.0f, 255.0f }; // Lighter gray for items
+	style.strokeColor = { 255.0f, 255.0f, 255.0f, 255.0f }; // White border
 	style.strokeWeight = 2;
 }
 
@@ -29,12 +29,12 @@ UI_Elements::PlayerInventory::PlayerInventory(void)
 	slotSpacing(10.0f),
 	selectedSlot(0) {
 
-	selectedColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+	selectedColor = { 255.0f, 255.0f, 0.0f, 255.0f };
 	selectedBorderThickness = 4.0f;
 
-	style.primaryColor = { 0.2f, 0.2f, 0.2f, 0.8f };
-	style.secondaryColor = { 0.4f, 0.4f, 0.4f, 1.0f };
-	style.strokeColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	style.primaryColor = { 51.0f, 51.0f, 51.0f, 204.0f };
+	style.secondaryColor = { 102.0f, 102.0f, 102.0f, 255.0f };
+	style.strokeColor = { 255.0f, 255.0f, 255.0f, 255.0f };
 	style.strokeWeight = 2;
 }
 
@@ -52,16 +52,15 @@ void UI_Elements::PlayerInventory::handleKeyInput() {
 }
 
 void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float slotY) {
-	// Draw slot background
-	Shapes::Quad slotQuad(slotX, slotY, slotSize, slotSize);
-
-	// Draw the slot box with fill color
+	// Set fill color for slot background
 	Color::fill(style.primaryColor);
-	Shapes::rect(slotQuad.position.x, slotQuad.position.y, slotQuad.width, slotQuad.height, drawMode);
 
-	// Draw border with stroke
+	// Set stroke color and weight for slot border
 	Color::stroke(style.strokeColor);
-	Shapes::rect(slotQuad.position.x, slotQuad.position.y, slotQuad.width, slotQuad.height, drawMode);
+	Color::strokeWeight(style.strokeWeight);
+
+	// Draw the slot box
+	Shapes::rect(slotX, slotY, slotSize, slotSize, drawMode);
 
 	// TODO: Draw item icon if slot has an item
 	// if (playerRef && slotIndex < playerRef->getInventorySize()) {
@@ -74,17 +73,15 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 }
 
 void UI_Elements::PlayerInventory::drawSelectedIndicator(float slotX, float slotY) {
-	// Draw a highlighted border around the selected slot
-	Shapes::Quad highlightQuad(
-		slotX - selectedBorderThickness / 2.0f,
-		slotY - selectedBorderThickness / 2.0f,
-		slotSize + selectedBorderThickness,
-		slotSize + selectedBorderThickness
-	);
+	// Set stroke color for selected slot border
+	Color::stroke(selectedColor);
+	Color::strokeWeight(static_cast<int>(selectedBorderThickness));
 
-	// Draw thick border for selected slot
-	Color::fill(selectedColor);
-	Shapes::rect(highlightQuad.position.x, highlightQuad.position.y, highlightQuad.width, highlightQuad.height, drawMode);
+	// Don't fill the selected indicator, only draw border
+	Color::noFill();
+
+	// Draw a highlighted border around the selected slot
+	Shapes::rect(slotX, slotY, slotSize, slotSize, drawMode);
 }
 
 void UI_Elements::PlayerInventory::draw(void) {

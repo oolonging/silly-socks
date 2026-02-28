@@ -8,6 +8,10 @@
 namespace Cashew {
 	// UI_Element Dialogue box
 	UI_Elements::DialogueBox dialogueBox;
+
+	// Player Inventory UI
+	UI_Elements::PlayerInventory inventoryUI;
+	//TODO probably rename to hotbar since thats more accurate
 }
 
 void Testing_Load() {
@@ -27,6 +31,28 @@ void Testing_Initialize() {
 	// Initialize dialogue box
 	Cashew::dialogueBox = UI_Elements::DialogueBox(0.0f, 0.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
+	// Initialize inventory UI (bottom center of screen)
+	// Adjust x and y positions based on your screen resolution
+	auto* player = EntityManager::getPlayer("player");
+	Cashew::inventoryUI = UI_Elements::PlayerInventory(
+		0.0f,  // x position (adjust to center on your screen)
+		0.0f,  // y position (near bottom of screen)
+		50.0f,    // slot size
+		10.0f,    // spacing between slots
+		player,   // player reference
+		Shapes::CENTER
+	);
+
+	// style the inventory UI
+	Cashew::inventoryUI.setStyle({
+		{ 0.2f, 0.2f, 0.2f, 0.8f }, // primaryColor
+		{ 0.4f, 0.4f, 0.4f, 1.0f }, // secondaryColor
+		{ 1.0f, 1.0f, 1.0f, 1.0f }, // strokeColor
+		2 // strokeWeight
+		});
+
+
+
 }
 
 void Testing_Update() {
@@ -37,6 +63,9 @@ void Testing_Update() {
 
 	// Update the player
 	player->update();
+
+	// Update inventory UI (handles keyboard input for slot selection)
+	Cashew::inventoryUI.update();
 
 	// Check for interaction with Prasanna
 	if (prasanna && Collision::collidedWith(
@@ -71,6 +100,9 @@ void Testing_Draw() {
 
 	// Draw all entities (automatically includes player and NPCs)
 	EntityManager::drawAll();
+
+	// Draw inventory UI
+	Cashew::inventoryUI.draw();
 
 	// Draw dialogue box if active
 	Cashew::dialogueBox.draw();
