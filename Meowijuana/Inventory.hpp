@@ -1,6 +1,7 @@
 #ifndef INVENTORY_HPP
 #define INVENTORY_HPP
 
+#include "AEEngine.h"
 #include <string>
 #include <map>
 #include <memory>
@@ -55,7 +56,7 @@ namespace Inventory {
 		std::string name;
 		std::string description;
 		float value; // for selling or buying
-		// TODO: add stack size, and also image/icon representation
+		AEGfxTexture* icon; // Icon texture for inventory display
 
 	public:
 		// Getters
@@ -63,18 +64,20 @@ namespace Inventory {
 		std::string getName() const { return this->name; }
 		std::string getDescription() const { return this->description; }
 		float getValue() const { return this->value; }
+		AEGfxTexture* getIcon() const { return this->icon; }
 
 		// Setters
 		void setID(int id) { this->id = id; }
 		void setName(const std::string& name) { this->name = name; }
 		void setDescription(const std::string& description) { this->description = description; }
 		void setValue(float value) { this->value = value; }
+		void setIcon(AEGfxTexture* iconTexture) { this->icon = iconTexture; }
 
 		// Ctors
-		Item() : id(0), name("Generic item"), description("If you're reading this congrats on finding this easter egg"), value(0.0f) {}
+		Item() : id(0), name("Generic item"), description("If you're reading this congrats on finding this easter egg"), value(0.0f), icon(nullptr) {}
 
-		Item(int id, const std::string& name, const std::string& description, float value)
-			: id(id), name(name), description(description), value(value) {
+		Item(int id, const std::string& name, const std::string& description, float value, AEGfxTexture* iconTexture = nullptr)
+			: id(id), name(name), description(description), value(value), icon(iconTexture) {
 		}
 
 		// Virtual destructor for proper cleanup of derived classes

@@ -134,11 +134,42 @@ namespace Entity {
 	// -------------------------------------------------------------------------
 
 	Player::Player(float posX, float posY, float w, float h, float health, float spd, float arm)
-		: Entity(posX, posY, w, h, health, spd, arm), movingDirections{false, false, false, false} {
+		: Entity(posX, posY, w, h, health, spd, arm), movingDirections{ false, false, false, false }, selectedInventorySlot(0) {
+		// Initialize inventory slots to nullptr
+		for (int i = 0; i < 9; ++i) {
+			inventory[i] = nullptr;
+		}
 	}
 
 	Player::Player()
-		: Entity(), movingDirections{false, false, false, false} {
+		: Entity(), movingDirections{ false, false, false, false }, selectedInventorySlot(0) {
+		// Initialize inventory slots to nullptr
+		for (int i = 0; i < 9; ++i) {
+			inventory[i] = nullptr;
+		}
+	}
+
+	Inventory::Item* Player::getInventoryItem(int slot) const {
+		if (slot >= 0 && slot < 9) {
+			return inventory[slot];
+		}
+		return nullptr;
+	}
+
+	void Player::setInventoryItem(int slot, Inventory::Item* item) {
+		if (slot >= 0 && slot < 9) {
+			inventory[slot] = item;
+		}
+	}
+
+	int Player::getSelectedInventorySlot() const {
+		return selectedInventorySlot;
+	}
+
+	void Player::setSelectedInventorySlot(int slot) {
+		if (slot >= 0 && slot < 9) {
+			selectedInventorySlot = slot;
+		}
 	}
 
 	void Player::handleMovement() {

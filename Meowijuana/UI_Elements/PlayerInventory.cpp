@@ -62,14 +62,35 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 	// Draw the slot box
 	Shapes::rect(slotX, slotY, slotSize, slotSize, drawMode);
 
-	// TODO: Draw item icon if slot has an item
-	// if (playerRef && slotIndex < playerRef->getInventorySize()) {
-	//     Inventory::Item* item = playerRef->getInventoryItem(slotIndex);
-	//     if (item != nullptr) {
-	//         // Draw item icon/sprite here
-	//         // You'll need to add texture/icon support to your Item class
-	//     }
-	// }
+	// Draw item icon if slot has an item
+	if (playerRef && slotIndex < playerRef->getInventorySize()) {
+		Inventory::Item* item = playerRef->getInventoryItem(slotIndex);
+		if (item != nullptr && item->getIcon() != nullptr) {
+			// Set up transformation matrix for icon
+			AEMtx33 transform{};
+
+			float iconX = slotX;
+			float iconY = slotY;
+
+			// Adjust position based on draw mode
+			if (drawMode == Shapes::CORNER) {
+				iconX += slotSize / 2.0f;
+				iconY -= slotSize / 2.0f;
+			}
+
+			AEMtx33Scale(&transform, slotSize * 0.8f, slotSize * 0.8f); // Scale icon to 80% of slot size
+			AEMtx33TransApply(&transform, &transform, iconX, iconY);
+
+			// Draw the icon texture
+			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+			AEGfxSetTransform(transform.m);
+			//AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
+			AEGfxTextureSet(item->getIcon(), 0, 0);
+			//AEGfxMeshDraw(Shapes::getSquareMesh(), AE_GFX_MDM_TRIANGLES);
+			Graphics::image(iconX, iconY, slotSize * 0.8f, slotSize * 0.8f, item->getIcon(), Shapes::CENTER);
+			//TODO: this is the one i had to modify
+		}
+	}
 }
 
 void UI_Elements::PlayerInventory::drawSelectedIndicator(float slotX, float slotY) {
