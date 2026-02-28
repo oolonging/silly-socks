@@ -136,6 +136,10 @@ namespace World {
 		for (int row = 0; row < GRID_HEIGHT; ++row) {
 			for (int col = 0; col < GRID_WIDTH; ++col) {
 				Tile& tile = grid[row][col];
+				
+
+				// Draw tile
+				tile.draw();
 
 				if (mouseOnTile(tile)) {
 					if (AEInputCheckTriggered(AEVK_LBUTTON)) {
@@ -153,9 +157,13 @@ namespace World {
 						tile.clearTileObject();
 						std::cout << "Cleared tile at grid[" << row << "][" << col << "]" << std::endl;
 					}
+
+					// if mouse on tile draw highlight
+					AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+					Color::fill(255, 255, 0, 100); // Yellow with some transparency
+					Shapes::rect(tile.getWorldX(), tile.getWorldY(), GRID_SIZE, GRID_SIZE, Shapes::CORNER);
 				}
 
-				tile.draw();
 			}
 		}
 	}

@@ -127,7 +127,6 @@ void DialogueBox::draw(void) {
 
 	// set text align
 	Text::textAlign(Text::LEFT, Text::TOP);
-	// TODO: consider putting the alignment in the text draw function or making it an overload
 
 	// Handle click to dismiss (anywhere on screen)
 	if (AEInputCheckTriggered(AEVK_LBUTTON)) {

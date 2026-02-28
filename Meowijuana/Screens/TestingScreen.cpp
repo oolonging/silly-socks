@@ -19,13 +19,14 @@ void Testing_Initialize() {
 	TileManager::init();
 
 	// Load tile layout from file AFTER init
-	TileManager::loadTileLayout("Assets/Maps/testing_other.txt");
+	TileManager::loadTileLayout("Assets/Maps/testing.txt");
 
 	// Initialize entities
 	EntityManager::init();
 
 	// Initialize dialogue box
-	Cashew::dialogueBox = UI_Elements::DialogueBox(-600.0f, -300.0f, 1200.0f, 100.0f, "", "", nullptr, Shapes::CORNER);
+	Cashew::dialogueBox = UI_Elements::DialogueBox(0.0f, 0.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
+
 }
 
 void Testing_Update() {
@@ -60,7 +61,7 @@ void Testing_Update() {
 	// Save map when pressing F5
 	if (AEInputCheckTriggered(AEVK_F5)) {
 		std::cout << "F5 pressed - Saving tile layout..." << std::endl;
-		TileManager::saveTileLayout("Assets/Maps/testing_other.txt");
+		TileManager::saveTileLayout("Assets/Maps/testing.txt");
 	}
 }
 
