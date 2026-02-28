@@ -76,12 +76,21 @@ namespace Entity {
 
 	class Player : public Entity {
 	private:
-		bool movingDirections[4]; // up, down, left, right
+		bool movingDirections[4];
+		Inventory::Item* inventory[9]; // Array of 9 inventory slots
+		int selectedInventorySlot; // 0-8
 
 		void handleMovement();
 		void handleMovement(LevelSystem::Level& level);
 
 	public:
+		// Inventory methods
+		Inventory::Item* getInventoryItem(int slot) const;
+		void setInventoryItem(int slot, Inventory::Item* item);
+		int getSelectedInventorySlot() const;
+		void setSelectedInventorySlot(int slot);
+		int getInventorySize() const { return 9; }
+
 		void update();
 		void update(LevelSystem::Level& level);
 		void draw() override;
