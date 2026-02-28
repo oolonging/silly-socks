@@ -133,6 +133,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="UI_Elements\Button.cpp" />
     <ClCompile Include="UI_Elements\CheckBox.cpp" />
     <ClCompile Include="UI_Elements\DialogueBox.cpp" />
+    <ClCompile Include="UI_Elements\PlayerInventory.cpp" />
     <ClCompile Include="UI_Elements\ProgressBar.cpp" />
     <ClCompile Include="UI_Elements\RadioButton.cpp" />
     <ClCompile Include="UI_Elements\Slider.cpp" />

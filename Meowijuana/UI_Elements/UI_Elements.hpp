@@ -9,6 +9,11 @@
 #include "../Graphics.hpp"
 #include "../InputManager.hpp"
 
+// Forward declaration to break circular dependency
+namespace Entity {
+	class Player;
+}
+
 namespace UI_Elements {
 	typedef struct {
 		Color::Color primaryColor;
@@ -144,7 +149,7 @@ namespace UI_Elements {
 		bool isSelected = false; // not selected by default upon creation
 		float cursorBlinkTimer;
 		bool showCursor;
-		
+
 		// textbox static member
 		static TextBox* currentlySelected;
 
@@ -207,26 +212,26 @@ namespace UI_Elements {
 	};
 
 	class DialogueBox : public UI_Element {
-		private:
-			std::string message;
+	private:
+		std::string message;
 
-			// Entity stuff
-			char const* speakerName;
-			AEGfxTexture* characterSprite;
+		// Entity stuff
+		char const* speakerName;
+		AEGfxTexture* characterSprite;
 
-			bool showSprite; // The sprite should be optional in case nobody is speaking
-			bool isActive; // TODO: potentially remove this, im including this just in case
+		bool showSprite; // The sprite should be optional in case nobody is speaking
+		bool isActive; // TODO: potentially remove this, im including this just in case
 
-			// Misc designer stuff
-			float spriteSize;
-			float textPadding;
-			float nameBoxHeight;
+		// Misc designer stuff
+		float spriteSize;
+		float textPadding;
+		float nameBoxHeight;
 
-			// When the person clicks 
-			void (*onDismiss)(void);
+		// When the person clicks 
+		void (*onDismiss)(void);
 
-			// Temporary wrapping helper
-			std::vector<std::string> wrapText(const std::string& text, float maxWidth);
+		// Temporary wrapping helper
+		std::vector<std::string> wrapText(const std::string& text, float maxWidth);
 
 	public:
 		void draw(void) override;
@@ -244,6 +249,37 @@ namespace UI_Elements {
 			const std::string& message = "You arent supposed to be seeing this but if you are, congrats. You broke something",
 			AEGfxTexture* sprite = nullptr, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
 		DialogueBox(void);
+	};
+
+	// Player UI elements
+	class PlayerInventory : public UI_Element {
+	private:
+		Entity::Player* playerRef; // Reference to player object
+		int slotCount;
+		float slotSize;
+		float slotSpacing;
+		int selectedSlot; // 0-8 for the 9 slots
+
+		// Visual feedback
+		Color::Color selectedColor;
+		float selectedBorderThickness;
+
+		void handleKeyInput();
+		void drawSlot(int slotIndex, float slotX, float slotY);
+		void drawSelectedIndicator(float slotX, float slotY);
+
+	public:
+		void draw(void) override;
+		void update(); // Call this each frame to handle input
+
+		// Getters/Setters
+		int getSelectedSlot() const;
+		void setSelectedSlot(int slot);
+		void setPlayer(Entity::Player* player);
+
+		// Constructors
+		PlayerInventory(float x, float y, float slotSize, float slotSpacing, Entity::Player* player, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		PlayerInventory(void);
 	};
 }
 
