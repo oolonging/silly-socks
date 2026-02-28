@@ -113,6 +113,12 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Tiles.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EntityManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -191,6 +197,10 @@
     <ClInclude Include="AudioManager.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Tiles.hpp" />
+    <ClInclude Include="Managers\EntityManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
@@ -213,6 +223,12 @@
     </Filter>
     <Filter Include="Source files\UI Elements">
       <UniqueIdentifier>{f6aa4019-5a0e-4895-89bc-a2c45ccd4ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Managers">
+      <UniqueIdentifier>{cba1876d-1cf4-4b1a-a6f7-4fb85473bf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Managers">
+      <UniqueIdentifier>{824864c1-273e-4511-9058-1eadcd2fc5d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
