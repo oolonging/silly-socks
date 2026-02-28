@@ -40,6 +40,7 @@ namespace Entity {
 		float getMaxHp() const { return maxHp; }
 		float getSpeed() const { return speed; }
 		float getArmor() const { return armor; }
+		AEGfxTexture* getSprite() const { return sprite; }
 		
 		// Setters
 		void setPosition(float posX, float posY);
@@ -128,6 +129,7 @@ namespace Entity {
 		void setDialogLines(const std::vector<std::string>& lines);
 		void addDialogLine(const std::string& line);
 
+		void speak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;
 
 		// Constructors

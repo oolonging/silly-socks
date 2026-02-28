@@ -3,6 +3,9 @@
 #include "Entity.hpp"
 #include "Collision.hpp"
 
+// tiles
+#include "Tiles.hpp"
+
 namespace Entity {
 
 	// -------------------------------------------------------------------------
@@ -159,7 +162,51 @@ namespace Entity {
 			deltaY = (deltaY / length) * speed;
 		}
 
-		setPosition(x + deltaX, y + deltaY);
+		float newPositionX = x + deltaX;
+		float newPositionY = y + deltaY;
+
+		// Entity is rendered from center, so check all four corners
+		float halfWidth = width / 2.0f;
+		float halfHeight = height / 2.0f;
+
+		// Check all four corners of the entity's bounding box
+		bool canMove = true;
+
+		// Top-left corner
+		World::Tile& tlTile = World::getTileFromWorld(newPositionX - halfWidth, newPositionY + halfHeight);
+		if (tlTile.hasTileObject() && !tlTile.getTileObject()->traversable) {
+			canMove = false;
+		}
+
+		// Top-right corner
+		if (canMove) {
+			World::Tile& trTile = World::getTileFromWorld(newPositionX + halfWidth, newPositionY + halfHeight);
+			if (trTile.hasTileObject() && !trTile.getTileObject()->traversable) {
+				canMove = false;
+			}
+		}
+
+		// Bottom-left corner
+		if (canMove) {
+			World::Tile& blTile = World::getTileFromWorld(newPositionX - halfWidth, newPositionY - halfHeight);
+			if (blTile.hasTileObject() && !blTile.getTileObject()->traversable) {
+				canMove = false;
+			}
+		}
+
+		// Bottom-right corner
+		if (canMove) {
+			World::Tile& brTile = World::getTileFromWorld(newPositionX + halfWidth, newPositionY - halfHeight);
+			if (brTile.hasTileObject() && !brTile.getTileObject()->traversable) {
+				canMove = false;
+			}
+		}
+
+		// Only move if all corners are on traversable tiles or empty tiles
+		if (canMove) {
+			setPosition(newPositionX, newPositionY);
+		}
+
 	}
 
 
@@ -351,15 +398,32 @@ namespace Entity {
 		dialogLines.push_back(line);
 	}
 
+	void NPC::speak(UI_Elements::DialogueBox& dialogueBox) {
+		if (!dialogLines.empty()) {
+			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setText(dialogLines[0]);
+			dialogueBox.setCharacterSprite(this->sprite);
+			dialogueBox.activate();
+		}
+	}
+
 	void NPC::draw() {
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		bool graphicalDraw = (this->sprite != nullptr);
+
+		if (graphicalDraw) {
+			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+			Graphics::image(x, y, width, height, sprite, Shapes::CENTER);
+		}
+		else {
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			// Apply stroke and fill
+			Color::stroke(0, 0, 0, 255);
+			Color::strokeWeight(2.0f);
+			Color::fill(0, 255, 0, 255);
+
+			Shapes::rect(x, y, width, height, Shapes::CENTER);
+		}
 		
-		// Apply stroke and fill
-		Color::stroke(0, 0, 0, 255);
-		Color::strokeWeight(2.0f);
-		Color::fill(0, 255, 0, 255);
-		
-		Shapes::rect(x, y, width, height, Shapes::CENTER);
 
 		// NPCs typically don't show health bars unless damaged
 		if (hp < maxHp) {
