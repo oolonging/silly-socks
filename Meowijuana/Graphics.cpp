@@ -353,8 +353,6 @@ namespace Text {
 	void text(const char* str, float x, float y, TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical) {
 		if (Settings::gCurrentFontId == -1) return; // No font has been set
 
-
-
 		float normalizedX = x / (AEGfxGetWindowWidth() * 0.5f);
 		float normalizedY = y / (AEGfxGetWindowHeight() * 0.5f);
 
@@ -373,14 +371,26 @@ namespace Text {
 		// Vertical alignment
 		if (vertical == CENTER_V) offsetY = -height * 0.5f;
 		else if (vertical == BOTTOM) offsetY = -height;
-		// TODO: add the one more i forgot what I called it (BASELINE)
 
+		// Calculate world-space offsets for debug box
+		float worldOffsetX = 0.0f, worldOffsetY = 0.0f;
 
-		//// debug mode background
+		// Horizontal alignment offset in world space
+		if (horizontal == CENTER_H) worldOffsetX = 0.0f; // Already centered
+		else if (horizontal == RIGHT) worldOffsetX = -actualWidth * 0.5f;
+		else if (horizontal == LEFT) worldOffsetX = actualWidth * 0.5f;
+
+		// Vertical alignment offset in world space (INVERTED for world coordinates)
+		if (vertical == CENTER_V) worldOffsetY = 0.0f; // Already centered
+		else if (vertical == BOTTOM) worldOffsetY = -actualHeight * 0.5f; // Bottom means lower Y (negative)
+		else if (vertical == TOP) worldOffsetY = actualHeight * 0.5f; // Top means higher Y (positive)
+		else if (vertical == BASELINE) worldOffsetY = -actualHeight * 0.25f; // Baseline is roughly 25% down from the top (probably)
+
+		// Debug mode background - adjusted for alignment
 		if (Settings::gDebugMode) {
 			Color::fill(255.0f, 0.0f, 0.0f, 128.0f);
 			Color::noStroke();
-			Shapes::rect(x, y, actualWidth, actualHeight, Shapes::CENTER);
+			Shapes::rect(x + worldOffsetX, y + worldOffsetY, actualWidth, actualHeight, Shapes::CENTER);
 		}
 
 		// set blend mode
@@ -394,8 +404,6 @@ namespace Text {
 			Settings::gTextFillColor.blue / 255.0f,
 			Settings::gTextFillColor.alpha / 255.0f
 		);
-
-
 	}
 
 	void text(const char* str, float x, float y) {
