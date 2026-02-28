@@ -12,9 +12,24 @@ namespace Cashew {
 	// Player Inventory UI
 	UI_Elements::PlayerInventory inventoryUI;
 	//TODO probably rename to hotbar since thats more accurate
+
+	// Item textures
+	AEGfxTexture* swordIcon = nullptr;
+	AEGfxTexture* grenadeIcon = nullptr;
+	AEGfxTexture* bombIcon = nullptr;
+
+	// Items
+	Inventory::Item* sword = nullptr;
+	Inventory::Item* grenade = nullptr;
+	Inventory::Item* bomb = nullptr;
 }
 
 void Testing_Load() {
+
+	// Load icons (temporary while i test)
+	Cashew::swordIcon = AEGfxTextureLoad("Assets/Images/Items/sword.png");
+	Cashew::grenadeIcon = AEGfxTextureLoad("Assets/Images/Items/grenade.png");
+	Cashew::bombIcon = AEGfxTextureLoad("Assets/Images/Items/bomb.png");
 
 }
 
@@ -28,21 +43,42 @@ void Testing_Initialize() {
 	// Initialize entities
 	EntityManager::init();
 
+	// Create items with icons
+	Cashew::sword = new Inventory::Item(1, "Sword", "A sharp blade", 10.0f, Cashew::swordIcon);
+	Cashew::grenade = new Inventory::Item(2, "Grenade", "Explosive device", 25.0f, Cashew::grenadeIcon);
+	Cashew::bomb = new Inventory::Item(3, "Bomb", "Big boom!", 50.0f, Cashew::bombIcon);
+
+	// Get player and add items to inventory
+	auto* player = EntityManager::getPlayer("player");
+	if (player) {
+		player->setInventoryItem(0, Cashew::sword);
+		player->setInventoryItem(1, Cashew::grenade);
+		player->setInventoryItem(2, Cashew::bomb);
+		player->setInventoryItem(4, Cashew::sword);  // Another sword in slot 5
+		player->setInventoryItem(7, Cashew::bomb);   // Another bomb in slot 8
+
+		// Initialize inventory UI (bottom center of screen)
+		Cashew::inventoryUI = UI_Elements::PlayerInventory(
+			-250.0f,  // x position (adjust to center on your screen)
+			-350.0f,  // y position (near bottom of screen)
+			50.0f,    // slot size
+			10.0f,    // spacing between slots
+			player,   // player reference
+			Shapes::CENTER
+		);
+
+		// style the inventory UI
+		// comment out if its ugly
+		Cashew::inventoryUI.setStyle({
+			{ 51.0f, 51.0f, 51.0f, 204.0f }, // primaryColor - dark gray
+			{ 102.0f, 102.0f, 102.0f, 255.0f }, // secondaryColor - lighter gray
+			{ 255.0f, 255.0f, 255.0f, 255.0f }, // strokeColor - white
+			2 // strokeWeight
+			});
+	}
+
 	// Initialize dialogue box
 	Cashew::dialogueBox = UI_Elements::DialogueBox(0.0f, 0.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
-
-	// Initialize inventory UI (bottom center of screen)
-	// Adjust x and y positions based on your screen resolution
-	auto* player = EntityManager::getPlayer("player");
-	Cashew::inventoryUI = UI_Elements::PlayerInventory(
-		-250.0f,  // x position (adjust to center on your screen)
-		-350.0f,  // y position (near bottom of screen)
-		50.0f,    // slot size
-		10.0f,    // spacing between slots
-		player,   // player reference
-		Shapes::CENTER
-	);
-
 }
 
 void Testing_Update() {
@@ -99,10 +135,19 @@ void Testing_Draw() {
 }
 
 void Testing_Free() {
-
+	// Clean up items
+	delete Cashew::sword;
+	delete Cashew::grenade;
+	delete Cashew::bomb;
 }
 
 void Testing_Unload() {
 	EntityManager::clear();
 	TileManager::exit(); // Use TileManager::exit() instead of World::exit()
+
+	// Unload textures
+	if (Cashew::swordIcon) AEGfxTextureUnload(Cashew::swordIcon);
+	if (Cashew::grenadeIcon) AEGfxTextureUnload(Cashew::grenadeIcon);
+	if (Cashew::bombIcon) AEGfxTextureUnload(Cashew::bombIcon);
+
 }
