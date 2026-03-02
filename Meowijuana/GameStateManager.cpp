@@ -10,6 +10,7 @@
 #include "Screens/FarmScreen.hpp"
 #include "Screens/DungeonScreen.hpp"
 #include "Screens/TestingScreen.hpp"
+#include "Screens/Testing/testing-andrea.hpp"
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
@@ -126,6 +127,15 @@ void GSM_Update()
 			fpDraw = Level2_Draw;
 			fpFree = Level2_Free;
 			fpUnload = Level2_Unload;
+			break;
+
+		case GS_A:
+			fpLoad = Andrea_Load;
+			fpInitialize = Andrea_Initialize;
+			fpUpdate = Andrea_Update;
+			fpDraw = Andrea_Draw;
+			fpFree = Andrea_Free;
+			fpUnload = Andrea_Unload;
 			break;
 
 		// Utility states (TODO: technically these 2 can be removed since itll be caught by default but we'll see)

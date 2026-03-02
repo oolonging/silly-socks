@@ -7,6 +7,7 @@
 static UI_Elements::Button creditsButton;
 static UI_Elements::Button playButton;
 static UI_Elements::Button settingsButton;
+static UI_Elements::Button testButton;
 
 // image asset to load in the middle of the screen
 AEGfxTexture* CatastropheLogo = nullptr;
@@ -15,6 +16,7 @@ AEGfxTexture* CatastropheLogo = nullptr;
 void navigateToGame(void) { next = GS_LEVEL1; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
+void navigateToTest(void) { next = GS_A; }
 
 void Mainmenu_Load() {
 	CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
@@ -26,11 +28,13 @@ void Mainmenu_Initialize()
 	creditsButton = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "Credits", Shapes::CENTER);
 	playButton = UI_Elements::Button(Shapes::Quad{ {0.0f, -200.0f}, 200.0f, 100.0f }, "Play", Shapes::CENTER);
 	settingsButton = UI_Elements::Button(Shapes::Quad{ {300.0f, -200.0f}, 200.0f, 100.0f }, "Settings", Shapes::CENTER);
+	testButton = UI_Elements::Button(Shapes::Quad{ {400.0f, 200.0f}, 200.0f, 100.0f }, "Test", Shapes::CENTER);
 	
 	// set the button functions
 	playButton.setOnClick(navigateToGame);
 	creditsButton.setOnClick(navigateToCredits);
 	settingsButton.setOnClick(navigateToSettings);
+	testButton.setOnClick(navigateToTest);
 }
 
 void Mainmenu_Update() {
@@ -47,6 +51,7 @@ void Mainmenu_Draw()
 	creditsButton.draw();
 	playButton.draw();
 	settingsButton.draw();
+	testButton.draw();
 }
 
 void Mainmenu_Free() {}

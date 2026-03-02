@@ -27,7 +27,9 @@ enum GSM_STATES
 	// Utility states
 	GS_QUIT,
 	GS_RESTART,
-	GS_BACK
+	GS_BACK,
+
+	GS_A
 
 };
 

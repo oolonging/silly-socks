@@ -4,18 +4,23 @@
 #include "AEEngine.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 namespace World
 {
 	enum behaviourFlag
 	{
-		walkable = 0, // normal ground
-		solid = 1, // walls, obstacle objects
-		interactable = 2, // chest etc.
-		teleport = 3, // teleport to other floors
-		trap = 4
+		// -- Misc. -- //
+		Ground, // normal ground
+		Wall, // walls, obstacle objects
+		InteractableObj, // chest etc.
 
-		// Will add more ltr on	
+		// -- Crops -- //
+		EmptyCropTile,
+		PlantedCropTile,
+		GrownCropTile,
+		DoneCropTile
+
 	};
 
 	struct tileObject
@@ -24,30 +29,27 @@ namespace World
 		std::string name;
 		std::string description;
 		AEGfxTexture* image;
-		// replaces the bool so can have event handler that will check based on the flag
-		// plus easier to add more ways for player to interact w object 
-		int behaviour;
 	};
 
 	class worldGrid
 	{
 	private:
-		std::vector<std::vector<tileObject>> tiles;
+		std::vector<std::vector<int>> tilesID;
+		std::unordered_map<int, tileObject> tileDatabase;
 		int gridWidth, gridHeight, tileSize;
+		int row, column;
 		float offsetX, offsetY;
 
 	public:
 		/*
 		Functions:
-		- Initialize : initialise the grid
-		- ReadMap : maybe implement a way to read maps based on txt file
-		- GetTile : return the tile type
-		- SetTIle : set new tile
-		- Free : free everything 
-		- SnapToCell : return new coord of where the obj should be 
-		- isWalkable : return bool if the obj is walkable
-		- isInteractable : same as walkable but for interactable
-		- Collision : basically like Soroor assignment 3 part 1
+		REDOING EVERYTHING
+
+		-> Initialise 
+
+		-> Get Index (based on real word coordinates and translate that the Grid Tile)
+
+		-> Get Tile ID (changing from array of tile objects to tile ID [lesser memory usage], gets tile ID based on index
 		*/
 
 		worldGrid();
@@ -55,22 +57,42 @@ namespace World
 
 		// Initialize the grid with given dimensions
 		void initGrid(int width, int height, int size);
+		void initMapTexture();
+		void outWorldMap(const std::string& filename);
 		
 		std::pair<int, int> getIndex(float cordX, float cordY);
 
-		tileObject* getTile(int gridX, int gridY);
-		const tileObject* getTile(int gridX, int gridY) const;
+		int& pointerToTile(int gridX, int gridY);
+		const int getTileID(int gridX, int gridY) const;
 
-		void setTile(int gridX, int gridY, tileObject* ob);
+		void fillGrid(const std::string& filename);
 
 		// Get grid dimensions
 		int getWidth() const { return gridWidth; }
 		int getHeight() const { return gridHeight; }
 		int getTileSize() const { return tileSize; }
+		int getRow() const { return row; }
+		int getColumn() const { return column; }
+		float getOffsetX() const { return offsetX; }
+		float getOffsetY() const { return offsetY; }
+		
+		void drawTexture(World::worldGrid Griddy);
+		void initTextureBox();
 	};
 
 	void drawGrid();
 	void freeGrid();
+
+	// Active Tile -> based on the user position and the mouse as well (ref stardew valley)
+	std::pair<int, int> activeTile(float userX, float userY, World::worldGrid Griddy);
+	
+	// Get World Coords -> Translate Array index to real word coordinates
+	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, World::worldGrid Griddy);
+	
+	void drawTile(std::pair<int, int> tile, World::worldGrid Griddy);
+
+	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy);
+
 }
 
 

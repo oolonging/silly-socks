@@ -1,37 +1,127 @@
 #include "AEEngine.h"
 #include "World.hpp"
 #include "Graphics.hpp"
+#include <cmath>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+#include <iostream>
 
 World::worldGrid grid;
 
 namespace World {
 
 	AEGfxVertexList* gridMesh;
+	AEGfxVertexList* tileMesh;
 
-	worldGrid::worldGrid() : gridWidth(0), gridHeight(0), tileSize(0), offsetX(0.0f), offsetY(0.0f) {}
+	worldGrid::worldGrid() : gridWidth(0), gridHeight(0), tileSize(0), offsetX(0.0f), offsetY(0.0f), column(0), row(0) {}
 
 	worldGrid::~worldGrid() {
-		tiles.clear();
+	}
+
+	void worldGrid::initMapTexture()
+	{
+		//// -- Misc. -- //
+		//Ground, // normal ground
+		//Wall, // walls, obstacle objects
+		//InteractableObj, // chest etc.
+
+		//// -- Crops -- //
+		//EmptyCropTile,
+		//PlantedCropTile,
+		//GrownCropTile,
+		//DoneCropTile
+
+		tileObject ground;
+		ground.objID = 0;
+		ground.name = "Ground";
+		ground.description = "Assets/Tiles/Ground.png";
+		ground.image = AEGfxTextureLoad(ground.description.c_str());
+
+		tileDatabase[0] = ground;
+
+		tileObject wall;
+		wall.objID = 1;
+		wall.name = "Wall";
+		wall.description = "Assets/Tiles/Wall.png";
+		wall.image = AEGfxTextureLoad(wall.description.c_str());
+
+		tileDatabase[1] = wall;
+
+		tileObject inter;
+		inter.objID = 2;
+		inter.name = "Interactable Object";
+		inter.description = "Assets/Tiles/Wall.png";
+		inter.image = AEGfxTextureLoad(inter.description.c_str());
+
+		tileDatabase[2] = inter;
+
+		tileObject emptyCrop;
+		emptyCrop.objID = 3;
+		emptyCrop.name = "Empty Crop Land";
+		emptyCrop.description = "Assets/Tiles/Empty_Crop.png";
+		emptyCrop.image = AEGfxTextureLoad(emptyCrop.description.c_str());
+
+		tileDatabase[3] = emptyCrop;
+
+		tileObject plantedCrop;
+		plantedCrop.objID = 4;
+		plantedCrop.name = "Planted Crop Land";
+		plantedCrop.description = "Assets/Tiles/Planted_Crop.png";
+		plantedCrop.image = AEGfxTextureLoad(plantedCrop.description.c_str());
+
+		tileDatabase[4] = plantedCrop;
+
+		tileObject grownCrop;
+		grownCrop.objID = 5;
+		grownCrop.name = "Grown Crop Land";
+		grownCrop.description = "Assets/Tiles/Growing_Crop.png";
+		grownCrop.image = AEGfxTextureLoad(grownCrop.description.c_str());
+
+		tileDatabase[5] = grownCrop;
+
+		tileObject doneCrop;
+		doneCrop.objID = 6;
+		doneCrop.name = "Grown Crop Land";
+		doneCrop.description = "Assets/Tiles/Done_Crop.png";
+		doneCrop.image = AEGfxTextureLoad(doneCrop.description.c_str());
+
+		tileDatabase[6] = doneCrop;
+	}
+
+	void worldGrid::initTextureBox()
+	{
+		if (tileMesh == nullptr)
+		{
+			AEGfxMeshStart();
+
+			float half = tileSize / 2.0f;
+
+			// 2 triangles (square centered at origin)
+			AEGfxVertexAdd(-half, -half, 0xFFFFFFFF, 0.f, 1.f);
+			AEGfxVertexAdd(half, -half, 0xFFFFFFFF, 1.f, 1.f);
+			AEGfxVertexAdd(half, half, 0xFFFFFFFF, 1.f, 0.f);
+
+			AEGfxVertexAdd(-half, -half, 0xFFFFFFFF, 0.f, 1.f);
+			AEGfxVertexAdd(half, half, 0xFFFFFFFF, 1.f, 0.f);
+			AEGfxVertexAdd(-half, half, 0xFFFFFFFF, 0.f, 0.f);
+
+			tileMesh = AEGfxMeshEnd();
+		}
 	}
 
 	// Initialize the grid with given dimensions
 	void worldGrid::initGrid(int width, int height, int size)
 	{
-		gridWidth = width;
-		gridHeight = height;
+		gridWidth = width / size;   // number of columns
+		gridHeight = height / size;   // number of rows
 		tileSize = size;
 
 		// Calculate offset to center the grid on screen
-		// offsetX: center horizontally (negative to shift left)
-		// offsetY: center vertically and position top edge at positive Y
-		offsetX = -(gridWidth * tileSize) / 2.0f;
-		offsetY = (gridHeight * tileSize) / 2.0f;
+		offsetX = -AEGfxGetWindowWidth() / 2.0f;
+		offsetY = AEGfxGetWindowHeight() / 2.0f;
 
-		// Resize the 2D vector
-		tiles.resize(gridHeight);
-		for (int y = 0; y < gridHeight; ++y) {
-			tiles[y].resize(gridWidth);
-		}
+		tilesID.resize(gridHeight, std::vector<int>(gridWidth, 0));
 
 		float leftX = offsetX;
 		float rightX = offsetX + gridWidth * tileSize;
@@ -65,37 +155,179 @@ namespace World {
 		}
 	}
 
+	// Using a file to read the ID and filling the vector w respective IDs
+	void worldGrid::fillGrid(const std::string& filename)
+	{
+		std::ifstream file(filename);
+
+		if (!file.is_open())
+		{
+			printf("Failed to open map file\n");
+			return;
+		}
+
+		int number;
+
+		for (int y = 0; y < gridHeight; y++)
+		{
+			for (int x = 0; x < gridWidth; x++)
+			{
+				file >> number;
+
+				tilesID[y][x] = number;
+
+				if (!file)
+				{
+					printf("There is an issue with the map\n");
+					return;
+				}
+			}
+		}
+
+		printf("Map Loaded\n");
+
+		file.close();
+	}
+
+	void worldGrid::outWorldMap(const std::string& filename)
+	{
+		std::ofstream file(filename);
+
+		if (!file.is_open())
+		{
+			printf("Failed to create file\n");
+			return;
+		}
+
+		for (int y = 0; y < gridHeight; ++y)
+		{
+			for (int x = 0; x < gridWidth; ++x)
+			{
+				file << tilesID[y][x];
+
+				if (x < gridWidth - 1)
+					file << " ";
+			}
+
+			file << "\n";
+		}
+
+		file.close();
+
+		printf("Map exported\n");
+
+	}
+
+	// Getting the Index of the tile based on the world coordinates
 	std::pair<int, int> worldGrid::getIndex(float cordX, float cordY)
 	{
-		int gridX, gridY;
+		int gridX = static_cast<int>(floor((cordX - offsetX) / tileSize));
+		int gridY = static_cast<int>(floor((offsetY - cordY) / tileSize));
 
-		gridX = static_cast<int>(floor((cordX - offsetX) / tileSize));
-		gridY = static_cast<int>(floor((offsetY - cordY) / tileSize));
+		// Clamp X
+		if (gridX < 0) gridX = 0;
+		if (gridX >= gridWidth) gridX = gridWidth - 1;
 
-		std::pair<int, int> index = std::make_pair(gridX, gridY);
+		// Clamp Y
+		if (gridY < 0) gridY = 0;
+		if (gridY >= gridHeight) gridY = gridHeight - 1;
 
-		return index;
+		return { gridX, gridY };
 	}
 
-	tileObject* worldGrid::getTile(int gridX, int gridY)
+	int& worldGrid::pointerToTile(int gridX, int gridY)
 	{
-		return &tiles[gridX][gridY];
+		return tilesID[gridY][gridX];
 	}
 
-	const tileObject* worldGrid::getTile(int gridX, int gridY) const
+	const int worldGrid::getTileID(int gridX, int gridY) const
 	{
-		return &tiles[gridX][gridY];
+		return tilesID[gridY][gridX];
 	}
 
-	void worldGrid::setTile(int gridX, int gridY, tileObject* ob)
+	// Based on the player position and the mouse, highlight the active tile red
+	std::pair<int, int> activeTile(float userX, float userY, World::worldGrid Griddy)
 	{
-		tiles[gridX][gridY].objID = ob->objID;
-		tiles[gridX][gridY].name = ob->name;
-		tiles[gridX][gridY].description = ob->description;
-		tiles[gridX][gridY].image = ob->image;
-		tiles[gridX][gridY].behaviour = ob->behaviour;
+		int mouseX, mouseY;
+		AEInputGetCursorPosition(&mouseX, &mouseY);
+
+		auto playerTile = Griddy.getIndex(userX, userY);
+
+		float worldMouseX = mouseX - AEGfxGetWindowWidth() / 2.0f;
+		float worldMouseY = AEGfxGetWindowHeight() / 2.0f - mouseY;
+
+		auto mouseTile = Griddy.getIndex(worldMouseX, worldMouseY);
+
+		std::pair<int, int> ActiveTile;
+
+		// Get the Direction of the Curser 
+		int dirX = mouseTile.first - playerTile.first;
+		int dirY = mouseTile.second - playerTile.second;
+
+		// Positive = 1, Negative = -1, Zero = 0
+		// Eg: if X > 0 and Y > 0 = Bottom Left
+		// -1, -1 |  -1, +0  | -1, +1
+		// +0, -1 | UserTile | +0, +1
+		// +1, -1 |  +1, +0  | +1, +1
+
+		int activeX = (dirX > 0) - (dirX < 0);
+		int activeY = (dirY > 0) - (dirY < 0);
+
+		ActiveTile = { 
+			playerTile.first += activeX, 
+			playerTile.second += activeY 
+		};
+
+		return ActiveTile;
 	}
 
+	// Based on the tile index, get the world coordinates 
+	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, World::worldGrid Griddy)
+	{
+		int tileSize = Griddy.getTileSize();
+
+		float X = Griddy.getOffsetX()
+			+ tile.first * tileSize
+			+ tileSize / 2.0f;
+
+		float Y = Griddy.getOffsetY()
+			- tile.second * tileSize
+			- tileSize / 2.0f;
+
+		return { X, Y };
+	}
+
+	// User interacting w tile
+	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy)
+	{
+		int& ID = Griddy.pointerToTile(tile.first, tile.second);
+
+		switch (ID)
+		{
+		case EmptyCropTile:
+			// Will add inventory check later
+			printf("Planted Crops! Yay!!\n");
+			ID = PlantedCropTile;
+			break;
+
+		case PlantedCropTile:
+			printf("Crops Grown! Yay!!\n");
+			ID = GrownCropTile;
+			break;
+
+		case GrownCropTile:
+			printf("Your Crops are Done! Yay!!\n");
+			ID = DoneCropTile;
+			break;
+
+		case DoneCropTile:
+			printf("Collected Plants! Yay!!\n");
+			ID = EmptyCropTile;
+			break;
+		}
+	}
+
+	// Drawing and other stuff //
 	void drawGrid()
 	{
 		// Ensure render state is valid
@@ -119,106 +351,56 @@ namespace World {
 		}
 	}
 
+	void worldGrid::drawTexture(World::worldGrid Griddy)
+	{
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(1.0f);
+
+		for (int y = 0; y < gridHeight; y++)
+		{
+			for (int x = 0; x < gridWidth; x++)
+			{
+				int tileID = tilesID[y][x];
+
+				auto it = tileDatabase.find(tileID);
+				if (it == tileDatabase.end())
+					continue;
+
+				const tileObject& def = it->second;
+
+				if (!def.image)
+					continue;
+
+				std::pair<float, float> coords = getWorldCoords({ x, y }, Griddy);
+
+				AEMtx33 transform;
+				AEMtx33 trans;
+
+				AEMtx33Trans(&trans, coords.first, coords.second);
+				transform = trans;
+
+				AEGfxSetTransform(transform.m);
+
+				AEGfxTextureSet(def.image, 0, 0);
+
+				AEGfxMeshDraw(tileMesh, AE_GFX_MDM_TRIANGLES);
+			}
+		}
+	}
+
+	void drawTile(std::pair<int, int> tile, World::worldGrid Griddy)
+	{
+		int tileSize = Griddy.getTileSize();
+		std::pair<float, float> coords = getWorldCoords(tile, Griddy);
+
+		Color::fill(255, 0, 0, 50);
+		Shapes::square(coords.first, coords.second, tileSize);
+	}
+
 	void freeGrid()
 	{
 		AEGfxMeshFree(gridMesh);
 		gridMesh = nullptr;
 	}
-
-	//// Will use stated values so that it can be able to zoom
-	//void initGrid(int width, int height, float tileSize)
-	//{
-	//	grid.width = width;
-	//	grid.height = height;
-	//	grid.tileSize = tileSize;
-
-	//	grid.tiles = new Tile * [grid.height];
-
-	//	for (int y = 0; y < grid.height; y++)
-	//	{
-	//		grid.tiles[y] = new Tile[grid.width];
-
-	//		for (int x = 0; x < grid.width; x++)
-	//		{
-	//			Tile& tile = grid.tiles[y][x];
-	//			tile.x = x;
-	//			tile.y = y;
-	//		}
-	//	}
-
-	//	float minX = -(static_cast<float>(grid.width / 2));
-	//	float maxX = (static_cast<float>(grid.width / 2));
-	//	float minY = -(static_cast<float>(grid.height / 2));
-	//	float maxY = (static_cast<float>(grid.height / 2));
-
-	//	// If empty then initialise the grid meshes stuff
-	//	if (gridMesh == nullptr)
-	//	{
-	//		AEGfxMeshStart();
-	//		// Horizontal lines
-	//		for (int y = 0; y <= grid.height; y++)
-	//		{
-	//			float screenY = maxY - y * grid.tileSize;
-	//			AEGfxVertexAdd(minX, screenY, 0xFFFFFFFF, 1.f, 1.f);
-	//			AEGfxVertexAdd(maxX, screenY, 0xFFFFFFFF, 1.f, 1.f);
-	//		}
-
-	//		// Vertical lines
-	//		for (int x = 0; x <= grid.width; x++)
-	//		{
-	//			float screenX = minX + x * grid.tileSize;
-	//			AEGfxVertexAdd(screenX, maxY, 0xFFFFFFFF, 1.f, 1.f);
-	//			AEGfxVertexAdd(screenX, minY, 0xFFFFFFFF, 1.f, 1.f);
-	//		}
-
-	//		gridMesh = AEGfxMeshEnd();
-	//	}
-	//}
-
-	// Testing the Lines //
-
-	//void drawGrid()
-	//{
-	//	// Ensure render state is valid
-	//	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	//	AEGfxSetTransparency(1.0f);
-
-	//	// Reset transform so grid doesn't follow entities
-	//	AEMtx33 identity;
-	//	AEMtx33Identity(&identity);
-	//	AEGfxSetTransform(identity.m);
-
-	//	// Black grid
-	//	AEGfxSetColorToMultiply(0.f, 0.f, 0.f, 1.f);
-	//	AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.f);
-
-	//	// Draw
-	//	if (gridMesh)
-	//	{
-	//		AEGfxMeshDraw(gridMesh, AE_GFX_MDM_LINES);
-	//	}
-	//}
-
-	// Test ltr
-	/*void updatGridSize(float tileSize)
-	{
-		grid.tileSize = tileSize;
-		AEGfxMeshFree(gridMesh);
-		gridMesh = nullptr;
-	}*/
-
-
-	/*void freeGrid()
-	{
-		for (int y = 0; y < worldGrid::getHeight; y++)
-		{
-			delete[] grid.tiles[y];
-		}
-
-		delete[] grid.tiles;
-
-		AEGfxMeshFree(gridMesh);
-		gridMesh = nullptr;
-	}*/
 }
