@@ -20,7 +20,6 @@ UI_Elements::Slider bgVolumeSlider = UI_Elements::Slider(
 );
 
 void Settings_Load() {
-
 	audio.init();
 	audio.loadBGM("Assets/testaudio.mp3");
 }
@@ -35,6 +34,13 @@ void Settings_Initialize() {
 	sliderStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 	sliderStyle.strokeWeight = 2.0f;
 	bgVolumeSlider.setStyle(sliderStyle);
+
+	// manually set texture, ill need some help with the default texture since it saves memory but i dont know why its not workign yet
+	bgVolumeSlider.setTexture({
+		AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/slider_handle.png"),
+		AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/slider_bar.png")
+	});
+
 
 	audio.playBGM(bgVolume / 100.0f, true);
 
@@ -59,10 +65,8 @@ void Settings_Draw() {
 }
 
 void Settings_Free() {
-
 }
 
 void Settings_Unload() {
-
 	audio.exit();
 }
