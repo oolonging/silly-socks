@@ -86,6 +86,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// init custom cursor(s);
 	Input::init();
 
+	// Init custom slider (temporary, ill need someone to clean up the memory management when we have precompiled headers in place)
+	UI_Elements::Slider::loadDefaultTextures();
+
 	GSM_Initialize(GS_SPLASH);
 
 	// fixed the loop
@@ -149,6 +152,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::exit();
 	World::freeGrid();
 	Input::exit();
+
+	UI_Elements::Slider::unloadDefaultTextures();
 
 	AESysExit();
 }
