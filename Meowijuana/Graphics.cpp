@@ -85,6 +85,9 @@ namespace Shapes {
 	static AEGfxVertexList* sEllipseMesh = nullptr;
 	static AEGfxVertexList* sEllipseStrokeMesh = nullptr;
 
+	static AEGfxVertexList* sTriangleMesh = nullptr;
+	static AEGfxVertexList* sTriangleStrokeMesh = nullptr;
+
 	// Globals for ellipse type
 	const int NUM_SEGMENTS = 32;
 
@@ -297,6 +300,46 @@ namespace Shapes {
 	}
 	void circle(float x, float y, float size, SHAPE_MODE drawMode) {
 		ellipseAdvanced(x, y, size, size, 0.0f, drawMode);
+	}
+
+	// Triangle functions
+	void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
+		// Create mesh
+		AEGfxMeshStart();
+
+		AEGfxTriAdd(x1, y1, 0xFFFFFFFF, 0.0f, 0.0f, // No idea what the U and V are supposed to be
+			x2, y2, 0xFFFFFFFF, 0.0f, 0.0f,
+			x3, y3, 0xFFFFFFFF, 0.0f, 0.0f
+		);
+		sTriangleMesh = AEGfxMeshEnd();
+
+		// Define transformations
+		AEMtx33 scale{};
+		AEMtx33 rot{};
+		AEMtx33 translation{};
+		AEMtx33 transformation{};
+
+		AEMtx33Scale(&scale, 1.0f, 1.0f); // scale by 1
+		AEMtx33Rot(&rot, 0.0f); // 0 rotation
+		AEMtx33Trans(&translation, 0.0f, 0.0f); // 0 translation
+
+		AEMtx33Concat(&transformation, &rot, &scale);
+		AEMtx33Concat(&transformation, &translation, &transformation);
+
+		// Reset transformations
+		AEGfxSetTransform(transformation.m);
+
+		// set color
+		AEGfxSetColorToMultiply(
+			Settings::gFillColor.red / 255.0f,
+			Settings::gFillColor.green / 255.0f,
+			Settings::gFillColor.blue / 255.0f,
+			Settings::gFillColor.alpha / 255.0f
+		);
+		AEGfxMeshDraw(sTriangleMesh, AE_GFX_MDM_TRIANGLES);
+	}
+	void triangle(Point p1, Point p2, Point p3) {
+		triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
 	}
 }
 

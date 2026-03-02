@@ -105,6 +105,10 @@ namespace Shapes {
 	void ellipseAdvanced(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode = CENTER);
 	void ellipse(float x, float y, float width, float height, SHAPE_MODE drawMode = CENTER);
 	void circle(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
+
+	// Triangle
+	void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
+	void triangle(Point, Point, Point);
 }
 
 namespace Graphics {
