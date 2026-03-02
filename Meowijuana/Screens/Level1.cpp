@@ -85,6 +85,10 @@ void Level1_Initialize()
     if (weapon)
     {
         testPlayer.setWeapon(weapon);
+        testPlayer.setAtkSpd(weapon->getAttackSpeed());
+
+        //test
+        testEnemy.setWeapon(weapon);
     }
 
     // Initialize weapon
@@ -184,6 +188,23 @@ void Level1_Update()
     Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
     testPlayer.update();
 
+    // enemy stuff
+    // todo:: i think player cd
+
+    if (testEnemy.isAlive()) {
+        testEnemy.tickAttackTimer();
+
+        if (testEnemy.canAttack()) {
+            testEnemy.attack(testPlayer);
+            testEnemy.resetAttackTimer();
+        }
+    }
+
+    if (testPlayer.getHp() <= 0) {
+        testPlayer.setHp(0);
+    }
+
+
     //// Weapon position update based on player movement direction
     //if (AEInputCheckCurr(AEVK_A)) {
     //    weapon.setPosition(testPlayer.getX() - 80, testPlayer.getY());
@@ -202,19 +223,26 @@ void Level1_Update()
     //}
 
     // Attack enemy
-    if (AEInputCheckTriggered(AEVK_LBUTTON) && testEnemy.getHp() > 0) {
+    testPlayer.tickAttackTimer();
+
+    if (AEInputCheckTriggered(AEVK_LBUTTON) && testPlayer.canAttack() && testEnemy.getHp() > 0) {
         testPlayer.attack(testEnemy);
-        std::cout << "Hit! Enemy HP: " << testEnemy.getHp() << "\n";
+        testPlayer.resetAttackTimer();
 
         if (testEnemy.getHp() <= 0) {
             testEnemy.setHp(0);
             std::cout << "Enemy defeated!\n";
-            
         }
         else {
-            std::cout << "Missed!\n";
+            std::cout << "Hit! Enemy HP: " << testEnemy.getHp() << "\n";
         }
     }
+    else {
+        std::cout << "Attack on cooldown!\n"; // clean up debug
+    }
+
+
+
 
     // Update player speed based on slider value (map 0-100 to 1-10)
     float newSpeed = 1.0f + (sliderValue / 100.0f) * 9.0f;
@@ -266,6 +294,9 @@ void Level1_Draw()
     // Enemy disappears when dead
     if (testEnemy.getHp() > 0) {
         testEnemy.draw(testPlayer);
+    }
+    else {
+        
     }
 
 

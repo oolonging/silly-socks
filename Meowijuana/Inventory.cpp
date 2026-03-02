@@ -49,8 +49,8 @@ namespace Inventory {
 			"Carrot Sword",
 			"A sharp veggie blade forged from the finest carrots",
 			10.0f,      // value
-			15.0f,      // damage
-			1.2f,       // attackSpeed
+			20.0f,      // damage
+			2.0f,       // attackSpeed
 			80.0f,       // range
 			Common,     // rarity
 			5.0f        // knockback

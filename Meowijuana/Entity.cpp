@@ -44,6 +44,14 @@ namespace Entity {
 		sprite = tex;
 	}
 
+	void Entity::setAtkSpd(float spd) {
+		atkSpd = spd;
+	}
+
+	void Entity::setAtkCD(float CD) {
+		atkCD = CD;
+	}
+
 	void Entity::updateHealthBar() {
 		healthBar.setValue(hp);
 	}
@@ -93,6 +101,21 @@ namespace Entity {
 		updateHealthBar();
 
 	}
+
+
+	void Entity::tickAttackTimer() {
+		if (atkCD > 0.0f)
+			atkCD -= (float)AEFrameRateControllerGetFrameTime();
+	}
+
+	bool Entity::canAttack() {
+		return atkCD <= 0.0f;
+	}
+
+	void Entity::resetAttackTimer() {
+		atkCD = 1.0f / atkSpd; // i set enemy spd to 0.8 and carrot sword is 2 so umm
+	}
+
 
 	void Entity::attack(Entity& target) {
 		if (!equippedWeapon) {
@@ -335,6 +358,7 @@ namespace Entity {
 		return fov;
 	}
 
+
 	void Enemy::movement(const Player& player, float deltaTime) {
 		bool playerSpotted = Collision::collidedWith(
 			x, y, 
@@ -386,8 +410,11 @@ namespace Entity {
 			if (dist >= stopDistance) {
 				setPosition(x + diffX * speed, y + diffY * speed);
 			}
+
 		}
 	}
+
+
 
 	void Enemy::draw(const Player& player) {
 		movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()));

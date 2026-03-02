@@ -28,6 +28,10 @@ namespace Entity {
 		float armor;
 		AEGfxTexture* sprite;
 		UI_Elements::ProgressBar healthBar;
+
+		// Atack
+		float atkCD = 2.0;
+		float atkSpd = 0.8;
 		Inventory::Weapon* equippedWeapon = nullptr;
 
 	public:
@@ -40,6 +44,9 @@ namespace Entity {
 		float getMaxHp() const { return maxHp; }
 		float getSpeed() const { return speed; }
 		float getArmor() const { return armor; }
+		float getAtkSpd() const { return atkSpd; }
+		float getAtkCD() const { return atkCD; }
+
 		AEGfxTexture* getSprite() const { return sprite; }
 		
 		// Setters
@@ -49,12 +56,20 @@ namespace Entity {
 		void setArmor(float arm);
 		void setSprite(AEGfxTexture* tex);
 
+		// Attack
+		void setAtkSpd(float spd);
+		void setAtkCD(float CD);
+		bool isAlive() const { return hp > 0; }
+
 
 		// Health bar management
 		void updateHealthBar();
 		void drawHealthBar();
 
-
+		// More attack
+		bool canAttack();
+		void tickAttackTimer();
+		void resetAttackTimer();
 		void takeDamage(float rawDamage);
 
 		void setWeapon(Inventory::Weapon* weapon) { equippedWeapon = weapon; }
