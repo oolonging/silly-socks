@@ -430,12 +430,29 @@ namespace Entity {
 	}
 
 	void NPC::speak(UI_Elements::DialogueBox& dialogueBox) {
-		if (!dialogLines.empty()) {
-			dialogueBox.setSpeaker("NPC");
-			dialogueBox.setText(dialogLines[0]);
-			dialogueBox.setCharacterSprite(this->sprite);
-			dialogueBox.activate();
+		if (dialogLines.empty()) {
+			return;
 		}
+
+		if (dialogueBox.getIsActive()) {
+			if (AEInputCheckTriggered(AEVK_SPACE) || AEInputCheckTriggered(AEVK_LBUTTON)) {
+				if (linenum < dialogLines.size() - 1) {
+					++linenum;
+					dialogueBox.setText(dialogLines[linenum]);
+				}
+				else {
+					dialogueBox.dismiss();
+					linenum = 0;
+				}
+			}
+			return; 
+		}
+
+		dialogueBox.setSpeaker("NPC");
+		dialogueBox.setCharacterSprite(this->sprite);
+		linenum = 0;
+		dialogueBox.setText(dialogLines[linenum]);
+		dialogueBox.activate();
 	}
 
 	void NPC::draw() {

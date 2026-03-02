@@ -128,11 +128,12 @@ namespace UI_Elements {
 		// set text align
 		Text::textAlign(Text::LEFT, Text::TOP);
 
-		// Handle click to dismiss (anywhere on screen)
-		if (AEInputCheckTriggered(AEVK_LBUTTON)) {
-			dismiss();
-			return;
-		}
+
+		//// Handle click to dismiss (anywhere on screen)
+		//if (AEInputCheckTriggered(AEVK_LBUTTON)) {
+		//	dismiss();
+		//	return;
+		//}
 
 		// Calculate positions based on draw mode
 		float boxX = x;
@@ -203,7 +204,7 @@ namespace UI_Elements {
 		Text::textAlign(Text::RIGHT, Text::BOTTOM);
 		float hintX = boxX + width - textPadding;
 		float hintY = boxY - height + textPadding;
-		Text::text("[Click to continue]", hintX, hintY);
+		Text::text("[Click or press SPACE BAR to continue]", hintX, hintY);
 
 		// Reset text alignment
 		Text::textAlign(Text::LEFT, Text::TOP);

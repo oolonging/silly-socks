@@ -5,6 +5,8 @@
 #include "../Managers/EntityManager.hpp"
 #include "../Managers/TileManager.hpp"
 
+Entity::NPC* activeSpeaker = nullptr;
+
 namespace Cashew {
 	// UI_Element Dialogue box
 	UI_Elements::DialogueBox dialogueBox;
@@ -93,25 +95,45 @@ void Testing_Update() {
 	// Update inventory UI (handles keyboard input for slot selection)
 	Cashew::inventoryUI.update();
 
-	// Check for interaction with Prasanna
-	if (prasanna && Collision::collidedWith(
-		player->getX(), player->getY(),
-		prasanna->getX(), prasanna->getY(),
-		75.0f,
-		prasanna->getWidth(), prasanna->getHeight()
-	)) {
-		prasanna->speak(Cashew::dialogueBox);
+
+	if (!Cashew::dialogueBox.getIsActive()) {
+		activeSpeaker = nullptr;
+
+
+		// Check for interaction with Prasanna
+		if (prasanna && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			prasanna->getX(), prasanna->getY(),
+			75.0f,
+			prasanna->getWidth(), prasanna->getHeight()
+		)) {
+			activeSpeaker = prasanna;
+			prasanna->speak(Cashew::dialogueBox);
+		}
+
+		//if (Cashew::dialogueBox.getIsActive()) {
+		//	prasanna->speak(Cashew::dialogueBox);
+		//}
+
+
+		// Check for interaction with Soroor
+		if (soroor && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			soroor->getX(), soroor->getY(),
+			75.0f,
+			soroor->getWidth(), soroor->getHeight()
+		)) {
+			activeSpeaker = soroor;
+			soroor->speak(Cashew::dialogueBox);
+		}
 	}
 
-	// Check for interaction with Soroor
-	if (soroor && Collision::collidedWith(
-		player->getX(), player->getY(),
-		soroor->getX(), soroor->getY(),
-		75.0f,
-		soroor->getWidth(), soroor->getHeight()
-	)) {
-		soroor->speak(Cashew::dialogueBox);
+
+	if (Cashew::dialogueBox.getIsActive() && activeSpeaker) {
+		activeSpeaker->speak(Cashew::dialogueBox);
 	}
+
+
 
 	// Save map when pressing F5
 	if (AEInputCheckTriggered(AEVK_F5)) {

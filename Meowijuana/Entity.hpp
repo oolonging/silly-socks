@@ -131,6 +131,7 @@ namespace Entity {
 	class NPC : public Entity {
 	private:
 		std::vector<std::string> dialogLines;
+		size_t linenum = 0;
 
 	public:
 		// Dialog management
