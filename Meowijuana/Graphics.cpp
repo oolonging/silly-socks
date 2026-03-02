@@ -1,6 +1,7 @@
 #include "Graphics.hpp"
 #include "AEEngine.h"
 #include "Settings.hpp"
+#include <unordered_map>
 
 namespace Color {
 	// TODO: missing
@@ -49,7 +50,7 @@ namespace Color {
 
 	// Stroke weight
 	void strokeWeight(int value) {
-		Settings::gStrokeWeight = value;
+		Settings::gStrokeWeight = value * 2;
 	}
 
 	// background
@@ -88,8 +89,127 @@ namespace Shapes {
 	static AEGfxVertexList* sTriangleMesh = nullptr;
 	static AEGfxVertexList* sTriangleStrokeMesh = nullptr;
 
+	// Cache for stroke meshes with different weights
+	static std::unordered_map<int, AEGfxVertexList*> sRectStrokeCache;
+	static std::unordered_map<int, AEGfxVertexList*> sEllipseStrokeCache;
+
 	// Globals for ellipse type
 	const int NUM_SEGMENTS = 32;
+
+	// Helper function to create a stroke mesh for a rectangle with thickness
+	AEGfxVertexList* createRectStrokeMeshWithWeight(float strokeWeight) {
+		AEGfxMeshStart();
+
+		// Normalize stroke weight (convert pixel space to unit square space)
+		float halfStroke = strokeWeight * 0.5f;
+		float outer = 0.5f + halfStroke;
+		float inner = 0.5f - halfStroke;
+
+		// Top edge (outer to inner)
+		AEGfxTriAdd(-outer, outer, 0xFFFFFFFF, 0.0f, 0.0f,
+			outer, outer, 0xFFFFFFFF, 1.0f, 0.0f,
+			-inner, inner, 0xFFFFFFFF, 0.0f, 0.0f);
+		AEGfxTriAdd(outer, outer, 0xFFFFFFFF, 1.0f, 0.0f,
+			inner, inner, 0xFFFFFFFF, 1.0f, 0.0f,
+			-inner, inner, 0xFFFFFFFF, 0.0f, 0.0f);
+
+		// Right edge
+		AEGfxTriAdd(outer, outer, 0xFFFFFFFF, 1.0f, 0.0f,
+			outer, -outer, 0xFFFFFFFF, 1.0f, 1.0f,
+			inner, inner, 0xFFFFFFFF, 1.0f, 0.0f);
+		AEGfxTriAdd(outer, -outer, 0xFFFFFFFF, 1.0f, 1.0f,
+			inner, -inner, 0xFFFFFFFF, 1.0f, 1.0f,
+			inner, inner, 0xFFFFFFFF, 1.0f, 0.0f);
+
+		// Bottom edge
+		AEGfxTriAdd(outer, -outer, 0xFFFFFFFF, 1.0f, 1.0f,
+			-outer, -outer, 0xFFFFFFFF, 0.0f, 1.0f,
+			inner, -inner, 0xFFFFFFFF, 1.0f, 1.0f);
+		AEGfxTriAdd(-outer, -outer, 0xFFFFFFFF, 0.0f, 1.0f,
+			-inner, -inner, 0xFFFFFFFF, 0.0f, 1.0f,
+			inner, -inner, 0xFFFFFFFF, 1.0f, 1.0f);
+
+		// Left edge
+		AEGfxTriAdd(-outer, -outer, 0xFFFFFFFF, 0.0f, 1.0f,
+			-outer, outer, 0xFFFFFFFF, 0.0f, 0.0f,
+			-inner, -inner, 0xFFFFFFFF, 0.0f, 1.0f);
+		AEGfxTriAdd(-outer, outer, 0xFFFFFFFF, 0.0f, 0.0f,
+			-inner, inner, 0xFFFFFFFF, 0.0f, 0.0f,
+			-inner, -inner, 0xFFFFFFFF, 0.0f, 1.0f);
+
+		return AEGfxMeshEnd();
+	}
+
+	// Helper function to create a stroke mesh for an ellipse with thickness
+	AEGfxVertexList* createEllipseStrokeMeshWithWeight(float strokeWeight) {
+		AEGfxMeshStart();
+
+		float halfStroke = strokeWeight * 0.5f;
+		float outerRadius = 0.5f + halfStroke;
+		float innerRadius = 0.5f - halfStroke;
+
+		// Clamp inner radius to prevent negative values
+		if (innerRadius < 0.0f) innerRadius = 0.0f;
+
+		for (int i = 0; i < NUM_SEGMENTS; i++) {
+			float angle0 = (2.0f * PI * i) / NUM_SEGMENTS;
+			float angle1 = (2.0f * PI * (i + 1)) / NUM_SEGMENTS;
+
+			float cosA0 = cosf(angle0);
+			float sinA0 = sinf(angle0);
+			float cosA1 = cosf(angle1);
+			float sinA1 = sinf(angle1);
+
+			float outerX0 = outerRadius * cosA0;
+			float outerY0 = outerRadius * sinA0;
+			float outerX1 = outerRadius * cosA1;
+			float outerY1 = outerRadius * sinA1;
+
+			float innerX0 = innerRadius * cosA0;
+			float innerY0 = innerRadius * sinA0;
+			float innerX1 = innerRadius * cosA1;
+			float innerY1 = innerRadius * sinA1;
+
+			// Create a quad strip segment (two triangles)
+			AEGfxTriAdd(outerX0, outerY0, 0xFFFFFFFF, 0.0f, 0.0f,
+				innerX0, innerY0, 0xFFFFFFFF, 0.0f, 1.0f,
+				outerX1, outerY1, 0xFFFFFFFF, 1.0f, 0.0f);
+
+			AEGfxTriAdd(outerX1, outerY1, 0xFFFFFFFF, 1.0f, 0.0f,
+				innerX0, innerY0, 0xFFFFFFFF, 0.0f, 1.0f,
+				innerX1, innerY1, 0xFFFFFFFF, 1.0f, 1.0f);
+		}
+
+		return AEGfxMeshEnd();
+	}
+
+	// Get or create cached rect stroke mesh
+	AEGfxVertexList* getRectStrokeMesh(int strokeWeight) {
+		auto it = sRectStrokeCache.find(strokeWeight);
+		if (it != sRectStrokeCache.end()) {
+			return it->second;
+		}
+
+		// Create and cache new mesh
+		float normalizedWeight = (float)strokeWeight / 100.0f; // Normalize to reasonable range
+		AEGfxVertexList* mesh = createRectStrokeMeshWithWeight(normalizedWeight);
+		sRectStrokeCache[strokeWeight] = mesh;
+		return mesh;
+	}
+
+	// Get or create cached ellipse stroke mesh
+	AEGfxVertexList* getEllipseStrokeMesh(int strokeWeight) {
+		auto it = sEllipseStrokeCache.find(strokeWeight);
+		if (it != sEllipseStrokeCache.end()) {
+			return it->second;
+		}
+
+		// Create and cache new mesh
+		float normalizedWeight = (float)strokeWeight / 100.0f; // Normalize to reasonable range
+		AEGfxVertexList* mesh = createEllipseStrokeMeshWithWeight(normalizedWeight);
+		sEllipseStrokeCache[strokeWeight] = mesh;
+		return mesh;
+	}
 
 	bool init(void) {
 		if (sRectMesh && sRectStrokeMesh && sEllipseMesh && sEllipseStrokeMesh) return true;
@@ -178,6 +298,17 @@ namespace Shapes {
 			AEGfxMeshFree(sEllipseStrokeMesh);
 			sEllipseStrokeMesh = nullptr;
 		}
+
+		// Clear cached stroke meshes
+		for (auto& pair : sRectStrokeCache) {
+			AEGfxMeshFree(pair.second);
+		}
+		sRectStrokeCache.clear();
+
+		for (auto& pair : sEllipseStrokeCache) {
+			AEGfxMeshFree(pair.second);
+		}
+		sEllipseStrokeCache.clear();
 	}
 
 	void rectAdvanced(float x, float y, float width, float height, float rotation, SHAPE_MODE drawMode) {
@@ -193,7 +324,7 @@ namespace Shapes {
 		AEMtx33 transformation{};
 
 		AEMtx33Scale(&scale, width, height);
-		AEMtx33Rot(&rot, rotation); // TODO: set rotation at some point
+		AEMtx33Rot(&rot, rotation);
 
 		if (drawMode == CENTER) {
 			AEMtx33Trans(&translation, x, y);
@@ -204,8 +335,8 @@ namespace Shapes {
 			AEMtx33 localOffset{};
 			AEMtx33 temp{};
 
-			AEMtx33Trans(&localOffset, 0.5f * width, -0.5f * height);	// Move top-left to origin in local space
-			AEMtx33Trans(&translation, x, y);							// World position
+			AEMtx33Trans(&localOffset, 0.5f * width, -0.5f * height);
+			AEMtx33Trans(&translation, x, y);
 			AEMtx33Concat(&temp, &localOffset, &scale);
 
 			AEMtx33Concat(&temp, &rot, &temp);
@@ -214,7 +345,7 @@ namespace Shapes {
 
 		AEGfxSetTransform(transformation.m);
 
-		// Draw the shape
+		// Draw the fill
 		AEGfxSetColorToMultiply(
 			Settings::gFillColor.red / 255.0f,
 			Settings::gFillColor.green / 255.0f,
@@ -223,15 +354,19 @@ namespace Shapes {
 		);
 		AEGfxMeshDraw(sRectMesh, AE_GFX_MDM_TRIANGLES);
 
-		// Draw the stroke
+		// Draw the stroke with thickness
 		if (drawStroke) {
+			// Get cached stroke mesh
+			AEGfxVertexList* strokeMesh = getRectStrokeMesh(Settings::gStrokeWeight);
+
+			AEGfxSetTransform(transformation.m);
 			AEGfxSetColorToMultiply(
 				Settings::gStrokeColor.red / 255.0f,
 				Settings::gStrokeColor.green / 255.0f,
 				Settings::gStrokeColor.blue / 255.0f,
 				Settings::gStrokeColor.alpha / 255.0f
 			);
-			AEGfxMeshDraw(sRectStrokeMesh, AE_GFX_MDM_LINES_STRIP);
+			AEGfxMeshDraw(strokeMesh, AE_GFX_MDM_TRIANGLES);
 		}
 	}
 	void rect(float x, float y, float width, float height, SHAPE_MODE drawMode) {
@@ -254,7 +389,7 @@ namespace Shapes {
 		AEMtx33 transformation{};
 
 		AEMtx33Scale(&scale, width, height);
-		AEMtx33Rot(&rot, rotation); // TODO: set rotation at some point
+		AEMtx33Rot(&rot, rotation);
 
 		if (drawMode == CENTER) {
 			AEMtx33Trans(&translation, x, y);
@@ -265,8 +400,8 @@ namespace Shapes {
 			AEMtx33 localOffset{};
 			AEMtx33 temp{};
 
-			AEMtx33Trans(&localOffset, 0.5f * width, -0.5f * height);	// Move top-left to origin in local space
-			AEMtx33Trans(&translation, x, y);							// World position
+			AEMtx33Trans(&localOffset, 0.5f * width, -0.5f * height);
+			AEMtx33Trans(&translation, x, y);
 			AEMtx33Concat(&temp, &localOffset, &scale);
 
 			AEMtx33Concat(&temp, &rot, &temp);
@@ -275,7 +410,7 @@ namespace Shapes {
 
 		AEGfxSetTransform(transformation.m);
 
-		// Draw the shape
+		// Draw the fill
 		AEGfxSetColorToMultiply(
 			Settings::gFillColor.red / 255.0f,
 			Settings::gFillColor.green / 255.0f,
@@ -284,15 +419,19 @@ namespace Shapes {
 		);
 		AEGfxMeshDraw(sEllipseMesh, AE_GFX_MDM_TRIANGLES);
 
-		// Draw the stroke
+		// Draw the stroke with thickness
 		if (drawStroke) {
+			// Get cached stroke mesh
+			AEGfxVertexList* strokeMesh = getEllipseStrokeMesh(Settings::gStrokeWeight);
+
+			AEGfxSetTransform(transformation.m);
 			AEGfxSetColorToMultiply(
 				Settings::gStrokeColor.red / 255.0f,
 				Settings::gStrokeColor.green / 255.0f,
 				Settings::gStrokeColor.blue / 255.0f,
 				Settings::gStrokeColor.alpha / 255.0f
 			);
-			AEGfxMeshDraw(sEllipseStrokeMesh, AE_GFX_MDM_LINES_STRIP);
+			AEGfxMeshDraw(strokeMesh, AE_GFX_MDM_TRIANGLES);
 		}
 	}
 	void ellipse(float x, float y, float width, float height, SHAPE_MODE drawMode) {
@@ -307,7 +446,7 @@ namespace Shapes {
 		// Create mesh
 		AEGfxMeshStart();
 
-		AEGfxTriAdd(x1, y1, 0xFFFFFFFF, 0.0f, 0.0f, // No idea what the U and V are supposed to be
+		AEGfxTriAdd(x1, y1, 0xFFFFFFFF, 0.0f, 0.0f,
 			x2, y2, 0xFFFFFFFF, 0.0f, 0.0f,
 			x3, y3, 0xFFFFFFFF, 0.0f, 0.0f
 		);
@@ -319,9 +458,9 @@ namespace Shapes {
 		AEMtx33 translation{};
 		AEMtx33 transformation{};
 
-		AEMtx33Scale(&scale, 1.0f, 1.0f); // scale by 1
-		AEMtx33Rot(&rot, 0.0f); // 0 rotation
-		AEMtx33Trans(&translation, 0.0f, 0.0f); // 0 translation
+		AEMtx33Scale(&scale, 1.0f, 1.0f);
+		AEMtx33Rot(&rot, 0.0f);
+		AEMtx33Trans(&translation, 0.0f, 0.0f);
 
 		AEMtx33Concat(&transformation, &rot, &scale);
 		AEMtx33Concat(&transformation, &translation, &transformation);
@@ -345,9 +484,6 @@ namespace Shapes {
 
 namespace Graphics {
 	void image(float x, float y, float width, float height, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode) {
-		//float imageWidth = (float)AEGfxTextureGetPaddedWidth(pTex);
-		//float imageWidth = AEGfxTextureGet
-
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
@@ -355,7 +491,6 @@ namespace Graphics {
 		Color::noStroke();
 		AEGfxTextureSet(pTex, 0, 0);
 		Shapes::rect(x, y, width, height, drawMode);
-
 	}
 }
 
@@ -363,11 +498,10 @@ namespace Text {
 	// creating a font
 	bool createFont(const char* fontPath, int fontSize, const char* fontName) {
 		s8 fontId = AEGfxCreateFont(fontPath, fontSize);
-		if (fontId == -1) return false; // Font failed to load
+		if (fontId == -1) return false;
 
 		Settings::gFonts[fontName] = fontId;
 
-		// Set as current font if its the first one
 		if (Settings::gCurrentFontId == -1) {
 			Settings::gCurrentFontId = fontId;
 		}
@@ -375,9 +509,7 @@ namespace Text {
 		return true;
 	}
 
-	// TODO: understand how this and the destroyfont work
 	void setFont(const char* fontName) {
-		// figure out the different types that could be returned here
 		auto it = Settings::gFonts.find(fontName);
 		if (it != Settings::gFonts.end()) {
 			Settings::gCurrentFontId = it->second;
@@ -392,14 +524,12 @@ namespace Text {
 		}
 	}
 
-	// Render text
 	void text(const char* str, float x, float y, TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical) {
-		if (Settings::gCurrentFontId == -1) return; // No font has been set
+		if (Settings::gCurrentFontId == -1) return;
 
 		float normalizedX = x / (AEGfxGetWindowWidth() * 0.5f);
 		float normalizedY = y / (AEGfxGetWindowHeight() * 0.5f);
 
-		// Calculate the offset based on alignment
 		float width = 0.0f, height = 0.0f;
 		AEGfxGetPrintSize(Settings::gCurrentFontId, str, Settings::gTextSize, &width, &height);
 		float actualWidth = (width * 0.5f) * AEGfxGetWindowWidth();
@@ -407,36 +537,29 @@ namespace Text {
 
 		float offsetX = 0.0f, offsetY = 0.0f;
 
-		// Horizontal alignment
 		if (horizontal == CENTER_H) offsetX = -width * 0.5f;
 		else if (horizontal == RIGHT) offsetX = -width;
 
-		// Vertical alignment
 		if (vertical == CENTER_V) offsetY = -height * 0.5f;
 		else if (vertical == BOTTOM) offsetY = -height;
 
-		// Calculate world-space offsets for debug box
 		float worldOffsetX = 0.0f, worldOffsetY = 0.0f;
 
-		// Horizontal alignment offset in world space
-		if (horizontal == CENTER_H) worldOffsetX = 0.0f; // Already centered
+		if (horizontal == CENTER_H) worldOffsetX = 0.0f;
 		else if (horizontal == RIGHT) worldOffsetX = -actualWidth * 0.5f;
 		else if (horizontal == LEFT) worldOffsetX = actualWidth * 0.5f;
 
-		// Vertical alignment offset in world space (INVERTED for world coordinates)
-		if (vertical == CENTER_V) worldOffsetY = 0.0f; // Already centered
-		else if (vertical == BOTTOM) worldOffsetY = -actualHeight * 0.5f; // Bottom means lower Y (negative)
-		else if (vertical == TOP) worldOffsetY = actualHeight * 0.5f; // Top means higher Y (positive)
-		else if (vertical == BASELINE) worldOffsetY = -actualHeight * 0.25f; // Baseline is roughly 25% down from the top (probably)
+		if (vertical == CENTER_V) worldOffsetY = 0.0f;
+		else if (vertical == BOTTOM) worldOffsetY = -actualHeight * 0.5f;
+		else if (vertical == TOP) worldOffsetY = actualHeight * 0.5f;
+		else if (vertical == BASELINE) worldOffsetY = -actualHeight * 0.25f;
 
-		// Debug mode background - adjusted for alignment
 		if (Settings::gDebugMode) {
 			Color::fill(255.0f, 0.0f, 0.0f, 128.0f);
 			Color::noStroke();
 			Shapes::rect(x + worldOffsetX, y + worldOffsetY, actualWidth, actualHeight, Shapes::CENTER);
 		}
 
-		// set blend mode
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 
 		AEGfxPrint(Settings::gCurrentFontId, str,
@@ -457,7 +580,6 @@ namespace Text {
 		Settings::gTextSize = size;
 	}
 
-	// TODO: Cheap hack, figure out how to implement properly
 	void textPixelSize(int pixelSize) {
 		Settings::gTextSize = (float)pixelSize / 24.0f;
 	}
@@ -467,9 +589,7 @@ namespace Text {
 		Settings::gTextAlignVertical = vertical;
 	}
 
-	// goodbye function
 	void exit(void) {
-		// Destroy all loaded fonts
 		for (auto& pair : Settings::gFonts) {
 			AEGfxDestroyFont(pair.second);
 		}
