@@ -119,16 +119,23 @@ namespace UI_Elements {
 
 		// slider static member
 		static Slider* currentlySelected;
-		// TODO: Remove when resolved
+		// TODO: Remove (these comments) when resolved
 		// this makes it so that only one slider can be modified at a time
 		// Preventing the edge case when 2 sliders happen to be over each other
 		// It also allows for the slider to be modified even when the mouse is no longer hovering over the element
 		// i.e you can click and start sliding, then the value only stops updating after the mouse button has been released.
 		// This allows you to set the value all the way to the max or min removing the error associated with the mouse movement
 
+		static AEGfxTexture* defaultHandleTexture;
+		static AEGfxTexture* defaultBarTexture;
+
 		void updateValue(void);
 
 	public:
+		// static initialization methods
+		static void loadDefaultTextures(void);
+		static void unloadDefaultTextures(void);
+
 		// Expiremental functions. TODO: remove this comment when its confirmed to be working
 		void select();
 		void deselect();
