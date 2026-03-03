@@ -577,7 +577,7 @@ namespace Text {
 	}
 
 	void textSize(float size) {
-		Settings::gTextSize = size;
+		Settings::gTextSize = size / 24.0f; //TODO: test text and sizing
 	}
 
 	void textPixelSize(int pixelSize) {
