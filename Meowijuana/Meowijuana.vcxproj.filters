@@ -119,6 +119,14 @@
     <ClCompile Include="Managers\EntityManager.cpp">
       <Filter>Source files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\TileManager.cpp" />
+    <ClCompile Include="UI_Elements\PlayerInventory.cpp" />
+    <ClCompile Include="Screens\Testing\testing-ui-elements.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\UIManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -199,6 +207,13 @@
     </ClInclude>
     <ClInclude Include="Tiles.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\TileManager.hpp" />
+    <ClInclude Include="Screens\Testing\testing-ui-elements.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\UIManager.hpp">
       <Filter>Header files\Managers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,25 @@
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
+	// Button Static Defaults
+	// -------------------------------------------------------------------------
+	ElementStyle Button::defaultStyle = UI_Element::getDefaultStyle();
+	TextStyle Button::defaultTextStyle = UI_Element::getDefaultTextStyle();
+	ElementTexture Button::defaultTexture = UI_Element::getDefaultTexture();
+
+	void Button::setDefaultStyle(ElementStyle newStyle) {
+		defaultStyle = newStyle;
+	}
+
+	void Button::setDefaultTextStyle(TextStyle newStyle) {
+		defaultTextStyle = newStyle;
+	}
+
+	void Button::setDefaultTexture(ElementTexture newTexture) {
+		defaultTexture = newTexture;
+	}
+
+	// -------------------------------------------------------------------------
 	// Button Implementation
 	// -------------------------------------------------------------------------
 
