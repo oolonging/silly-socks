@@ -12,6 +12,7 @@
 #include "Settings.hpp"
 #include "GameStateManager.hpp"
 #include "InputManager.hpp"
+#include "Managers/UIManager.hpp"
 
 // ---------------------------------------------------------------------------
 // main
@@ -75,19 +76,25 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	// Init globals
-	Shapes::init();
-	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
-	// TODO: that init function that loads all fonts into memory and gives them proper names too
-	Text::createFont("Assets/Fonts/buggy-font.ttf", 10, "default");
+	Shapes::init(); // Shapes can now be drawn
 
-	// set text align
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
+
+	// TODO: font manager
+	Text::createFont("Assets/Fonts/buggy-font.ttf", Settings::gDefaultTextSize, "default");
+	Text::createFont("Assets/Fonts/comic-sans.ttf", Settings::gDefaultTextSize, "comicsans");
+	Text::createFont("Assets/Fonts/impact.ttf", Settings::gDefaultTextSize, "impact");
+
+	Text::setFont("default"); // Redundant: but basically this is how you use it
+
+	// set text align to center
 	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
 	// init custom cursor(s);
 	Input::init();
 
-	// Init custom slider (temporary, ill need someone to clean up the memory management when we have precompiled headers in place)
-	UI_Elements::Slider::loadDefaultTextures();
+	// initialize ui manager defaults
+	UIManager::initDefaults();
 
 	GSM_Initialize(GS_SPLASH);
 
@@ -148,12 +155,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	// Free resources
+	UIManager::clear();
+	World::freeGrid();
 	Shapes::exit();
 	Text::exit();
-	World::freeGrid();
 	Input::exit();
-
-	UI_Elements::Slider::unloadDefaultTextures();
 
 	AESysExit();
 }
