@@ -75,8 +75,9 @@ namespace World
 		int getColumn() const { return column; }
 		float getOffsetX() const { return offsetX; }
 		float getOffsetY() const { return offsetY; }
-		
+	
 		void drawTexture(World::worldGrid Griddy);
+		/*void freeMapTexture();*/
 		void initTextureBox();
 	};
 

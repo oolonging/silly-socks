@@ -88,6 +88,13 @@ namespace World {
 
 		tileDatabase[6] = doneCrop;
 	}
+	// Free the assests and stuff for the tiles cuz my dumbass didn't do that 
+	// 1) Interacting with other objects 
+
+	/*void worldGrid::freeMapTexture()
+	{
+
+	}*/
 
 	void worldGrid::initTextureBox()
 	{
@@ -129,30 +136,28 @@ namespace World {
 		float topY = offsetY;
 		float bottomY = offsetY - gridHeight * tileSize;
 
-		if (gridMesh == nullptr)
+		AEGfxMeshStart();
+
+		// Horizontal lines
+		for (int y = 0; y <= gridHeight; ++y)
 		{
-			AEGfxMeshStart();
+			float screenY = topY - y * tileSize;
 
-			// Horizontal lines
-			for (int y = 0; y <= gridHeight; ++y)
-			{
-				float screenY = topY - y * tileSize;
-
-				AEGfxVertexAdd(leftX, screenY, 0xFFFFFFFF, 1.f, 1.f);
-				AEGfxVertexAdd(rightX, screenY, 0xFFFFFFFF, 1.f, 1.f);
-			}
-
-			// Vertical lines
-			for (int x = 0; x <= gridWidth; ++x)
-			{
-				float screenX = leftX + x * tileSize;
-
-				AEGfxVertexAdd(screenX, topY, 0xFFFFFFFF, 1.f, 1.f);
-				AEGfxVertexAdd(screenX, bottomY, 0xFFFFFFFF, 1.f, 1.f);
-			}
-
-			gridMesh = AEGfxMeshEnd();
+			AEGfxVertexAdd(leftX, screenY, 0xFFFFFFFF, 1.f, 1.f);
+			AEGfxVertexAdd(rightX, screenY, 0xFFFFFFFF, 1.f, 1.f);
 		}
+
+		// Vertical lines
+		for (int x = 0; x <= gridWidth; ++x)
+		{
+			float screenX = leftX + x * tileSize;
+
+			AEGfxVertexAdd(screenX, topY, 0xFFFFFFFF, 1.f, 1.f);
+			AEGfxVertexAdd(screenX, bottomY, 0xFFFFFFFF, 1.f, 1.f);
+		}
+
+		gridMesh = AEGfxMeshEnd();
+	
 	}
 
 	// Using a file to read the ID and filling the vector w respective IDs
