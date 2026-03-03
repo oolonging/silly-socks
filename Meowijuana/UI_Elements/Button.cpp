@@ -8,16 +8,35 @@ namespace UI_Elements {
 	TextStyle Button::defaultTextStyle = UI_Element::getDefaultTextStyle();
 	ElementTexture Button::defaultTexture = UI_Element::getDefaultTexture();
 
-	void Button::setDefaultStyle(ElementStyle newStyle) {
-		defaultStyle = newStyle;
+	// Definitions for default setters
+	void Button::setDefaultButtonStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
+	void Button::setDefaultButtonTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
+	void Button::setDefaultButtonTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
+
+	// Definitions for default getters
+	ElementStyle Button::getDefaultButtonStyle(void) {
+		UI_Elements::ElementStyle defaultButtonStyle;
+		defaultButtonStyle.primaryColor = Color::Color(Color::Preset::Red);
+		defaultButtonStyle.secondaryColor = Color::Color(Color::Preset::Blue);
+		defaultButtonStyle.strokeColor = Color::Color(Color::Preset::Black);
+		defaultButtonStyle.strokeWeight = 2;
+		return defaultButtonStyle;
 	}
 
-	void Button::setDefaultTextStyle(TextStyle newStyle) {
-		defaultTextStyle = newStyle;
+	TextStyle Button::getDefaultButtonTextStyle(void) {
+		UI_Elements::TextStyle defaultButtonTextStyle;
+		defaultButtonTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
+		defaultButtonTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
+		defaultButtonTextStyle.fontSize = 10;
+		defaultButtonTextStyle.fontName = "default";
+		return defaultButtonTextStyle;
 	}
 
-	void Button::setDefaultTexture(ElementTexture newTexture) {
-		defaultTexture = newTexture;
+	ElementTexture Button::getDefaultButtonTexture(void) {
+		UI_Elements::ElementTexture defaultButtonTexture;
+		defaultButtonTexture.primaryTexture = nullptr;
+		defaultButtonTexture.secondaryTexture = nullptr;
+		return defaultButtonTexture;
 	}
 
 	// -------------------------------------------------------------------------

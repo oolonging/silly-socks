@@ -54,37 +54,21 @@ namespace UIManager {
 	void initDefaults(void) {
 		// TODO: change this when we have a viable color palette
 		// Initialize default button styles
-		UI_Elements::ElementStyle defaultButtonStyle;
-		defaultButtonStyle.primaryColor = Color::Color(Color::Preset::Red);
-		defaultButtonStyle.secondaryColor = Color::Color(Color::Preset::Blue);
-		defaultButtonStyle.strokeColor = Color::Color(Color::Preset::Black);
-		defaultButtonStyle.strokeWeight = 2;
-
-		UI_Elements::TextStyle defaultButtonTextStyle;
-		defaultButtonTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
-		defaultButtonTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
-		defaultButtonTextStyle.fontSize = 10;
-		defaultButtonTextStyle.fontName = "default";
-
-		UI_Elements::ElementTexture defaultButtonTexture;
-		defaultButtonTexture.primaryTexture = nullptr;
-		defaultButtonTexture.secondaryTexture = nullptr;
-
-		UI_Elements::Button::setDefaultStyle(defaultButtonStyle);
-		UI_Elements::Button::setDefaultTextStyle(defaultButtonTextStyle);
-		UI_Elements::Button::setDefaultTexture(defaultButtonTexture);
+		UI_Elements::Button::setDefaultButtonStyle(UI_Elements::Button::getDefaultButtonStyle());
+		UI_Elements::Button::setDefaultButtonTextStyle(UI_Elements::Button::getDefaultButtonTextStyle());
+		UI_Elements::Button::setDefaultButtonTexture(UI_Elements::Button::getDefaultButtonTexture());
 
 	}
 
 	void setDefaultButtonStyle(UI_Elements::ElementStyle style) {
-		UI_Elements::Button::setDefaultStyle(style);
+		UI_Elements::Button::setDefaultButtonStyle(style);
 	}
 
 	void setDefaultButtonTextStyle(UI_Elements::TextStyle textStyle) {
-		UI_Elements::Button::setDefaultTextStyle(textStyle);
+		UI_Elements::Button::setDefaultButtonTextStyle(textStyle);
 	}
 
 	void setDefaultButtonTexture(UI_Elements::ElementTexture texture) {
-		UI_Elements::Button::setDefaultTexture(texture);
+		UI_Elements::Button::setDefaultButtonTexture(texture);
 	}
 }

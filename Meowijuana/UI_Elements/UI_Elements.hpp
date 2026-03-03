@@ -91,9 +91,14 @@ namespace UI_Elements {
 
 	public:
 		// static methods to set defaults
-		static void setDefaultStyle(ElementStyle newStyle);
-		static void setDefaultTextStyle(TextStyle newStyle);
-		static void setDefaultTexture(ElementTexture newTexture);
+		static void setDefaultButtonStyle(ElementStyle newStyle);
+		static void setDefaultButtonTextStyle(TextStyle newStyle);
+		static void setDefaultButtonTexture(ElementTexture newTexture);
+
+		// static methods to get defaults
+		static ElementStyle getDefaultButtonStyle(void); 
+		static TextStyle getDefaultButtonTextStyle(void);
+		static ElementTexture getDefaultButtonTexture(void);
 
 		void setOnClick(void (*func)(void));
 		void draw(void) override;
