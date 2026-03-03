@@ -509,7 +509,7 @@ namespace Text {
 		return true;
 	}
 
-	void setFont(const char* fontName) {
+	void setFont(std::string fontName) {
 		auto it = Settings::gFonts.find(fontName);
 		if (it != Settings::gFonts.end()) {
 			Settings::gCurrentFontId = it->second;
@@ -577,11 +577,7 @@ namespace Text {
 	}
 
 	void textSize(float size) {
-		Settings::gTextSize = size / 24.0f; //TODO: test text and sizing
-	}
-
-	void textPixelSize(int pixelSize) {
-		Settings::gTextSize = (float)pixelSize / 24.0f;
+		Settings::gTextSize = size / Settings::gDefaultTextSize;
 	}
 
 	void textAlign(TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical) {

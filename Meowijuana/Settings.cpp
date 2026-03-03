@@ -11,6 +11,7 @@ namespace Settings {
 	// Text
 	Color::Color gTextFillColor = { 0.0f, 0.0f, 0.0f, 255.0f };
 	float gTextSize = 1.0f;
+	int gDefaultTextSize = 24;
 	Text::TEXT_ALIGN_HORIZONTAL gTextAlignHorizontal = Text::LEFT;
 	Text::TEXT_ALIGN_VERTICAL gTextAlignVertical = Text::TOP;
 	s8 gCurrentFontId = -1; // No font selected

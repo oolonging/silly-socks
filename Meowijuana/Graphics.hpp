@@ -2,6 +2,7 @@
 #define GRAPHICS_HPP
 
 #include "AEEngine.h"
+#include <string>
 
 namespace Color {
 	struct Color {
@@ -132,7 +133,7 @@ namespace Text {
 
 	// Font management
 	bool createFont(const char* fontPath, int fontSize, const char* fontName = "default");
-	void setFont(const char* fontName);
+	void setFont(std::string fontName);
 	void destroyFont(const char* fontName);
 	void exit(void); // Clean up all font related items
 	// TODO: Maybe have an init that loads multiple fonts and sets a default as well

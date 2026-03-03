@@ -43,17 +43,22 @@ namespace UI_Elements {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			if (hovering) {
 				Color::fill(this->style.primaryColor);
+				Color::textFill(this->textStyle.primaryColor);
 			}
 			else {
 				Color::fill(this->style.secondaryColor);
+				Color::textFill(this->textStyle.secondaryColor);
 			}
 
 			// draw the rectangle
 			Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
 		}
 
+		// set text size
+		Text::setFont(this->textStyle.fontName);
+		Text::textSize(this->textStyle.fontSize);
+
 		// Draw the label
-		Color::textFill(this->textStyle.primaryColor);
 		if (drawMode == Shapes::CORNER) {
 			Text::text(msg, x + (width / 2), y - (height / 2), Text::CENTER_H, Text::CENTER_V);
 		}
@@ -73,13 +78,30 @@ namespace UI_Elements {
 	// Ctors
 	Button::Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), msg(msg), onClick(nullptr) {
+
+		// Use the initialized defaults
+		this->style = defaultStyle;
+		this->textStyle = defaultTextStyle;
+		this->texture = defaultTexture;
+
+		printf("Main constructor called\n");
 	}
+
+	//Button::Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode)
+	//	: UI_Element(quad.position.x, quad.position.y, quad.width, quad.height, mode), msg(msg), onClick(nullptr) {
+	//}
 
 	Button::Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode)
-		: UI_Element(quad.position.x, quad.position.y, quad.width, quad.height, mode), msg(msg), onClick(nullptr) {
+		: Button(quad.position.x, quad.position.y, quad.width, quad.height, msg, mode) {
+		printf("Quad constructor called\n");
 	}
 
+	//Button::Button(void)
+	//	: UI_Element(), msg("Button"), onClick(nullptr) {
+	//}
+
 	Button::Button(void)
-		: UI_Element(), msg("Button"), onClick(nullptr) {
+		: Button(0.0f, 0.0f, 100.0f, 50.0f, "Button", Shapes::CORNER) {
+		printf("Default constructor called\n");
 	}
 }

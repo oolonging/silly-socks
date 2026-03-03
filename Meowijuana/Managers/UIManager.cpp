@@ -63,7 +63,7 @@ namespace UIManager {
 		UI_Elements::TextStyle defaultButtonTextStyle;
 		defaultButtonTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
 		defaultButtonTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
-		defaultButtonTextStyle.fontSize = 24;
+		defaultButtonTextStyle.fontSize = 10;
 		defaultButtonTextStyle.fontName = "default";
 
 		UI_Elements::ElementTexture defaultButtonTexture;

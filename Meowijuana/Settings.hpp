@@ -15,6 +15,7 @@ namespace Settings {
 	// Text settings
 	extern Color::Color gTextFillColor;
 	extern float gTextSize;
+	extern int gDefaultTextSize;
 	extern Text::TEXT_ALIGN_HORIZONTAL gTextAlignHorizontal;
 	extern Text::TEXT_ALIGN_VERTICAL gTextAlignVertical;
 	extern s8 gCurrentFontId;
