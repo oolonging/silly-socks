@@ -81,6 +81,7 @@ void Testing_Initialize() {
 
 	// Initialize dialogue box
 	Cashew::dialogueBox = UI_Elements::DialogueBox(0.0f, 0.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
+
 }
 
 void Testing_Update() {
@@ -91,14 +92,28 @@ void Testing_Update() {
 
 	// Update the player
 	player->update();
+	
+
+	// Animations (for now I made it so that Psana's will disappear if you talk to him and soroor's won't)
+	static Animations::Indicator prasind{ prasanna->getX(), prasanna->getY() };
+	static Animations::Indicator sorind{ soroor->getX(), soroor->getY() };
+
+	updateIndicator(prasind);
+	updateIndicator(sorind);
+
+
+
+
 
 	// Update inventory UI (handles keyboard input for slot selection)
 	Cashew::inventoryUI.update();
 
+	if (prasind.active == 1) {
+		Animations::drawIndicator(prasind);
+	}
 
 	if (!Cashew::dialogueBox.getIsActive()) {
 		activeSpeaker = nullptr;
-
 
 		// Check for interaction with Prasanna
 		if (prasanna && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
@@ -109,13 +124,11 @@ void Testing_Update() {
 		)) {
 			activeSpeaker = prasanna;
 			prasanna->speak(Cashew::dialogueBox);
+			prasind.active = 0;
 		}
 
-		//if (Cashew::dialogueBox.getIsActive()) {
-		//	prasanna->speak(Cashew::dialogueBox);
-		//}
 
-
+		Animations::drawIndicator(sorind);
 		// Check for interaction with Soroor
 		if (soroor && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
@@ -123,6 +136,7 @@ void Testing_Update() {
 			75.0f,
 			soroor->getWidth(), soroor->getHeight()
 		)) {
+			
 			activeSpeaker = soroor;
 			soroor->speak(Cashew::dialogueBox);
 		}

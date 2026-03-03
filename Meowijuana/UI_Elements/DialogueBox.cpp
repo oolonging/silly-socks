@@ -204,7 +204,7 @@ namespace UI_Elements {
 		Text::textAlign(Text::RIGHT, Text::BOTTOM);
 		float hintX = boxX + width - textPadding;
 		float hintY = boxY - height + textPadding;
-		Text::text("[Click or press SPACE BAR to continue]", hintX, hintY);
+		Text::text("[Click or press E to continue]", hintX, hintY);
 
 		// Reset text alignment
 		Text::textAlign(Text::LEFT, Text::TOP);

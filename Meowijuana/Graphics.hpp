@@ -153,4 +153,19 @@ namespace Text {
 	void textAlign(TEXT_ALIGN_HORIZONTAL horizontal, TEXT_ALIGN_VERTICAL vertical);
 }
 
+namespace Animations {
+
+	struct Indicator {
+		float x;
+		float y;
+
+		float offset = 0.0f;
+		float dir = 1.0f;
+		bool active = true;
+	};
+
+	// Triangle, with and without offset
+	void updateIndicator(Indicator& ind);
+	void drawIndicator(Indicator& ind);
+}
 #endif // GRAPHICS_HPP

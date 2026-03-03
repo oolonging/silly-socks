@@ -593,3 +593,22 @@ namespace Text {
 		Settings::gCurrentFontId = -1;
 	}
 }
+
+namespace Animations {
+
+
+	void updateIndicator(Indicator &ind) {
+		ind.offset += 20.0f * ind.dir * (float)AEFrameRateControllerGetFrameTime();
+		if (ind.offset > 8.0f) ind.dir = -1.0f;
+		if (ind.offset < -10.0f) ind.dir = 1.0f;
+
+	}
+
+	void drawIndicator(Indicator& ind) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Color::fill(176, 222, 88, 255);
+		Shapes::triangle(ind.x, ind.y + 50 + ind.offset, ind.x - 10, ind.y + 60 + ind.offset, ind.x + 10, ind.y + 60 + ind.offset);
+
+	}
+
+}
