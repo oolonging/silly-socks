@@ -18,27 +18,42 @@ namespace UI_Elements {
 
 	// Definitions for default getters
 	ElementStyle ProgressBar::getDefaultProgressBarStyle(void) {
-		UI_Elements::ElementStyle defaultProgressBarStyle;
-		// TODO: When color palette is done
-		return defaultProgressBarStyle;
+		UI_Elements::ElementStyle defaultStyle;
+		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
+		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
+		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
+		defaultStyle.strokeWeight = 1;
+		return defaultStyle;
 	}
 
 	TextStyle ProgressBar::getDefaultProgressBarTextStyle(void) {
 		UI_Elements::TextStyle defaultTextStyle;
-		// TODO: when color palette is done
+		defaultTextStyle.primaryColor = Color::Preset::defaultTextStylePrimary;
+		defaultTextStyle.primaryColor = Color::Preset::defaultTextStyleSecondary;
+		defaultTextStyle.fontSize = 10;
+		defaultTextStyle.fontName = "default";
 		return defaultTextStyle;
 	}
 
 	ElementTexture ProgressBar::getDefaultProgressBarTexture(void) {
 		UI_Elements::ElementTexture defaultTexture;
-		// TODO: when default textures for slider is done
-
-		defaultTexture.primaryTexture = nullptr;
-		defaultTexture.secondaryTexture = nullptr;
-
+		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Progressbar/primary.png");
+		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Progressbar/secondary.png");
 		return defaultTexture;
 	}
 
+	// Definition to clear default textures
+	void ProgressBar::clearDefaultProgressBarTextures(void) {
+		if (defaultTexture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.primaryTexture);
+			defaultTexture.primaryTexture = nullptr;
+		}
+
+		if (defaultTexture.secondaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.secondaryTexture);
+			defaultTexture.secondaryTexture = nullptr;
+		}
+	}
 
 
 	// -------------------------------------------------------------------------

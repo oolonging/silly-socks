@@ -134,6 +134,9 @@ namespace UI_Elements {
 		static TextStyle getDefaultProgressBarTextStyle(void);
 		static ElementTexture getDefaultProgressBarTexture(void);
 
+		// static method to clear default textures
+		static void clearDefaultProgressBarTextures(void);
+
 		void clampValue(void);
 		void setValue(float newValue);
 		void draw(void) override;
