@@ -16,17 +16,17 @@ namespace UI_Elements {
 	// Definitions for default setters
 	ElementStyle Button::getDefaultButtonStyle(void) {
 		UI_Elements::ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::Color(Color::Preset::Red);
-		defaultStyle.secondaryColor = Color::Color(Color::Preset::Blue);
-		defaultStyle.strokeColor = Color::Color(Color::Preset::Black);
-		defaultStyle.strokeWeight = 2;
+		defaultStyle.primaryColor = Color::Color(Color::Preset::defaultStylePrimary);
+		defaultStyle.secondaryColor = Color::Color(Color::Preset::defaultStyleSecondary);
+		defaultStyle.strokeColor = Color::Color(Color::Preset::defaultStyleStroke);
+		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
 	}
 
 	TextStyle Button::getDefaultButtonTextStyle(void) {
 		UI_Elements::TextStyle defaultTextStyle;
-		defaultTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
-		defaultTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
+		defaultTextStyle.primaryColor = Color::Color(Color::Preset::defaultTextStylePrimary);
+		defaultTextStyle.secondaryColor = Color::Color(Color::Preset::defaultTextStyleSecondary);
 		defaultTextStyle.fontSize = 10;
 		defaultTextStyle.fontName = "default";
 		return defaultTextStyle;
@@ -61,12 +61,12 @@ namespace UI_Elements {
 		else {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			if (hovering) {
-				Color::fill(this->style.primaryColor);
-				Color::textFill(this->textStyle.primaryColor);
-			}
-			else {
 				Color::fill(this->style.secondaryColor);
 				Color::textFill(this->textStyle.secondaryColor);
+			}
+			else {
+				Color::fill(this->style.primaryColor);
+				Color::textFill(this->textStyle.primaryColor);
 			}
 
 			// draw the rectangle
