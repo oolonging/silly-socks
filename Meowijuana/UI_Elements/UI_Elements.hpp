@@ -100,6 +100,9 @@ namespace UI_Elements {
 		static TextStyle getDefaultButtonTextStyle(void);
 		static ElementTexture getDefaultButtonTexture(void);
 
+		// static method to clear default texture
+		static void clearDefaultButtonTextures(void);
+
 		void setOnClick(void (*func)(void));
 		void draw(void) override;
 

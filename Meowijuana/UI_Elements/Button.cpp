@@ -34,9 +34,22 @@ namespace UI_Elements {
 
 	ElementTexture Button::getDefaultButtonTexture(void) {
 		UI_Elements::ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = nullptr;
-		defaultTexture.secondaryTexture = nullptr;
+		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/primary.png");
+		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/secondary.png");
 		return defaultTexture;
+	}
+
+	// clear default textures
+	void Button::clearDefaultButtonTextures(void) {
+		if (defaultTexture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.primaryTexture);
+			defaultTexture.primaryTexture = nullptr;
+		}
+
+		if (defaultTexture.secondaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.secondaryTexture);
+			defaultTexture.secondaryTexture = nullptr;
+		}
 	}
 
 	// -------------------------------------------------------------------------
