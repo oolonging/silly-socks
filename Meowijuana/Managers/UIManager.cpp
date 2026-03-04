@@ -70,15 +70,16 @@ namespace UIManager {
 
 	}
 
-	void setDefaultButtonStyle(UI_Elements::ElementStyle style) {
-		UI_Elements::Button::setDefaultButtonStyle(style);
-	}
+	void clearDefaults(void) {
+		// clear button defaults
+		UI_Elements::Button::clearDefaultButtonTextures();
 
-	void setDefaultButtonTextStyle(UI_Elements::TextStyle textStyle) {
-		UI_Elements::Button::setDefaultButtonTextStyle(textStyle);
-	}
+		// clear progress bar defaults
+		UI_Elements::ProgressBar::clearDefaultProgressBarTextures();
 
-	void setDefaultButtonTexture(UI_Elements::ElementTexture texture) {
-		UI_Elements::Button::setDefaultButtonTexture(texture);
+		// clear slider defaults
+
+		// clear text box defaults
+		UI_Elements::TextBox::clearDefaultTextBoxTextures();
 	}
 }

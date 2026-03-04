@@ -19,23 +19,40 @@ namespace UI_Elements {
 	// definitions for default getters
 	ElementStyle TextBox::getDefaultTextBoxStyle(void) {
 		ElementStyle defaultStyle;
-		// TODO: implement when palette is in
+		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
+		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
+		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
+		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
 	}
 
 	TextStyle TextBox::getDefaultTextBoxTextStyle(void) {
 		TextStyle defaultTextStyle;
-		// TODO: implement when palette is in
+		defaultTextStyle.primaryColor = Color::Preset::defaultTextStylePrimary;
+		defaultTextStyle.secondaryColor = Color::Preset::defaultTextStyleSecondary;
+		defaultTextStyle.fontSize = 10;
+		defaultTextStyle.fontName = "default";
 		return defaultTextStyle;
 	}
 
 	ElementTexture TextBox::getDefaultTextBoxTexture(void) {
 		ElementTexture defaultTexture;
-		// TODO: fill in when default textures are drawn
-		defaultTexture.primaryTexture = nullptr;
-		defaultTexture.secondaryTexture = nullptr;
-
+		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/primary.png");
+		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/secondary.png");
 		return defaultTexture;
+	}
+
+	// clear default textures
+	void TextBox::clearDefaultTextBoxTextures(void) {
+		if (defaultTexture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.primaryTexture);
+			defaultTexture.primaryTexture = nullptr;
+		}
+
+		if (defaultTexture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.secondaryTexture);
+			defaultTexture.secondaryTexture = nullptr;
+		}
 	}
 
 	// -------------------------------------------------------------------------

@@ -207,6 +207,9 @@ namespace UI_Elements {
 		static TextStyle getDefaultTextBoxTextStyle(void);
 		static ElementTexture getDefaultTextBoxTexture(void);
 
+		// static method to clear default texture
+		static void clearDefaultTextBoxTextures(void);
+
 		void draw(void) override;
 		void select();
 		void deselect();

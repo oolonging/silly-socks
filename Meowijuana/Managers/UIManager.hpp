@@ -41,10 +41,7 @@ namespace UIManager {
 	// Initialize default styles for all UI element types
 	void initDefaults(void); // TODO: finish doing all defaults before calling this
 
-	// Set default styles for specific element type
-	void setDefaultButtonStyle(UI_Elements::ElementStyle style);
-	void setDefaultButtonTextStyle(UI_Elements::TextStyle textStyle);
-	void setDefaultButtonTexture(UI_Elements::ElementTexture texture);
+	void clearDefaults(void);
 }
 
 
