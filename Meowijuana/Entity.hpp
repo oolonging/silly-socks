@@ -147,6 +147,7 @@ namespace Entity {
 	private:
 		std::vector<std::string> dialogLines;
 		size_t linenum = 0;
+		bool isPaused = false;
 
 	public:
 		// Dialog management
@@ -154,8 +155,11 @@ namespace Entity {
 		void setDialogLines(const std::vector<std::string>& lines);
 		void addDialogLine(const std::string& line);
 
+		size_t getLineNum();
+
 		void speak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;
+
 
 		// Constructors
 		NPC(float posX, float posY, float w, float h, float health, float spd, float arm);

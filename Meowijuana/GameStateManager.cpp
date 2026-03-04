@@ -11,6 +11,7 @@
 #include "Screens/DungeonScreen.hpp"
 #include "Screens/TestingScreen.hpp"
 #include "Screens/Testing/testing-andrea.hpp"
+#include "Screens/Testing/testing-xuan.hpp"
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
@@ -136,6 +137,15 @@ void GSM_Update()
 			fpDraw = Andrea_Draw;
 			fpFree = Andrea_Free;
 			fpUnload = Andrea_Unload;
+			break;
+
+		case GS_X:
+			fpLoad = Xuan_Load;
+			fpInitialize = Xuan_Initialize;
+			fpUpdate = Xuan_Update;
+			fpDraw = Xuan_Draw;
+			fpFree = Xuan_Free;
+			fpUnload = Xuan_Unload;
 			break;
 
 		// Utility states (TODO: technically these 2 can be removed since itll be caught by default but we'll see)

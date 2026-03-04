@@ -458,6 +458,10 @@ namespace Entity {
 		dialogLines.push_back(line);
 	}
 
+	size_t NPC::getLineNum() {
+		return linenum;
+	}
+
 	void NPC::speak(UI_Elements::DialogueBox& dialogueBox) {
 		if (dialogLines.empty()) {
 			return;
@@ -467,15 +471,25 @@ namespace Entity {
 			if (AEInputCheckTriggered(AEVK_E) || AEInputCheckTriggered(AEVK_LBUTTON)) {
 				if (linenum < dialogLines.size() - 1) {
 					++linenum;
+
+					if (dialogLines[linenum] == "@") {
+						isPaused = true;
+						dialogueBox.dismiss();
+						return;
+					}
+
 					dialogueBox.setText(dialogLines[linenum]);
 				}
 				else {
 					dialogueBox.dismiss();
 					linenum = 0;
+					isPaused = false;
 				}
 			}
 			return;
 		}
+
+		if (isPaused) return;
 
 		dialogueBox.setSpeaker("NPC");
 		dialogueBox.setCharacterSprite(this->sprite);

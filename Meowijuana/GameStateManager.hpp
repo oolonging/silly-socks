@@ -29,7 +29,8 @@ enum GSM_STATES
 	GS_RESTART,
 	GS_BACK,
 
-	GS_A
+	GS_A,
+	GS_X
 
 };
 

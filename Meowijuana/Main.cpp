@@ -53,6 +53,7 @@ void screenSwitcher(void) {
 
 	if (AEInputCheckTriggered(AEVK_R))
 		next = GS_RESTART;
+
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

@@ -104,7 +104,6 @@ void Testing_Update() {
 
 
 
-
 	// Update inventory UI (handles keyboard input for slot selection)
 	Cashew::inventoryUI.update();
 
@@ -143,7 +142,7 @@ void Testing_Update() {
 	}
 
 
-	if (Cashew::dialogueBox.getIsActive() && activeSpeaker) {
+	else if (Cashew::dialogueBox.getIsActive() && activeSpeaker) {
 		activeSpeaker->speak(Cashew::dialogueBox);
 	}
 

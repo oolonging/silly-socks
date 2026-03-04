@@ -31,6 +31,7 @@ namespace EntityManager {
 
 	// TODO: entities dont have update yet
 	//void updateAll();
+	void draw(const std::string& name);
 	void drawAll();
 
 	// init
