@@ -1,0 +1,8 @@
+The information for the spritesheets are as follows
+
+cat_spritesheet
+Dimensions: 384x256
+sprite Dimensions: 32x32
+Rows: 8
+Columns: 12
+Total number of sprites: 96

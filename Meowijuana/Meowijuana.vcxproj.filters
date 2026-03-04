@@ -127,6 +127,12 @@
     <ClCompile Include="Managers\UIManager.cpp">
       <Filter>Source files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\SpriteManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-sprites.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -215,6 +221,12 @@
     </ClInclude>
     <ClInclude Include="Managers\UIManager.hpp">
       <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\SpriteManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-sprites.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

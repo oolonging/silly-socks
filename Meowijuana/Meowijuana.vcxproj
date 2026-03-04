@@ -108,6 +108,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\EntityManager.cpp" />
+    <ClCompile Include="Managers\SpriteManager.cpp" />
     <ClCompile Include="Managers\TileManager.cpp" />
     <ClCompile Include="Managers\UIManager.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
@@ -124,6 +125,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\Testing\testing-andrea.cpp" />
     <ClCompile Include="Screens\Testing\testing-jun.cpp" />
     <ClCompile Include="Screens\Testing\testing-saahil.cpp" />
+    <ClCompile Include="Screens\Testing\testing-sprites.cpp" />
     <ClCompile Include="Screens\Testing\testing-ui-elements.cpp" />
     <ClCompile Include="Screens\Testing\testing-xuan.cpp" />
     <ClCompile Include="Screens\TutorialScreen.cpp" />
@@ -151,6 +153,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="LevelSystem.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp" />
+    <ClInclude Include="Managers\SpriteManager.hpp" />
     <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Managers\UIManager.hpp" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
@@ -165,6 +168,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\Testing\testing-andrea.hpp" />
     <ClInclude Include="Screens\Testing\testing-jun.hpp" />
     <ClInclude Include="Screens\Testing\testing-saahil.hpp" />
+    <ClInclude Include="Screens\Testing\testing-sprites.hpp" />
     <ClInclude Include="Screens\Testing\testing-ui-elements.hpp" />
     <ClInclude Include="Screens\Testing\testing-xuan.hpp" />
     <ClInclude Include="Screens\TutorialScreen.hpp" />
