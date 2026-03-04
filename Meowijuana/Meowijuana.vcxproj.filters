@@ -119,8 +119,6 @@
     <ClCompile Include="Managers\EntityManager.cpp">
       <Filter>Source files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\TileManager.cpp" />
-    <ClCompile Include="UI_Elements\PlayerInventory.cpp" />
     <ClCompile Include="Screens\Testing\testing-ui-elements.cpp">
       <Filter>Source files\Screens\Testing</Filter>
     </ClCompile>
@@ -132,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="Screens\Testing\testing-sprites.cpp">
       <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\TileManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Elements\PlayerInventory.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +205,6 @@
     <ClInclude Include="Screens\Testing\testing-jun.hpp">
       <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Screens\TutorialScreen.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
@@ -211,11 +214,9 @@
     <ClInclude Include="AudioManager.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Tiles.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp">
       <Filter>Header files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Screens\Testing\testing-ui-elements.hpp">
       <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
@@ -227,6 +228,15 @@
     </ClInclude>
     <ClInclude Include="Screens\Testing\testing-sprites.hpp">
       <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\TileManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles.hpp">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
