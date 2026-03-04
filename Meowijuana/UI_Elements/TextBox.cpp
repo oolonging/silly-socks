@@ -7,6 +7,40 @@ namespace UI_Elements {
 	// -------------------------------------------------------------------------
 	// TextBox Implementation
 	// -------------------------------------------------------------------------
+	ElementStyle TextBox::defaultStyle = UI_Element::getDefaultStyle();
+	TextStyle TextBox::defaultTextStyle = UI_Element::getDefaultTextStyle();
+	ElementTexture TextBox::defaultTexture = UI_Element::getDefaultTexture();
+
+	// definitions for default setters
+	void TextBox::setDefaultTextBoxStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
+	void TextBox::setDefaultTextBoxTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
+	void TextBox::setDefaultTextBoxTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
+
+	// definitions for default getters
+	ElementStyle TextBox::getDefaultTextBoxStyle(void) {
+		ElementStyle defaultStyle;
+		// TODO: implement when palette is in
+		return defaultStyle;
+	}
+
+	TextStyle TextBox::getDefaultTextBoxTextStyle(void) {
+		TextStyle defaultTextStyle;
+		// TODO: implement when palette is in
+		return defaultTextStyle;
+	}
+
+	ElementTexture TextBox::getDefaultTextBoxTexture(void) {
+		ElementTexture defaultTexture;
+		// TODO: fill in when default textures are drawn
+		defaultTexture.primaryTexture = nullptr;
+		defaultTexture.secondaryTexture = nullptr;
+
+		return defaultTexture;
+	}
+
+	// -------------------------------------------------------------------------
+	// TextBox Implementation
+	// -------------------------------------------------------------------------
 
 	TextBox::TextBox(float x, float y, float width, float height, const std::string& placeholder, size_t maxLen, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), text(""), placeholderText(placeholder), maxLength(maxLen),

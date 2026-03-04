@@ -58,6 +58,16 @@ namespace UIManager {
 		UI_Elements::Button::setDefaultButtonTextStyle(UI_Elements::Button::getDefaultButtonTextStyle());
 		UI_Elements::Button::setDefaultButtonTexture(UI_Elements::Button::getDefaultButtonTexture());
 
+		// Initialize default progress bar styles
+		UI_Elements::ProgressBar::setDefaultProgressBarStyle(UI_Elements::ProgressBar::getDefaultProgressBarStyle());
+		UI_Elements::ProgressBar::setDefaultProgressBarTextStyle(UI_Elements::ProgressBar::getDefaultProgressBarTextStyle());
+		UI_Elements::ProgressBar::setDefaultProgressBarTexxture(UI_Elements::ProgressBar::getDefaultProgressBarTexture());
+
+		// Initialize default text box styles
+		UI_Elements::TextBox::setDefaultTextBoxStyle(UI_Elements::TextBox::getDefaultTextBoxStyle());
+		UI_Elements::TextBox::setDefaultTextBoxTextStyle(UI_Elements::TextBox::getDefaultTextBoxTextStyle());
+		UI_Elements::TextBox::setDefaultTextBoxTexture(UI_Elements::TextBox::getDefaultTextBoxTexture());
+
 	}
 
 	void setDefaultButtonStyle(UI_Elements::ElementStyle style) {

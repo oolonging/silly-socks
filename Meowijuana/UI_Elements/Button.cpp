@@ -13,30 +13,30 @@ namespace UI_Elements {
 	void Button::setDefaultButtonTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
 	void Button::setDefaultButtonTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
 
-	// Definitions for default getters
+	// Definitions for default setters
 	ElementStyle Button::getDefaultButtonStyle(void) {
-		UI_Elements::ElementStyle defaultButtonStyle;
-		defaultButtonStyle.primaryColor = Color::Color(Color::Preset::Red);
-		defaultButtonStyle.secondaryColor = Color::Color(Color::Preset::Blue);
-		defaultButtonStyle.strokeColor = Color::Color(Color::Preset::Black);
-		defaultButtonStyle.strokeWeight = 2;
-		return defaultButtonStyle;
+		UI_Elements::ElementStyle defaultStyle;
+		defaultStyle.primaryColor = Color::Color(Color::Preset::Red);
+		defaultStyle.secondaryColor = Color::Color(Color::Preset::Blue);
+		defaultStyle.strokeColor = Color::Color(Color::Preset::Black);
+		defaultStyle.strokeWeight = 2;
+		return defaultStyle;
 	}
 
 	TextStyle Button::getDefaultButtonTextStyle(void) {
-		UI_Elements::TextStyle defaultButtonTextStyle;
-		defaultButtonTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
-		defaultButtonTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
-		defaultButtonTextStyle.fontSize = 10;
-		defaultButtonTextStyle.fontName = "default";
-		return defaultButtonTextStyle;
+		UI_Elements::TextStyle defaultTextStyle;
+		defaultTextStyle.primaryColor = Color::Color(Color::Preset::Blue);
+		defaultTextStyle.secondaryColor = Color::Color(Color::Preset::Red);
+		defaultTextStyle.fontSize = 10;
+		defaultTextStyle.fontName = "default";
+		return defaultTextStyle;
 	}
 
 	ElementTexture Button::getDefaultButtonTexture(void) {
-		UI_Elements::ElementTexture defaultButtonTexture;
-		defaultButtonTexture.primaryTexture = nullptr;
-		defaultButtonTexture.secondaryTexture = nullptr;
-		return defaultButtonTexture;
+		UI_Elements::ElementTexture defaultTexture;
+		defaultTexture.primaryTexture = nullptr;
+		defaultTexture.secondaryTexture = nullptr;
+		return defaultTexture;
 	}
 
 	// -------------------------------------------------------------------------

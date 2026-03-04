@@ -115,7 +115,22 @@ namespace UI_Elements {
 		float minValue;
 		float maxValue;
 
+		// static defaults for all progress bars
+		static ElementStyle defaultstyle;
+		static TextStyle defaultTextStyle;
+		static ElementTexture defaultTexture;
+
 	public:
+		// static methods to set defaults
+		static void setDefaultProgressBarStyle(ElementStyle newStyle);
+		static void setDefaultProgressBarTextStyle(TextStyle newStyle);
+		static void setDefaultProgressBarTexxture(ElementTexture newTexture);
+
+		// static methods to get defaults
+		static ElementStyle getDefaultProgressBarStyle(void);
+		static TextStyle getDefaultProgressBarTextStyle(void);
+		static ElementTexture getDefaultProgressBarTexture(void);
+
 		void clampValue(void);
 		void setValue(float newValue);
 		void draw(void) override;
@@ -167,10 +182,25 @@ namespace UI_Elements {
 		// textbox static member
 		static TextBox* currentlySelected;
 
+		// textbox defaults static members
+		static ElementStyle defaultStyle;
+		static TextStyle defaultTextStyle;
+		static ElementTexture defaultTexture;
+
 		void handleInput();
 		void updateCursor(float deltaTime);
 
 	public:
+		// static  methods to set defaults
+		static void setDefaultTextBoxStyle(ElementStyle newStyle);
+		static void setDefaultTextBoxTextStyle(TextStyle newStyle);
+		static void setDefaultTextBoxTexture(ElementTexture newTexture);
+
+		// static methods to get defaults
+		static ElementStyle getDefaultTextBoxStyle(void);
+		static TextStyle getDefaultTextBoxTextStyle(void);
+		static ElementTexture getDefaultTextBoxTexture(void);
+
 		void draw(void) override;
 		void select();
 		void deselect();

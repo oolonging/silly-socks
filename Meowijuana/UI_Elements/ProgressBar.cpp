@@ -5,6 +5,43 @@
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
+	// ProgressBar Static Defaults
+	// -------------------------------------------------------------------------
+	ElementStyle ProgressBar::defaultstyle = UI_Element::getDefaultStyle();
+	TextStyle ProgressBar::defaultTextStyle = UI_Element::getDefaultTextStyle();
+	ElementTexture ProgressBar::defaultTexture = UI_Element::getDefaultTexture();
+
+	// Definitions for default setters
+	void ProgressBar::setDefaultProgressBarStyle(ElementStyle newStyle) { defaultstyle = newStyle; }
+	void ProgressBar::setDefaultProgressBarTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
+	void ProgressBar::setDefaultProgressBarTexxture(ElementTexture newTexture) { defaultTexture = newTexture; }
+
+	// Definitions for default getters
+	ElementStyle ProgressBar::getDefaultProgressBarStyle(void) {
+		UI_Elements::ElementStyle defaultProgressBarStyle;
+		// TODO: When color palette is done
+		return defaultProgressBarStyle;
+	}
+
+	TextStyle ProgressBar::getDefaultProgressBarTextStyle(void) {
+		UI_Elements::TextStyle defaultTextStyle;
+		// TODO: when color palette is done
+		return defaultTextStyle;
+	}
+
+	ElementTexture ProgressBar::getDefaultProgressBarTexture(void) {
+		UI_Elements::ElementTexture defaultTexture;
+		// TODO: when default textures for slider is done
+
+		defaultTexture.primaryTexture = nullptr;
+		defaultTexture.secondaryTexture = nullptr;
+
+		return defaultTexture;
+	}
+
+
+
+	// -------------------------------------------------------------------------
 	// ProgressBar Implementation
 	// -------------------------------------------------------------------------
 
