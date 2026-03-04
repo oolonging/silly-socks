@@ -62,6 +62,7 @@ namespace Color {
 		// Game color palette (UI Elements)
 		extern const Color defaultStylePrimary;
 		extern const Color defaultStyleSecondary;
+		extern const Color defaultStyleStroke;
 		extern const Color defaultTextStylePrimary;
 		extern const Color defaultTextStyleSecondary;
 	}

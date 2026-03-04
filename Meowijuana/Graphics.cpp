@@ -83,6 +83,7 @@ namespace Color {
 		// remove this comments when these values have been properly set
 		const Color defaultStylePrimary = Blue;
 		const Color defaultStyleSecondary = Red;
+		const Color defaultStyleStroke = Black;
 		const Color defaultTextStylePrimary = Black;
 		const Color defaultTextStyleSecondary = White;
 	}
