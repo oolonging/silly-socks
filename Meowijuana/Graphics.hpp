@@ -58,8 +58,13 @@ namespace Color {
 		extern const Color DarkGray;
 		extern const Color LightGray;
 		extern const Color Transparent;
-	}
 
+		// Game color palette (UI Elements)
+		extern const Color defaultStylePrimary;
+		extern const Color defaultStyleSecondary;
+		extern const Color defaultTextStylePrimary;
+		extern const Color defaultTextStyleSecondary;
+	}
 }
 
 namespace Shapes {
@@ -168,4 +173,5 @@ namespace Animations {
 	void updateIndicator(Indicator& ind);
 	void drawIndicator(Indicator& ind);
 }
+
 #endif // GRAPHICS_HPP

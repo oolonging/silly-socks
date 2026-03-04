@@ -77,6 +77,14 @@ namespace Color {
 		const Color DarkGray = { 64,  64,  64, 255 };
 		const Color LightGray = { 192, 192, 192, 255 };
 		const Color Transparent = { 0,   0,   0,   0 };
+
+		// Game color palette (UI Elements)
+		// TODO: The values here are only until the palette is ready, 
+		// remove this comments when these values have been properly set
+		const Color defaultStylePrimary = Blue;
+		const Color defaultStyleSecondary = Red;
+		const Color defaultTextStylePrimary = Black;
+		const Color defaultTextStyleSecondary = White;
 	}
 }
 
