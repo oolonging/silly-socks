@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GameStateManager.hpp"
 
-// New imports, remove this comment later
+// Main game screens
 #include "Screens/SplashScreen.hpp"
 #include "Screens/MainMenu.hpp"
 #include "Screens/SettingsScreen.hpp"
@@ -9,9 +9,14 @@
 #include "Screens/TutorialScreen.hpp"
 #include "Screens/FarmScreen.hpp"
 #include "Screens/DungeonScreen.hpp"
+
+// testing imports
 #include "Screens/TestingScreen.hpp"
 #include "Screens/Testing/testing-andrea.hpp"
 #include "Screens/Testing/testing-xuan.hpp"
+#include "Screens/Testing/testing-sprites.hpp"
+#include "Screens/Testing/testing-ui-elements.hpp"
+
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
