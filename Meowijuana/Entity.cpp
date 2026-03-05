@@ -446,6 +446,8 @@ namespace Entity {
 		: Entity() {
 	}
 
+
+	// Dialogue lines
 	const std::vector<std::string>& NPC::getDialogLines() const {
 		return dialogLines;
 	}
@@ -458,8 +460,56 @@ namespace Entity {
 		dialogLines.push_back(line);
 	}
 
+
+	// Idle lines
+	const std::vector<std::string>& NPC::getIdleLines() const {
+		return idleLines;
+	}
+
+	void NPC::setIdleLines(const std::vector<std::string>& lines) {
+		idleLines = lines;
+	}
+
+	void NPC::addIdleLine(const std::string& line) {
+		idleLines.push_back(line);
+	}
+
+
 	size_t NPC::getLineNum() {
 		return linenum;
+	}
+
+	size_t NPC::getIdleNum() {
+		return idlenum;
+	}
+
+	bool NPC::getIsPaused() {
+		return isPaused;
+	}
+
+	bool NPC::getConditionTrue() {
+		return conditionTrue;
+	}
+
+	void NPC::setConditionTrue() {
+		conditionTrue = true;
+	}
+
+	void NPC::resumeDialogue(UI_Elements::DialogueBox& dialogueBox) {
+		if (!isPaused || !conditionTrue) {
+			return;
+		}
+
+		else if (isPaused && conditionTrue && AEInputCheckTriggered(AEVK_E)) {
+			isPaused = false;
+			++linenum;
+			if (linenum < dialogLines.size()) {
+				dialogueBox.setSpeaker("NPC");
+				dialogueBox.setCharacterSprite(this->sprite);
+				dialogueBox.setText(dialogLines[linenum]);
+				dialogueBox.activate();
+			}
+		}
 	}
 
 	void NPC::speak(UI_Elements::DialogueBox& dialogueBox) {
@@ -480,17 +530,47 @@ namespace Entity {
 
 					dialogueBox.setText(dialogLines[linenum]);
 				}
+
 				else {
 					dialogueBox.dismiss();
 					linenum = 0;
 					isPaused = false;
+					started = false;
 				}
 			}
+
 			return;
 		}
 
-		if (isPaused) return;
+		else if (isPaused && !conditionTrue && AEInputCheckTriggered(AEVK_E)) {
+			if (idleLines.empty()) { 
+				return; 
+			}
 
+			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setCharacterSprite(this->sprite);
+			dialogueBox.setText(idleLines[idlenum]);
+			dialogueBox.activate();
+			++idlenum;
+			if (idlenum > idleLines.size() - 1) {
+				idlenum = 0;
+			}
+
+			dialogueBox.dismiss(); // broken ill work on tmr after sleep
+			return;
+
+		}
+
+		else if (isPaused && conditionTrue && AEInputCheckTriggered(AEVK_E)) {
+			resumeDialogue(dialogueBox);
+			return; 
+		}
+
+		if (started) {
+			return;
+		}
+
+		started = true;
 		dialogueBox.setSpeaker("NPC");
 		dialogueBox.setCharacterSprite(this->sprite);
 		linenum = 0;

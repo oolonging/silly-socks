@@ -146,8 +146,12 @@ namespace Entity {
 	class NPC : public Entity {
 	private:
 		std::vector<std::string> dialogLines;
+		std::vector<std::string> idleLines;
 		size_t linenum = 0;
+		size_t idlenum = 0;
+		bool started = false;
 		bool isPaused = false;
+		bool conditionTrue = false;
 
 	public:
 		// Dialog management
@@ -155,7 +159,18 @@ namespace Entity {
 		void setDialogLines(const std::vector<std::string>& lines);
 		void addDialogLine(const std::string& line);
 
+		const std::vector<std::string>& getIdleLines() const;
+		void setIdleLines(const std::vector<std::string>& lines);
+		void addIdleLine(const std::string& line);
+
 		size_t getLineNum();
+		size_t getIdleNum();
+
+		bool getIsPaused();
+		bool getConditionTrue();
+
+		void setConditionTrue();
+		void resumeDialogue(UI_Elements::DialogueBox& dialogueBox);
 
 		void speak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;

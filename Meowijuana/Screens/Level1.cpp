@@ -189,8 +189,6 @@ void Level1_Update()
     testPlayer.update();
 
     // enemy stuff
-    // todo:: i think player cd
-
     if (testEnemy.isAlive()) {
         testEnemy.tickAttackTimer();
 
