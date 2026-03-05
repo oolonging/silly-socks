@@ -68,6 +68,8 @@ void Andrea_Draw()
 
 void Andrea_Free() 
 {
+	Griddy.unloadMapTexture();
+	World::freeGrid();
 }
 
 void Andrea_Unload() {}

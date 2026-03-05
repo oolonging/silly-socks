@@ -11,8 +11,8 @@ World::worldGrid grid;
 
 namespace World {
 
-	AEGfxVertexList* gridMesh;
-	AEGfxVertexList* tileMesh;
+	AEGfxVertexList* gridMesh = nullptr;
+	AEGfxVertexList* tileMesh = nullptr;
 
 	worldGrid::worldGrid() : gridWidth(0), gridHeight(0), tileSize(0), offsetX(0.0f), offsetY(0.0f), column(0), row(0) {}
 
@@ -88,13 +88,23 @@ namespace World {
 
 		tileDatabase[6] = doneCrop;
 	}
-	// Free the assests and stuff for the tiles cuz my dumbass didn't do that 
-	// 1) Interacting with other objects 
-
-	/*void worldGrid::freeMapTexture()
+	
+	// Free the assests and stuff
+	void worldGrid::unloadMapTexture()
 	{
+		for (auto& pair : tileDatabase)
+		{
+			tileObject& tile = pair.second;
 
-	}*/
+			if (tile.image)
+			{
+				AEGfxTextureUnload(tile.image);
+				tile.image = nullptr;
+			}
+		}
+
+		tileDatabase.clear();
+	}
 
 	void worldGrid::initTextureBox()
 	{
@@ -135,6 +145,13 @@ namespace World {
 
 		float topY = offsetY;
 		float bottomY = offsetY - gridHeight * tileSize;
+
+		// Clear grid if there was previously called one
+		if (gridMesh)
+		{
+			AEGfxMeshFree(gridMesh);
+			gridMesh = nullptr;
+		}
 
 		AEGfxMeshStart();
 
@@ -224,7 +241,7 @@ namespace World {
 	}
 
 	// Getting the Index of the tile based on the world coordinates
-	std::pair<int, int> worldGrid::getIndex(float cordX, float cordY)
+	std::pair<int, int> worldGrid::getIndex(float cordX, float cordY) const
 	{
 		int gridX = static_cast<int>(floor((cordX - offsetX) / tileSize));
 		int gridY = static_cast<int>(floor((offsetY - cordY) / tileSize));
@@ -251,7 +268,7 @@ namespace World {
 	}
 
 	// Based on the player position and the mouse, highlight the active tile red
-	std::pair<int, int> activeTile(float userX, float userY, World::worldGrid Griddy)
+	std::pair<int, int> activeTile(float userX, float userY, const World::worldGrid& Griddy)
 	{
 		int mouseX, mouseY;
 		AEInputGetCursorPosition(&mouseX, &mouseY);
@@ -287,7 +304,7 @@ namespace World {
 	}
 
 	// Based on the tile index, get the world coordinates 
-	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, World::worldGrid Griddy)
+	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, const World::worldGrid& Griddy)
 	{
 		int tileSize = Griddy.getTileSize();
 
@@ -356,7 +373,7 @@ namespace World {
 		}
 	}
 
-	void worldGrid::drawTexture(World::worldGrid Griddy)
+	void worldGrid::drawTexture(const World::worldGrid& Griddy)
 	{
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -394,7 +411,7 @@ namespace World {
 		}
 	}
 
-	void drawTile(std::pair<int, int> tile, World::worldGrid Griddy)
+	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy)
 	{
 		int tileSize = Griddy.getTileSize();
 		std::pair<float, float> coords = getWorldCoords(tile, Griddy);
@@ -405,7 +422,16 @@ namespace World {
 
 	void freeGrid()
 	{
-		AEGfxMeshFree(gridMesh);
-		gridMesh = nullptr;
+		if (gridMesh != nullptr)
+		{
+			AEGfxMeshFree(gridMesh);
+			gridMesh = nullptr;
+		}
+
+		if (tileMesh != nullptr)
+		{
+			AEGfxMeshFree(tileMesh);
+			tileMesh = nullptr;
+		}
 	}
 }

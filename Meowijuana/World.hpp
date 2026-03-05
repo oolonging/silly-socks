@@ -28,7 +28,7 @@ namespace World
 		int objID;
 		std::string name;
 		std::string description;
-		AEGfxTexture* image;
+		AEGfxTexture* image = nullptr;;
 	};
 
 	class worldGrid
@@ -55,12 +55,15 @@ namespace World
 		worldGrid();
 		~worldGrid();
 
+		worldGrid(const worldGrid&) = delete;
+		worldGrid& operator=(const worldGrid&) = delete;
+
 		// Initialize the grid with given dimensions
 		void initGrid(int width, int height, int size);
 		void initMapTexture();
 		void outWorldMap(const std::string& filename);
 		
-		std::pair<int, int> getIndex(float cordX, float cordY);
+		std::pair<int, int> getIndex(float cordX, float cordY) const;
 
 		int& pointerToTile(int gridX, int gridY);
 		const int getTileID(int gridX, int gridY) const;
@@ -76,21 +79,21 @@ namespace World
 		float getOffsetX() const { return offsetX; }
 		float getOffsetY() const { return offsetY; }
 	
-		void drawTexture(World::worldGrid Griddy);
-		/*void freeMapTexture();*/
+		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();
+		void unloadMapTexture();
 	};
 
 	void drawGrid();
 	void freeGrid();
 
 	// Active Tile -> based on the user position and the mouse as well (ref stardew valley)
-	std::pair<int, int> activeTile(float userX, float userY, World::worldGrid Griddy);
+	std::pair<int, int> activeTile(float userX, float userY, const World::worldGrid& Griddy);
 	
 	// Get World Coords -> Translate Array index to real word coordinates
-	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, World::worldGrid Griddy);
+	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, const World::worldGrid& Griddy);
 	
-	void drawTile(std::pair<int, int> tile, World::worldGrid Griddy);
+	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);
 
 	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy);
 
