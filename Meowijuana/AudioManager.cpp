@@ -21,7 +21,20 @@ namespace AudioManager {
 
 	void Audio::setBGMVolume(float volume) {
 		bgVolume = volume;
-		AEAudioSetGroupVolume(bgm, bgVolume);
+		if (!bgMuted) {
+			AEAudioSetGroupVolume(bgm, bgVolume);
+		}
+	}
+
+	void Audio::toggleBGMMuted() {
+		if (!bgMuted) {
+			AEAudioSetGroupVolume(bgm, 0.0f);
+			bgMuted = true;
+		}
+		else {
+			AEAudioSetGroupVolume(bgm, bgVolume);
+			bgMuted = false;
+		}
 	}
 
 	//sfx
@@ -36,7 +49,20 @@ namespace AudioManager {
 
 	void Audio::setSFXVolume(float volume) {
 		sfxVolume = volume;
-		AEAudioSetGroupVolume(sfx, sfxVolume);
+		if (!sfxMuted) {
+			AEAudioSetGroupVolume(sfx, sfxVolume);
+		}
+	}
+
+	void Audio::toggleSFXMuted() {
+		if (!sfxMuted) {
+			AEAudioSetGroupVolume(sfx, 0.0f);
+			sfxMuted = true;
+		}
+		else {
+			AEAudioSetGroupVolume(sfx, sfxVolume);
+			sfxMuted = false;
+		}
 	}
 
 	void Audio::exit() {

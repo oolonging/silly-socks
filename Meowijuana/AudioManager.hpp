@@ -14,6 +14,8 @@ namespace AudioManager {
 		AEAudioGroup sfx;
 		float bgVolume;
 		float sfxVolume;
+		bool bgMuted;
+		bool sfxMuted;
 
 	public:
 
@@ -23,10 +25,12 @@ namespace AudioManager {
 		void loadBGM(const std::string& path);
 		void playBGM(float volume, bool loop);
 		void setBGMVolume(float volume);
+		void toggleBGMMuted();
 		//sfx
 		void loadSFX(const std::string& path);
 		void playSFX(float volume);
 		void setSFXVolume(float volume);
+		void toggleSFXMuted();
 
 		void exit();
 	};
