@@ -115,7 +115,11 @@ namespace Shapes {
 
 	// Triangle
 	void triangle(float x1, float y1, float x2, float y2, float x3, float y3);
-	void triangle(Point, Point, Point);
+	void triangle(Point p1, Point p2, Point p3);
+
+	// Line
+	void line(float x1, float y1, float x2, float y2);
+	void line(Point p1, Point p2);
 }
 
 namespace Graphics {

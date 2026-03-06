@@ -492,6 +492,21 @@ namespace Shapes {
 	void triangle(Point p1, Point p2, Point p3) {
 		triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
 	}
+
+	// Line functions (use the rectAdvanced to follow the stroke settings and have a rotated rect)
+	void line(float x1, float y1, float x2, float y2) {
+		if (sRectMesh == nullptr) return;
+
+		float dx = x2 - x1;
+		float dy = y2 - y1;
+		float length = sqrtf(dx * dx + dy * dy);
+		float angle = atan2f(dy, dx);
+		rectAdvanced(x1, y1, length, Settings::gStrokeWeight, angle, CORNER);
+	}
+
+	void line(Point p1, Point p2) {
+		line(p1.x, p1.y, p2.x, p2.y);
+	}
 }
 
 namespace Graphics {
