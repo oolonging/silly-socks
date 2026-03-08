@@ -4,7 +4,12 @@
 #include "../Graphics.hpp"
 
 namespace SpriteManager {
+	// For spritesheet
 	std::unordered_map<std::string, SpriteSheet> spriteSheets;
+	
+	// For animations
+	std::unordered_map<std::string, Animation> animations;
+	float gAnimationTime = 0.0f;
 
 	SpriteSheet* loadSpriteSheet(const std::string& name, const std::string& filepath,
 								float sheetWidth, float sheetHeight,
@@ -157,12 +162,161 @@ namespace SpriteManager {
 		AEGfxMeshFree(mesh);
 	}
 
+	// ----- Animation implementations -----
+
+	Animation* createAnimation(const std::string& name, const std::vector<Sprite>& frames, float frameDuration, bool loop) {
+		if (frames.empty()) {
+			std::cerr << "[SpriteManager] Error: Cannot create animation '" << name << "' with no frames." << std::endl;
+			return nullptr;
+		}
+
+		// Check if animation already exists
+		if (animationExists(name)) {
+			std::cout << "[SpriteManager] Warning: Animation '" << name << "' already exists. Returning existing animation." << std::endl;
+			return &animations[name];
+		}
+
+		// Create and store the animation
+		Animation animation(frames, frameDuration, loop);
+
+		if (!animation.isValid()) {
+			std::cerr << "[SpriteManager] Error: Animation '" << name << "' contains invalid frames." << std::endl;
+			return nullptr;
+		}
+
+		animations[name] = animation;
+		std::cout << "[SpriteManager] Created animation '" << name << "' with " << frames.size() << " frames." << std::endl;
+
+		return &animations[name];
+	}
+
+	Animation* createAnimationFromRow(const std::string& name, const std::string& sheetName, int row, int startCol, int frameCount, float frameDuration, bool loop) {
+		SpriteSheet* sheet = getSpriteSheet(sheetName);
+
+		if (sheet == nullptr) {
+			std::cerr << "[SpriteManager] Error: Cannot create animation from non-existent sprite sheet '" << sheetName << "'" << std::endl;
+			return nullptr;
+		}
+
+		std::vector<Sprite> frames;
+		for (int i = 0; i < frameCount; i++) {
+			Sprite sprite = createSprite(sheet, startCol + i, row);
+			if (!sprite.isValid()) {
+				std::cerr << "[SpriteManager] Error: Invalid sprite at (" << (startCol + i) << ", " << row << ") while creating animation '" << name << "'" << std::endl;
+				return nullptr;
+			}
+			frames.push_back(sprite);
+		}
+
+		return createAnimation(name, frames, frameDuration, loop);
+	}
+
+	Animation* createAnimationFromRange(const std::string& name, const std::string& sheetName, int startX, int startY, int frameCount, float frameDuration, bool loop) {
+		SpriteSheet* sheet = getSpriteSheet(sheetName);
+
+		if (sheet == nullptr) {
+			std::cerr << "[SpriteManager] Error: Cannot create animation from non-existent sprite sheet '" << sheetName << "'" << std::endl;
+			return nullptr;
+		}
+
+		std::vector<Sprite> frames;
+		int currentX = startX;
+		int currentY = startY;
+
+		for (int i = 0; i < frameCount; i++) {
+			Sprite sprite = createSprite(sheet, currentX, currentY);
+			if (!sprite.isValid()) {
+				std::cerr << "[SpriteManager] Error: Invalid sprite at (" << currentX << ", " << currentY << ") while creating animation '" << name << "'" << std::endl;
+				return nullptr;
+			}
+			frames.push_back(sprite);
+
+			// Move to next sprite (also account for when you reach the end and have to increment row)
+			currentX++;
+			if (currentX >= sheet->columns) {
+				currentX = 0;
+				currentY++;
+			}
+		}
+
+		return createAnimation(name, frames, frameDuration, loop);
+	}
+
+	Animation* getAnimation(const std::string& name) {
+		auto it = animations.find(name);
+		if (it != animations.end()) {
+			return &it->second;
+		}
+
+		std::cerr << "[SpriteManager] Warning: Animation '" << name << "' not found." << std::endl;
+		return nullptr;
+	}
+
+	bool animationExists(const std::string& name) {
+		return (animations.find(name) != animations.end());
+	}
+
+	// --- draw from here ---
+	void drawAnimation(const std::string& name, float x, float y, float width, float height, float rotation) {
+		Animation* anim = getAnimation(name);
+		if (anim != nullptr) {
+			drawAnimation(*anim, x, y, width, height, rotation);
+		}
+	}
+
+	void drawAnimation(const Animation& animation, float x, float y, float width, float height, float rotation) {
+		drawAnimationAtTime(animation, gAnimationTime, x, y, width, height, rotation);
+	}
+
+	void drawAnimationWithAlpha(const std::string& name, float x, float y, float width, float height, float alpha, float rotation) {
+		Animation* anim = getAnimation(name);
+		if (anim != nullptr) {
+			drawAnimationWithAlpha(*anim, x, y, width, height, alpha, rotation);
+		}
+	}
+
+	void drawAnimationWithAlpha(const Animation& animation, float x, float y, float width, float height, float alpha, float rotation) {
+		drawAnimationAtTimeWithAlpha(animation, gAnimationTime, x, y, width, height, alpha, rotation);
+	}
+
+	void drawAnimationAtTime(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float rotation) {
+		drawAnimationAtTimeWithAlpha(animation, elapsedTime, x, y, width, height, 1.0f, rotation);
+	}
+
+	void drawAnimationAtTimeWithAlpha(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float alpha, float rotation) {
+		if (!animation.isValid()) {
+			std::cerr << "[SpriteManager] Error: Cannot draw invalid animation." << std::endl;
+			return;
+		}
+
+		const Sprite& currentFrame = animation.getFrame(elapsedTime);
+		drawWithAlpha(currentFrame, x, y, width, height, alpha, rotation);
+	}
+
+	void updateAnimationTime(float deltaTime) {
+		gAnimationTime += deltaTime;
+	}
+
+	void resetAnimationTime(void) {
+		gAnimationTime = 0.0f;
+	}
+
+	void unloadAnimation(const std::string& name) {
+		auto it = animations.find(name);
+		if (it != animations.end()) {
+			animations.erase(it);
+			std::cout << "[SpriteManager] Unloaded animation '" << name << "'" << std::endl;
+		}
+	}
+	// --- draw to here ---
+
 
 	void unload(const std::string& name) {
 		auto it = spriteSheets.find(name);
 		if (it != spriteSheets.end()) {
 			if (it->second.texture != nullptr) {
 				AEGfxTextureUnload(it->second.texture);
+				it->second.texture = nullptr; // technically unecessary since object is being destroyed, I just put it to hunt down a bug
 			}
 			spriteSheets.erase(it);
 			std::cout << "[SpriteManager] Unloaded sprite sheet '" << name << "'" << std::endl;
@@ -179,10 +333,13 @@ namespace SpriteManager {
 		for (auto& pair : spriteSheets) {
 			if (pair.second.texture != nullptr) {
 				AEGfxTextureUnload(pair.second.texture);
+				pair.second.texture = nullptr; // same as for the above nullptr assignment
 			}
 		}
 		spriteSheets.clear();
-		std::cout << "[SpriteManager] Cleared all sprite sheets" << std::endl;
+		animations.clear();
+		gAnimationTime = 0.0f;
+		std::cout << "[SpriteManager] Cleared all sprite sheets and animations" << std::endl;
 	}
 }
 

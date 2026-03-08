@@ -1,13 +1,14 @@
 #include "testing-sprites.hpp"
 #include "AEEngine.h"
+#include "../../Graphics.hpp"
+
 
 #include "../../Managers/SpriteManager.hpp"
 
 
 
-// Sprites
-SpriteManager::Sprite whiteCat{};
-SpriteManager::Sprite brownCat{};
+// Animations
+
 
 void testingSprites_Load() {
 	// Initialize sprite manager
@@ -16,23 +17,29 @@ void testingSprites_Load() {
 	// Load the cat sprite sheet
 	SpriteManager::loadSpriteSheet("cat", "Assets/Images/SpriteSheets/cat_spritesheet.png", 384.0f, 256.0f, 32.0f, 32.0f);
 
+	// Load the cat walk animation
+	SpriteManager::createAnimationFromRow("catWalk", "cat", 4, 3, 3, 0.21f, true);
+
 }
 
 void testingSprites_Initialize() {
-
-	whiteCat = SpriteManager::createSprite("cat", 1, 0);
-	brownCat = SpriteManager::createSprite("cat", 4, 0);
+											
 }
 
 void testingSprites_Update() {
+	SpriteManager::updateAnimationTime(AEFrameRateControllerGetFrameTime());
 
+	// just a line from one point to another
+
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	Color::fill(Color::Preset::Black);
+	Color::strokeWeight(5);
+	//Shapes::line(-100.0f, -100.0f, 100.0f, 100.0f);
+	//Shapes::line(-100.0f, 100.0f, 100.0f, -100.0f);
 }
 
 void testingSprites_Draw() {
-
-	// Draw the sprites
-	SpriteManager::drawSprite(whiteCat, 0.0f, 0.0f, 32.0f, 32.0f);
-	SpriteManager::drawSprite(brownCat, 50.0f, 50.0f, 32.0f, 32.0f);
+	SpriteManager::drawAnimation("catWalk", 0.0f, 0.0f, 128.0f, 128.0f);
 
 }
 

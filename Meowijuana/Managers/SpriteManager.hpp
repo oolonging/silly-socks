@@ -2,6 +2,7 @@
 #define SPRITE_MANAGER_HPP
 
 #include <unordered_map>
+#include <vector>
 #include <string>
 #include "AEEngine.h"
 
@@ -62,8 +63,91 @@ namespace SpriteManager {
 		}
 	} Sprite;
 
+	// Animation struct - stores a sequence of sprites and timing info
+	typedef struct Animation {
+		std::vector<Sprite> frames;		// Sequence of sprites that make up the animation
+		float frameDuration;			// Duration of each frame in seconds
+		bool loop;						// Should the animation loop ? 
+
+		// Ctors
+		Animation(const std::vector<Sprite>& frames, float frameDuration, bool loop = true) :
+			frames(frames), frameDuration(frameDuration), loop(loop) {}
+
+		Animation(void) : frames(), frameDuration(0.0f), loop(true) {}
+
+		// Safety functions to ensure animation is valid
+		bool isValid(void) const {
+			// Checks if there is something in the frames vector
+			if (frames.empty()) return false;
+
+			// Check if all frames are valid sprites
+			for (const auto& frame : frames) {
+				if (!frame.isValid()) return false;
+			}
+
+			return true;
+		}
+
+		// Get the current frame based on elapsed time
+		const Sprite& getFrame(float elapsedTime) const {
+			if (frames.empty()) {
+				// TODO: understand whats happening here
+				static Sprite invalidSprite;
+				return invalidSprite;
+			}
+
+			int totalFrames = static_cast<int>(frames.size());
+			float totalDuration = totalFrames * this->frameDuration;
+
+			if (loop) {
+				// Loop the animation using fmod. Alternatively (TODO: change the frameduration to miliseconds so I can use regular int mod probably)
+				float loopedTime = fmod(elapsedTime, totalDuration);
+				int frameIndex = static_cast<int>(loopedTime / frameDuration);
+				if (frameIndex >= totalFrames) {
+					frameIndex = totalFrames - 1; // TODO: technically in the unlikely event that frameIndex is greater than totalFrames by more than one, id have to reduce it by that amount instead of one
+				}
+				return frames[frameIndex];
+			}
+		}
+
+		// Get current frame index based on elapsed time
+		int getFrameIndex(float elapsedTime) const {
+			if (frames.empty()) return 0;
+
+			int totalFrames = static_cast<int>(frames.size());
+			float totalDuration = totalFrames * frameDuration;
+
+			if (loop) {
+				float loopedTime = fmod(elapsedTime, totalDuration);
+				int frameIndex = static_cast<int>(loopedTime / frameDuration);
+				return frameIndex % totalFrames;
+			}
+			else {
+				int frameIndex = static_cast<int>(elapsedTime / frameDuration);
+				if (frameIndex >= totalFrames) {
+					frameIndex = totalFrames - 1;
+				}
+				return frameIndex;
+			}
+		}
+
+		// Check if an animation has finished (only relevant in non-looping animations)
+		bool hasFinished(float elapsedTime) const {
+			if (loop) return false;
+			float totalDuration = frames.size() * frameDuration;
+			return (elapsedTime >= totalDuration);
+		}
+
+	} Animation;
+
 	// Spritesheet storage
 	extern std::unordered_map<std::string, SpriteSheet> spriteSheets;
+
+	// Animation storage
+	extern std::unordered_map<std::string, Animation> animations;
+
+	// Global animation timer (updated every frame)
+	extern float gAnimationTime;
 
 	// Load a sprite sheet from file (NOTE: PNG ONLY, AT LEAST FOR NOW)
 	SpriteSheet* loadSpriteSheet(const std::string& name, const std::string& filepath,
@@ -85,6 +169,45 @@ namespace SpriteManager {
 
 	// Draw a sprite with custom transparency
 	void drawWithAlpha(const Sprite& sprite, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
+
+	// ----- Animation functions -----
+
+	// Create an animation from a sequence of sprites
+	Animation* createAnimation(const std::string& name, const std::vector<Sprite>& frames, float frameDuration, bool loop = true);
+
+	// Create an animation from a horizontal row in a sprite sheet
+	Animation* createAnimationFromRow(const std::string& name, const std::string& sheetName, int row, int startCol, int frameCount, float frameDuration, bool loop = true);
+
+	// Create an animation from a range of sprites in a sprite sheet (reading from left to right then top to bottom. Probably wont use it based on the sprites we have so far but its good to have)
+	Animation* createAnimationFromRange(const std::string& name, const std::string& sheetName, int startX, int startY, int frameCount, float frameDuration, bool loop = true);
+
+	// Get animation by name
+	Animation* getAnimation(const std::string& name);
+
+	// check if an animation exists
+	bool animationExists(const std::string& name);
+
+	// Draw an animation at the current global time
+	void drawAnimation(const std::string& name, float x, float y, float width, float height, float rotation = 0.0f);
+	void drawAnimation(const Animation& animation, float x, float y, float width, float height, float rotation = 0.0f);
+
+	// Draw an animation with custom transparency at the current global time
+	void drawAnimationWithAlpha(const std::string& name, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
+	void drawAnimationWithAlpha(const Animation& animation, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
+
+
+	// Draw an animation at a specific elapsed time (in case they have a custom timer divorced from the world time)
+	void drawAnimationAtTime(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float rotation = 0.0f);
+	void drawAnimationAtTimeWithAlpha(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
+
+	// Update the global animation timer (call this once per frame in the game loop)
+	void updateAnimationTime(float deltaTime);
+
+	// Reset the global animation timer
+	void resetAnimationTime(void);
+
+	// Unload a specific animation
+	void unloadAnimation(const std::string& name);
 
 	// Unload a specific sprite sheet
 	void unload(const std::string& name);
