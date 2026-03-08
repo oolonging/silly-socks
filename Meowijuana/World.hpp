@@ -14,12 +14,17 @@ namespace World
 		Ground, // normal ground
 		Wall, // walls, obstacle objects
 		InteractableObj, // chest etc.
+		OOB,
+		Teleporter,
+		TeleporterOtherSide,
+
 
 		// -- Crops -- //
 		EmptyCropTile,
 		PlantedCropTile,
 		GrownCropTile,
 		DoneCropTile
+
 
 	};
 

@@ -87,6 +87,30 @@ namespace World {
 		doneCrop.image = AEGfxTextureLoad(doneCrop.description.c_str());
 
 		tileDatabase[6] = doneCrop;
+
+		tileObject OOB;
+		OOB.objID = 7;
+		OOB.name = "Out Of Bounds (void)";
+		OOB.description = "Assets/Tiles/VOID.png";
+		OOB.image = AEGfxTextureLoad(OOB.description.c_str());
+
+		tileDatabase[7] = OOB;
+
+		tileObject Teleporter;
+		Teleporter.objID = 8;
+		Teleporter.name = "Teleporter";
+		Teleporter.description = "Assets/Tiles/WHITE.png";
+		Teleporter.image = AEGfxTextureLoad(Teleporter.description.c_str());
+
+		tileDatabase[8] = Teleporter;
+
+		tileObject TeleporterOtherSide;
+		TeleporterOtherSide.objID = 9;
+		TeleporterOtherSide.name = "TeleporterOtherSide";
+		TeleporterOtherSide.description = "Assets/Tiles/WHITE.png";
+		TeleporterOtherSide.image = AEGfxTextureLoad(TeleporterOtherSide.description.c_str());
+
+		tileDatabase[9] = TeleporterOtherSide;
 	}
 	
 	// Free the assests and stuff
@@ -346,7 +370,10 @@ namespace World {
 			printf("Collected Plants! Yay!!\n");
 			ID = EmptyCropTile;
 			break;
+
+
 		}
+
 	}
 
 	// Drawing and other stuff //

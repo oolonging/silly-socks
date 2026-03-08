@@ -487,6 +487,10 @@ namespace Entity {
 		return isPaused;
 	}
 
+	bool NPC::getIsIdling() {
+		return idling;
+	}
+
 	bool NPC::getConditionTrue() {
 		return conditionTrue;
 	}
@@ -495,87 +499,120 @@ namespace Entity {
 		conditionTrue = true;
 	}
 
+
 	void NPC::resumeDialogue(UI_Elements::DialogueBox& dialogueBox) {
-		if (!isPaused || !conditionTrue) {
+		if (!isPaused) {
 			return;
 		}
 
-		else if (isPaused && conditionTrue && AEInputCheckTriggered(AEVK_E)) {
-			isPaused = false;
-			++linenum;
-			if (linenum < dialogLines.size()) {
-				dialogueBox.setSpeaker("NPC");
-				dialogueBox.setCharacterSprite(this->sprite);
-				dialogueBox.setText(dialogLines[linenum]);
-				dialogueBox.activate();
-			}
+		isPaused = false;
+		++linenum;
+
+		if (linenum >= dialogLines.size()) {
+			return;
 		}
+
+		dialogueBox.setSpeaker("NPC");
+		dialogueBox.setCharacterSprite(this->sprite);
+		dialogueBox.setText(dialogLines[linenum]);
+		dialogueBox.activate();
+		
 	}
 
+	// sorry for the mess, i'll change it and fix the code duplication after if i have time (speak & idleSpeak)
 	void NPC::speak(UI_Elements::DialogueBox& dialogueBox) {
+
 		if (dialogLines.empty()) {
 			return;
 		}
 
 		if (dialogueBox.getIsActive()) {
 			if (AEInputCheckTriggered(AEVK_E) || AEInputCheckTriggered(AEVK_LBUTTON)) {
-				if (linenum < dialogLines.size() - 1) {
-					++linenum;
+				++linenum;
 
-					if (dialogLines[linenum] == "@") {
-						isPaused = true;
-						dialogueBox.dismiss();
-						return;
-					}
+				if (linenum >= dialogLines.size()) {
 
-					dialogueBox.setText(dialogLines[linenum]);
-				}
-
-				else {
 					dialogueBox.dismiss();
 					linenum = 0;
-					isPaused = false;
 					started = false;
+					return;
 				}
+
+				if (dialogLines[linenum] == "@") {
+					isPaused = true;
+					dialogueBox.dismiss();
+					return;
+				}
+
+				dialogueBox.setText(dialogLines[linenum]);
+				
 			}
 
 			return;
 		}
 
-		else if (isPaused && !conditionTrue && AEInputCheckTriggered(AEVK_E)) {
-			if (idleLines.empty()) { 
-				return; 
+		if (!started) {
+			started = true;
+			linenum = 0;
+
+			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setCharacterSprite(this->sprite);
+			dialogueBox.setText(dialogLines[linenum]);
+			dialogueBox.activate();
+		}
+	}
+
+
+	// code modularity might just be my biggest enemy :heartbroken:
+	void NPC::idleSpeak(UI_Elements::DialogueBox& dialogueBox) {
+		if (idleLines.empty()) {
+			return;
+		}
+
+		if (dialogueBox.getIsActive()) {
+			if (AEInputCheckTriggered(AEVK_E) || AEInputCheckTriggered(AEVK_LBUTTON)) {
+				++idlenum;
+
+				if (idlenum >= idleLines.size()) {
+
+					dialogueBox.dismiss();
+					idlenum = 0;
+					idling = false;
+					return;
+				}
+
+				if (idleLines[idlenum] == "#") {
+					dialogueBox.dismiss();
+					++idlenum;
+					return;
+				}
+
+				dialogueBox.setText(idleLines[idlenum]);
+
 			}
+
+			return;
+		}
+
+		if (idling && idlenum < idleLines.size()) {
+			idling = true;
 
 			dialogueBox.setSpeaker("NPC");
 			dialogueBox.setCharacterSprite(this->sprite);
 			dialogueBox.setText(idleLines[idlenum]);
 			dialogueBox.activate();
-			++idlenum;
-			if (idlenum > idleLines.size() - 1) {
-				idlenum = 0;
-			}
-
-			dialogueBox.dismiss(); // broken ill work on tmr after sleep
-			return;
-
-		}
-
-		else if (isPaused && conditionTrue && AEInputCheckTriggered(AEVK_E)) {
-			resumeDialogue(dialogueBox);
-			return; 
-		}
-
-		if (started) {
 			return;
 		}
 
-		started = true;
-		dialogueBox.setSpeaker("NPC");
-		dialogueBox.setCharacterSprite(this->sprite);
-		linenum = 0;
-		dialogueBox.setText(dialogLines[linenum]);
-		dialogueBox.activate();
+		if (!idling) {
+			idling = true;
+			idlenum = 0;
+
+			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setCharacterSprite(this->sprite);
+			dialogueBox.setText(idleLines[idlenum]);
+			dialogueBox.activate();
+		}
 	}
 
 	void NPC::draw() {

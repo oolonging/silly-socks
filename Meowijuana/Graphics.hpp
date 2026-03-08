@@ -177,6 +177,7 @@ namespace Animations {
 	// Triangle, with and without offset
 	void updateIndicator(Indicator& ind);
 	void drawIndicator(Indicator& ind);
+	void drawIndicator(float x, float y, float offset);
 }
 
 #endif // GRAPHICS_HPP

@@ -6,13 +6,32 @@
 #include "../../Tiles.hpp"
 #include "../../Entity.hpp"
 #include "../../Managers/EntityManager.hpp"
-#include "../../Managers/TileManager.hpp"
+//#include "../../Managers/TileManager.hpp"
+#include "../../World.hpp"
+
+
+World::worldGrid Griddtwo;
+std::pair<int, int> prevActiveTile2;
+std::pair<int, int> activeTile2;
+static Animations::Indicator smellind;
+static Animations::Indicator dummind;
 
 
 namespace TutorialScreen {
 
 	Entity::NPC* activeSpeaker = nullptr;
 	UI_Elements::DialogueBox dialogueBox;
+
+	enum class TutorialState {
+		SMELLY_TALK,
+		SMELLY_IDLE,
+		SMELLY_PART2,
+		FINISHED
+
+	};
+
+	TutorialState state = TutorialState::SMELLY_TALK;
+	bool deadDummy = false; // oh no :(
 
 }
 
@@ -23,10 +42,14 @@ void Xuan_Load() {
 
 void Xuan_Initialize() {
 
-	TileManager::init();
+	//TileManager::init();
 
-	// Load tile layout from file AFTER init
-	TileManager::loadTileLayout("Assets/Maps/testing.txt");
+	Griddtwo.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+	Griddtwo.initMapTexture();
+	Griddtwo.initTextureBox();
+	Griddtwo.fillGrid("../../Assets/LevelMaps/l1sidebutbetter.txt");
+	Griddtwo.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
+
 
 	// Initialize entities
 	EntityManager::init();
@@ -45,14 +68,20 @@ void Xuan_Initialize() {
 
 		"@",
 
-		"Nice! OK, seems like my job here is done. I'm gonna go clock off for the day. You have fun though!",
-		"Oh- The next floor? Right, sorry. Just head to that teleporter over there to continue.",
+		"Nice! OK, seems like my job here is done. I'm gonna go clock off for the day.",
+		"To get to the next floor, just head to that teleporter over there to continue. They're those white squares on the ground.",
+		"You can continue in the dungeons if you'd like! I'll cart you out if something bad happens.",
+		"See you around!",
 
 		"@"
 	});
 
 	smelly->setIdleLines({
-		"Go on! Don't feel bad! The dummy won't kill itself y'know... ",
+		"Go on! Don't feel bad!",
+		"The dummy won't kill itself y'know...",
+
+		"#",
+
 		"If it makes you feel any better- or, er- less guilty, You'll need to get rid of enemies while you traverse the dungeons anyway. Might as well give it a try?"
 	});
 
@@ -84,12 +113,23 @@ void Xuan_Update() {
 	auto* smelly = EntityManager::getNPC("smelly");
 	auto* dummy = EntityManager::getEnemy("dummy");
 
+	activeTile2 = World::activeTile(player->getX(), player->getY(), Griddtwo);
+
+	if (AEInputCheckTriggered(AEVK_E))
+	{
+		World::interactTile(activeTile2, Griddtwo);
+	}
+
+
 	// Update the player
 	player->update();
 	player->tickAttackTimer();
 
-	static Animations::Indicator smellind{ smelly->getX(), smelly->getY() };
-	static Animations::Indicator dummind{ dummy->getX(), dummy->getY() };
+	smellind.x = smelly->getX();
+	smellind.y = smelly->getY();
+
+	dummind.x = dummy->getX();
+	dummind.y = dummy->getY();
 
 	updateIndicator(smellind);
 	updateIndicator(dummind);
@@ -98,44 +138,24 @@ void Xuan_Update() {
 
 	// ========================= Conversations ========================
 
-
 	if (TutorialScreen::dialogueBox.getIsActive() && TutorialScreen::activeSpeaker) {
-		TutorialScreen::activeSpeaker->speak(TutorialScreen::dialogueBox);
+
+		if (smelly->getIsIdling()) {
+			TutorialScreen::activeSpeaker->idleSpeak(TutorialScreen::dialogueBox);
+		}
+		else {
+			TutorialScreen::activeSpeaker->speak(TutorialScreen::dialogueBox);
+		}
+
+
+		return;
 	}
 
 
-	// condition fulfilled? resume
-	if (smelly->getIsPaused() && smelly->getConditionTrue() && !TutorialScreen::dialogueBox.getIsActive()) {
-		Animations::drawIndicator(smellind);
-		smelly->resumeDialogue(TutorialScreen::dialogueBox);
-		TutorialScreen::activeSpeaker = smelly;
-	}
+	switch (TutorialScreen::state) {
 
+	case TutorialScreen::TutorialState::SMELLY_TALK:
 
-	// convo
-	if (!TutorialScreen::dialogueBox.getIsActive() && !smelly->getIsPaused()) {
-		if (smellind.active == 1) {
-			Animations::drawIndicator(smellind);
-		}
-		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
-			player->getX(), player->getY(),
-			smelly->getX(), smelly->getY(),
-			75.0f,
-			smelly->getWidth(), smelly->getHeight()
-		)) {
-			TutorialScreen::activeSpeaker = smelly;
-			smelly->speak(TutorialScreen::dialogueBox);
-			smellind.active = 0;
-		}
-
-	}
-
-
-	// idle
-	if (!TutorialScreen::dialogueBox.getIsActive() && smelly->getIsPaused() && !smelly->getConditionTrue()) {
-		if (smellind.active == 1) {
-			Animations::drawIndicator(smellind);
-		}
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
 			smelly->getX(), smelly->getY(),
@@ -145,29 +165,73 @@ void Xuan_Update() {
 			TutorialScreen::activeSpeaker = smelly;
 			smelly->speak(TutorialScreen::dialogueBox);
 		}
-	}
 
-
-
-
-	// ========================= Fight Mechanic ==========================
-
-	// dummy indicator & attack
-	if (!(TutorialScreen::dialogueBox.getIsActive()) && smelly->getIsPaused() && dummy->isAlive()) {
-		Animations::drawIndicator(dummind);
-
-		if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
-			player->attack(*dummy);
-			player->resetAttackTimer();
-
+		if (smelly->getIsPaused()) {
+			TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_IDLE;
 		}
 
-		if (dummy->getHp() <= 0) {
-			dummy->setHp(0);
-			smelly->setConditionTrue();
-			//smelly->resumeDialogue(TutorialScreen::dialogueBox);
-			//TutorialScreen::activeSpeaker = smelly;
+		break;
+
+
+
+	case TutorialScreen::TutorialState::SMELLY_IDLE:
+
+		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			smelly->getX(), smelly->getY(),
+			75.0f,
+			smelly->getWidth(), smelly->getHeight()
+		)) {
+			TutorialScreen::activeSpeaker = smelly;
+			smelly->idleSpeak(TutorialScreen::dialogueBox);
 		}
+
+
+		// attack
+		if (!(TutorialScreen::dialogueBox.getIsActive()) && dummy->isAlive()) {
+
+			if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
+				player->attack(*dummy);
+				player->resetAttackTimer();
+
+			}
+
+			if (dummy->getHp() <= 0) {
+				dummy->setHp(0);
+				TutorialScreen::deadDummy = true;
+				TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_PART2;
+			}
+		}
+
+		break;
+
+
+
+	case TutorialScreen::TutorialState::SMELLY_PART2:
+
+		if (TutorialScreen::deadDummy && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			smelly->getX(), smelly->getY(),
+			75.0f,
+			smelly->getWidth(), smelly->getHeight()
+		)) {
+			TutorialScreen::activeSpeaker = smelly;
+			smelly->resumeDialogue(TutorialScreen::dialogueBox);
+			TutorialScreen::deadDummy = false; // it gets revived for my code logic ig??
+			return;
+		}
+
+		if (!TutorialScreen::deadDummy && !TutorialScreen::dialogueBox.getIsActive()) {
+			TutorialScreen::state = TutorialScreen::TutorialState::FINISHED;
+		}
+
+		break;
+
+
+	
+	case TutorialScreen::TutorialState::FINISHED:
+
+		break;
 	}
 }
 
@@ -175,11 +239,16 @@ void Xuan_Draw() {
 
 	auto* player = EntityManager::getPlayer("player");
 	auto* dummy = EntityManager::getEnemy("dummy");
+	auto* smelly = EntityManager::getNPC("smelly");
 
 	//Color::background(Color::Preset::White);
 	//Color::fill(Color::Preset::Blue);
 
-	// TileManager::draw();
+	/*TileManager::draw();*/
+
+	Griddtwo.drawTexture(Griddtwo);
+	World::drawTile(activeTile2, Griddtwo);
+	World::drawTile({ 0,0 }, Griddtwo);
 
 	EntityManager::draw("smelly");
 	EntityManager::draw("player");
@@ -193,13 +262,48 @@ void Xuan_Draw() {
 		dummy->draw(*player);
 	}
 
-	// Draw dialogue box if active
+
+	if (!TutorialScreen::dialogueBox.getIsActive()) {
+
+		switch (TutorialScreen::state) {
+
+			case TutorialScreen::TutorialState::SMELLY_TALK:
+				if (smellind.active == 1) {
+					Animations::drawIndicator(smellind);
+				}
+				break;
+
+
+			case TutorialScreen::TutorialState::SMELLY_IDLE:
+				Animations::drawIndicator(dummind);
+				break;
+
+			case TutorialScreen::TutorialState::SMELLY_PART2:
+				if (smellind.active == 1) {
+					Animations::drawIndicator(smellind);
+				}
+				break;
+
+			case TutorialScreen::TutorialState::FINISHED:
+				break;
+
+		}
+
+	}
+
+
+
+	// Draw dialogue box on top of everything
 	TutorialScreen::dialogueBox.draw();
 }
 
-void Xuan_Free() {}
+void Xuan_Free() {
+	
+	Griddtwo.unloadMapTexture();
+	World::freeGrid();
+}
 
 void Xuan_Unload() {
 	EntityManager::clear();
-	TileManager::exit();
+	//TileManager::exit();
 }

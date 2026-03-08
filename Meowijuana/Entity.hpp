@@ -150,6 +150,7 @@ namespace Entity {
 		size_t linenum = 0;
 		size_t idlenum = 0;
 		bool started = false;
+		bool idling = false;
 		bool isPaused = false;
 		bool conditionTrue = false;
 
@@ -167,18 +168,27 @@ namespace Entity {
 		size_t getIdleNum();
 
 		bool getIsPaused();
+		bool getIsIdling();
 		bool getConditionTrue();
 
 		void setConditionTrue();
 		void resumeDialogue(UI_Elements::DialogueBox& dialogueBox);
 
 		void speak(UI_Elements::DialogueBox& dialogueBox);
+		void idleSpeak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;
 
 
 		// Constructors
 		NPC(float posX, float posY, float w, float h, float health, float spd, float arm);
 		NPC();
+
+	public:
+
+		enum class DialogueType {
+			MAIN,
+			IDLE
+		};
 	};
 }
 

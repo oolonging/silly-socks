@@ -638,4 +638,11 @@ namespace Animations {
 
 	}
 
+	void drawIndicator(float x, float y, float offset) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Color::fill(176, 222, 88, 255);
+		Shapes::triangle(x, y + 50 + offset, x - 10, y + 60 + offset, x + 10, y + 60 + offset);
+
+	}
+
 }
