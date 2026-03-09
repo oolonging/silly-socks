@@ -14,7 +14,7 @@ namespace UI_Elements {
 	// Definitions for default setters
 	void ProgressBar::setDefaultProgressBarStyle(ElementStyle newStyle) { defaultstyle = newStyle; }
 	void ProgressBar::setDefaultProgressBarTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
-	void ProgressBar::setDefaultProgressBarTexxture(ElementTexture newTexture) { defaultTexture = newTexture; }
+	void ProgressBar::setDefaultProgressBarTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
 
 	// Definitions for default getters
 	ElementStyle ProgressBar::getDefaultProgressBarStyle(void) {
@@ -22,7 +22,7 @@ namespace UI_Elements {
 		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
 		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
 		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
-		defaultStyle.strokeWeight = 1;
+		defaultStyle.strokeWeight = 0;
 		return defaultStyle;
 	}
 
@@ -62,11 +62,18 @@ namespace UI_Elements {
 
 	ProgressBar::ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), value(valRef), minValue(minVal), maxValue(maxVal) {
+
+		this->style = defaultstyle;
+		this->textStyle = defaultTextStyle;
+		this->texture = defaultTexture;
+
 	}
 
+	//ProgressBar::ProgressBar(void) :
+	//	UI_Element(), value(0.0f), minValue(0.0f), maxValue(100.0f) {}
+
 	ProgressBar::ProgressBar(void)
-		: UI_Element(), value(0), minValue(0), maxValue(100) {
-	}
+		: ProgressBar(0.0f, 0.0f, 100.0f, 10.0f, 0.0f, 0.0f, 100.0f) {}
 
 	void ProgressBar::clampValue(void) {
 		if (value < minValue) value = minValue;
@@ -77,19 +84,52 @@ namespace UI_Elements {
 		value = newValue;
 	}
 
-	void ProgressBar::draw(void) {
-		float filledWidth = (value / maxValue) * width;
+	//void ProgressBar::draw(void) {
+	//	// clamp value
+	//	clampValue();
 
-		// Apply stroke
+	//	float filledWidth = (this->value / maxValue) * width;
+
+	//	// Apply stroke
+	//	Color::stroke(style.strokeColor);
+	//	Color::strokeWeight(style.strokeWeight);
+
+	//	// Background
+	//	Color::fill(style.primaryColor);
+	//	Shapes::rect(x, y, width, height, drawMode);
+
+	//	// Foreground
+	//	Color::fill(style.secondaryColor);
+	//	Shapes::rect(x, y, filledWidth, height, drawMode);
+	//}
+
+	// Improved draw with graphical render
+	void ProgressBar::draw(void) {
+		clampValue();
+		bool graphicalRender = (this->texture.primaryTexture != nullptr && this->texture.secondaryTexture != nullptr);
+
+		float filledWidth = (this->value / this->maxValue) * this->width;
+
+
+		// Apply styles (Stroke)
 		Color::stroke(style.strokeColor);
 		Color::strokeWeight(style.strokeWeight);
 
-		// Background
-		Color::fill(style.primaryColor);
-		Shapes::rect(x, y, width, height, drawMode);
-
-		// Foreground
-		Color::fill(style.secondaryColor);
-		Shapes::rect(x, y, filledWidth, height, drawMode);
+		// Draw background
+		if (graphicalRender) {
+			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+			AEGfxTextureSet(this->texture.secondaryTexture, 0, 0);
+			Shapes::rect(x, y, width, height, drawMode);
+			AEGfxTextureSet(this->texture.primaryTexture, 0, 0);
+			Shapes::rect(x, y, filledWidth, height, drawMode);
+		}
+		else {
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			Color::fill(this->style.secondaryColor);
+			Shapes::rect(x, y, width, height, drawMode);
+			Color::fill(this->style.primaryColor);
+			Shapes::rect(x, y, filledWidth, height, drawMode);
+		}
 	}
+
 }

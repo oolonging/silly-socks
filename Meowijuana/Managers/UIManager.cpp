@@ -61,7 +61,7 @@ namespace UIManager {
 		// Initialize default progress bar styles
 		UI_Elements::ProgressBar::setDefaultProgressBarStyle(UI_Elements::ProgressBar::getDefaultProgressBarStyle());
 		UI_Elements::ProgressBar::setDefaultProgressBarTextStyle(UI_Elements::ProgressBar::getDefaultProgressBarTextStyle());
-		UI_Elements::ProgressBar::setDefaultProgressBarTexxture(UI_Elements::ProgressBar::getDefaultProgressBarTexture());
+		UI_Elements::ProgressBar::setDefaultProgressBarTexture(UI_Elements::ProgressBar::getDefaultProgressBarTexture());
 
 		// Initialize default text box styles
 		UI_Elements::TextBox::setDefaultTextBoxStyle(UI_Elements::TextBox::getDefaultTextBoxStyle());

@@ -24,7 +24,7 @@ namespace UI_Elements {
 		defaultStyle.primaryColor = { 200.0f, 200.0f, 200.0f, 255.0f };
 		defaultStyle.secondaryColor = { 100.0f, 150.0f, 255.0f, 255.0f };
 		defaultStyle.strokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
-		defaultStyle.strokeWeight = 2;
+		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
 	}
 

@@ -112,6 +112,7 @@ namespace UI_Elements {
 		Button(void);
 	};
 
+	// TODO: CENTER render broken
 	class ProgressBar : public UI_Element {
 	private:
 		float value;
@@ -127,7 +128,7 @@ namespace UI_Elements {
 		// static methods to set defaults
 		static void setDefaultProgressBarStyle(ElementStyle newStyle);
 		static void setDefaultProgressBarTextStyle(TextStyle newStyle);
-		static void setDefaultProgressBarTexxture(ElementTexture newTexture);
+		static void setDefaultProgressBarTexture(ElementTexture newTexture);
 
 		// static methods to get defaults
 		static ElementStyle getDefaultProgressBarStyle(void);
