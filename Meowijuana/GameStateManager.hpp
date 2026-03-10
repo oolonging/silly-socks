@@ -16,6 +16,7 @@ enum GSM_STATES
 	GS_TUTORIAL,
 	GS_FARM,
 	GS_DUNGEON,
+	GS_TUTDUN,
 
 	// Testing states for individual game mechanics
 	GS_TESTING,

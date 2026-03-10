@@ -78,7 +78,7 @@ void Xuan_Initialize() {
 
 	smelly->setIdleLines({
 		"Go on! Don't feel bad!",
-		"The dummy won't kill itself y'know...",
+		"The dummy can't grow arms and kill itself y'know...",
 
 		"#",
 
@@ -231,6 +231,7 @@ void Xuan_Update() {
 	
 	case TutorialScreen::TutorialState::FINISHED:
 
+		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
 }

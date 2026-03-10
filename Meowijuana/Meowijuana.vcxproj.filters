@@ -137,6 +137,15 @@
     <ClCompile Include="UI_Elements\PlayerInventory.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystems.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialDungeon.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -237,6 +246,15 @@
     </ClInclude>
     <ClInclude Include="Tiles.hpp">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystems.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="DungeonManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialDungeon.hpp">
+      <Filter>Header files\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

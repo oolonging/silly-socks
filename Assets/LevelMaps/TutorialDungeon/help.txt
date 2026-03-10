@@ -1,0 +1,32 @@
+2 types of rooms: 
+Main room
+Side room
+
+
+4 Levels:
+1
+2
+3
+boss
+
+
+4 directions:
+1 - North
+2 - South
+3 - East
+4 - West
+
+
+How far in:
+1
+2
+.
+.
+.
+9
+
+
+sideRoomL1_32
+
+= side room, level 1, northbound, 2 rooms in
+= main room -> sideRoomL1_31 -> sideRoomL1_32

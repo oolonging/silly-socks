@@ -49,9 +49,9 @@ namespace Inventory {
 			"Carrot Sword",
 			"A sharp veggie blade forged from the finest carrots",
 			10.0f,      // value
-			20.0f,      // damage
+			35.0f,      // damage
 			2.0f,       // attackSpeed
-			80.0f,       // range
+			85.0f,       // range
 			Common,     // rarity
 			5.0f        // knockback
 		));
@@ -137,6 +137,20 @@ namespace Inventory {
 			3.0f,       // range (longer)
 			Rare,       // rarity (upgraded)
 			10.0f       // knockback (stronger)
+		));
+
+
+		// for enemies (basic)
+		ItemRegistry::registerItem(new MeleeWeapon(
+			ItemID::WOODEN_SWORD,
+			"Wooden Sword",
+			"Commonly seen wielded by monsters and kids alike",
+			10.0f,      // value
+			15.0f,      // damage
+			2.0f,       // attackSpeed
+			85.0f,       // range
+			Common,     // rarity
+			5.0f        // knockback
 		));
 	}
 }

@@ -16,7 +16,7 @@
 #include "Screens/Testing/testing-xuan.hpp"
 #include "Screens/Testing/testing-sprites.hpp"
 #include "Screens/Testing/testing-ui-elements.hpp"
-
+#include "TutorialDungeon.hpp"
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
@@ -104,6 +104,15 @@ void GSM_Update()
 			fpDraw = Dungeon_Draw;
 			fpFree = Dungeon_Free;
 			fpUnload = Dungeon_Unload;
+			break;
+
+		case GS_TUTDUN:
+			fpLoad = TutorialDungeon_Load;
+			fpInitialize = TutorialDungeon_Initialize;
+			fpUpdate = TutorialDungeon_Update;
+			fpDraw = TutorialDungeon_Draw;
+			fpFree = TutorialDungeon_Free;
+			fpUnload = TutorialDungeon_Unload;
 			break;
 
 		// Testing states for individual game mechanics
