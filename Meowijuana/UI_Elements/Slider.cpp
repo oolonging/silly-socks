@@ -31,8 +31,8 @@ namespace UI_Elements {
 		}
 	}
 
-	Slider::Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
-		: UI_Element(x, y, width, height, mode), valueRef(valRef), minValue(minVal), maxValue(maxVal) {
+	Slider::Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
+		: UI_Element(x, y, width, height, mode), value(value), minValue(minVal), maxValue(maxVal) {
 
 		// use default textures
 		if(texture.primaryTexture == nullptr) {
@@ -47,6 +47,8 @@ namespace UI_Elements {
 		}
 	}
 
+	Slider::Slider(void) : Slider(0.0f, 0.0f, 100.0f, 10.0f, nullptr, 0.0f, 100.0f) {}
+
 	// TODO: ensure that the removal of the default constructor didnt break anything (for slider UI element)
 	// Note to anyone reading this in the future: The re ason theres no default constructor is because one of the members is a reference and cannot be a nullpointer
 	// You can either:
@@ -54,8 +56,8 @@ namespace UI_Elements {
 	// b. change the ref member to a pointer so it can be assigned a nullptr at startup. Then disable the functionality that changes the pointed to value if the pointer is null
 
 	void Slider::clampValue(void) {
-		if (valueRef < minValue) valueRef = minValue;
-		if (valueRef > maxValue) valueRef = maxValue;
+		if (*value < minValue) *value = minValue;
+		if (*value > maxValue) *value = maxValue;
 	}
 
 	void Slider::updateValue(void) {
@@ -67,7 +69,7 @@ namespace UI_Elements {
 			(worldX - this->x);
 
 		float newValue = (relativeX / this->width) * (maxValue - minValue) + minValue;
-		this->valueRef = newValue;
+		*(this->value) = newValue;
 	}
 
 	void Slider::select(void) {
@@ -90,7 +92,7 @@ namespace UI_Elements {
 
 	void Slider::draw(void) {
 		// Reminder: primary texture is for the handle, secondary texture is for the bar
-		float filledWidth = ((valueRef - minValue) / (maxValue - minValue)) * width;
+		float filledWidth = ((*value - minValue) / (maxValue - minValue)) * width;
 		bool graphicalRender = (this->texture.primaryTexture != nullptr && this->texture.secondaryTexture != nullptr);
 
 		// Apply stroke

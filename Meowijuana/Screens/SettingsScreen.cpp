@@ -15,14 +15,14 @@ float sfxVolume = 20.0f;
 UI_Elements::Slider bgVolumeSlider = UI_Elements::Slider(
 	-300.0f, 200.0f,
 	300.0f, 30.0f,
-	bgVolume,
+	&bgVolume,
 	0.0f, 100.0f,
 	Shapes::CORNER
 );
 UI_Elements::Slider sfxVolumeSlider = UI_Elements::Slider(
 	-300.0f, 100.0f,
 	300.0f, 30.0f,
-	sfxVolume,
+	&sfxVolume,
 	0.0f, 100.0f,
 	Shapes::CORNER
 );

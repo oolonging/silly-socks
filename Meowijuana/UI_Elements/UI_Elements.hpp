@@ -150,7 +150,7 @@ namespace UI_Elements {
 	// TODO: Corner render is broken
 	class Slider : public UI_Element {
 	private:
-		float& valueRef;
+		float* value;
 		float minValue;
 		float maxValue;
 		bool isSelected = false;
@@ -174,7 +174,8 @@ namespace UI_Elements {
 		void draw(void) override;
 
 		// Constructors
-		Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Slider(void);
 	};
 
 	class TextBox : public UI_Element {
