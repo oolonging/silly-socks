@@ -17,7 +17,7 @@ UI_Elements::Button* healButton;
 UI_Elements::Button* hurtButton;
 
 UI_Elements::ProgressBar* healthBar;
-
+UI_Elements::Slider* damageModifierSlider;
 
 // Helper functions
 void heal(void) {
@@ -50,6 +50,9 @@ void testingUI_Initialize() {
 
 	// Initialize the progress bar
 	healthBar = UIManager::create<UI_Elements::ProgressBar>("healthBar", -550.0f, 350.0f, 500.0f, 50.0f, &health, 0.0f, maxHealth, Shapes::CORNER);
+
+	// Initialize the slider
+	damageModifierSlider = UIManager::create<UI_Elements::Slider>("damageModifierSlider", -550.0f, 250.0f, 500.0f, 50.0f, &damageModifier, 0.0f, 10.0f, Shapes::CORNER);
 }
 
 void testingUI_Update() {

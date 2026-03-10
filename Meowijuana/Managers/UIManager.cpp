@@ -63,6 +63,11 @@ namespace UIManager {
 		UI_Elements::ProgressBar::setDefaultProgressBarTextStyle(UI_Elements::ProgressBar::getDefaultProgressBarTextStyle());
 		UI_Elements::ProgressBar::setDefaultProgressBarTexture(UI_Elements::ProgressBar::getDefaultProgressBarTexture());
 
+		// Initialize default Slider styles
+		UI_Elements::Slider::setDefaultSliderStyle(UI_Elements::Slider::getDefaultSliderStyle());
+		UI_Elements::Slider::setDefaultSliderTextStyle(UI_Elements::Slider::getDefaultSliderTextStyle());
+		UI_Elements::Slider::setDefaultSliderTexture(UI_Elements::Slider::getDefaultSliderTexture());
+
 		// Initialize default text box styles
 		UI_Elements::TextBox::setDefaultTextBoxStyle(UI_Elements::TextBox::getDefaultTextBoxStyle());
 		UI_Elements::TextBox::setDefaultTextBoxTextStyle(UI_Elements::TextBox::getDefaultTextBoxTextStyle());
@@ -78,6 +83,7 @@ namespace UIManager {
 		UI_Elements::ProgressBar::clearDefaultProgressBarTextures();
 
 		// clear slider defaults
+		UI_Elements::Slider::clearDefaultSliderTextures();
 
 		// clear text box defaults
 		UI_Elements::TextBox::clearDefaultTextBoxTextures();

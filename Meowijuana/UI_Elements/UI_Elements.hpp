@@ -155,18 +155,30 @@ namespace UI_Elements {
 		float maxValue;
 		bool isSelected = false;
 
+		// static defaults for all sliders
+		static ElementStyle defaultStyle;
+		static TextStyle defaultTextStyle;
+		static ElementTexture defaultTexture;
+
 		// slider static member
 		static Slider* currentlySelected;
-		static AEGfxTexture* defaultHandleTexture;
-		static AEGfxTexture* defaultBarTexture;
 
 		void updateValue(void);
 
 	public:
-		// static initialization methods
-		static void loadDefaultTextures(void);
-		static void unloadDefaultTextures(void);
+		// static method to set defaults
+		static void setDefaultSliderStyle(ElementStyle newStyle);
+		static void setDefaultSliderTextStyle(TextStyle newStyle);
+		static void setDefaultSliderTexture(ElementTexture newTexture);
 
+		// static method to get defaults
+		static ElementStyle getDefaultSliderStyle(void);
+		static TextStyle getDefaultSliderTextStyle(void);
+		static ElementTexture getDefaultSliderTexture(void);
+
+		// static method to clear default textures
+		static void clearDefaultSliderTextures(void);
+		
 		void select();
 		void deselect();
 
