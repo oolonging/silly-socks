@@ -8,8 +8,9 @@ namespace UI_Elements {
 
 	Checkbox::Checkbox(float x, float y, float boxSize, char const* label, bool initialState, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, boxSize, boxSize, mode), isChecked(initialState), label(label), boxSize(boxSize), onChange(nullptr) {
+
 		// Custom default style for checkbox
-		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
+		style.primaryColor = Color::Preset::White;
 		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
 		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
 		style.strokeWeight = 2;
@@ -17,13 +18,7 @@ namespace UI_Elements {
 	}
 
 	Checkbox::Checkbox(void)
-		: UI_Element(), isChecked(false), label("Checkbox"), boxSize(20), onChange(nullptr) {
-		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
-		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
-		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2;
-		textStyle = getDefaultTextStyle();
-	}
+		: Checkbox(0.0f, 0.0f, 10.0f, "Default checkbox") {}
 
 	void Checkbox::toggle() {
 		isChecked = !isChecked;
@@ -70,9 +65,10 @@ namespace UI_Elements {
 		// Draw checkmark if checked
 		if (isChecked) {
 			Color::noStroke();
-			Color::fill(0, 0, 0, 255);
-			float checkX = (drawMode == Shapes::CORNER) ? (x + boxSize / 2) : x;
-			float checkY = (drawMode == Shapes::CORNER) ? (y - boxSize / 2) : y;
+			Color::fill(Color::Preset::Black);
+
+			float checkX = (drawMode == Shapes::CORNER) ? (x + (this->boxSize * 0.5f)) : x;
+			float checkY = (drawMode == Shapes::CORNER) ? (y - (this->boxSize * 0.5f)) : y;
 			Shapes::rect(checkX - boxSize * 0.15f, checkY, boxSize * 0.3f, boxSize * 0.3f, Shapes::CENTER);
 		}
 
@@ -83,6 +79,6 @@ namespace UI_Elements {
 
 		// draw the debug material
 
-		Text::text(label, labelX, labelY, Text::LEFT, Text::BOTTOM); // TODO: rewire the text draw so that the align points to the anchor point
+		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V); // TODO: rewire the text draw so that the align points to the anchor point
 	}
 }

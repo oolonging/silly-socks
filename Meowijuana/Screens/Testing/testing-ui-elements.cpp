@@ -77,7 +77,7 @@ void testingUI_Initialize() {
 	blueSlider = UIManager::create<UI_Elements::Slider>("blueSlider", -700.0f, -400.0f, 100.0f, 10.0f, &backgroundBlue, 0.0f, 255.0f);
 
 	// Initiate the Graphical toggle checkbox
-	graphicalToggle = UIManager::create<UI_Elements::Checkbox>("graphicalToggle", 275.0f, 360.0f, 20.0f, "Toggle graphics", graphicalRendering);
+	graphicalToggle = UIManager::create<UI_Elements::Checkbox>("graphicalToggle", 275.0f, 360.0f, 30.0f, "Toggle graphics", graphicalRendering);
 	graphicalToggle->setOnChange(toggleGraphicalRendering);
 }
 
