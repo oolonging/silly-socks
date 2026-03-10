@@ -131,7 +131,7 @@ namespace UI_Elements {
 		// variables for handle
 		float handleX = (drawMode == Shapes::CENTER) ? (x - width / 2 + filledWidth) : (x + filledWidth);
 		float handleY = (drawMode == Shapes::CENTER) ? y : (y - height / 2);
-		float handleSize = height * 1.5f; // Handle size can be adjusted as needed
+		float handleSize = height * 1.1f; // Handle size can be adjusted as needed
 
 
 		if (this->isSelected) {
