@@ -41,6 +41,8 @@ namespace UIManager {
 	// Initialize default styles for all UI element types
 	void initDefaults(void); // TODO: finish doing all defaults before calling this
 
+	// TODO i just realized I might not even need this since there is a clear function above
+	// Clearly the UI elements arent causing the memory leak
 	void clearDefaults(void);
 }
 

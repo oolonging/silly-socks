@@ -48,6 +48,7 @@ namespace Inventory {
 		const int CHILLI = 6;
 		const int SPINACH = 7;
 		const int GOLDEN_CARROT_SWORD = 8; // Merged version
+		const int WOODEN_SWORD = 9; // for the weaker enemies int he dungeon
 	}
 
 	class Item {

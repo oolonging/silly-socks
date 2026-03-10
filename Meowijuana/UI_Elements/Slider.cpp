@@ -3,49 +3,69 @@
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
+	// ProgressBar Static Defaults
+	// -------------------------------------------------------------------------
+	ElementStyle Slider::defaultStyle = UI_Element::getDefaultStyle();
+	TextStyle Slider::defaultTextStyle = UI_Element::getDefaultTextStyle();
+	ElementTexture Slider::defaultTexture = UI_Element::getDefaultTexture();
+
+	// Definitions for default setters
+	void Slider::setDefaultSliderStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
+	void Slider::setDefaultSliderTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
+	void Slider::setDefaultSliderTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
+
+	// Definitions for default setters
+	ElementStyle Slider::getDefaultSliderStyle(void) {
+		UI_Elements::ElementStyle defaultStyle;
+		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
+		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
+		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
+		defaultStyle.strokeWeight = 1;
+		return defaultStyle;
+	}
+
+	TextStyle Slider::getDefaultSliderTextStyle(void) {
+		UI_Elements::TextStyle defaultTextStyle;
+		defaultTextStyle.primaryColor = Color::Preset::defaultTextStylePrimary;
+		defaultTextStyle.primaryColor = Color::Preset::defaultTextStyleSecondary;
+		defaultTextStyle.fontSize = 10;
+		defaultTextStyle.fontName = "default";
+		return defaultTextStyle;
+	}
+
+	ElementTexture Slider::getDefaultSliderTexture(void) {
+		UI_Elements::ElementTexture defaultTexture;
+		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/primary.png");
+		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/secondary.png");
+		return defaultTexture;
+	}
+
+	void Slider::clearDefaultSliderTextures(void) {
+		if (defaultTexture.primaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.primaryTexture);
+			defaultTexture.primaryTexture = nullptr;
+		}
+
+		if (defaultTexture.secondaryTexture != nullptr) {
+			AEGfxTextureUnload(defaultTexture.secondaryTexture);
+			defaultTexture.secondaryTexture = nullptr;
+		}
+	}
+
+
+	// -------------------------------------------------------------------------
 	// Slider Implementation
 	// -------------------------------------------------------------------------
 	
-	// Initialize staic members
-	AEGfxTexture* Slider::defaultHandleTexture = nullptr; // Note the destination for these are in : "Assets/Images/UI_Elements/Slider"
-	AEGfxTexture* Slider::defaultBarTexture = nullptr;
+	Slider::Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
+		: UI_Element(x, y, width, height, mode), value(value), minValue(minVal), maxValue(maxVal) {
 
-	// static function to manage default textures
-	void Slider::loadDefaultTextures() {
-		if (defaultHandleTexture == nullptr) {
-			defaultHandleTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/slider_handle.png");
-		}
-		if (defaultBarTexture == nullptr) {
-			defaultBarTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/slider_bar.png");
-		}
+		this->style = defaultStyle;
+		this->textStyle = defaultTextStyle;
+		this->texture = defaultTexture;
 	}
 
-	void Slider::unloadDefaultTextures() {
-		if (defaultHandleTexture != nullptr) {
-			AEGfxTextureUnload(defaultHandleTexture);
-			defaultHandleTexture = nullptr;
-		}
-		if (defaultBarTexture != nullptr) {
-			AEGfxTextureUnload(defaultBarTexture);
-			defaultBarTexture = nullptr;
-		}
-	}
-
-	Slider::Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
-		: UI_Element(x, y, width, height, mode), valueRef(valRef), minValue(minVal), maxValue(maxVal) {
-
-		// use default textures
-		if(texture.primaryTexture == nullptr) {
-			texture.primaryTexture = defaultHandleTexture;
-		}
-		if (texture.secondaryTexture == nullptr) {
-			texture.secondaryTexture = defaultBarTexture;
-		}
-
-		if(texture.primaryTexture == nullptr || texture.secondaryTexture == nullptr) {
-			std::cout << "Textures for slider havent loaded" << std::endl;
-		}
-	}
+	Slider::Slider(void) : Slider(0.0f, 0.0f, 100.0f, 10.0f, nullptr, 0.0f, 100.0f) {}
 
 	// TODO: ensure that the removal of the default constructor didnt break anything (for slider UI element)
 	// Note to anyone reading this in the future: The re ason theres no default constructor is because one of the members is a reference and cannot be a nullpointer
@@ -54,8 +74,8 @@ namespace UI_Elements {
 	// b. change the ref member to a pointer so it can be assigned a nullptr at startup. Then disable the functionality that changes the pointed to value if the pointer is null
 
 	void Slider::clampValue(void) {
-		if (valueRef < minValue) valueRef = minValue;
-		if (valueRef > maxValue) valueRef = maxValue;
+		if (*value < minValue) *value = minValue;
+		if (*value > maxValue) *value = maxValue;
 	}
 
 	void Slider::updateValue(void) {
@@ -67,7 +87,7 @@ namespace UI_Elements {
 			(worldX - this->x);
 
 		float newValue = (relativeX / this->width) * (maxValue - minValue) + minValue;
-		this->valueRef = newValue;
+		*(this->value) = newValue;
 	}
 
 	void Slider::select(void) {
@@ -90,28 +110,28 @@ namespace UI_Elements {
 
 	void Slider::draw(void) {
 		// Reminder: primary texture is for the handle, secondary texture is for the bar
-		float filledWidth = ((valueRef - minValue) / (maxValue - minValue)) * width;
+		float filledWidth = ((*value - minValue) / (maxValue - minValue)) * width;
 		bool graphicalRender = (this->texture.primaryTexture != nullptr && this->texture.secondaryTexture != nullptr);
-
-		// Apply stroke
-		Color::stroke(style.strokeColor);
-		Color::strokeWeight(style.strokeWeight);
 
 		// Draw Background
 		if (graphicalRender) {
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+			AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 0.0f);
 			AEGfxTextureSet(this->texture.secondaryTexture, 0, 0);
+			Color::noStroke();
 		}
 		else {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Color::fill(this->style.secondaryColor);
+			Color::stroke(style.strokeColor);
+			Color::strokeWeight(style.strokeWeight);
 		}
 		Shapes::rect(x, y, width, height, drawMode);
 
 		// variables for handle
 		float handleX = (drawMode == Shapes::CENTER) ? (x - width / 2 + filledWidth) : (x + filledWidth);
 		float handleY = (drawMode == Shapes::CENTER) ? y : (y - height / 2);
-		float handleSize = height * 1.5f; // Handle size can be adjusted as needed
+		float handleSize = height * 1.1f; // Handle size can be adjusted as needed
 
 
 		if (this->isSelected) {
@@ -149,13 +169,17 @@ namespace UI_Elements {
 
 		if (graphicalRender) {
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-			AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f); // Comment this out if you want the highlight when selected effect
+			AEGfxSetBlendMode(AE_GFX_BM_NONE);
+			AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
+			Color::fill(Color::Preset::White);
 			AEGfxTextureSet(this->texture.primaryTexture, 0, 0);
+			Color::noStroke();
+			Graphics::image(handleX, handleY, handleSize, handleSize, texture.primaryTexture, Shapes::CENTER);
 		}
 		else {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Color::fill(this->style.primaryColor);
+			Shapes::ellipse(handleX, handleY, handleSize, handleSize, Shapes::CENTER);
 		}
-		Shapes::ellipse(handleX, handleY, handleSize, handleSize, Shapes::CENTER);
 	}
 }

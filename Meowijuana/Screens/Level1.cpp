@@ -29,7 +29,7 @@ UI_Elements::Button testButton;
 UI_Elements::Slider testSlider = UI_Elements::Slider(
     -300.0f, 200.0f,
     300.0f, 30.0f,
-    sliderValue,
+    &sliderValue,
     0.0f, 100.0f,
     Shapes::CORNER
 );
@@ -135,7 +135,7 @@ void Level1_Initialize()
     testProgressBar = UI_Elements::ProgressBar(
         -300.0f, 100.0f,
         300.0f, 40.0f,
-        progressValue,
+        &progressValue,
         0.0f, 100.0f,
         Shapes::CORNER
     );

@@ -112,9 +112,10 @@ namespace UI_Elements {
 		Button(void);
 	};
 
+	// TODO: CENTER render broken
 	class ProgressBar : public UI_Element {
 	private:
-		float value;
+		float* value;
 		float minValue;
 		float maxValue;
 
@@ -127,7 +128,7 @@ namespace UI_Elements {
 		// static methods to set defaults
 		static void setDefaultProgressBarStyle(ElementStyle newStyle);
 		static void setDefaultProgressBarTextStyle(TextStyle newStyle);
-		static void setDefaultProgressBarTexxture(ElementTexture newTexture);
+		static void setDefaultProgressBarTexture(ElementTexture newTexture);
 
 		// static methods to get defaults
 		static ElementStyle getDefaultProgressBarStyle(void);
@@ -142,30 +143,42 @@ namespace UI_Elements {
 		void draw(void) override;
 
 		// Constructor
-		ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		ProgressBar(float x, float y, float width, float height, float* valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		ProgressBar(void);
 	};
 
 	// TODO: Corner render is broken
 	class Slider : public UI_Element {
 	private:
-		float& valueRef;
+		float* value;
 		float minValue;
 		float maxValue;
 		bool isSelected = false;
 
+		// static defaults for all sliders
+		static ElementStyle defaultStyle;
+		static TextStyle defaultTextStyle;
+		static ElementTexture defaultTexture;
+
 		// slider static member
 		static Slider* currentlySelected;
-		static AEGfxTexture* defaultHandleTexture;
-		static AEGfxTexture* defaultBarTexture;
 
 		void updateValue(void);
 
 	public:
-		// static initialization methods
-		static void loadDefaultTextures(void);
-		static void unloadDefaultTextures(void);
+		// static method to set defaults
+		static void setDefaultSliderStyle(ElementStyle newStyle);
+		static void setDefaultSliderTextStyle(TextStyle newStyle);
+		static void setDefaultSliderTexture(ElementTexture newTexture);
 
+		// static method to get defaults
+		static ElementStyle getDefaultSliderStyle(void);
+		static TextStyle getDefaultSliderTextStyle(void);
+		static ElementTexture getDefaultSliderTexture(void);
+
+		// static method to clear default textures
+		static void clearDefaultSliderTextures(void);
+		
 		void select();
 		void deselect();
 
@@ -173,7 +186,8 @@ namespace UI_Elements {
 		void draw(void) override;
 
 		// Constructors
-		Slider(float x, float y, float width, float height, float& valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		Slider(void);
 	};
 
 	class TextBox : public UI_Element {

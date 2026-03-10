@@ -48,6 +48,10 @@ void screenSwitcher(void) {
 	if (AEInputCheckTriggered(AEVK_NUMPAD9))
 		next = GS_LEVEL2;
 
+	if (AEInputCheckTriggered(AEVK_NUMPAD0))
+		next = GS_TUTDUN;
+
+
 	if(AEInputCheckTriggered(AEVK_0))
 		next = GS_BACK;
 

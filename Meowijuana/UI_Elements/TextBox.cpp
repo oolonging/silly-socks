@@ -19,17 +19,17 @@ namespace UI_Elements {
 	// definitions for default getters
 	ElementStyle TextBox::getDefaultTextBoxStyle(void) {
 		ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
-		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
-		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
+		defaultStyle.primaryColor = Color::Preset::White;
+		defaultStyle.secondaryColor = Color::createColorHex(0xFFC0C0C0);
+		defaultStyle.strokeColor = Color::createColorHex(0xFF696969);
 		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
 	}
 
 	TextStyle TextBox::getDefaultTextBoxTextStyle(void) {
 		TextStyle defaultTextStyle;
-		defaultTextStyle.primaryColor = Color::Preset::defaultTextStylePrimary;
-		defaultTextStyle.secondaryColor = Color::Preset::defaultTextStyleSecondary;
+		defaultTextStyle.primaryColor = Color::Preset::Black;
+		defaultTextStyle.secondaryColor = Color::Preset::DarkGray;
 		defaultTextStyle.fontSize = 10;
 		defaultTextStyle.fontName = "default";
 		return defaultTextStyle;
@@ -63,20 +63,13 @@ namespace UI_Elements {
 		: UI_Element(x, y, width, height, mode), text(""), placeholderText(placeholder), maxLength(maxLen),
 		isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
 		// Custom default style for textbox
-		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
-		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
-		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
-		style.strokeWeight = 2;
+		this->style = defaultStyle;
+		this->textStyle = defaultTextStyle;
+		this->texture = defaultTexture;
 	}
 
-	TextBox::TextBox(void)
-		: UI_Element(), text(""), placeholderText("Enter text..."), maxLength(50),
-		isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
-		style.primaryColor = Color::createColorRGB(255, 255, 255, 255);
-		style.secondaryColor = Color::createColorRGB(200, 230, 255, 255);
-		style.strokeColor = Color::createColorRGB(100, 100, 100, 255);
-		style.strokeWeight = 2;
-	}
+	TextBox::TextBox(void) 
+		: TextBox(0.0f, 0.0f, 100.0f, 100.0f, "Enter text...") {}
 
 	void TextBox::select() {
 		// Deselect previously selected textbox
@@ -177,6 +170,8 @@ namespace UI_Elements {
 			}
 		}
 
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
 		// Handle keyboard input
 		handleInput();
 
@@ -214,7 +209,7 @@ namespace UI_Elements {
 
 			// Add cursor if selected
 			if (isSelected && showCursor) {
-				displayText += "|";
+				displayText += "<";
 			}
 
 			Text::text(displayText.c_str(), textX, textY);
