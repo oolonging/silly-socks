@@ -19,6 +19,8 @@ UI_Elements::Button* hurtButton;
 UI_Elements::ProgressBar* healthBar;
 UI_Elements::Slider* damageModifierSlider;
 
+UI_Elements::TextBox* myTextBox;
+
 // Helper functions
 void heal(void) {
 	std::cout << "The heal function has been called" << std::endl;
@@ -53,6 +55,9 @@ void testingUI_Initialize() {
 
 	// Initialize the slider
 	damageModifierSlider = UIManager::create<UI_Elements::Slider>("damageModifierSlider", -550.0f, 250.0f, 500.0f, 50.0f, &damageModifier, 0.0f, 10.0f, Shapes::CORNER);
+
+	// Initialize the text box
+	myTextBox = UIManager::create<UI_Elements::TextBox>("myTextBox", -700.0f, 100.0f, 500.0f, 500.0f, "Enter some text here");
 }
 
 void testingUI_Update() {
