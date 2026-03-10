@@ -49,6 +49,11 @@ void Andrea_Update() {
 		World::interactTile(activeTile, Griddy);
 	}
 
+	World::standOnTile(next, user, Griddy);
+
+	// Currently not working will fix ltr
+	/*World::collidableNearby(user, Griddy);*/
+
 	user.update();
 }
 

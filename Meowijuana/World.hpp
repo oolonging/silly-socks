@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "AEEngine.h"
+#include "Entity.hpp"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -14,18 +15,18 @@ namespace World
 		Ground, // normal ground
 		Wall, // walls, obstacle objects
 		InteractableObj, // chest etc.
-		OOB,
-		Teleporter,
-		TeleporterOtherSide,
-
 
 		// -- Crops -- //
+		// Might need Change Grown Crops to the diff crops instead
 		EmptyCropTile,
 		PlantedCropTile,
 		GrownCropTile,
-		DoneCropTile
+		DoneCropTile,
 
-
+		// -- New Stuff -- //
+		OOB,
+		Teleporter,
+		TeleporterOtherSide,
 	};
 
 	struct tileObject
@@ -33,7 +34,7 @@ namespace World
 		int objID;
 		std::string name;
 		std::string description;
-		AEGfxTexture* image = nullptr;;
+		AEGfxTexture* image = nullptr;
 	};
 
 	class worldGrid
@@ -94,9 +95,14 @@ namespace World
 
 	// Active Tile -> based on the user position and the mouse as well (ref stardew valley)
 	std::pair<int, int> activeTile(float userX, float userY, const World::worldGrid& Griddy);
+
+	// Based on user position -> check what tile user is on then change interactions respectively
+	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy);
 	
 	// Get World Coords -> Translate Array index to real word coordinates
 	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, const World::worldGrid& Griddy);
+
+	void collidableNearby(Entity::Player user, World::worldGrid& Griddy);
 	
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);
 

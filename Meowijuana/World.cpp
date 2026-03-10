@@ -1,6 +1,8 @@
 #include "AEEngine.h"
 #include "World.hpp"
 #include "Graphics.hpp"
+#include "Entity.hpp"
+#include "Inventory.hpp"
 #include <cmath>
 #include <fstream>
 #include <sstream>
@@ -11,6 +13,7 @@ World::worldGrid grid;
 
 namespace World {
 
+	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;
 	AEGfxVertexList* tileMesh = nullptr;
 
@@ -19,6 +22,7 @@ namespace World {
 	worldGrid::~worldGrid() {
 	}
 
+	// Initialising all the map textures
 	void worldGrid::initMapTexture()
 	{
 		//// -- Misc. -- //
@@ -130,6 +134,7 @@ namespace World {
 		tileDatabase.clear();
 	}
 
+	// Initialises texture box for grid [ only once ]
 	void worldGrid::initTextureBox()
 	{
 		if (tileMesh == nullptr)
@@ -235,6 +240,7 @@ namespace World {
 		file.close();
 	}
 
+	// Testing to print out the binary map to see if it works properly
 	void worldGrid::outWorldMap(const std::string& filename)
 	{
 		std::ofstream file(filename);
@@ -281,6 +287,7 @@ namespace World {
 		return { gridX, gridY };
 	}
 
+
 	int& worldGrid::pointerToTile(int gridX, int gridY)
 	{
 		return tilesID[gridY][gridX];
@@ -316,6 +323,7 @@ namespace World {
 		// +0, -1 | UserTile | +0, +1
 		// +1, -1 |  +1, +0  | +1, +1
 
+		// Based 
 		int activeX = (dirX > 0) - (dirX < 0);
 		int activeY = (dirY > 0) - (dirY < 0);
 
@@ -343,37 +351,105 @@ namespace World {
 		return { X, Y };
 	}
 
-	// User interacting w tile
+	// User interacting w tile using E NEED DO: Change to add entity player as well 
 	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy)
 	{
 		int& ID = Griddy.pointerToTile(tile.first, tile.second);
 
 		switch (ID)
 		{
-		case EmptyCropTile:
-			// Will add inventory check later
-			printf("Planted Crops! Yay!!\n");
-			ID = PlantedCropTile;
-			break;
+			case EmptyCropTile:
+				// Will add inventory check later
+				/*if (useInventory(user))*/
+				printf("Planted Crops! Yay!!\n");
+				ID = PlantedCropTile;
+				break;
 
-		case PlantedCropTile:
-			printf("Crops Grown! Yay!!\n");
-			ID = GrownCropTile;
-			break;
+			case PlantedCropTile:
+				// If users try to press E with the crop -> shld give little message saying
+				printf("Crops Grown! Yay!!\n");
+				ID = GrownCropTile;
+				break;
 
-		case GrownCropTile:
-			printf("Your Crops are Done! Yay!!\n");
-			ID = DoneCropTile;
-			break;
+			case GrownCropTile:
+				printf("Your Crops are Done! Yay!!\n");
+				ID = DoneCropTile;
+				break;
 
-		case DoneCropTile:
-			printf("Collected Plants! Yay!!\n");
-			ID = EmptyCropTile;
-			break;
+			case DoneCropTile:
+				printf("Collected Plants! Yay!!\n");
+				ID = EmptyCropTile;
+				break;
 
-
+			case InteractableObj:
+				// Open Chest -> Pop up or something
+				break;
 		}
 
+	}
+
+	// NEED REDO AND UNDERSTAND THE COLLISION STUFF
+	void collidableNearby(Entity::Player user, World::worldGrid& Griddy)
+	{ 
+		// wld be better if based on direction user is gg but temporarily checking all main directions
+		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
+
+		if (Griddy.getTileID(cords.first - 1, cords.second) == 1
+			|| Griddy.getTileID(cords.first + 1, cords.second) == 1
+			|| Griddy.getTileID(cords.first, cords.second - 1) == 1
+			|| Griddy.getTileID(cords.first, cords.second + 1) == 1)
+		{
+			// Check if user current coords is 
+
+		}
+	}
+
+	// Can just add in inventory
+	bool useInventory(Entity::Player user)
+	{
+		int slot = user.getSelectedInventorySlot();
+		Inventory::Item* item = user.getInventoryItem(slot);
+
+		if (item->getID() == 5)
+		{
+			int val = item->getValue();
+			item->setValue(val - 1);
+			return true;
+		}
+
+		// If user has requested object
+		// - 1 from object
+		// return true
+
+		return false;
+	}
+
+	// Player standing on tile 
+	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy)
+	{
+
+		//float MaxOOBW = (Griddy.getWidth() * Griddy.getTileSize()) / 2;
+		//float MaxOOBH = (Griddy.getHeight() * Griddy.getTileSize()) / 2;
+
+		//float MinOOBW = -(Griddy.getWidth() * Griddy.getTileSize()) / 2;
+		//float MinOOBH = -(Griddy.getHeight() * Griddy.getTileSize()) / 2;
+
+		//if (userX < MinOOBW || userX > MaxOOBW || userY < MinOOBH || userY > MaxOOBH)
+		//{
+		//	// Handle the out-of-bounds case 
+		//	return false;
+		//}
+
+		// Get the tile ID at the player's current position
+		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
+		int& ID = Griddy.pointerToTile(cords.first, cords.second);
+
+		// Check if the tile ID is a teleporter
+		if (ID == Teleporter)
+		{
+			// Start teleporting to next 
+			next += 1;
+		}
 	}
 
 	// Drawing and other stuff //
@@ -400,6 +476,7 @@ namespace World {
 		}
 	}
 
+	// Drawing each tile based on the ID in the world coords
 	void worldGrid::drawTexture(const World::worldGrid& Griddy)
 	{
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -438,11 +515,13 @@ namespace World {
 		}
 	}
 
+	// Draw highlighted tile based on the coords 
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy)
 	{
 		int tileSize = Griddy.getTileSize();
 		std::pair<float, float> coords = getWorldCoords(tile, Griddy);
 
+		// Filling the square as red for highlight
 		Color::fill(255, 0, 0, 50);
 		Shapes::square(coords.first, coords.second, tileSize);
 	}
