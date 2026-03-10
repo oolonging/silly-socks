@@ -135,7 +135,7 @@ void Level1_Initialize()
     testProgressBar = UI_Elements::ProgressBar(
         -300.0f, 100.0f,
         300.0f, 40.0f,
-        progressValue,
+        &progressValue,
         0.0f, 100.0f,
         Shapes::CORNER
     );

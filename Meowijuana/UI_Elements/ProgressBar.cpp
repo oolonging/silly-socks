@@ -60,7 +60,7 @@ namespace UI_Elements {
 	// ProgressBar Implementation
 	// -------------------------------------------------------------------------
 
-	ProgressBar::ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
+	ProgressBar::ProgressBar(float x, float y, float width, float height, float* valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), value(valRef), minValue(minVal), maxValue(maxVal) {
 
 		this->style = defaultstyle;
@@ -73,15 +73,15 @@ namespace UI_Elements {
 	//	UI_Element(), value(0.0f), minValue(0.0f), maxValue(100.0f) {}
 
 	ProgressBar::ProgressBar(void)
-		: ProgressBar(0.0f, 0.0f, 100.0f, 10.0f, 0.0f, 0.0f, 100.0f) {}
+		: ProgressBar(0.0f, 0.0f, 100.0f, 10.0f, nullptr, 0.0f, 100.0f) {}
 
 	void ProgressBar::clampValue(void) {
-		if (value < minValue) value = minValue;
-		if (value > maxValue) value = maxValue;
+		if (*value < minValue) *value = minValue;
+		if (*value > maxValue) *value = maxValue;
 	}
 
 	void ProgressBar::setValue(float newValue) {
-		value = newValue;
+		*value = newValue;
 	}
 
 	//void ProgressBar::draw(void) {
@@ -108,7 +108,7 @@ namespace UI_Elements {
 		clampValue();
 		bool graphicalRender = (this->texture.primaryTexture != nullptr && this->texture.secondaryTexture != nullptr);
 
-		float filledWidth = (this->value / this->maxValue) * this->width;
+		float filledWidth = (*value / this->maxValue) * this->width;
 
 
 		// Apply styles (Stroke)

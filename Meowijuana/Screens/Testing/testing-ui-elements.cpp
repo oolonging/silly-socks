@@ -49,7 +49,7 @@ void testingUI_Initialize() {
 	hurtButton->setOnClick(hurt);
 
 	// Initialize the progress bar
-	healthBar = UIManager::create<UI_Elements::ProgressBar>("healthBar", -550.0f, 350.0f, 500.0f, 50.0f, health, 0.0f, maxHealth, Shapes::CORNER);
+	healthBar = UIManager::create<UI_Elements::ProgressBar>("healthBar", -550.0f, 350.0f, 500.0f, 50.0f, &health, 0.0f, maxHealth, Shapes::CORNER);
 }
 
 void testingUI_Update() {
@@ -61,7 +61,6 @@ void testingUI_Draw() {
 	Color::background(Color::Preset::White);
 
 	// Draw the UI elements
-	healthBar->setValue(health);
 	UIManager::drawAll();
 }
 

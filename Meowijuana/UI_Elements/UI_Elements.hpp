@@ -115,7 +115,7 @@ namespace UI_Elements {
 	// TODO: CENTER render broken
 	class ProgressBar : public UI_Element {
 	private:
-		float value;
+		float* value;
 		float minValue;
 		float maxValue;
 
@@ -143,7 +143,7 @@ namespace UI_Elements {
 		void draw(void) override;
 
 		// Constructor
-		ProgressBar(float x, float y, float width, float height, float valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		ProgressBar(float x, float y, float width, float height, float* valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		ProgressBar(void);
 	};
 
