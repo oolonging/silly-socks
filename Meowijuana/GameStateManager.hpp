@@ -13,10 +13,10 @@ enum GSM_STATES
 	GS_CREDITS,
 
 	// Gameplay states
+	GS_FARM,			// landing, farm yet to port over from testing-andrea, (todo: me/drea to draw the npcs and everything after)
 	GS_TUTORIAL,
-	GS_FARM,
 	GS_DUNGEON,
-	GS_TUTDUN,
+	GS_TUTDUN,			
 
 	// Testing states for individual game mechanics
 	GS_TESTING,
@@ -30,8 +30,8 @@ enum GSM_STATES
 	GS_RESTART,
 	GS_BACK,
 
-	GS_A,
-	GS_X
+	GS_A,				// farming tutorial 
+	GS_X				// to the right of farm, dungeon tutorial for now (remind me to add an option to skip tutorial && ask if dungeon can be removed) 
 
 };
 

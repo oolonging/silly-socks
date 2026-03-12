@@ -14,7 +14,7 @@ static UI_Elements::Button tutorialButton;
 AEGfxTexture* CatastropheLogo = nullptr;
 
 // void functions for buttons
-void navigateToGame(void) { next = GS_LEVEL1; }
+void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
 void navigateToTest(void) { next = GS_A; }

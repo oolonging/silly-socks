@@ -10,6 +10,8 @@
 #include "../../World.hpp"
 
 
+// will update with new dialogue once tiletypes and consumables come into play
+
 World::worldGrid Griddtwo;
 std::pair<int, int> prevActiveTile2;
 std::pair<int, int> activeTile2;
@@ -69,7 +71,7 @@ void Xuan_Initialize() {
 		"@",
 
 		"Nice! OK, seems like my job here is done. I'm gonna go clock off for the day.",
-		"To get to the next floor, just head to that teleporter over there to continue. They're those white squares on the ground.",
+		"To get to the next floor, just head to that teleporter over there to continue. They're those white squares on the ground. The next time you come back in, you'll be directed straight to the first floor.",
 		"You can continue in the dungeons if you'd like! I'll cart you out if something bad happens.",
 		"See you around!",
 
@@ -90,7 +92,7 @@ void Xuan_Initialize() {
 	TutorialScreen::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	auto* player = EntityManager::getPlayer("player");
-	player->setPosition(-600.0f, 50.0f);
+	player->setPosition(-800.0f, 50.0f);
 
 
 	Inventory::init();
@@ -234,7 +236,14 @@ void Xuan_Update() {
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
+
+
+	// to port over, will have if doornotlocked condition too
+	if (player->getX() < -(AEGfxGetWindowWidth() / 2)) {
+		next = GS_FARM;
+	}
 }
+
 
 void Xuan_Draw() {
 
@@ -305,6 +314,12 @@ void Xuan_Free() {
 }
 
 void Xuan_Unload() {
+	auto* smelly = EntityManager::getNPC("smelly");
+	if (smelly && smelly->getSprite()) {
+		AEGfxTextureUnload(smelly->getSprite()); // unload sprite
+	}
+	TutorialScreen::activeSpeaker = nullptr;
 	EntityManager::clear();
+
 	//TileManager::exit();
-}
+} 

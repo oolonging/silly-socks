@@ -8,9 +8,6 @@
     <ClCompile Include="Collision.hpp">
       <Filter>Header files</Filter>
     </ClCompile>
-    <ClCompile Include="Attack.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -158,9 +155,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Entity.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Attack.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.hpp">
