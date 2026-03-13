@@ -84,11 +84,11 @@ namespace Color {
 		const Color Brown = { 206,160,134,100 };
 		const Color DarkBrown{ 89, 75, 66, 100 };
 
-		const Color defaultStylePrimary = LightBrown;
-		const Color defaultStyleSecondary = Brown;
-		const Color defaultStyleStroke = DarkBrown;
-		const Color defaultTextStylePrimary = Black;
-		const Color defaultTextStyleSecondary = White;
+		const Color defaultStylePrimary = createColorHex(0xFFB59275);		// RGB (181, 146, 117)
+		const Color defaultStyleSecondary = createColorHex(0xFFE6CEB5);		// RGB (230, 206, 181)
+		const Color defaultStyleStroke = createColorHex(0xFF8C9086);		// RGB (140, 144, 134)
+		const Color defaultTextStylePrimary = White;
+		const Color defaultTextStyleSecondary = Black;
 	}
 }
 
