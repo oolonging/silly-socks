@@ -389,56 +389,138 @@ namespace World {
 	}
 
 	// NEED REDO AND UNDERSTAND THE COLLISION STUFF
-	void collidableNearby(Entity::Player user, World::worldGrid& Griddy)
+	void collidableNearby(Entity::Player& user, World::worldGrid& Griddy)
 	{ 
-		// wld be better if based on direction user is gg but temporarily checking all main directions
+
+
 		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
 
-		if (Griddy.getTileID(cords.first - 1, cords.second) == 1
-			|| Griddy.getTileID(cords.first + 1, cords.second) == 1
-			|| Griddy.getTileID(cords.first, cords.second - 1) == 1
-			|| Griddy.getTileID(cords.first, cords.second + 1) == 1)
-		{
-			// Check if user current coords is 
+		int col = cords.first;
+		int row = cords.second;
 
+		// Early exit if no walls nearby
+		if (Griddy.getTileID(col + 1, row) != Wall &&
+			Griddy.getTileID(col - 1, row) != Wall &&
+			Griddy.getTileID(col, row + 1) != Wall &&
+			Griddy.getTileID(col, row - 1) != Wall)
+			return;
+
+		Shapes::Quad player = { user.getX(), user.getY(), user.getWidth(), user.getHeight() };
+
+		bool(&dir)[4] = user.getDirections();
+
+		const int UP = 0;
+		const int DOWN = 1;
+		const int LEFT = 2;
+		const int RIGHT = 3;
+
+		bool collisionOccured[2] = {}; // 0 -> horizontal collision, 1 -> vertical collision
+
+		// Check for horizontal collision //
+		if (dir[RIGHT] && Griddy.getTileID(col + 1, row) == Wall)
+		{
+			std::pair<float, float> worldCords4Tile = getWorldCoords({ col + 1, row }, Griddy);
+			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+
+			if (collideWithWall(player, wall))
+			{
+				collisionOccured[0] = true;
+			}
+		}
+
+		else if (dir[LEFT] && Griddy.getTileID(col - 1, row) == Wall)
+		{
+			std::pair<float, float> worldCords4Tile = getWorldCoords({ col - 1, row }, Griddy);
+			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+
+			if (collideWithWall(player, wall))
+			{
+				collisionOccured[0] = true;
+			}
+
+		}
+
+		// Check for vertical collision //
+		if (dir[UP] && Griddy.getTileID(col, row - 1) == Wall)
+		{
+			std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row - 1 }, Griddy);
+			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+
+			if (collideWithWall(player, wall))
+			{
+				collisionOccured[1] = true;
+			}
+		}
+
+		else if (dir[DOWN] && Griddy.getTileID(col, row + 1) == Wall)
+		{
+			std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row + 1 }, Griddy);
+			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+
+			if (collideWithWall(player, wall))
+			{
+				collisionOccured[1] = true;
+			}
+		}
+
+		if (collisionOccured[0] == true || collisionOccured[1] == true)
+		{
+			snapPlayer(user, Griddy, collisionOccured, dir);
 		}
 	}
 
-	// Can just add in inventory
-	bool useInventory(Entity::Player user)
+	bool collideWithWall(Shapes::Quad user, Shapes::Quad wall)
 	{
-		int slot = user.getSelectedInventorySlot();
-		Inventory::Item* item = user.getInventoryItem(slot);
+		return (Collision::rectInRect(user, wall, Shapes::CORNER));
+	}
 
-		if (item->getID() == 5)
+	void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir)
+	{
+		std::pair<int, int> index = Griddy.getIndex(user.getX(), user.getY());
+		int col = index.first;
+		int row = index.second;
+
+		float tileSize = static_cast<float>(Griddy.getTileSize());
+
+		const int UP = 0;
+		const int DOWN = 1;
+		const int LEFT = 2;
+		const int RIGHT = 3;
+
+		// If horizontal collision occurred (X axis)
+		if (collisionCheck[0])
 		{
-			int val = item->getValue();
-			item->setValue(val - 1);
-			return true;
+			std::pair<float, float> tileCords = getWorldCoords({ col, row }, Griddy);
+
+			if (dir[RIGHT])
+			{
+				user.setX(tileCords.first + tileSize - user.getWidth()); // flush against right wall
+			}
+			else if (dir[LEFT])
+			{
+				user.setX(tileCords.first); // flush against left wall
+			}
 		}
 
-		// If user has requested object
-		// - 1 from object
-		// return true
+		// If vertical collision occurred (Y axis)
+		if (collisionCheck[1])
+		{
+			std::pair<float, float> tileCords = getWorldCoords({ col, row }, Griddy);
 
-		return false;
+			if (dir[DOWN])
+			{
+				user.setY(tileCords.second); // flush against top of wall below
+			}
+			else if (dir[UP])
+			{
+				user.setY(tileCords.second + tileSize - user.getHeight()); // flush against bottom of wall above
+			}
+		}
 	}
 
 	// Player standing on tile 
 	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy)
 	{
-
-		//float MaxOOBW = (Griddy.getWidth() * Griddy.getTileSize()) / 2;
-		//float MaxOOBH = (Griddy.getHeight() * Griddy.getTileSize()) / 2;
-
-		//float MinOOBW = -(Griddy.getWidth() * Griddy.getTileSize()) / 2;
-		//float MinOOBH = -(Griddy.getHeight() * Griddy.getTileSize()) / 2;
-
-		//if (userX < MinOOBW || userX > MaxOOBW || userY < MinOOBH || userY > MaxOOBH)
-		//{
-		//	// Handle the out-of-bounds case 
-		//	return false;
-		//}
 
 		// Get the tile ID at the player's current position
 		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
@@ -479,6 +561,13 @@ namespace World {
 	// Drawing each tile based on the ID in the world coords
 	void worldGrid::drawTexture(const World::worldGrid& Griddy)
 	{
+		static bool backgroundSet = false;
+
+		if (!backgroundSet) {
+			Color::background({ 150, 75, 0, 255 });
+			backgroundSet = true;
+		}
+
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
@@ -493,6 +582,7 @@ namespace World {
 				if (it == tileDatabase.end())
 					continue;
 
+				if (tileID == Ground) continue; // Dun draw ground
 				const tileObject& def = it->second;
 
 				if (!def.image)

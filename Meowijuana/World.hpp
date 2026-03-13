@@ -102,8 +102,14 @@ namespace World
 	// Get World Coords -> Translate Array index to real word coordinates
 	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, const World::worldGrid& Griddy);
 
-	void collidableNearby(Entity::Player user, World::worldGrid& Griddy);
+	// Main function to handle collision
+	void collidableNearby(Entity::Player& user, World::worldGrid& Griddy);
 	
+	// Helper to user collision function 
+	bool collideWithWall(Shapes::Quad user, Shapes::Quad wall);
+
+	void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir);
+
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);
 
 	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy);

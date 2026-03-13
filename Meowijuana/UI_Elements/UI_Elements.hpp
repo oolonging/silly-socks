@@ -341,8 +341,10 @@ namespace UI_Elements {
 
 		// Getters/Setters
 		int getSelectedSlot() const;
+		float getSlotSize() const { return slotSize; } // Getting slot size to the positioning can be slightly better
 		void setSelectedSlot(int slot);
 		void setPlayer(Entity::Player* player);
+		void setPosition(float newX, float newY); // Soz just making it so that it looks a lil nicer 
 
 		// Constructors
 		PlayerInventory(float x, float y, float slotSize, float slotSpacing, Entity::Player* player, Shapes::SHAPE_MODE mode = Shapes::CORNER);
