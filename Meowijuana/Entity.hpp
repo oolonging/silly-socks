@@ -117,7 +117,7 @@ namespace Entity {
 		// Constructors
 		Player(float posX, float posY, float w, float h, float health, float spd, float arm);
 		Player();
-		~Player();
+
 	};
 
 	class Enemy : public Entity {
