@@ -109,10 +109,10 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\EntityManager.cpp" />
+    <ClCompile Include="Managers\Particlemanager.cpp" />
     <ClCompile Include="Managers\SpriteManager.cpp" />
     <ClCompile Include="Managers\TileManager.cpp" />
     <ClCompile Include="Managers\UIManager.cpp" />
-    <ClCompile Include="ParticleSystems.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Pathfinding.hpp" />
     <ClCompile Include="Screens\CreditsScreen.cpp" />
@@ -126,6 +126,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\TestingScreen.cpp" />
     <ClCompile Include="Screens\Testing\testing-andrea.cpp" />
     <ClCompile Include="Screens\Testing\testing-jun.cpp" />
+    <ClCompile Include="Screens\Testing\testing-particles.cpp" />
     <ClCompile Include="Screens\Testing\testing-saahil.cpp" />
     <ClCompile Include="Screens\Testing\testing-sprites.cpp" />
     <ClCompile Include="Screens\Testing\testing-ui-elements.cpp" />
@@ -156,10 +157,10 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="LevelSystem.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp" />
+    <ClInclude Include="Managers\ParticleManager.hpp" />
     <ClInclude Include="Managers\SpriteManager.hpp" />
     <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Managers\UIManager.hpp" />
-    <ClInclude Include="ParticleSystems.hpp" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
     <ClInclude Include="Screens\DungeonScreen.hpp" />
     <ClInclude Include="Screens\FarmScreen.hpp" />
@@ -171,6 +172,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\TestingScreen.hpp" />
     <ClInclude Include="Screens\Testing\testing-andrea.hpp" />
     <ClInclude Include="Screens\Testing\testing-jun.hpp" />
+    <ClInclude Include="Screens\Testing\testing-particles.hpp" />
     <ClInclude Include="Screens\Testing\testing-saahil.hpp" />
     <ClInclude Include="Screens\Testing\testing-sprites.hpp" />
     <ClInclude Include="Screens\Testing\testing-ui-elements.hpp" />

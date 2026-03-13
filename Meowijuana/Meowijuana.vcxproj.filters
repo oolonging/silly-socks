@@ -134,14 +134,17 @@
     <ClCompile Include="UI_Elements\PlayerInventory.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystems.cpp">
-      <Filter>Source files\UI Elements</Filter>
-    </ClCompile>
     <ClCompile Include="TutorialDungeon.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
     <ClCompile Include="DungeonManager.cpp">
       <Filter>Source files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\Particlemanager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-particles.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,14 +244,17 @@
     <ClInclude Include="Tiles.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystems.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="DungeonManager.hpp">
       <Filter>Header files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="TutorialDungeon.hpp">
       <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ParticleManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-particles.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
