@@ -102,7 +102,7 @@ void Settings_Free() {
 }
 
 void Settings_Unload() {
-
+	UIManager::clear();
 }
 
 
