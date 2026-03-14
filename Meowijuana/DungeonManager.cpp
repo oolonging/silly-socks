@@ -83,17 +83,17 @@ namespace Room {
 	}
 
 	Direction DungeonManager::randomizeDirection(RoomNode* room) {
-		static const Direction valid[3] = {
-			Direction::North,
-			Direction::East,
-			Direction::West
-		};
-		return valid[rand() % 3];
+		Direction available[3];
+		int count = 0;
+		if (!room->north) available[count++] = Direction::North;
+		if (!room->east)  available[count++] = Direction::East;
+		if (!room->west)  available[count++] = Direction::West;
+		if (count == 0)   return Direction::North; // just in case
+		return available[rand() % count];
 	}
 
 	void DungeonManager::lockDoors() { doorsLocked = true; }
 	void DungeonManager::unlockDoors() { doorsLocked = false; }
-
 
 	RoomType DungeonManager::randomizeType() {
 		return rand() % 2 ? RoomType::SideSmall : RoomType::SideMedium;
@@ -114,7 +114,7 @@ namespace Room {
 
 		if (room->state == RoomState::Unvisited)
 		{
-			lockDoors(room);
+			lockDoors();
 			room->state = RoomState::InCombat;
 		}
 	}
@@ -123,7 +123,7 @@ namespace Room {
 	void DungeonManager::onRoomCleared() {
 		if (currentRoom) {
 			currentRoom->state = RoomState::Cleared;
-			unlockDoors(currentRoom);
+			unlockDoors();
 		}
 	}
 
@@ -140,10 +140,10 @@ namespace Room {
 
 	RoomNode* DungeonManager::createRoom(int depth) {
 		RoomNode* newRoom = new RoomNode{};
-		newRoom->id = currentRoom->id++;
+		newRoom->id = nextId++;
 		newRoom->depth = depth;
 		newRoom->type = randomizeType();
-
+		return newRoom;
 	}
 }
 

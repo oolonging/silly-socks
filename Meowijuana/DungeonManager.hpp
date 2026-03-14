@@ -77,8 +77,8 @@ namespace Room {
 		bool move(Direction dir);
 		void onRoomCleared();
 
-		void lockNextRoom();
-		void unlockNextRoom();
+		void lockNextRoom(RoomNode * room);
+		void unlockNextRoom(RoomNode* room);
 
 		RoomNode* getCurrentRoom() const;
 		bool isDoorsLocked() const;
