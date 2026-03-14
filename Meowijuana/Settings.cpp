@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "Settings.hpp"
 
+#include "InputManager.hpp"
+#include "Managers/UIManager.hpp"
+
 namespace Settings {
 	//////////////////////
 	// Set default values
@@ -22,6 +25,13 @@ namespace Settings {
 	s8 gCurrentFontId = -1; // No font selected
 	std::map<std::string, s8> gFonts;
 
+	///////////
+	// Sound
+	///////////
+
+	bool gMuteSFX = false;
+	bool gMuteMusic = false;
+
 	///////////////
 	// Debug mode
 	///////////////
@@ -36,7 +46,37 @@ namespace Settings {
 	}
 
 	void drawDebugOverlay(void) {
-		// TODO: implement
+		std::string output[] = {
+			"FPS: " + std::to_string(AEFrameRateControllerGetFrameRate()),
+			"Mouse Position: (" + std::to_string(Input::getMouseX()) + ", " + std::to_string(Input::getMouseY()) + ")",
+			"UI Elements: " + std::to_string(UIManager::elements.size())
+		};
+		int counter = 0;
+		
+		// Save previous text style
+		Color::Color oldFill = gFillColor;
+		Color::Color oldTextFill = gTextFillColor;
+		float oldTextSize = gTextSize;
+		Text::TEXT_ALIGN_HORIZONTAL oldAlignH = gTextAlignHorizontal;
+		Text::TEXT_ALIGN_VERTICAL oldAlignV = gTextAlignVertical;
+
+		// Draw text
+		Color::textFill(Color::Preset::White);
+		Text::textSize(20.0f);
+		Text::textAlign(Text::LEFT, Text::BOTTOM);
+		
+		// transparent background for text
+		for(auto line : output) {
+			Text::text(line.c_str(), -790.0f, 440.0f - (20.0f * counter)); // TODO: make this more dynamic and less hard coded
+			counter++;
+		}
+
+		// Reset to previous text style
+		gFillColor = oldFill;
+		gTextFillColor = oldTextFill;
+		Text::textSize(oldTextSize);
+		Text::textAlign(oldAlignH, oldAlignV);
+
 	}
 }
 

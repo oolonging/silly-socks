@@ -154,6 +154,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Update input manager every frame
 			Input::update();
 
+			// Draw debug overlay
+			if (Settings::gDebugMode) {
+				Settings::drawDebugOverlay();
+			}
+
 			AESysFrameEnd();
 
 			// Handle restart
