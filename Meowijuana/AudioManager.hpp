@@ -34,6 +34,11 @@ namespace AudioManager {
 
 		void exit();
 	};
+
+	extern Audio audio;
 }
+
+extern float bgVolume;
+extern float sfxVolume;
 
 #endif

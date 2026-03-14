@@ -115,6 +115,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="ParticleSystems.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Pathfinding.hpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Screens\CreditsScreen.cpp" />
     <ClCompile Include="Screens\DungeonScreen.cpp" />
     <ClCompile Include="Screens\FarmScreen.cpp" />
@@ -161,6 +162,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Managers\UIManager.hpp" />
     <ClInclude Include="ParticleSystems.hpp" />
+    <ClInclude Include="PauseMenu.hpp" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
     <ClInclude Include="Screens\DungeonScreen.hpp" />
     <ClInclude Include="Screens\FarmScreen.hpp" />

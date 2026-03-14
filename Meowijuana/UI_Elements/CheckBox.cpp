@@ -1,4 +1,5 @@
 #include "UI_Elements.hpp"
+#include "../Settings.hpp"
 
 
 namespace UI_Elements {
@@ -45,6 +46,10 @@ namespace UI_Elements {
 	}
 
 	void Checkbox::draw(void) {
+
+		// force render mode at the start
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
 		// Check if checkbox area is hovered (just the box, not the label)
 		bool boxHovered = isHovering();
 
@@ -80,5 +85,7 @@ namespace UI_Elements {
 		// draw the debug material
 
 		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V); // TODO: rewire the text draw so that the align points to the anchor point
+
+
 	}
 }

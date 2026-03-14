@@ -5,24 +5,22 @@
 #include "../UI_Elements/UI_Elements.hpp"
 #include "../AudioManager.hpp"
 #include "../../Managers/UIManager.hpp"
+#include "../PauseMenu.hpp"
 
 
 
-//global object for audio management
-AudioManager::Audio audio;
+static UI_Elements::Slider* bgVolumeSlider;
+static UI_Elements::Slider* sfxVolumeSlider;
+static UI_Elements::Checkbox* bgmMuteCheckbox;
+static UI_Elements::Checkbox* sfxMuteCheckbox;
+static UI_Elements::Button* backButton;
 
-UI_Elements::Slider* bgVolumeSlider;
-UI_Elements::Slider* sfxVolumeSlider;
-UI_Elements::Checkbox* bgmMuteCheckbox;
-UI_Elements::Checkbox* sfxMuteCheckbox;
+static void navigateToPrev(void) { next = GS_BACK; }
 
-float bgVolume = 50.0f;
-float sfxVolume = 20.0f;
+using namespace AudioManager;
 
 void Settings_Load() {
-	audio.init();
-	audio.loadBGM("Assets/testaudio.mp3");
-	audio.loadSFX("Assets/testsfx.mp3");
+
 }
 
 void Settings_Initialize() {
@@ -35,11 +33,13 @@ void Settings_Initialize() {
 	bgmMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("bgmMuteCheckbox", 250.0f, 200.0f, 50.0f, "MUTE", false);
 	sfxMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("sfxMuteCheckbox", 250.0f, 100.0f, 50.0f, "MUTE", false);
 
-	//set text style for checkbox for white text
-	UI_Elements::TextStyle checkboxTextStyle = bgmMuteCheckbox->getTextStyle();
-	checkboxTextStyle.primaryColor = Color::createColorRGB(255, 255, 255, 255);
-	bgmMuteCheckbox->setTextStyle(checkboxTextStyle);
-	sfxMuteCheckbox->setTextStyle(checkboxTextStyle);
+	//set element style for checkbox
+	UI_Elements::ElementStyle checkboxElementStyle = bgmMuteCheckbox->getStyle();
+	checkboxElementStyle.primaryColor = Color::createColorRGB(100, 200, 100, 255);
+	checkboxElementStyle.secondaryColor = Color::createColorRGB(200, 100, 50, 255);
+	checkboxElementStyle.strokeWeight = 5.0f;
+	bgmMuteCheckbox->setStyle(checkboxElementStyle);
+	sfxMuteCheckbox->setStyle(checkboxElementStyle);
 
 	//mute bgm when checkbox is toggled
 	bgmMuteCheckbox->setOnChange([](bool isMuted) {
@@ -53,29 +53,22 @@ void Settings_Initialize() {
 		else audio.setSFXVolume(sfxVolume / 100.0f);
 		});
 
-	//play bgm with initial volume
-	audio.playBGM(bgVolume / 100.0f, true);
+	//back button
+	backButton = UIManager::create<UI_Elements::Button>(
+		"backButton", -300.0f, 300.0f, 50.0f, 50.0f, " ", Shapes::CENTER
+	);
+
+	//button function
+	backButton->setOnClick(navigateToPrev);
 
 }
 
 void Settings_Update() {
-	// Nothing to init just a plain background and some text
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	Color::textFill(255, 255, 255);
-	Color::background({ 0, 0, 100, 255 });
-	Text::text("BGM", -200.0f, 220.0f);
-	Text::text("SFX", -200.0f, 120.0f);
-	Text::text("Settings", 0.0f, 350.0f);
 
 	//bgm slider update
 	float newbgVolume = bgVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
 	if (!bgmMuteCheckbox->getChecked()) {
 		audio.setBGMVolume(bgVolume / 100.0f);
-	}
-
-	//play sfx when left click
-	if (AEInputCheckTriggered(AEVK_LBUTTON)) {
-		audio.playSFX(sfxVolume / 100.0f);
 	}
 
 	//sfx slider update
@@ -89,13 +82,24 @@ void Settings_Update() {
 
 void Settings_Draw() {
 
-	UIManager::drawAll();
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	Color::textFill(0, 0, 0);
+	Color::background({ 162, 209, 213, 255 });
 
+	Text::textSize(30.0f);
+	Text::text("Settings", 0.0f, 350.0f);
+
+	Text::textSize(20.0f);
+	Text::text("BGM", -200.0f, 220.0f);
+	Text::text("SFX", -200.0f, 120.0f);
+	Text::text("Back", -380.0f, 300.0f);
+
+	UIManager::drawAll();
 }
 
 void Settings_Free() {
 }
 
 void Settings_Unload() {
-	audio.exit();
+
 }

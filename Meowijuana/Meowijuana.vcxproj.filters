@@ -146,6 +146,9 @@
     <ClCompile Include="DungeonManager.cpp">
       <Filter>Source files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -254,6 +257,9 @@
       <Filter>Header files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="TutorialDungeon.hpp">
+      <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,11 +13,19 @@
 #include "GameStateManager.hpp"
 #include "InputManager.hpp"
 #include "Managers/UIManager.hpp"
+#include "AudioManager.hpp"
+
 
 // ---------------------------------------------------------------------------
 // main
 
 extern World::worldGrid grid;
+
+namespace AudioManager {
+	Audio audio;
+}
+float bgVolume = 100.0f;
+float sfxVolume = 140.0f;
 
 // Temporary function to help navigate between the screens
 void screenSwitcher(void) {
@@ -57,6 +65,7 @@ void screenSwitcher(void) {
 
 	if (AEInputCheckTriggered(AEVK_R))
 		next = GS_RESTART;
+
 
 }
 
@@ -101,6 +110,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// initialize ui manager defaults
 	UIManager::initDefaults();
 
+	//audio
+	AudioManager::audio.init();
+	AudioManager::audio.loadBGM("Assets/bgm.mp3");
+	AudioManager::audio.loadSFX("Assets/clicksfx.mp3");
+	AudioManager::audio.playBGM(bgVolume / 100.0f, true);
+
 	GSM_Initialize(GS_SPLASH);
 
 	// fixed the loop
@@ -116,6 +131,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		while (current == next) {
 			AESysFrameStart();
 
+			if (AEInputCheckTriggered(AEVK_LBUTTON)) {
+				AudioManager::audio.playSFX(sfxVolume / 100.0f);
+			}
 
 			// temporary  during the debugging phase
 			screenSwitcher();
@@ -165,6 +183,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Shapes::exit();
 	Text::exit();
 	Input::exit();
+	AudioManager::audio.exit();
 
 	AESysExit();
 }

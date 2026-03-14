@@ -11,6 +11,7 @@
 #include "../Entity.hpp"
 #include "../World.hpp"
 //#include "../Attack.h"
+#include "../PauseMenu.hpp"
 
 
 bool drawGrid = false;
@@ -177,15 +178,26 @@ void Level1_Initialize()
         drawGrid = checked;
         std::cout << "Grid " << (checked ? "enabled" : "disabled") << "\n";
         });
+
+    //pause menu initialise
+    PauseMenu_Initialize();
 }
 
 void Level1_Update()
 {
+    //toggle pause
+    if (AEInputCheckTriggered(AEVK_P)) {
+        isPaused = !isPaused;
+    }
+
+    //call pause menu update if paused
+    if (isPaused) {
+        PauseMenu_Update();
+        return;
+    }
 
     // TODO: do better i guess
-    AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
-    Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
     testPlayer.update();
 
     // enemy stuff
@@ -272,6 +284,10 @@ void Level1_Update()
 float heightOffset = -80.0f;
 void Level1_Draw()
 {
+    //drwa bg first
+    AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+    Graphics::image(0, 0, 1600, 900, dungeonTile, Shapes::CENTER);
+
     if (drawGrid)
         World::drawGrid();
 
@@ -294,13 +310,13 @@ void Level1_Draw()
         testEnemy.draw(testPlayer);
     }
     else {
-        
+
     }
 
 
- /*   weapon.draw();*/
+    /*   weapon.draw();*/
 
-    // Draw UI labels
+       // Draw UI labels
     Color::textFill(0, 0, 0, 255); // set text color to black
     Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset);
     Text::text("Speed Control:", -300.0f, 240.0f + heightOffset);
@@ -308,7 +324,14 @@ void Level1_Draw()
     Text::text("Text Input:", -300.0f, 60.0f + heightOffset);
     Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset);
     Text::text("Difficulty:", -300.0f, -140.0f + heightOffset);
+
+    //draw pause menu if paused
+    if (isPaused) {
+        PauseMenu_Draw();
+    }
+    //enemy still moves when paused, i think its bc the enemy draw has movement inside
 }
+
 
 void Level1_Free() {}
 
