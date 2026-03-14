@@ -1,10 +1,8 @@
+﻿#include "../../pch.h"
 #include "testing-sprites.hpp"
-#include "AEEngine.h"
+
 #include "../../Graphics.hpp"
-
-
 #include "../../Managers/SpriteManager.hpp"
-
 
 
 // Animations
@@ -50,3 +48,5 @@ void testingSprites_Free() {
 void testingSprites_Unload() {
 	SpriteManager::clear();
 }
+
+

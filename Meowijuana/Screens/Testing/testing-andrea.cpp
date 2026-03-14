@@ -1,3 +1,4 @@
+﻿#include "../../pch.h"
 #include "AEEngine.h"
 #include "../../GameStateManager.hpp"
 #include "../../Graphics.hpp"
@@ -5,8 +6,11 @@
 #include "../../Entity.hpp"
 #include "testing-andrea.hpp"
 
-// Entities player and enemy
+// Entities player + Inventory creation
 Entity::Player user;
+UI_Elements::PlayerInventory inven;
+
+// For world grid
 std::pair<int, int> prevActiveTile;
 std::pair<int, int> activeTile;
 
@@ -19,10 +23,25 @@ void Andrea_Load() {
 void Andrea_Initialize() 
 {
 	user = Entity::Player(
-		-400.0f, -400.0f,
+		0.0f, 0.0f,
 		50.0f, 50.0f,
 		100.0f, 5.0f, 0.0f
 	);
+
+	// Setting position for inventory
+	float screenWidth = AEGfxGetWindowWidth();
+	float screenHeight = AEGfxGetWindowHeight();
+	float invWidth = inven.getSlotSize() * 9 + user.getInventorySize() * 8;
+	float offset = 10.0f;
+
+	float x = -invWidth / 2.0f;         // centered horizontally
+	float y = -(screenHeight / 2.0f) + inven.getSlotSize() + offset; // near the bottom 
+
+	inven.setPosition(x, y);
+	inven.setPlayer(&user);
+
+	user.setX(0); // Example initialization
+	user.setY(0); // Example initialization
 
 	Griddy.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	Griddy.initMapTexture();
@@ -35,7 +54,6 @@ void Andrea_Initialize()
 void Andrea_Update() {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	Color::textFill(255, 255, 255);
-	Color::background({ 100, 100, 100, 255 });
 	Text::text("Andrea's testing screen", 0, 0);
 	activeTile = World::activeTile(user.getX(), user.getY(), Griddy);
 
@@ -52,9 +70,10 @@ void Andrea_Update() {
 	World::standOnTile(next, user, Griddy);
 
 	// Currently not working will fix ltr
-	/*World::collidableNearby(user, Griddy);*/
+	World::collidableNearby(user, Griddy);
 
 	user.update();
+	inven.update();
 }
 
 void Andrea_Draw() 
@@ -69,6 +88,7 @@ void Andrea_Draw()
 	World::drawTile(activeTile, Griddy);
 	World::drawTile({0,0}, Griddy);
 	user.draw();
+	inven.draw();
 }
 
 void Andrea_Free() 
@@ -78,3 +98,4 @@ void Andrea_Free()
 }
 
 void Andrea_Unload() {}
+

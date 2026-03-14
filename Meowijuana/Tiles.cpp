@@ -1,6 +1,7 @@
+﻿#include "pch.h"
 #include "Tiles.hpp"
+
 #include "Managers/TileManager.hpp"
-#include <iostream>
 
 namespace World {
 	// Define grid
@@ -181,3 +182,4 @@ namespace World {
 		std::cout << "World::exit() complete" << std::endl;
 	}
 }
+

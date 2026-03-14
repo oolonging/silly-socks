@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -61,6 +61,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -83,6 +86,9 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,13 +115,17 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\EntityManager.cpp" />
+    <ClCompile Include="Managers\Particlemanager.cpp" />
     <ClCompile Include="Managers\SpriteManager.cpp" />
     <ClCompile Include="Managers\TileManager.cpp" />
     <ClCompile Include="Managers\UIManager.cpp" />
-    <ClCompile Include="ParticleSystems.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Pathfinding.hpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Screens\CreditsScreen.cpp" />
     <ClCompile Include="Screens\DungeonScreen.cpp" />
     <ClCompile Include="Screens\FarmScreen.cpp" />
@@ -127,6 +137,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Screens\TestingScreen.cpp" />
     <ClCompile Include="Screens\Testing\testing-andrea.cpp" />
     <ClCompile Include="Screens\Testing\testing-jun.cpp" />
+    <ClCompile Include="Screens\Testing\testing-particles.cpp" />
     <ClCompile Include="Screens\Testing\testing-saahil.cpp" />
     <ClCompile Include="Screens\Testing\testing-sprites.cpp" />
     <ClCompile Include="Screens\Testing\testing-ui-elements.cpp" />
@@ -136,7 +147,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Tiles.cpp" />
     <ClCompile Include="TileTypes.cpp" />
-    <ClCompile Include="Attack.cpp" />
     <ClCompile Include="TutorialDungeon.cpp" />
     <ClCompile Include="UI_Elements\Button.cpp" />
     <ClCompile Include="UI_Elements\CheckBox.cpp" />
@@ -154,15 +164,18 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="GameStateManager.hpp" />
     <ClInclude Include="Graphics.hpp" />
+    <ClInclude Include="GraphicsTypes.hpp" />
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="LevelSystem.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp" />
+    <ClInclude Include="Managers\ParticleManager.hpp" />
     <ClInclude Include="Managers\SpriteManager.hpp" />
     <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Managers\UIManager.hpp" />
     <ClInclude Include="ParticleSystems.hpp" />
     <ClInclude Include="PauseMenu.hpp" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
     <ClInclude Include="Screens\DungeonScreen.hpp" />
     <ClInclude Include="Screens\FarmScreen.hpp" />
@@ -174,6 +187,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Screens\TestingScreen.hpp" />
     <ClInclude Include="Screens\Testing\testing-andrea.hpp" />
     <ClInclude Include="Screens\Testing\testing-jun.hpp" />
+    <ClInclude Include="Screens\Testing\testing-particles.hpp" />
     <ClInclude Include="Screens\Testing\testing-saahil.hpp" />
     <ClInclude Include="Screens\Testing\testing-sprites.hpp" />
     <ClInclude Include="Screens\Testing\testing-ui-elements.hpp" />
@@ -183,7 +197,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="Tiles.hpp" />
     <ClInclude Include="TileTypes.hpp" />
-    <ClInclude Include="Attack.h" />
     <ClInclude Include="TutorialDungeon.hpp" />
     <ClInclude Include="UI_Elements\UI_Elements.hpp" />
     <ClInclude Include="World.hpp" />

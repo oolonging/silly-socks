@@ -1,6 +1,6 @@
+﻿#include "pch.h"
 #include "InputManager.hpp"
-#include "AEEngine.h"
-#include "AEInput.h"
+
 #include "Graphics.hpp"
 
 namespace Input {
@@ -148,3 +148,5 @@ namespace Input {
 		printf("\n");
 	}
 }
+
+

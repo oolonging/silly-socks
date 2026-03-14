@@ -1,9 +1,7 @@
-#include <iostream>
-#include "AEEngine.h"
+﻿#include "pch.h"
 #include "Entity.hpp"
-#include "Collision.hpp"
 
-// tiles
+#include "Collision.hpp"
 #include "Tiles.hpp"
 
 namespace Entity {
@@ -639,3 +637,4 @@ namespace Entity {
 		}
 	}
 }
+

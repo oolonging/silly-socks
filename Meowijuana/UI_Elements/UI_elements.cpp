@@ -1,4 +1,6 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
+
 #include "../InputManager.hpp"
 
 namespace UI_Elements {
@@ -21,35 +23,30 @@ namespace UI_Elements {
 
 	ElementStyle UI_Element::getDefaultStyle() {
 		ElementStyle defaultStyle;
-		defaultStyle.primaryColor = { 200.0f, 200.0f, 200.0f, 255.0f };
-		defaultStyle.secondaryColor = { 100.0f, 150.0f, 255.0f, 255.0f };
-		defaultStyle.strokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
+		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
+		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
+		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
 		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
-	}
-
-	ElementTexture UI_Element::getDefaultTexture() {
-		ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = nullptr; // TODO: add texture when it gets added
-		defaultTexture.secondaryTexture = nullptr; // TODO: add texture when it gets added
-
-		// testing default textures
-		//defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/argyle.png");
-		//defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/arabesque.png");
-
-		return defaultTexture;
 	}
 
 	TextStyle UI_Element::getDefaultTextStyle() {
 		TextStyle defaultStyle;
 		defaultStyle.primaryColor = Color::Preset::Black;
 		defaultStyle.secondaryColor = Color::Preset::White;
-		defaultStyle.fontSize = 24;
+		defaultStyle.fontSize = 10;
 		defaultStyle.fontName = "default";
 		return defaultStyle;
 	}
 
-	// New implementation of isHover using input manager
+	ElementTexture UI_Element::getDefaultTexture() {
+		// Wont have a texture by default
+		ElementTexture defaultTexture;
+		defaultTexture.primaryTexture = nullptr;
+		defaultTexture.secondaryTexture = nullptr;
+		return defaultTexture;
+	}
+
 	bool UI_Element::isHovering(void) const {
 		bool xOverlap{};
 		bool yOverlap{};
@@ -57,41 +54,18 @@ namespace UI_Elements {
 		float mouseX = Input::getMouseX();
 		float mouseY = Input::getMouseY();
 
-		if (drawMode == Shapes::CORNER) {
-			xOverlap = (mouseX > this->x && mouseX <= (this->x + this->width));
-			yOverlap = (mouseY < this->y && mouseY >= (this->y - this->height));
-		}
-		else if (drawMode == Shapes::CENTER) {
-			xOverlap = (mouseX > (this->x - this->width / 2) && mouseX <= (this->x + (this->width / 2)));
-			yOverlap = (mouseY < (this->y + this->height / 2) && mouseY >= (this->y - (this->height / 2)));
-		}
+		float topLeftX = (drawMode == Shapes::CORNER) ? this->x : (this->x - this->width * 0.5f);
+		float topLeftY = (drawMode == Shapes::CORNER) ? this->y : (this->y + this->height * 0.5f);
+
+		// check if width is negative
+		if (this->width >= 0) xOverlap = (mouseX >= topLeftX) && (mouseX <= topLeftX + this->width);
+		else xOverlap = (mouseX <= topLeftX) && (mouseX >= topLeftX + this->width);
+
+		// chcek if height is negative
+		if (this->height >= 0) yOverlap = (mouseY <= topLeftY) && (mouseY >= topLeftY - this->height);
+		else yOverlap = (mouseY >= topLeftY) && (mouseY <= topLeftY - this->height);
 
 		return xOverlap && yOverlap;
-	}
-
-	// Getters and Setters
-	void UI_Element::setStyle(ElementStyle newStyle) {
-		this->style = newStyle;
-	}
-
-	void UI_Element::setTextStyle(TextStyle newStyle) {
-		this->textStyle = newStyle;
-	}
-
-	void UI_Element::setTexture(ElementTexture newTexture) {
-		this->texture = newTexture;
-	}
-
-	ElementStyle UI_Element::getStyle(void) const {
-		return this->style;
-	}
-
-	TextStyle UI_Element::getTextStyle(void) const {
-		return this->textStyle;
-	}
-
-	ElementTexture UI_Element::getTexture(void) const {
-		return this->texture;
 	}
 
 	// clear textures
@@ -107,13 +81,15 @@ namespace UI_Elements {
 		}
 	}
 
-
 	// Ctors
 	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
-		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
+		: x(x), y(y), width(width), height(height), drawMode(mode) {
+		
+		this->textStyle = getDefaultTextStyle();
+
+		printf("UI Element constructor called\n");
 	}
 
-	UI_Element::UI_Element()
-		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
-	}
+	UI_Element::UI_Element(void)
+		: UI_Element(0.0f, 0.0f, 100.0f, 50.0f) {}
 }

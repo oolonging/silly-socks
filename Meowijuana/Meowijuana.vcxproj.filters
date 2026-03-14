@@ -8,9 +8,6 @@
     <ClCompile Include="Collision.hpp">
       <Filter>Header files</Filter>
     </ClCompile>
-    <ClCompile Include="Attack.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -137,9 +134,6 @@
     <ClCompile Include="UI_Elements\PlayerInventory.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystems.cpp">
-      <Filter>Source files\UI Elements</Filter>
-    </ClCompile>
     <ClCompile Include="TutorialDungeon.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
@@ -148,6 +142,14 @@
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source files\Screens</Filter>
+    <ClCompile Include="Managers\Particlemanager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\Testing\testing-particles.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +163,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Entity.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Attack.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.hpp">
@@ -250,9 +249,6 @@
     <ClInclude Include="Tiles.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystems.hpp">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="DungeonManager.hpp">
       <Filter>Header files\Managers</Filter>
     </ClInclude>
@@ -262,6 +258,13 @@
     <ClInclude Include="PauseMenu.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
+    <ClInclude Include="Managers\ParticleManager.hpp">
+      <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\Testing\testing-particles.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">

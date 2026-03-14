@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "SpriteManager.hpp"
 #include <iostream>
 
@@ -342,4 +343,6 @@ namespace SpriteManager {
 		std::cout << "[SpriteManager] Cleared all sprite sheets and animations" << std::endl;
 	}
 }
+
+
 

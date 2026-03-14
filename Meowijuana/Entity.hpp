@@ -6,8 +6,6 @@
 #include "Pathfinding.hpp"
 #include "UI_Elements/UI_Elements.hpp"
 #include "LevelSystem.hpp"
-#include <vector>
-#include <string>
 #include "Inventory.hpp"
 
 namespace Entity {
@@ -76,6 +74,9 @@ namespace Entity {
 		Inventory::Weapon* getEquippedWeapon() const { return equippedWeapon; }
 		void attack(Entity& target);
 
+		// To set the Position seperately
+		void setX(float newX) { x = newX; }
+		void setY(float newY) { y = newY; }
 
 		// Virtual destructor for proper cleanup
 		virtual ~Entity() = default;
@@ -105,6 +106,7 @@ namespace Entity {
 		int getSelectedInventorySlot() const;
 		void setSelectedInventorySlot(int slot);
 		int getInventorySize() const { return 9; }
+		bool(&getDirections())[4] { return movingDirections; }
 
 		void update();
 		void update(LevelSystem::Level& level);
@@ -113,6 +115,7 @@ namespace Entity {
 		// Constructors
 		Player(float posX, float posY, float w, float h, float health, float spd, float arm);
 		Player();
+
 	};
 
 	class Enemy : public Entity {

@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
 #include "../Settings.hpp"
 
@@ -10,12 +11,13 @@ namespace UI_Elements {
 	Checkbox::Checkbox(float x, float y, float boxSize, char const* label, bool initialState, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, boxSize, boxSize, mode), isChecked(initialState), label(label), boxSize(boxSize), onChange(nullptr) {
 
-		// Custom default style for checkbox
-		style.primaryColor = Color::Preset::White;
-		style.secondaryColor = Color::createColorRGB(100, 200, 100, 255);
-		style.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-		style.strokeWeight = 2;
-		textStyle = getDefaultTextStyle();
+		this->style = getDefaultStyle();
+		this->textStyle = getDefaultTextStyle();
+
+		// Default textures
+		// TODO: maybe add default textures?
+		//this->texture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Checkbox/primary.png");
+		//this->texture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Checkbox/secondary.png");
 	}
 
 	Checkbox::Checkbox(void)
@@ -52,13 +54,16 @@ namespace UI_Elements {
 
 		// Check if checkbox area is hovered (just the box, not the label)
 		bool boxHovered = isHovering();
+		bool hovering = isHovering();
+		bool graphicalRender = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
 
 		// Handle click
-		if (boxHovered && AEInputCheckTriggered(AEVK_LBUTTON)) {
+		if (hovering && AEInputCheckTriggered(AEVK_LBUTTON)) {
 			toggle();
 		}
 
 		// Draw checkbox box
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		Color::stroke(style.strokeColor);
 		Color::strokeWeight(style.strokeWeight);
 
@@ -69,12 +74,11 @@ namespace UI_Elements {
 
 		// Draw checkmark if checked
 		if (isChecked) {
-			Color::noStroke();
 			Color::fill(Color::Preset::Black);
+			float centerX = (this->drawMode == Shapes::CORNER) ? (this->x + this->width * 0.5f) : this->x;
+			float centerY = (this->drawMode == Shapes::CORNER) ? (this->y - this->height * 0.5f) : this->y;
 
-			float checkX = (drawMode == Shapes::CORNER) ? (x + (this->boxSize * 0.5f)) : x;
-			float checkY = (drawMode == Shapes::CORNER) ? (y - (this->boxSize * 0.5f)) : y;
-			Shapes::rect(checkX - boxSize * 0.15f, checkY, boxSize * 0.3f, boxSize * 0.3f, Shapes::CENTER);
+			rect(centerX, centerY, boxSize * 0.5, boxSize * 0.5, Shapes::CENTER);
 		}
 
 		// Draw label
@@ -83,9 +87,10 @@ namespace UI_Elements {
 		float labelY = (drawMode == Shapes::CORNER) ? this->y : this->y + (this->height * 0.5f);
 
 		// draw the debug material
-
 		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V); // TODO: rewire the text draw so that the align points to the anchor point
 
 
 	}
 }
+
+

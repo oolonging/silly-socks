@@ -1,8 +1,7 @@
-#include "AEEngine.h"
+﻿#include "pch.h"
 #include "LevelSystem.hpp"
-#include "TileTypes.hpp"
-#include <cmath> // floorf
 
+#include "TileTypes.hpp"
 
 namespace LevelSystem {
 
@@ -88,8 +87,6 @@ namespace LevelSystem {
 	
 	}
 
-
-
 	int Level::checkBinaryCollision(float x, float y, float w, float h){
 
 		float halfW = w * 0.5f;
@@ -118,10 +115,6 @@ namespace LevelSystem {
 
 		return flag;
 	}
-
-
-
-
 
 	void Level::draw(AEGfxVertexList* mesh)
 	{

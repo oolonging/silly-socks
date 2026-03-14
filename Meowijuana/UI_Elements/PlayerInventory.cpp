@@ -1,4 +1,6 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
+
 #include "../Entity.hpp"
 
 // PlayerInventory implementation
@@ -146,3 +148,9 @@ void UI_Elements::PlayerInventory::setSelectedSlot(int slot) {
 void UI_Elements::PlayerInventory::setPlayer(Entity::Player* player) {
 	playerRef = player;
 }
+
+void UI_Elements::PlayerInventory::setPosition(float newX, float newY) {
+	x = newX;
+	y = newY;
+}
+

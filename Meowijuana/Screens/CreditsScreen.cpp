@@ -1,7 +1,7 @@
-#include "AEEngine.h"
-#include "../GameStateManager.hpp"
-#include "../Graphics.hpp"
+﻿#include "../pch.h"
 #include "CreditsScreen.hpp"
+
+#include "../Graphics.hpp"
 
 //global variables for credits screen
 float scrollY;
@@ -62,3 +62,5 @@ void Credits_Free() {
 void Credits_Unload() {
 
 }
+
+

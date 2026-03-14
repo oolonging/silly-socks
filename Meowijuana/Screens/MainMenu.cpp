@@ -1,44 +1,55 @@
-#include "AEEngine.h"
-#include "../UI_Elements/UI_Elements.hpp"
+﻿#include "../pch.h"
+#include "MainMenu.hpp"
+
+#include "../Managers/UIManager.hpp"
 #include "../GameStateManager.hpp"
 
-// Buttons to display on the main 
-// TODO: global variables break state isolation. find a way around it
-static UI_Elements::Button creditsButton;
-static UI_Elements::Button playButton;
-static UI_Elements::Button settingsButton;
-static UI_Elements::Button testButton;
-static UI_Elements::Button tutorialButton;
-
-// image asset to load in the middle of the screen
-AEGfxTexture* CatastropheLogo = nullptr;
-
-// void functions for buttons
-void navigateToGame(void) { next = GS_LEVEL1; }
+// Button functions
+void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
 void navigateToTest(void) { next = GS_A; }
-void navigateToTutorial(void) { next = GS_X; }
+void navigateToTutorial(void) { next = GS_DUNGEON; }
+
+namespace {
+	// Group everything into a state struct to isolate variables per game state
+	struct MainMenuState {
+		UI_Elements::Button* creditsButton;
+		UI_Elements::Button* playButton;
+		UI_Elements::Button* settingsButton;
+		UI_Elements::Button* testButton;
+		UI_Elements::Button* tutorialButton;
+		
+		// Pointer to background for Main menu
+		AEGfxTexture* CatastropheLogo = nullptr;
+	};
+
+	// Unique pointer to manage the state's lifetime strictly between Load and Unload
+	std::unique_ptr<MainMenuState> state;
+}
 
 void Mainmenu_Load() {
-	CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
+	state = std::make_unique<MainMenuState>();
+
+	// Load background image
+	state->CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
 }
 
 void Mainmenu_Initialize()
 {
 	// set the button values
-	creditsButton = UI_Elements::Button(Shapes::Quad{ {-300.0f, -200.0f}, 200.0f, 100.0f }, "Credits", Shapes::CENTER);
-	playButton = UI_Elements::Button(Shapes::Quad{ {0.0f, -200.0f}, 200.0f, 100.0f }, "Play", Shapes::CENTER);
-	settingsButton = UI_Elements::Button(Shapes::Quad{ {300.0f, -200.0f}, 200.0f, 100.0f }, "Settings", Shapes::CENTER);
-	testButton = UI_Elements::Button(Shapes::Quad{ {400.0f, 200.0f}, 200.0f, 100.0f }, "Test", Shapes::CENTER);
-	tutorialButton = UI_Elements::Button(Shapes::Quad{ {600.0f, 400.0f}, 200.0f, 100.0f }, "Tutorial", Shapes::CENTER);
+	state->creditsButton = UIManager::create<UI_Elements::Button>("creditsButton", -300.0f, -200.0f, 200.0f, 100.0f, "Credits", Shapes::CENTER);
+	state->playButton = UIManager::create<UI_Elements::Button>("playButton", 0.0f, -200.0f, 200.0f, 100.0f, "Play", Shapes::CENTER);
+	state->settingsButton = UIManager::create<UI_Elements::Button>("settingsButton", 300.0f, -200.0f, 200.0f, 100.0f, "Settings", Shapes::CENTER);
+	state->testButton = UIManager::create<UI_Elements::Button>("testButton", 400.0f, 200.0f, 200.0f, 100.0f, "Test", Shapes::CENTER);
+	state->tutorialButton = UIManager::create<UI_Elements::Button>("tutorialButton", 600.0f, 400.0f, 200.0f, 100.0f, "Tutorial", Shapes::CENTER);
 	
 	// set the button functions
-	playButton.setOnClick(navigateToGame);
-	creditsButton.setOnClick(navigateToCredits);
-	settingsButton.setOnClick(navigateToSettings);
-	testButton.setOnClick(navigateToTest);
-	tutorialButton.setOnClick(navigateToTutorial);
+	state->playButton->setOnClick(navigateToGame);
+	state->creditsButton->setOnClick(navigateToCredits);
+	state->settingsButton->setOnClick(navigateToSettings);
+	state->testButton->setOnClick(navigateToTest);
+	state->tutorialButton->setOnClick(navigateToTutorial);
 }
 
 void Mainmenu_Update() {
@@ -47,22 +58,26 @@ void Mainmenu_Update() {
 
 void Mainmenu_Draw()
 {
+	if (!state) return;
+
 	// Draw the catastrophe logo in the middle of the screen
-	Graphics::image(0, 0, 1600, 900, CatastropheLogo, Shapes::CENTER);
+	Graphics::image(0, 0, 1600, 900, state->CatastropheLogo, Shapes::CENTER);
 
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-	creditsButton.draw();
-	playButton.draw();
-	settingsButton.draw();
-	testButton.draw();
-	tutorialButton.draw();
+	// Draw all UI elements
+	UIManager::drawAll();
 }
 
-void Mainmenu_Free() {}
+void Mainmenu_Free() {
+}
 
 void Mainmenu_Unload()
 {
-	AEGfxTextureUnload(CatastropheLogo);
-	CatastropheLogo = nullptr;
+	if (state) {
+		AEGfxTextureUnload(state->CatastropheLogo);
+		state.reset(); // Destroy state memory so it's fresh the next time we enter Main Menu
+	}
+
+	UIManager::clear();
 }
+
+

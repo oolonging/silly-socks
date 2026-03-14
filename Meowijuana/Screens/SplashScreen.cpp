@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "AEEngine.h"
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
@@ -56,3 +57,5 @@ void Splash_Unload() {
 	AEGfxTextureUnload(SplashScreen::digipenLogo);
 	SplashScreen::digipenLogo = nullptr;
 }
+
+

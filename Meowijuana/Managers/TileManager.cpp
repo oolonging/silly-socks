@@ -1,8 +1,5 @@
+﻿#include "../pch.h"
 #include "TileManager.hpp"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <string>
 
 namespace TileManager {
 	std::unordered_map<std::string, World::TileObject> tileTypes;
@@ -264,3 +261,4 @@ namespace TileManager {
 		std::cout << "TileManager cleaned up" << std::endl;
 	}
 }
+

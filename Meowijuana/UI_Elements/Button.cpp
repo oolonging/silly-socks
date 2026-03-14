@@ -1,57 +1,8 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
+#include "../../Settings.hpp"
 
 namespace UI_Elements {
-	// -------------------------------------------------------------------------
-	// Button Static Defaults
-	// -------------------------------------------------------------------------
-	ElementStyle Button::defaultStyle = UI_Element::getDefaultStyle();
-	TextStyle Button::defaultTextStyle = UI_Element::getDefaultTextStyle();
-	ElementTexture Button::defaultTexture = UI_Element::getDefaultTexture();
-
-	// Definitions for default setters
-	void Button::setDefaultButtonStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
-	void Button::setDefaultButtonTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
-	void Button::setDefaultButtonTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
-
-	// Definitions for default setters
-	ElementStyle Button::getDefaultButtonStyle(void) {
-		UI_Elements::ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::Color(Color::Preset::defaultStylePrimary);
-		defaultStyle.secondaryColor = Color::Color(Color::Preset::defaultStyleSecondary);
-		defaultStyle.strokeColor = Color::Color(Color::Preset::defaultStyleStroke);
-		defaultStyle.strokeWeight = 1;
-		return defaultStyle;
-	}
-
-	TextStyle Button::getDefaultButtonTextStyle(void) {
-		UI_Elements::TextStyle defaultTextStyle;
-		defaultTextStyle.primaryColor = Color::Color(Color::Preset::defaultTextStylePrimary);
-		defaultTextStyle.secondaryColor = Color::Color(Color::Preset::defaultTextStyleSecondary);
-		defaultTextStyle.fontSize = 10;
-		defaultTextStyle.fontName = "default";
-		return defaultTextStyle;
-	}
-
-	ElementTexture Button::getDefaultButtonTexture(void) {
-		UI_Elements::ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/primary.png");
-		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/secondary.png");
-		return defaultTexture;
-	}
-
-	// clear default textures
-	void Button::clearDefaultButtonTextures(void) {
-		if (defaultTexture.primaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.primaryTexture);
-			defaultTexture.primaryTexture = nullptr;
-		}
-
-		if (defaultTexture.secondaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.secondaryTexture);
-			defaultTexture.secondaryTexture = nullptr;
-		}
-	}
-
 	// -------------------------------------------------------------------------
 	// Button Implementation
 	// -------------------------------------------------------------------------
@@ -60,35 +11,41 @@ namespace UI_Elements {
 		this->onClick = func;
 	}
 
-	// New draw function that can handle graphics
 	void Button::draw(void) {
 		bool hovering = this->isHovering();
 		bool graphicalDraw = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
 		bool drawStroke = (this->style.strokeColor.alpha > 0.0f) && (this->style.strokeWeight >= 0);
 
-		// Draw the button
 		if (graphicalDraw) {
+			// Prepare to draw graphics
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-			Graphics::image(this->x, this->y, this->width, this->height, (hovering ? this->texture.secondaryTexture : this->texture.primaryTexture), this->drawMode);
+			AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+			AEGfxSetTransparency(1.0f);
+			Color::noStroke();
+			AEGfxTextureSet((hovering)? this->texture.secondaryTexture : this->texture.primaryTexture , 0, 0);
 		}
 		else {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-			if (hovering) {
-				Color::fill(this->style.secondaryColor);
-				Color::textFill(this->textStyle.secondaryColor);
-			}
-			else {
-				Color::fill(this->style.primaryColor);
-				Color::textFill(this->textStyle.primaryColor);
-			}
-
-			// draw the rectangle
-			Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
+			Color::stroke(this->style.strokeColor);
+			Color::strokeWeight(this->style.strokeWeight);
+		}
+		
+		if (hovering) {
+			Color::fill(this->style.secondaryColor);
+			Color::textFill(this->textStyle.secondaryColor);
+			Text::textSize(this->textStyle.fontSize * 1.5);
+		}
+		else {
+			Color::fill(this->style.primaryColor);
+			Color::textFill(this->textStyle.primaryColor);
+			Text::textSize(this->textStyle.fontSize);
 		}
 
-		// set text size
+		// Draw button
+		Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
+
+		// set font
 		Text::setFont(this->textStyle.fontName);
-		Text::textSize(this->textStyle.fontSize);
 
 		// Draw the label
 		if (drawMode == Shapes::CORNER) {
@@ -98,42 +55,49 @@ namespace UI_Elements {
 			Text::text(msg, x, y, Text::CENTER_H, Text::CENTER_V);
 		}
 
-		// Completely forgot to handle clicks
+		// Handle click events
 		if (hovering && AEInputCheckTriggered(AEVK_LBUTTON)) {
 			if (this->onClick != nullptr) this->onClick();
 		}
 
-		// Temporary balm to soothe the sting of being a dumbass
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		// Debug draw test
+		if (Settings::gDebugMode) {
+			// Set render mode
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+			// Set color
+			Color::stroke(Color::Preset::Red);
+			Color::strokeWeight(2);
+			Color::noFill();
+
+			// Draw debug lines
+			Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
+			float topLeftX = (this->drawMode == Shapes::CORNER) ? this->x : this->x - (this->width * 0.5f);
+			float topLeftY = (this->drawMode == Shapes::CORNER) ? this->y : this->y + (this->height * 0.5f);
+			
+			Color::fill(Color::Preset::Red);
+			Shapes::line(topLeftX, topLeftY, topLeftX + this->width, topLeftY - this->height);
+			Shapes::line(topLeftX, topLeftY - this->height, topLeftX + this->width, topLeftY);
+		}
 	}
 
 	// Ctors
 	Button::Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), msg(msg), onClick(nullptr) {
 
-		// Use the initialized defaults
-		this->style = defaultStyle;
-		this->textStyle = defaultTextStyle;
-		this->texture = defaultTexture;
+		this->style = getDefaultStyle();
+		this->textStyle = getDefaultTextStyle();
 
-		printf("Main constructor called\n");
+		// Default textuers
+		this->texture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/primary.png");
+		this->texture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Button/secondary.png");
 	}
-
-	//Button::Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode)
-	//	: UI_Element(quad.position.x, quad.position.y, quad.width, quad.height, mode), msg(msg), onClick(nullptr) {
-	//}
 
 	Button::Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode)
-		: Button(quad.position.x, quad.position.y, quad.width, quad.height, msg, mode) {
-		printf("Quad constructor called\n");
-	}
-
-	//Button::Button(void)
-	//	: UI_Element(), msg("Button"), onClick(nullptr) {
-	//}
+		: Button(quad.position.x, quad.position.y, quad.width, quad.height, msg, mode) {}
 
 	Button::Button(void)
-		: Button(0.0f, 0.0f, 100.0f, 50.0f, "Button", Shapes::CORNER) {
-		printf("Default constructor called\n");
-	}
+		: Button(0.0f, 0.0f, 100.0f, 50.0f, "Button", Shapes::CORNER) {}
 }
+
+

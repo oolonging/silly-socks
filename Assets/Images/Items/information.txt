@@ -1,0 +1,9 @@
+Information for items
+
+-sword.png
+Dimensions: 297x117
+Sprite Dimensions: 99 x 117
+Rows: 1
+Columns: 3
+Total number of sprites: 3
+
