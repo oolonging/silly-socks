@@ -195,6 +195,17 @@ namespace Entity {
 		}
 	}
 
+	void Player::clearInventorySlot(int slot)
+	{
+		if (slot < 0 || slot >= 9) return;
+		if (inventory[slot] != nullptr)
+		{
+			inventory[slot]->setIcon(nullptr); // null the icon first
+			delete inventory[slot];            // then delete the item
+			inventory[slot] = nullptr;
+		}
+	}
+
 	void Player::handleMovement() {
 		movingDirections[0] = AEInputCheckCurr(AEVK_W); // up
 		movingDirections[1] = AEInputCheckCurr(AEVK_S); // down

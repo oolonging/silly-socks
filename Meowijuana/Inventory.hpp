@@ -49,6 +49,9 @@ namespace Inventory {
 		const int SPINACH = 7;
 		const int GOLDEN_CARROT_SWORD = 8; // Merged version
 		const int WOODEN_SWORD = 9; // for the weaker enemies int he dungeon
+		const int CARROT_SEEDS = 10;
+		const int CHERRY_SEEDS = 11;
+		const int POTATO_SEEDS = 12;
 	}
 
 	class Item {
@@ -58,6 +61,7 @@ namespace Inventory {
 		std::string description;
 		float value; // for selling or buying
 		AEGfxTexture* icon; // Icon texture for inventory display
+		int count;
 
 	public:
 		// Getters
@@ -66,6 +70,7 @@ namespace Inventory {
 		std::string getDescription() const { return this->description; }
 		float getValue() const { return this->value; }
 		AEGfxTexture* getIcon() const { return this->icon; }
+		int getCount() const { return count; }
 
 		// Setters
 		void setID(int id) { this->id = id; }
@@ -73,12 +78,13 @@ namespace Inventory {
 		void setDescription(const std::string& description) { this->description = description; }
 		void setValue(float value) { this->value = value; }
 		void setIcon(AEGfxTexture* iconTexture) { this->icon = iconTexture; }
+		void setCount(int c) { count = c; }
 
 		// Ctors
-		Item() : id(0), name("Generic item"), description("If you're reading this congrats on finding this easter egg"), value(0.0f), icon(nullptr) {}
+		Item() : id(0), name("Generic item"), description("If you're reading this congrats on finding this easter egg"), value(0.0f), icon(nullptr), count(0) {}
 
-		Item(int id, const std::string& name, const std::string& description, float value, AEGfxTexture* iconTexture = nullptr)
-			: id(id), name(name), description(description), value(value), icon(iconTexture) {
+		Item(int id, const std::string& name, const std::string& description, float value, AEGfxTexture* iconTexture = nullptr, int count = 1)
+			: id(id), name(name), description(description), value(value), icon(iconTexture), count(count) {
 		}
 
 		// Virtual destructor for proper cleanup of derived classes

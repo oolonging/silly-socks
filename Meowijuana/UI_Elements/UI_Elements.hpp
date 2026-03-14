@@ -303,9 +303,14 @@ namespace UI_Elements {
 		void setPlayer(Entity::Player* player);
 		void setPosition(float newX, float newY); // Soz just making it so that it looks a lil nicer 
 
+		void giveCarrotSeeds(Entity::Player& player);
+
 		// Constructors
 		PlayerInventory(float x, float y, float slotSize, float slotSpacing, Entity::Player* player, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		PlayerInventory(void);
+
+		// Destructor
+		~PlayerInventory();
 	};
 }
 

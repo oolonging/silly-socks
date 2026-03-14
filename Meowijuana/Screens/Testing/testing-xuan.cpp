@@ -116,10 +116,10 @@ void Xuan_Update() {
 
 	activeTile2 = World::activeTile(player->getX(), player->getY(), Griddtwo);
 
-	if (AEInputCheckTriggered(AEVK_E))
+	/*if (AEInputCheckTriggered(AEVK_E))
 	{
 		World::interactTile(activeTile2, Griddtwo);
-	}
+	}*/
 
 
 	// Update the player

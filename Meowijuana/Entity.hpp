@@ -106,6 +106,7 @@ namespace Entity {
 		int getSelectedInventorySlot() const;
 		void setSelectedInventorySlot(int slot);
 		int getInventorySize() const { return 9; }
+		void clearInventorySlot(int slot);
 		bool(&getDirections())[4] { return movingDirections; }
 
 		void update();

@@ -22,6 +22,8 @@ void Andrea_Load() {
 
 void Andrea_Initialize() 
 {
+	Inventory::init();
+
 	user = Entity::Player(
 		0.0f, 0.0f,
 		50.0f, 50.0f,
@@ -40,8 +42,8 @@ void Andrea_Initialize()
 	inven.setPosition(x, y);
 	inven.setPlayer(&user);
 
-	user.setX(0); // Example initialization
-	user.setY(0); // Example initialization
+	user.setX(0);
+	user.setY(0); 
 
 	Griddy.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	Griddy.initMapTexture();
@@ -64,12 +66,21 @@ void Andrea_Update() {
 
 	if (AEInputCheckTriggered(AEVK_E))
 	{
-		World::interactTile(activeTile, Griddy);
+		World::interactTile(activeTile, Griddy, inven, user);
+	}
+
+	if (AEInputCheckTriggered(AEVK_F1))
+	{
+		inven.giveCarrotSeeds(user);
+		Inventory::Item* test = user.getInventoryItem(0);
+		if (test != nullptr)
+			printf("Slot 0 has: %s x%d\n", test->getName().c_str(), test->getCount());
+		else
+			printf("Slot 0 is empty!\n");
 	}
 
 	World::standOnTile(next, user, Griddy);
 
-	// Currently not working will fix ltr
 	World::collidableNearby(user, Griddy);
 
 	user.update();
