@@ -62,7 +62,7 @@ namespace UI_Elements {
 		// Draw Background
 		if (graphicalRender) {
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-			AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 0.0f);
+			Color::fill(Color::Preset::White);
 			AEGfxTextureSet(this->texture.secondaryTexture, 0, 0);
 			Color::noStroke();
 		}
@@ -115,17 +115,14 @@ namespace UI_Elements {
 
 		if (graphicalRender) {
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-			AEGfxSetBlendMode(AE_GFX_BM_NONE);
-			AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
 			Color::fill(Color::Preset::White);
 			AEGfxTextureSet(this->texture.primaryTexture, 0, 0);
 			Color::noStroke();
-			Graphics::image(handleX, handleY, handleSize, handleSize, texture.primaryTexture, Shapes::CENTER);
 		}
 		else {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Color::fill(this->style.primaryColor);
-			Shapes::ellipse(handleX, handleY, handleSize, handleSize, Shapes::CENTER);
 		}
+		Shapes::ellipse(handleX, handleY, handleSize, handleSize, Shapes::CENTER);
 	}
 }
