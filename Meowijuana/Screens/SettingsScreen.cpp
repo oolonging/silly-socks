@@ -7,6 +7,7 @@
 #include "../AudioManager.hpp"
 #include "../../Managers/UIManager.hpp"
 #include "../PauseMenu.hpp"
+#include "../Settings.hpp"
 
 
 
@@ -31,16 +32,14 @@ void Settings_Initialize() {
 	sfxVolumeSlider = UIManager::create<UI_Elements::Slider>("sfxVolumeSlider", -200.0f, 100.0f, 400.0f, 50.0f, &sfxVolume, 0.0f, 255.0f);
 
 	//create checkboxes
-	bgmMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("bgmMuteCheckbox", 250.0f, 200.0f, 50.0f, "MUTE", false);
-	sfxMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("sfxMuteCheckbox", 250.0f, 100.0f, 50.0f, "MUTE", false);
+	bgmMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("bgmMuteCheckbox", 250.0f, 200.0f, 50.0f, "MUTE", Settings::gMuteMusic);
+	sfxMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("sfxMuteCheckbox", 250.0f, 100.0f, 50.0f, "MUTE", Settings::gMuteSFX);
 
 	//set element style for checkbox
 	UI_Elements::ElementStyle checkboxElementStyle = bgmMuteCheckbox->getStyle();
 	checkboxElementStyle.primaryColor = Color::createColorRGB(100, 200, 100, 255);
 	checkboxElementStyle.secondaryColor = Color::createColorRGB(200, 100, 50, 255);
 	checkboxElementStyle.strokeWeight = 5.0f;
-	bgmMuteCheckbox->setStyle(checkboxElementStyle);
-	sfxMuteCheckbox->setStyle(checkboxElementStyle);
 
 	//mute bgm when checkbox is toggled
 	bgmMuteCheckbox->setOnChange([](bool isMuted) {

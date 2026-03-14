@@ -76,6 +76,9 @@ namespace Shapes {
 	// Line
 	void line(float x1, float y1, float x2, float y2);
 	void line(Point p1, Point p2);
+
+	// Debug shapes
+	void debugRect(float x, float y, float width, float height, SHAPE_MODE drawMode);
 }
 
 namespace Graphics {

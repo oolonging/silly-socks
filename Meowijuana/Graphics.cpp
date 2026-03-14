@@ -508,6 +508,28 @@ namespace Shapes {
 	void line(Point p1, Point p2) {
 		line(p1.x, p1.y, p2.x, p2.y);
 	}
+
+	// Debug box
+	void debugRect(float x, float y, float width, float height, SHAPE_MODE drawMode) {
+		// set render mode
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+		// set red color
+		Color::stroke(Color::Preset::Red);
+		Color::strokeWeight(2);
+		Color::noFill();
+
+		// Draw box
+		Shapes::rect(x, y, width, height, drawMode);
+
+		// Draw lines
+		float topLeftX = (drawMode == Shapes::CORNER) ? x : x - (width * 0.5f);
+		float topLeftY = (drawMode == Shapes::CORNER) ? y : y + (height * 0.5f);
+
+		Color::fill(Color::Preset::Red);
+		Shapes::line(topLeftX, topLeftY, topLeftX + width, topLeftY - height);
+		Shapes::line(topLeftX, topLeftY - height, topLeftX + width, topLeftY);
+	}
 }
 
 namespace Graphics {
@@ -583,8 +605,9 @@ namespace Text {
 		else if (vertical == BASELINE) worldOffsetY = -actualHeight * 0.25f;
 
 		if (Settings::gDebugMode) {
-			Color::fill(255.0f, 0.0f, 0.0f, 128.0f);
+			Color::fill(0.0f, 0.0f, 0.0f, 128.0f);
 			Color::noStroke();
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Shapes::rect(x + worldOffsetX, y + worldOffsetY, actualWidth, actualHeight, Shapes::CENTER);
 		}
 

@@ -24,6 +24,12 @@ namespace Settings {
 	extern s8 gCurrentFontId;
 	extern std::map<std::string, s8> gFonts;
 
+	///////////
+	// Sound
+	///////////
+
+	extern bool gMuteSFX;
+	extern bool gMuteMusic;
 
 	//////////////
 	// Debug mode
