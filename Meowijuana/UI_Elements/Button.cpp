@@ -1,6 +1,5 @@
 ﻿#include "../pch.h"
 #include "UI_Elements.hpp"
-#include "../../Settings.hpp"
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
@@ -61,9 +60,7 @@ namespace UI_Elements {
 		}
 
 		// Debug draw test
-		if (Settings::gDebugMode) {
-			Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
-		}
+		Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
 	}
 
 	// Ctors
