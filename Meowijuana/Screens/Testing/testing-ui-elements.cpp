@@ -6,13 +6,11 @@
 ///////////////////////////////////////////
 
 // Create a bunch of buttons
-UI_Elements::Button* graphicalButton;
-UI_Elements::Button* colorButton;
+UI_Elements::Button* button1;
+UI_Elements::Button* button2;
+UI_Elements::Button* button3;
+UI_Elements::Button* button4;
 
-// Create a progress bar
-UI_Elements::ProgressBar* mouseXBar;
-UI_Elements::ProgressBar* mouseXCornerBar;
-float mouseX;
 
 // helper function
 void meow(void) { printf("Meow\n"); }
@@ -25,25 +23,16 @@ void testingUI_Load() {
 }
 
 void testingUI_Initialize() {
-	// Initialize the 2 buttons
-	graphicalButton = UIManager::create<UI_Elements::Button>("graphicalButton", -200.0f, 0.0f, 100.0f, 50.0f, "Graphics");
-	colorButton = UIManager::create<UI_Elements::Button>("colorButton", 200.0f, 0.0f, 100.0f, 50.0f, "Color");
+	// Initialize the 4 buttons
+	button1 = UIManager::create<UI_Elements::Button>("button1", 50.0f, -25.0f, 100.0f, 50.0f, "button1", drawMode);
+	button2 = UIManager::create<UI_Elements::Button>("button2", -50.0f, -25.0f, -100.0f, 50.0f, "button2", drawMode);
+	button3 = UIManager::create<UI_Elements::Button>("button3", -50.0f, 25.0f, -100.0f, -50.0f, "button3", drawMode);
+	button4 = UIManager::create<UI_Elements::Button>("button4", 50.0f, 25.0f, 100.0f, -50.0f, "button4", drawMode);
 
-	// Initialize progress bar 
-	mouseXBar = UIManager::create<UI_Elements::ProgressBar>("mouseXBar", 0.0f, 0.0f, 1600.0f, 30.0f, &mouseX, 0.0f, 1600.0f, Shapes::CENTER);
-	mouseXCornerBar = UIManager::create<UI_Elements::ProgressBar>("mouseXCornerBar", -800.0f, -15.0f, 1600.0f, 30.0f, &mouseX, 0.0f, 1600.0f, Shapes::CORNER);
-
-	// Strip color button of graphics
-	colorButton->clearTextures();
-
-	// set the functions for the two buttons
-	graphicalButton->setOnClick(meow);
-	colorButton->setOnClick(meow);
 }
 
 void testingUI_Update() {
-	// Update mouseX value
-	mouseX = Input::getScreenMouseX();
+	
 }
 
 void testingUI_Draw() {
