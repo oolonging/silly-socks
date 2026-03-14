@@ -75,7 +75,7 @@ namespace Room {
 
 	void DungeonManager::resetDungeon(RoomNode* node) {
 		while (node) {
-			RoomNode* next = node->north ? node->north : node->east ? node->east : node->west;  // yeah nah this was fun to write
+			RoomNode* next = node->north ? node->north : node->east ? node->east : node->west;
 
 			delete node;
 			node = next;
@@ -136,7 +136,8 @@ namespace Room {
 
 	//}
 
-
+	void DungeonManager::lockNextRoom(RoomNode* room) { if (room) room->locked = true; }
+	void DungeonManager::unlockNextRoom(RoomNode* room) { if (room) room->locked = false; }
 
 	RoomNode* DungeonManager::createRoom(int depth) {
 		RoomNode* newRoom = new RoomNode{};
