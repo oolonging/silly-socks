@@ -4,6 +4,21 @@
 #include "Entity.hpp"
 
 namespace Inventory {
+	
+	namespace Textures {
+		AEGfxTexture* carrotSeedIcon = nullptr;
+		AEGfxTexture* cherrySeedIcon = nullptr;
+		AEGfxTexture* potatoSeedIcon = nullptr;
+		// ... all other item icons
+	}
+
+	void load(void)
+	{
+		Textures::carrotSeedIcon = AEGfxTextureLoad("Assets/Images/Items/CarrotSeeds.png");
+		Textures::cherrySeedIcon = AEGfxTextureLoad("Assets/Images/Items/CherrySeeds.png");
+		Textures::potatoSeedIcon = AEGfxTextureLoad("Assets/Images/Items/PotatoSeeds.png");
+	}
+
 	// Static member initialization
 	std::map<int, Item*> ItemRegistry::prototypes;
 
@@ -155,27 +170,21 @@ namespace Inventory {
 			5.0f        // knockback
 		));
 
-		// Load textures first
-		AEGfxTexture* carrotSeedIcon = AEGfxTextureLoad("Assets/Images/Items/CarrotSeeds.png");
-		AEGfxTexture* cherrySeedIcon = AEGfxTextureLoad("Assets/Images/Items/CherrySeeds.png");
-		AEGfxTexture* potatoSeedIcon = AEGfxTextureLoad("Assets/Images/Items/PotatoSeeds.png");
-
-		// Then register with the icon
 		ItemRegistry::registerItem(new Item(
-			ItemID::CARROT_SEEDS,
-			"Carrot Seeds",
-			"Plant to grow carrots",
-			5.0f,           // value
-			carrotSeedIcon, // icon
-			0               // default count
+			ItemID::CARROT_SEEDS, 
+			"Carrot Seeds", 
+			"Plant to grow carrots", 
+			5.0f, 
+			Textures::carrotSeedIcon, 
+			0
 		));
 
 		ItemRegistry::registerItem(new Item(
-			ItemID::CHERRY_SEEDS,
-			"Cherry Seeds",
-			"Plant to grow cherries",
-			5.0f,
-			cherrySeedIcon,
+			ItemID::CHERRY_SEEDS, 
+			"Cherry Seeds", 
+			"Plant to grow cherries", 
+			5.0f, 
+			Textures::cherrySeedIcon, 
 			0
 		));
 
@@ -184,9 +193,19 @@ namespace Inventory {
 			"Potato Seeds",
 			"Plant to grow potatoes",
 			5.0f,
-			potatoSeedIcon,
+			Textures::potatoSeedIcon,
 			0
 		));
-
 	}
+
+	void unload(void)
+	{
+		ItemRegistry::cleanup(); // deletes prototypes but NOT textures
+
+		// Unload textures separately
+		if (Textures::carrotSeedIcon) { AEGfxTextureUnload(Textures::carrotSeedIcon); Textures::carrotSeedIcon = nullptr; }
+		if (Textures::cherrySeedIcon) { AEGfxTextureUnload(Textures::cherrySeedIcon); Textures::cherrySeedIcon = nullptr; }
+		if (Textures::potatoSeedIcon) { AEGfxTextureUnload(Textures::potatoSeedIcon); Textures::potatoSeedIcon = nullptr; }
+	}
+
 }

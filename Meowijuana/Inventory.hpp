@@ -299,6 +299,12 @@ namespace Inventory {
 
 	// Initialize all items
 	void init(void);
+	
+	// Loading the icons for the items
+	void load();
+
+	// Unloading the icons for the items
+	void unload();
 
 	// Helper function to get item by ID (returns nullptr if not found)
 	Item* getItemPrototype(int itemID);

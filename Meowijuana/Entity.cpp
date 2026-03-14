@@ -206,6 +206,19 @@ namespace Entity {
 		}
 	}
 
+	void Player::freeInventory()
+	{
+		// Loop through all inventory and delete everything
+		for (int i = 0; i < 9; i++)
+		{
+			if (inventory[i] != nullptr)
+			{
+				delete inventory[i];
+				inventory[i] = nullptr;
+			}
+		}
+	}
+
 	void Player::handleMovement() {
 		movingDirections[0] = AEInputCheckCurr(AEVK_W); // up
 		movingDirections[1] = AEInputCheckCurr(AEVK_S); // down

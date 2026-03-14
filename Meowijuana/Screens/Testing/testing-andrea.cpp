@@ -17,7 +17,9 @@ std::pair<int, int> activeTile;
 World::worldGrid Griddy;
 bool turnGridOn = true;
 
-void Andrea_Load() {
+void Andrea_Load() 
+{
+	Inventory::load();
 }
 
 void Andrea_Initialize() 
@@ -97,7 +99,6 @@ void Andrea_Draw()
 	}
 
 	World::drawTile(activeTile, Griddy);
-	World::drawTile({0,0}, Griddy);
 	user.draw();
 	inven.draw();
 }
@@ -106,7 +107,12 @@ void Andrea_Free()
 {
 	Griddy.unloadMapTexture();
 	World::freeGrid();
+	Inventory::ItemRegistry::cleanup(); 
+	user.freeInventory();
 }
 
-void Andrea_Unload() {}
+void Andrea_Unload() 
+{
+	Inventory::unload();
+}
 
