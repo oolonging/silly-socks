@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include <iostream>
 #include "GameStateManager.hpp"
 
 // Main game screens

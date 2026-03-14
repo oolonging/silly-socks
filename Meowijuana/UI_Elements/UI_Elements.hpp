@@ -2,7 +2,6 @@
 #define UI_ELEMENTS_HPP
 
 #include "../Graphics.hpp"
-#include "../InputManager.hpp"
 
 // Forward declaration to break circular dependency
 namespace Entity {
@@ -52,13 +51,13 @@ namespace UI_Elements {
 	public:
 		// Common functionality
 		bool isHovering(void) const;
-		void setStyle(ElementStyle newStyle);
-		void setTextStyle(TextStyle newStyle);
-		void setTexture(ElementTexture newTexture);
+		void setStyle(ElementStyle newStyle) { this->style = newStyle; }
+		void setTextStyle(TextStyle newStyle) { this->textStyle = newStyle; }
+		void setTexture(ElementTexture newTexture) { this->texture = newTexture; }
 
-		ElementStyle getStyle(void) const;
-		TextStyle getTextStyle(void) const;
-		ElementTexture getTexture(void) const;
+		ElementStyle getStyle(void) const { return this->style; }
+		TextStyle getTextStyle(void) const { return this->textStyle; }
+		ElementTexture getTexture(void) const { return this->texture; }
 
 		// to clean textures
 		void clearTextures(void);

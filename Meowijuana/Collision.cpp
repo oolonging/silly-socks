@@ -1,9 +1,7 @@
 ﻿#include "pch.h"
-#include "AEEngine.h"
-#include <cmath>
+#include "Collision.hpp"
 
 #include "Graphics.hpp"
-#include "Collision.hpp"
 
 // okay its a little messy rn but i'll clean it up eventually... i think
 namespace Collision {

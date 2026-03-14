@@ -1,5 +1,6 @@
 ﻿#include "../pch.h"
 #include "UI_Elements.hpp"
+
 #include "../InputManager.hpp"
 
 namespace UI_Elements {
@@ -57,47 +58,14 @@ namespace UI_Elements {
 		float topLeftY = (drawMode == Shapes::CORNER) ? this->y : (this->y + this->height * 0.5f);
 
 		// check if width is negative
-		if (this->width >= 0) {
-			xOverlap = (mouseX >= topLeftX) && (mouseX <= topLeftX + this->width);
-		}
-		else {
-			xOverlap = (mouseX <= topLeftX) && (mouseX >= topLeftX + this->width);
-		}
+		if (this->width >= 0) xOverlap = (mouseX >= topLeftX) && (mouseX <= topLeftX + this->width);
+		else xOverlap = (mouseX <= topLeftX) && (mouseX >= topLeftX + this->width);
 
 		// chcek if height is negative
-		if (this->height >= 0) {
-			yOverlap = (mouseY <= topLeftY) && (mouseY >= topLeftY - this->height);
-		}
-		else {
-			yOverlap = (mouseY >= topLeftY) && (mouseY <= topLeftY - this->height);
-		}
+		if (this->height >= 0) yOverlap = (mouseY <= topLeftY) && (mouseY >= topLeftY - this->height);
+		else yOverlap = (mouseY >= topLeftY) && (mouseY <= topLeftY - this->height);
 
 		return xOverlap && yOverlap;
-	}
-
-	// Getters and Setters
-	void UI_Element::setStyle(ElementStyle newStyle) {
-		this->style = newStyle;
-	}
-
-	void UI_Element::setTextStyle(TextStyle newStyle) {
-		this->textStyle = newStyle;
-	}
-
-	void UI_Element::setTexture(ElementTexture newTexture) {
-		this->texture = newTexture;
-	}
-
-	ElementStyle UI_Element::getStyle(void) const {
-		return this->style;
-	}
-
-	TextStyle UI_Element::getTextStyle(void) const {
-		return this->textStyle;
-	}
-
-	ElementTexture UI_Element::getTexture(void) const {
-		return this->texture;
 	}
 
 	// clear textures
@@ -113,7 +81,6 @@ namespace UI_Elements {
 		}
 	}
 
-
 	// Ctors
 	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
 		: x(x), y(y), width(width), height(height), drawMode(mode) {
@@ -126,5 +93,3 @@ namespace UI_Elements {
 	UI_Element::UI_Element(void)
 		: UI_Element(0.0f, 0.0f, 100.0f, 50.0f) {}
 }
-
-

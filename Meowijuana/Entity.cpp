@@ -1,10 +1,7 @@
 ﻿#include "pch.h"
-#include <iostream>
-#include "AEEngine.h"
 #include "Entity.hpp"
-#include "Collision.hpp"
 
-// tiles
+#include "Collision.hpp"
 #include "Tiles.hpp"
 
 namespace Entity {

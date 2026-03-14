@@ -1,8 +1,7 @@
 ﻿#include "../pch.h"
-#include "AEEngine.h"
-#include "../GameStateManager.hpp"
-#include "../Graphics.hpp"
 #include "CreditsScreen.hpp"
+
+#include "../Graphics.hpp"
 
 //global variables for credits screen
 float scrollY;

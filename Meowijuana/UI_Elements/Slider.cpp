@@ -1,6 +1,8 @@
 ﻿#include "../pch.h"
 #include "UI_Elements.hpp"
 
+#include "../InputManager.hpp"
+
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
 	// Slider Implementation
