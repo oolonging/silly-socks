@@ -7,65 +7,17 @@ namespace UI_Elements {
 	// -------------------------------------------------------------------------
 	// TextBox Implementation
 	// -------------------------------------------------------------------------
-	ElementStyle TextBox::defaultStyle = UI_Element::getDefaultStyle();
-	TextStyle TextBox::defaultTextStyle = UI_Element::getDefaultTextStyle();
-	ElementTexture TextBox::defaultTexture = UI_Element::getDefaultTexture();
-
-	// definitions for default setters
-	void TextBox::setDefaultTextBoxStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
-	void TextBox::setDefaultTextBoxTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
-	void TextBox::setDefaultTextBoxTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
-
-	// definitions for default getters
-	ElementStyle TextBox::getDefaultTextBoxStyle(void) {
-		ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::Preset::White;
-		defaultStyle.secondaryColor = Color::createColorHex(0xFFC0C0C0);
-		defaultStyle.strokeColor = Color::createColorHex(0xFF696969);
-		defaultStyle.strokeWeight = 1;
-		return defaultStyle;
-	}
-
-	TextStyle TextBox::getDefaultTextBoxTextStyle(void) {
-		TextStyle defaultTextStyle;
-		defaultTextStyle.primaryColor = Color::Preset::Black;
-		defaultTextStyle.secondaryColor = Color::Preset::DarkGray;
-		defaultTextStyle.fontSize = 10;
-		defaultTextStyle.fontName = "default";
-		return defaultTextStyle;
-	}
-
-	ElementTexture TextBox::getDefaultTextBoxTexture(void) {
-		ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/primary.png");
-		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/secondary.png");
-		return defaultTexture;
-	}
-
-	// clear default textures
-	void TextBox::clearDefaultTextBoxTextures(void) {
-		if (defaultTexture.primaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.primaryTexture);
-			defaultTexture.primaryTexture = nullptr;
-		}
-
-		if (defaultTexture.primaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.secondaryTexture);
-			defaultTexture.secondaryTexture = nullptr;
-		}
-	}
-
-	// -------------------------------------------------------------------------
-	// TextBox Implementation
-	// -------------------------------------------------------------------------
 
 	TextBox::TextBox(float x, float y, float width, float height, const std::string& placeholder, size_t maxLen, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), text(""), placeholderText(placeholder), maxLength(maxLen),
 		isSelected(false), cursorBlinkTimer(0.0f), showCursor(false) {
 		// Custom default style for textbox
-		this->style = defaultStyle;
-		this->textStyle = defaultTextStyle;
-		this->texture = defaultTexture;
+		this->style = getDefaultStyle();
+		this->textStyle = getDefaultTextStyle();
+		
+		// Default textures
+		this->texture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/primary.png");
+		this->texture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Textbox/secondary.png");
 	}
 
 	TextBox::TextBox(void) 
