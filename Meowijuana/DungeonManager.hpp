@@ -2,6 +2,7 @@
 #define DUNGEON_MANAGER_HPP
 
 #include "AEEngine.h"
+#include <string>
 
 namespace Room {
 
@@ -17,7 +18,8 @@ namespace Room {
 	{
 		North,
 		East,
-		West
+		West,
+		South
 	};
 
 
@@ -52,6 +54,7 @@ namespace Room {
 	};
 
 
+	std::string getRoomFile(RoomType type);
 
 	// basically a linked list
 	class DungeonManager {

@@ -62,6 +62,11 @@ namespace Room {
 
 		case Direction::West:  next = currentRoom->west;
 			break;
+
+		// added south because i forgot backtracking was a thing
+		case Direction::South:  next = currentRoom->prev;
+			break;
+
 		}
 
 
@@ -74,6 +79,7 @@ namespace Room {
 
 
 	void DungeonManager::resetDungeon(RoomNode* node) {
+		// while not nptr, find node->(whicheverdirection) >> delete >> move down the sllist
 		while (node) {
 			RoomNode* next = node->north ? node->north : node->east ? node->east : node->west;
 
@@ -82,19 +88,35 @@ namespace Room {
 		}
 	}
 
+
 	Direction DungeonManager::randomizeDirection(RoomNode* room) {
+
+		// if it exist and the room was previously (direction), ban going the opposite direction 
+		if (room->prev && room->prev->east == room) {
+			return rand() % 2 ? Direction::North : Direction::West;
+		}
+
+		// e.g if it's: main room -> east, DONT GENERATE WEST 
+		if (room->prev && room->prev->west == room) {
+			return rand() % 2 ? Direction::North : Direction::East;
+		}
+
+		// north is fine though every direction is ok
 		Direction available[3];
 		int count = 0;
 		if (!room->north) available[count++] = Direction::North;
 		if (!room->east)  available[count++] = Direction::East;
 		if (!room->west)  available[count++] = Direction::West;
-		if (count == 0)   return Direction::North; // just in case
+		if (count == 0)   return Direction::North;
 		return available[rand() % count];
+
 	}
 
+	// lock n unlock for doors (TODO cause enemy spawn)
 	void DungeonManager::lockDoors() { doorsLocked = true; }
 	void DungeonManager::unlockDoors() { doorsLocked = false; }
 
+	// either small room or medium room (i wanna add more rooms too but uhhhh if i have time)
 	RoomType DungeonManager::randomizeType() {
 		return rand() % 2 ? RoomType::SideSmall : RoomType::SideMedium;
 	}
@@ -111,10 +133,8 @@ namespace Room {
 
 	void DungeonManager::onRoomEntered(RoomNode* room) {
 		currentRoom = room;
-
-		if (room->state == RoomState::Unvisited)
-		{
-			lockDoors();
+		if (room->state == RoomState::Unvisited) {
+			// lockDoors();  // re-enable when combat is hooked up (for now free to walk, tho no visual ind to what's open)
 			room->state = RoomState::InCombat;
 		}
 	}
@@ -136,9 +156,12 @@ namespace Room {
 
 	//}
 
+	// locking (still, no combat)
 	void DungeonManager::lockNextRoom(RoomNode* room) { if (room) room->locked = true; }
 	void DungeonManager::unlockNextRoom(RoomNode* room) { if (room) room->locked = false; }
 
+
+	// assignment when making new node
 	RoomNode* DungeonManager::createRoom(int depth) {
 		RoomNode* newRoom = new RoomNode{};
 		newRoom->id = nextId++;
@@ -146,5 +169,17 @@ namespace Room {
 		newRoom->type = randomizeType();
 		return newRoom;
 	}
+
+
+	// room data for loading 
+	std::string getRoomFile(RoomType type) {
+		switch (type) {
+		case RoomType::Main:       return "Assets/LevelMaps/DungeonList/MAIN.txt";
+		case RoomType::SideSmall:  return "Assets/LevelMaps/DungeonList/SIDE_SMALL.txt";
+		case RoomType::SideMedium: return "Assets/LevelMaps/DungeonList/SIDE_MEDIUM.txt";
+		}
+		return "";
+	}
+
 }
 
