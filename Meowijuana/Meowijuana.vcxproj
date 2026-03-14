@@ -173,7 +173,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Managers\SpriteManager.hpp" />
     <ClInclude Include="Managers\TileManager.hpp" />
     <ClInclude Include="Managers\UIManager.hpp" />
-    <ClInclude Include="ParticleSystems.hpp" />
     <ClInclude Include="PauseMenu.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
