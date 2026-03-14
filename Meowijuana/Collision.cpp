@@ -1,11 +1,8 @@
 ﻿#include "pch.h"
 #include "Collision.hpp"
 
-#include "Graphics.hpp"
-
 // okay its a little messy rn but i'll clean it up eventually... i think
 namespace Collision {
-
 	// circle rectangle intersection
 	bool collidedWith(float enemyX, float enemyY, float playerX, float playerY, float radius, float playerW, float playerH) {
 		float left = playerX - playerW * 0.5f;
@@ -32,7 +29,6 @@ namespace Collision {
 	bool collidedWith(float c1_x, float c1_y, float r1, float c2_x, float c2_y, float r2) {
 		float distance = sqrt((c2_x - c1_x) * (c2_x - c1_x) + (c2_y - c1_y) * (c2_y - c1_y));
 		return distance <= (r1 + r2) ? 1 : 0;
-
 	}
 
 	// geometric collisions
@@ -47,9 +43,7 @@ namespace Collision {
 		else if (mode == Shapes::CENTER) {
 			xOverlap = ((rect1.position.x - rect1.width / 2 < (rect2.position.x + rect2.width / 2)) && ((rect1.position.x + rect1.width / 2) > rect2.position.x - rect2.width / 2));
 			yOverlap = ((rect1.position.y - rect1.height / 2 < (rect2.position.y + rect2.height / 2)) && ((rect1.position.y + rect1.height / 2) > rect2.position.y - rect2.height / 2));
-
 		}
-
 
 		return (xOverlap && yOverlap);
 	}
@@ -59,6 +53,7 @@ namespace Collision {
 		float rectY{};
 		float rectW{};
 		float rectH{};
+
 		if (mode == Shapes::CORNER) {
 			rectX = rect.position.x;
 			rectY = rect.position.y;
@@ -93,4 +88,3 @@ namespace Collision {
 		return (distance <= (circle1.radius + circle1.radius));
 	}
 }
-

@@ -1,9 +1,8 @@
 ﻿#include "../pch.h"
-#include "AEEngine.h"
-#include "../UI_Elements/UI_Elements.hpp" //TODO: remove
+#include "MainMenu.hpp"
+
 #include "../Managers/UIManager.hpp"
 #include "../GameStateManager.hpp"
-#include <memory>
 
 // Button functions
 void navigateToGame(void) { next = GS_FARM; }
