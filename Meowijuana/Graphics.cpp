@@ -1,7 +1,7 @@
+﻿#include "pch.h"
 #include "Graphics.hpp"
-#include "AEEngine.h"
+
 #include "Settings.hpp"
-#include <unordered_map>
 
 namespace Color {
 	// TODO: missing
@@ -647,3 +647,4 @@ namespace Animations {
 	}
 
 }
+

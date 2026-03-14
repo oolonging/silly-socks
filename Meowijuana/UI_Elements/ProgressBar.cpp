@@ -1,7 +1,5 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
-#include "AEEngine.h"
-#include <algorithm>
-#include <vector>
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
@@ -80,3 +78,5 @@ namespace UI_Elements {
 	}
 
 }
+
+

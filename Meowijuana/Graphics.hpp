@@ -1,8 +1,7 @@
 #ifndef GRAPHICS_HPP
 #define GRAPHICS_HPP
 
-#include "AEEngine.h"
-#include <string>
+#include "pch.h"
 
 namespace Color {
 	struct Color {

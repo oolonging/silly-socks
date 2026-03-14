@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "UIManager.hpp"
 
 namespace UIManager {
@@ -51,3 +52,4 @@ namespace UIManager {
 		elements.clear();
 	}
 }
+

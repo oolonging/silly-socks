@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "EntityManager.hpp"
 
 namespace EntityManager {
@@ -75,3 +76,5 @@ namespace EntityManager {
 		entities.clear();
 	}
 }
+
+

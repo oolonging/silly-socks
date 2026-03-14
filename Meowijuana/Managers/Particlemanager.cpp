@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "ParticleManager.hpp"
 
 #define _USE_MATH_DEFINES
@@ -278,3 +279,4 @@ int ParticleSystem::getActiveParticleCount() const {
 	}
 	return count;
 }
+
