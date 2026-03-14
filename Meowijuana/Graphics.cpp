@@ -84,8 +84,8 @@ namespace Color {
 		const Color Brown = { 206,160,134,100 };
 		const Color DarkBrown{ 89, 75, 66, 100 };
 
-		const Color defaultStylePrimary = createColorHex(0xFFB59275);		// RGB (181, 146, 117)
-		const Color defaultStyleSecondary = createColorHex(0xFFE6CEB5);		// RGB (230, 206, 181)
+		const Color defaultStylePrimary = createColorHex(0xFFE6CEB5);		// RGB (230, 206, 181)
+		const Color defaultStyleSecondary = createColorHex(0xFFB59275);		// RGB (181, 146, 117)
 		const Color defaultStyleStroke = createColorHex(0xFF8C9086);		// RGB (140, 144, 134)
 		const Color defaultTextStylePrimary = White;
 		const Color defaultTextStyleSecondary = Black;
@@ -501,6 +501,7 @@ namespace Shapes {
 		float dy = y2 - y1;
 		float length = sqrtf(dx * dx + dy * dy);
 		float angle = atan2f(dy, dx);
+		
 		rectAdvanced(x1, y1, length, Settings::gStrokeWeight, angle, CORNER);
 	}
 
