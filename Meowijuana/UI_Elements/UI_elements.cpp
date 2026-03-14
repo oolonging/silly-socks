@@ -53,12 +53,22 @@ namespace UI_Elements {
 		float mouseY = Input::getMouseY();
 
 		if (drawMode == Shapes::CORNER) {
-			xOverlap = (mouseX > this->x && mouseX <= (this->x + this->width));
-			yOverlap = (mouseY < this->y && mouseY >= (this->y - this->height));
+			// check if width is negative
+			if (this->width < 0.0f) { xOverlap = (mouseX < this->x && mouseX >= (this->x + this->width)); }
+			else { xOverlap = (mouseX > this->x && mouseX <= (this->x + this->width)); }
+
+			// check if height is negative
+			if (this->height < 0.0f) { yOverlap = (mouseY > this->y && mouseY <= (this->y - this->height)); }
+			else { yOverlap = (mouseY < this->y && mouseY >= (this->y - this->height)); }
 		}
 		else if (drawMode == Shapes::CENTER) {
-			xOverlap = (mouseX > (this->x - this->width / 2) && mouseX <= (this->x + (this->width / 2)));
-			yOverlap = (mouseY < (this->y + this->height / 2) && mouseY >= (this->y - (this->height / 2)));
+			// check if width is negative
+			if (this->width < 0.0f) { xOverlap = (mouseX < (this->x + this->width / 2) && mouseX >= (this->x - (this->width / 2))); } 
+			else { xOverlap = (mouseX > (this->x - this->width / 2) && mouseX <= (this->x + (this->width / 2))); }
+
+			// check if height is negative
+			if (this->height < 0.0f) { yOverlap = (mouseY > (this->y - this->height / 2) && mouseY <= (this->y + (this->height / 2))); }
+			else { yOverlap = (mouseY < (this->y + this->height / 2) && mouseY >= (this->y - (this->height / 2))); }
 		}
 
 		return xOverlap && yOverlap;
