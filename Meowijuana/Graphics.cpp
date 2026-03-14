@@ -511,24 +511,26 @@ namespace Shapes {
 
 	// Debug box
 	void debugRect(float x, float y, float width, float height, SHAPE_MODE drawMode) {
-		// set render mode
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		if (Settings::gDebugMode) {
+			// set render mode
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
-		// set red color
-		Color::stroke(Color::Preset::Red);
-		Color::strokeWeight(2);
-		Color::noFill();
+			// set red color
+			Color::stroke(Color::Preset::Red);
+			Color::strokeWeight(2);
+			Color::noFill();
 
-		// Draw box
-		Shapes::rect(x, y, width, height, drawMode);
+			// Draw box
+			Shapes::rect(x, y, width, height, drawMode);
 
-		// Draw lines
-		float topLeftX = (drawMode == Shapes::CORNER) ? x : x - (width * 0.5f);
-		float topLeftY = (drawMode == Shapes::CORNER) ? y : y + (height * 0.5f);
+			// Draw lines
+			float topLeftX = (drawMode == Shapes::CORNER) ? x : x - (width * 0.5f);
+			float topLeftY = (drawMode == Shapes::CORNER) ? y : y + (height * 0.5f);
 
-		Color::fill(Color::Preset::Red);
-		Shapes::line(topLeftX, topLeftY, topLeftX + width, topLeftY - height);
-		Shapes::line(topLeftX, topLeftY - height, topLeftX + width, topLeftY);
+			Color::fill(Color::Preset::Red);
+			Shapes::line(topLeftX, topLeftY, topLeftX + width, topLeftY - height);
+			Shapes::line(topLeftX, topLeftY - height, topLeftX + width, topLeftY);
+		}
 	}
 }
 

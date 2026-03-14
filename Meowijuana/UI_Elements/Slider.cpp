@@ -126,6 +126,10 @@ namespace UI_Elements {
 			Color::fill(this->style.primaryColor);
 		}
 		Shapes::ellipse(handleX, handleY, handleSize, handleSize, Shapes::CENTER);
+
+		// Debug draw
+		Shapes::debugRect(handleX, handleY, handleSize, handleSize, Shapes::CENTER); // Handle 
+		Shapes::debugRect(this->x, this->y, this->width, this->height, drawMode);
 	}
 }
 
