@@ -62,22 +62,7 @@ namespace UI_Elements {
 
 		// Debug draw test
 		if (Settings::gDebugMode) {
-			// Set render mode
-			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-			// Set color
-			Color::stroke(Color::Preset::Red);
-			Color::strokeWeight(2);
-			Color::noFill();
-
-			// Draw debug lines
-			Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
-			float topLeftX = (this->drawMode == Shapes::CORNER) ? this->x : this->x - (this->width * 0.5f);
-			float topLeftY = (this->drawMode == Shapes::CORNER) ? this->y : this->y + (this->height * 0.5f);
-			
-			Color::fill(Color::Preset::Red);
-			Shapes::line(topLeftX, topLeftY, topLeftX + this->width, topLeftY - this->height);
-			Shapes::line(topLeftX, topLeftY - this->height, topLeftX + this->width, topLeftY);
+			Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
 		}
 	}
 
