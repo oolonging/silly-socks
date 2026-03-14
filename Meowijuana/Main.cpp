@@ -98,8 +98,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// init custom cursor(s);
 	Input::init();
 
-	// initialize ui manager defaults
-	UIManager::initDefaults();
 
 	GSM_Initialize(GS_SPLASH);
 
