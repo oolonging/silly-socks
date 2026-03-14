@@ -1,99 +1,121 @@
 #include "AEEngine.h"
-#include <iostream> // just for debugging
+#include <iostream>
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
 #include "../LevelSystem.hpp"
 #include "../Entity.hpp"
 #include "../World.hpp"
 #include "../TileTypes.hpp"
+#include "../Managers/EntityManager.hpp"
+#include "../DungeonManager.hpp"
 #include "DungeonScreen.hpp"
 
-extern Entity::Player testPlayer;
-extern World::worldGrid grid;
-static AEGfxVertexList* sTileMesh = nullptr;
-
-// its technically level 1 right
-static LevelSystem::Level Level1;
+World::worldGrid DungeonGrid;
+std::pair<int, int> prevActive;
+std::pair<int, int> dungeonActiveTile;
+Room::DungeonManager dungeon;
+static bool roomNeedsRedraw = false;
 
 
 void Dungeon_Load() {
 
-	Level1.loadLevel("Assets/LevelMaps/l1test.txt");
-
-	AEGfxTexture* floorTex = AEGfxTextureLoad("Assets/Tiles/DUNGEON_TILE.png");
-	AEGfxTexture* wallTex = AEGfxTextureLoad("Assets/Tiles/DIRT_TILE.png");
-
-	std::cout << floorTex << " " << wallTex << std::endl;
-
-	TileTypes::InitTileDetails(floorTex, wallTex);
-
-
-	if (!sTileMesh)
-	{
-		AEGfxMeshStart();
-
-		AEGfxTriAdd(-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
-
-		AEGfxTriAdd(0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
-
-		sTileMesh = AEGfxMeshEnd();
-	}
-
-
-	//AEGfxTexture* chestTex = AEGfxTextureLoad("Assets/chest.png");
-	//AEGfxTexture* enemyn1Tex = AEGfxTextureLoad("Assets/enemy1.png");
-	//AEGfxTexture* enemyn2Tex = AEGfxTextureLoad("Assets/enemy2.png");1
-
 
 }
+
 
 void Dungeon_Initialize() {
-	grid.initGrid(Level1.getWidth(), Level1.getHeight(), 50.0f);
 
-	float oriX = testPlayer.getX();
-	float oriY = testPlayer.getY();
+    EntityManager::init();
 
-	testPlayer = Entity::Player(
-		oriX, oriY,
-		50.0f, 50.0f,
-		100.0f, 5.0f, 0.0f
-	);
+    DungeonGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+    DungeonGrid.initMapTexture();
+    DungeonGrid.initTextureBox();
 
+    dungeon.generateDungeon(3);
+
+
+    // draw starting room
+    auto* room = dungeon.getCurrentRoom();
+    DungeonGrid.fillGrid(Room::getRoomFile(room->type));
+
+    auto* player = EntityManager::getPlayer("player");
+    player->setPosition(0.0f, 50.0f);
 }
 
+
 void Dungeon_Update() {
-	// Nothing to init just a plain background and some text
+    auto* player = EntityManager::getPlayer("player");
+    player->update();
+    player->tickAttackTimer(); // TODO: combat
 
-	testPlayer.update(Level1);
+    bool moved = false;
+    Room::Direction dir = Room::Direction::North; // default, gets overwritten
 
-	//AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//Color::textFill(255, 255, 255);
-	//Color::background({ 0, 0, 0, 255 });
-	//Text::text("Dungeon screen", 0, 0);
+    float hw = AEGfxGetWindowWidth() / 2.0f;
+    float hh = AEGfxGetWindowHeight() / 2.0f;
+
+
+
+    // just a lot of boundary checking  vv
+    if (player->getY() > hh) {
+        dir = Room::Direction::North;
+        moved = dungeon.move(dir);
+    }
+
+    else if (player->getX() > hw) {
+        dir = Room::Direction::East;
+        moved = dungeon.move(dir);
+    }
+    
+    else if (player->getX() < -hw) {
+        dir = Room::Direction::West;
+        moved = dungeon.move(dir);
+    }
+    
+    else if (player->getY() < -hh) {
+        if (dungeon.getCurrentRoom()->type == Room::RoomType::Main) {
+            dungeon.lockNextRoom(dungeon.getCurrentRoom());
+            next = GS_FARM;
+        }
+        else {
+            dir = Room::Direction::South;
+            moved = dungeon.move(dir);
+        }
+    }
+
+
+
+    // making sure player comes from the right side
+    if (moved) {
+        auto* room = dungeon.getCurrentRoom();
+        DungeonGrid.fillGrid(Room::getRoomFile(room->type));
+
+        if (dir == Room::Direction::North) player->setPosition(0.0f, -hh + 80.0f);
+        else if (dir == Room::Direction::East)  player->setPosition(-hw + 80.0f, 0.0f);
+        else if (dir == Room::Direction::West)  player->setPosition(hw - 80.0f, 0.0f);
+        else if (dir == Room::Direction::South) player->setPosition(0.0f, hh - 80.0f);
+    }
 }
 
 void Dungeon_Draw() {
+  
+    DungeonGrid.drawTexture(DungeonGrid);
+    World::drawTile(dungeonActiveTile, DungeonGrid);
+    World::drawTile({ 0,0 }, DungeonGrid);
 
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetColorToMultiply(1, 1, 1, 1);
+    // ---------- ENTITIES  (gotta figure out entity spawning) ------------------
 
-	
-	Level1.draw(sTileMesh);
-	testPlayer.draw();
-
-
+    auto* player = EntityManager::getPlayer("player");
+    EntityManager::draw("player");
 }
 
 void Dungeon_Free() {
-	
+
+    DungeonGrid.unloadMapTexture();
+    World::freeGrid();
 }
 
+
 void Dungeon_Unload() {
-
-
+    EntityManager::clear();
 }

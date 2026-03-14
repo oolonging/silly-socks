@@ -18,7 +18,7 @@ void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
 void navigateToTest(void) { next = GS_A; }
-void navigateToTutorial(void) { next = GS_X; }
+void navigateToTutorial(void) { next = GS_DUNGEON; }
 
 void Mainmenu_Load() {
 	CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
