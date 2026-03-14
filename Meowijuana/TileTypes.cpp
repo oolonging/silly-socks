@@ -1,5 +1,5 @@
+﻿#include "pch.h"
 #include "TileTypes.hpp"
-#include "AEEngine.h"
 
 
 AEGfxTexture* floorTex;
@@ -21,3 +21,5 @@ namespace TileTypes{
         //tiledetail[TileTypes::ENEMYN2] = { true,  false, enemyn2Tex };
     }
 }
+
+

@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include "AEEngine.h"
 #include <cmath>
 
@@ -94,3 +95,4 @@ namespace Collision {
 		return (distance <= (circle1.radius + circle1.radius));
 	}
 }
+

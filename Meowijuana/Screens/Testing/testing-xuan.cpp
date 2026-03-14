@@ -1,12 +1,11 @@
-#include "AEEngine.h"
+﻿#include "../../pch.h"
 #include "testing-xuan.hpp"
-#include <iostream>
+
 #include "../../GameStateManager.hpp"
 #include "../../Graphics.hpp"
 #include "../../Tiles.hpp"
 #include "../../Entity.hpp"
 #include "../../Managers/EntityManager.hpp"
-//#include "../../Managers/TileManager.hpp"
 #include "../../World.hpp"
 
 
@@ -323,3 +322,5 @@ void Xuan_Unload() {
 
 	//TileManager::exit();
 } 
+
+

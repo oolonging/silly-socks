@@ -1,12 +1,6 @@
 #ifndef UI_ELEMENTS_HPP
 #define UI_ELEMENTS_HPP
 
-#include "AEEngine.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-
 #include "../Graphics.hpp"
 #include "../InputManager.hpp"
 

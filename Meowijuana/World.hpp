@@ -1,11 +1,9 @@
 #ifndef WORLD_HPP
 #define WORLD_HPP
 
-#include "AEEngine.h"
 #include "Entity.hpp"
-#include <vector>
-#include <string>
-#include <unordered_map>
+#include "Graphics.hpp"
+#include "Inventory.hpp"
 
 namespace World
 {

@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include "Settings.hpp"
 
 namespace Settings {
@@ -38,3 +39,5 @@ namespace Settings {
 		// TODO: implement
 	}
 }
+
+

@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
 #include "../InputManager.hpp"
 
@@ -125,3 +126,5 @@ namespace UI_Elements {
 	UI_Element::UI_Element(void)
 		: UI_Element(0.0f, 0.0f, 100.0f, 50.0f) {}
 }
+
+

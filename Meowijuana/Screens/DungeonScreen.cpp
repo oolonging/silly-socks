@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "AEEngine.h"
 #include <iostream>
 #include "../GameStateManager.hpp"
@@ -119,3 +120,4 @@ void Dungeon_Free() {
 void Dungeon_Unload() {
     EntityManager::clear();
 }
+

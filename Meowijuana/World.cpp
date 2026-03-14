@@ -1,13 +1,5 @@
-#include "AEEngine.h"
+﻿#include "pch.h"
 #include "World.hpp"
-#include "Graphics.hpp"
-#include "Entity.hpp"
-#include "Inventory.hpp"
-#include <cmath>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-#include <iostream>
 
 World::worldGrid grid;
 
@@ -631,3 +623,4 @@ namespace World {
 		}
 	}
 }
+

@@ -1,10 +1,8 @@
 #ifndef TILES_HPP
 #define TILES_HPP
 
-#include "AEEngine.h"
-#include "InputManager.hpp"
 #include "Graphics.hpp"
-#include <vector>
+#include "InputManager.hpp"
 
 namespace World {
 	// Forward declarations

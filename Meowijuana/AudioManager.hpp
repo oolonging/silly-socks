@@ -1,9 +1,6 @@
 #ifndef AUDIOMANAGER_HPP
 #define AUDIOMANAGER_HPP
 
-#include "AEEngine.h"
-#include <string>
-
 namespace AudioManager {
 
 	class Audio {

@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
 
 
@@ -82,3 +83,5 @@ namespace UI_Elements {
 		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V); // TODO: rewire the text draw so that the align points to the anchor point
 	}
 }
+
+

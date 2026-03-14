@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "AEEngine.h"
 #include "../../GameStateManager.hpp"
 #include "../Graphics.hpp"
@@ -99,3 +100,5 @@ void Settings_Free() {
 void Settings_Unload() {
 	audio.exit();
 }
+
+

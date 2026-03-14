@@ -1,5 +1,5 @@
+﻿#include "pch.h"
 #include "AudioManager.hpp"
-#include <AEEngine.h>
 
 namespace AudioManager {
 
@@ -73,3 +73,4 @@ namespace AudioManager {
 	}
 
 }
+

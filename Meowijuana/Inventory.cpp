@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include "Inventory.hpp"
 #include "Entity.hpp"
 
@@ -154,3 +155,4 @@ namespace Inventory {
 		));
 	}
 }
+

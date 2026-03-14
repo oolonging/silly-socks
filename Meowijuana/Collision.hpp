@@ -1,6 +1,7 @@
 #ifndef COLLISION_HPP
 #define COLLISION_HPP
 
+#include "pch.h"
 #include "Graphics.hpp"
 
 namespace Collision {

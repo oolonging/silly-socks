@@ -6,8 +6,6 @@
 #include "Pathfinding.hpp"
 #include "UI_Elements/UI_Elements.hpp"
 #include "LevelSystem.hpp"
-#include <vector>
-#include <string>
 #include "Inventory.hpp"
 
 namespace Entity {

@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "UI_Elements.hpp"
 #include "../../Settings.hpp"
 
@@ -97,3 +98,5 @@ namespace UI_Elements {
 	Button::Button(void)
 		: Button(0.0f, 0.0f, 100.0f, 50.0f, "Button", Shapes::CORNER) {}
 }
+
+

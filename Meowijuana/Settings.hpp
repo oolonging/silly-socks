@@ -1,9 +1,6 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
-#include "AETypes.h"
-#include <map>
-#include <string>
 #include "Graphics.hpp"
 
 namespace Settings {

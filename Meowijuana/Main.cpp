@@ -1,9 +1,10 @@
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // includes
 
+// Precomiled headers
+#include "pch.h"
+
 #include <crtdbg.h> // To check for memory leaks
-#include <iostream>
-#include "AEEngine.h"
 
 #include "Graphics.hpp"
 #include "UI_Elements/UI_Elements.hpp"
@@ -166,3 +167,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	AESysExit();
 }
+
+

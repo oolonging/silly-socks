@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include <iostream>
 #include "GameStateManager.hpp"
 
@@ -173,3 +174,5 @@ void GSM_Update()
 			break;
 	}
 }
+
+

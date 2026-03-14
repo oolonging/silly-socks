@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "AEEngine.h"
 #include "../UI_Elements/UI_Elements.hpp"
 #include "../GameStateManager.hpp"
@@ -66,3 +67,5 @@ void Mainmenu_Unload()
 	AEGfxTextureUnload(CatastropheLogo);
 	CatastropheLogo = nullptr;
 }
+
+

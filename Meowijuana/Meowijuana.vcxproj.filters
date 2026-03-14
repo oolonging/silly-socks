@@ -146,6 +146,9 @@
     <ClCompile Include="Screens\Testing\testing-particles.cpp">
       <Filter>Source files\Screens\Testing</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -256,6 +259,7 @@
     <ClInclude Include="Screens\Testing\testing-particles.hpp">
       <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">

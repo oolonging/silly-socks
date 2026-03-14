@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AEEngine.h"
+#include "AETypes.h"
 
 #include <algorithm>
 #include <array>

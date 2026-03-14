@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include <iostream>
 #include "AEEngine.h"
 #include "Entity.hpp"
@@ -639,3 +640,4 @@ namespace Entity {
 		}
 	}
 }
+

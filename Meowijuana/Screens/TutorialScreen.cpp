@@ -1,3 +1,4 @@
+﻿#include "../pch.h"
 #include "TutorialScreen.hpp"
 #include "AEEngine.h"
 #include "../Graphics.hpp"
@@ -31,7 +32,7 @@ void Tutorial_Initialize() {
 
 	TutorialScreen::testDialogue = UI_Elements::DialogueBox(
 		dialogueX, dialogueY, dialogueWidth, dialogueHeight,
-		"Tutorial Guide", "Hey, you. You�re finally awake. You were trying to cross the border, right? Walked right into that Imperial ambush, same as us, and that thief over there",
+		"Tutorial Guide", "Hey, you. You’re finally awake. You were trying to cross the border, right? Walked right into that Imperial ambush, same as us, and that thief over there",
 		TutorialScreen::pTex, // No sprites available to test yet,
 		Shapes::CORNER
 	);
@@ -68,3 +69,5 @@ void Tutorial_Unload() {
 	AEGfxTextureUnload(TutorialScreen::pTex);
 	TutorialScreen::pTex = nullptr;
 }
+
+
