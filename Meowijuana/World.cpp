@@ -344,47 +344,84 @@ namespace World {
 	}
 
 	// User interacting w tile using E NEED DO: Change to add entity player as well 
-	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy)
+	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user)
 	{
 		int& ID = Griddy.pointerToTile(tile.first, tile.second);
 
 		switch (ID)
 		{
-			case EmptyCropTile:
-				// Will add inventory check later
-				/*if (useInventory(user))*/
+		case EmptyCropTile:
+
+			// Inventory check 
+			if (useItemOnTile(tile, Griddy, inven, user))
+			{
 				printf("Planted Crops! Yay!!\n");
 				ID = PlantedCropTile;
-				break;
+			}
 
-			case PlantedCropTile:
-				// If users try to press E with the crop -> shld give little message saying
-				printf("Crops Grown! Yay!!\n");
-				ID = GrownCropTile;
-				break;
+			break;
 
-			case GrownCropTile:
-				printf("Your Crops are Done! Yay!!\n");
-				ID = DoneCropTile;
-				break;
+		case PlantedCropTile:
+			// If users try to press E with the crop -> shld give little message saying
+			if (!useItemOnTile(tile, Griddy, inven, user))
+			{
+				printf("Seeds has already been planted!\n");
+			}
+			break;
 
-			case DoneCropTile:
-				printf("Collected Plants! Yay!!\n");
-				ID = EmptyCropTile;
-				break;
+		case DoneCropTile:
+			printf("Collected Plants! Yay!!\n");
+			ID = EmptyCropTile;
+			break;
 
-			case InteractableObj:
-				// Open Chest -> Pop up or something
-				break;
+		case InteractableObj:
+			// Open Chest -> Pop up or something
+			break;
 		}
 
 	}
 
-	// NEED REDO AND UNDERSTAND THE COLLISION STUFF
+	// Returns true if the interaction succeeded
+	bool useItemOnTile(std::pair<int, int> tile, World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user)
+	{
+
+		int& ID = Griddy.pointerToTile(tile.first, tile.second);
+
+		// Ensure only plant on Empty Crop
+		if (ID != EmptyCropTile) return false;
+
+
+		int slot = inven.getSelectedSlot();
+		Inventory::Item* currentItem = user.getInventoryItem(slot);
+
+		if (currentItem == nullptr) return false;
+		if (currentItem->getCount() <= 0) return false;
+
+		// Check if item is useable 
+		if (currentItem->getID() >= 10 && currentItem->getID() <= 12)
+		{
+			currentItem->setCount(currentItem->getCount() - 1);
+
+			if (currentItem->getCount() <= 0)
+			{
+				if (currentItem->getCount() <= 0)
+				{
+					printf("Clearing slot %d\n", slot); // does this print?
+					user.clearInventorySlot(slot);
+
+					// Verify it's null
+					printf("Slot after clear: %p\n", user.getInventoryItem(slot)); // should print 0
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
 	void collidableNearby(Entity::Player& user, World::worldGrid& Griddy)
 	{ 
-
-
 		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
 
 		int col = cords.first;

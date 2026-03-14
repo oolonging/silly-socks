@@ -90,7 +90,20 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 			AEGfxTextureSet(item->getIcon(), 0, 0);
 			//AEGfxMeshDraw(Shapes::getSquareMesh(), AE_GFX_MDM_TRIANGLES);
 			Graphics::image(iconX, iconY, slotSize * 0.8f, slotSize * 0.8f, item->getIcon(), Shapes::CENTER);
+
+			// Reset state after texture is drawn
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			AEGfxTextureSet(nullptr, 0, 0);
 			//TODO: this is the one i had to modify
+		}
+
+		// Draw count in bottom right of slot
+		if (item != nullptr && item->getCount() >= 1)
+		{
+			Color::textFill(255, 255, 255);
+			Text::text(std::to_string(item->getCount()).c_str(),
+				slotX + slotSize * 0.6f,
+				slotY - slotSize * 0.7f);
 		}
 	}
 }
@@ -153,4 +166,23 @@ void UI_Elements::PlayerInventory::setPosition(float newX, float newY) {
 	x = newX;
 	y = newY;
 }
+
+UI_Elements::PlayerInventory::~PlayerInventory() {
+	playerRef = nullptr;
+}
+
+void UI_Elements::PlayerInventory::giveCarrotSeeds(Entity::Player& player)
+{
+	// Find an empty slot
+	if (player.getInventoryItem(0) == nullptr)
+	{
+		Inventory::Item* seeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SEEDS);
+		seeds->setCount(5);
+		player.setInventoryItem(0, seeds);
+		return; // stop after finding first empty slot
+	}
+	// No empty slot found, do nothing
+}
+
+
 

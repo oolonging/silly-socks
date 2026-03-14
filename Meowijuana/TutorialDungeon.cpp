@@ -62,8 +62,8 @@ void TutorialDungeon_Initialize() {
 
 void TutorialDungeon_Update() {
     tutActiveTile = World::activeTile(tutPlayer.getX(), tutPlayer.getY(), TDungeonGrid);
-    if (AEInputCheckTriggered(AEVK_E))
-        World::interactTile(tutActiveTile, TDungeonGrid);
+    /*if (AEInputCheckTriggered(AEVK_E))
+        World::interactTile(tutActiveTile, TDungeonGrid);*/
 
     tutPlayer.update();
     tutPlayer.tickAttackTimer();

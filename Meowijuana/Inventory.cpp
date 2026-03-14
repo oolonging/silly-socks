@@ -154,6 +154,39 @@ namespace Inventory {
 			Common,     // rarity
 			5.0f        // knockback
 		));
+
+		// Load textures first
+		AEGfxTexture* carrotSeedIcon = AEGfxTextureLoad("Assets/Images/Items/CarrotSeeds.png");
+		AEGfxTexture* cherrySeedIcon = AEGfxTextureLoad("Assets/Images/Items/CherrySeeds.png");
+		AEGfxTexture* potatoSeedIcon = AEGfxTextureLoad("Assets/Images/Items/PotatoSeeds.png");
+
+		// Then register with the icon
+		ItemRegistry::registerItem(new Item(
+			ItemID::CARROT_SEEDS,
+			"Carrot Seeds",
+			"Plant to grow carrots",
+			5.0f,           // value
+			carrotSeedIcon, // icon
+			0               // default count
+		));
+
+		ItemRegistry::registerItem(new Item(
+			ItemID::CHERRY_SEEDS,
+			"Cherry Seeds",
+			"Plant to grow cherries",
+			5.0f,
+			cherrySeedIcon,
+			0
+		));
+
+		ItemRegistry::registerItem(new Item(
+			ItemID::POTATO_SEEDS,
+			"Potato Seeds",
+			"Plant to grow potatoes",
+			5.0f,
+			potatoSeedIcon,
+			0
+		));
+
 	}
 }
-
