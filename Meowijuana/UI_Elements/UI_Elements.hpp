@@ -16,26 +16,29 @@ namespace Entity {
 }
 
 namespace UI_Elements {
+	// -------------------------------------------------------------------------
+	// Struct definitions
+	// -------------------------------------------------------------------------
 	typedef struct {
 		Color::Color primaryColor;
 		Color::Color secondaryColor;
 		Color::Color strokeColor;
 		int strokeWeight;
 	} ElementStyle;
-
 	typedef struct {
 		Color::Color primaryColor;
 		Color::Color secondaryColor;
 		int fontSize;
 		std::string fontName;
 	} TextStyle;
-
 	typedef struct {
 		AEGfxTexture* primaryTexture;
 		AEGfxTexture* secondaryTexture;
 	} ElementTexture;
 
-	// Base class for all UI elements
+	// -------------------------------------------------------------------------
+	// Base UI class
+	// -------------------------------------------------------------------------
 	class UI_Element {
 	protected:
 		float x;
@@ -49,8 +52,8 @@ namespace UI_Elements {
 
 		// Default style initialization
 		static ElementStyle getDefaultStyle();
-		static ElementTexture getDefaultTexture();
 		static TextStyle getDefaultTextStyle();
+		static ElementTexture getDefaultTexture();
 
 	public:
 		// Common functionality
@@ -74,44 +77,34 @@ namespace UI_Elements {
 
 	protected:
 		// Constructor for derived classes
-		UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode);
+		UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		UI_Element();
 	};
 
+
+	// -------------------------------------------------------------------------
+	// Button Class
+	// -------------------------------------------------------------------------
 	class Button : public UI_Element {
 	private:
-		char const* msg;
-		void (*onClick)(void);
-		TextStyle textStyle;
-
-		// Static defaults for all buttons
-		static ElementStyle defaultStyle;
-		static TextStyle defaultTextStyle;
-		static ElementTexture defaultTexture;
+		char const* msg;				// The text drawn within the button
+		void (*onClick)(void);			// What the button does when clicked
 
 	public:
-		// static methods to set defaults
-		static void setDefaultButtonStyle(ElementStyle newStyle);
-		static void setDefaultButtonTextStyle(TextStyle newStyle);
-		static void setDefaultButtonTexture(ElementTexture newTexture);
+		void setOnClick(void (*func)(void));		// Set what to do when clicked
 
-		// static methods to get defaults
-		static ElementStyle getDefaultButtonStyle(void); 
-		static TextStyle getDefaultButtonTextStyle(void);
-		static ElementTexture getDefaultButtonTexture(void);
+		// Draw override
+		void draw(void) override;					// Render the button
 
-		// static method to clear default texture
-		static void clearDefaultButtonTextures(void);
-
-		void setOnClick(void (*func)(void));
-		void draw(void) override;
-
-		// Constructors
+		// Ctors
 		Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		Button(Shapes::Quad quad, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		Button(void);
 	};
 
+	// -------------------------------------------------------------------------
+	// Progress Bar class
+	// -------------------------------------------------------------------------
 	// TODO: CENTER render broken
 	class ProgressBar : public UI_Element {
 	private:
@@ -119,35 +112,23 @@ namespace UI_Elements {
 		float minValue;
 		float maxValue;
 
-		// static defaults for all progress bars
-		static ElementStyle defaultstyle;
-		static TextStyle defaultTextStyle;
-		static ElementTexture defaultTexture;
-
 	public:
-		// static methods to set defaults
-		static void setDefaultProgressBarStyle(ElementStyle newStyle);
-		static void setDefaultProgressBarTextStyle(TextStyle newStyle);
-		static void setDefaultProgressBarTexture(ElementTexture newTexture);
-
-		// static methods to get defaults
-		static ElementStyle getDefaultProgressBarStyle(void);
-		static TextStyle getDefaultProgressBarTextStyle(void);
-		static ElementTexture getDefaultProgressBarTexture(void);
-
-		// static method to clear default textures
-		static void clearDefaultProgressBarTextures(void);
-
 		void clampValue(void);
 		void setValue(float newValue);
+
+		// Draw override
 		void draw(void) override;
 
-		// Constructor
+		// Ctors
 		ProgressBar(float x, float y, float width, float height, float* valRef, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		ProgressBar(void);
 	};
 
-	// TODO: Corner render is broken
+
+	// -------------------------------------------------------------------------
+	// Slider class
+	// -------------------------------------------------------------------------
+	// TODO: corner render is broken
 	class Slider : public UI_Element {
 	private:
 		float* value;
@@ -155,41 +136,27 @@ namespace UI_Elements {
 		float maxValue;
 		bool isSelected = false;
 
-		// static defaults for all sliders
-		static ElementStyle defaultStyle;
-		static TextStyle defaultTextStyle;
-		static ElementTexture defaultTexture;
-
 		// slider static member
 		static Slider* currentlySelected;
 
 		void updateValue(void);
 
 	public:
-		// static method to set defaults
-		static void setDefaultSliderStyle(ElementStyle newStyle);
-		static void setDefaultSliderTextStyle(TextStyle newStyle);
-		static void setDefaultSliderTexture(ElementTexture newTexture);
-
-		// static method to get defaults
-		static ElementStyle getDefaultSliderStyle(void);
-		static TextStyle getDefaultSliderTextStyle(void);
-		static ElementTexture getDefaultSliderTexture(void);
-
-		// static method to clear default textures
-		static void clearDefaultSliderTextures(void);
-		
 		void select();
 		void deselect();
 
 		void clampValue(void);
 		void draw(void) override;
 
-		// Constructors
+		// Ctors
 		Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode = Shapes::CORNER);
 		Slider(void);
 	};
 
+
+	// -------------------------------------------------------------------------
+	// TextBox class
+	// -------------------------------------------------------------------------
 	class TextBox : public UI_Element {
 	private:
 		std::string text;
@@ -202,28 +169,10 @@ namespace UI_Elements {
 		// textbox static member
 		static TextBox* currentlySelected;
 
-		// textbox defaults static members
-		static ElementStyle defaultStyle;
-		static TextStyle defaultTextStyle;
-		static ElementTexture defaultTexture;
-
 		void handleInput();
 		void updateCursor(float deltaTime);
 
 	public:
-		// static  methods to set defaults
-		static void setDefaultTextBoxStyle(ElementStyle newStyle);
-		static void setDefaultTextBoxTextStyle(TextStyle newStyle);
-		static void setDefaultTextBoxTexture(ElementTexture newTexture);
-
-		// static methods to get defaults
-		static ElementStyle getDefaultTextBoxStyle(void);
-		static TextStyle getDefaultTextBoxTextStyle(void);
-		static ElementTexture getDefaultTextBoxTexture(void);
-
-		// static method to clear default texture
-		static void clearDefaultTextBoxTextures(void);
-
 		void draw(void) override;
 		void select();
 		void deselect();
@@ -237,6 +186,10 @@ namespace UI_Elements {
 		TextBox(void);
 	};
 
+
+	// -------------------------------------------------------------------------
+	// Checkbox class
+	// -------------------------------------------------------------------------
 	class Checkbox : public UI_Element {
 	private:
 		bool isChecked;
@@ -256,6 +209,10 @@ namespace UI_Elements {
 		Checkbox(void);
 	};
 
+
+	// -------------------------------------------------------------------------
+	// RadioButton class
+	// -------------------------------------------------------------------------
 	class RadioButton : public UI_Element {
 	private:
 		bool isSelected;
@@ -278,6 +235,10 @@ namespace UI_Elements {
 		~RadioButton();
 	};
 
+
+	// -------------------------------------------------------------------------
+	// DialogueBox class
+	// -------------------------------------------------------------------------
 	class DialogueBox : public UI_Element {
 	private:
 		std::string message;
@@ -318,7 +279,10 @@ namespace UI_Elements {
 		DialogueBox(void);
 	};
 
-	// Player UI elements
+
+	// -------------------------------------------------------------------------
+	// Player UI Elements classes
+	// -------------------------------------------------------------------------
 	class PlayerInventory : public UI_Element {
 	private:
 		Entity::Player* playerRef; // Reference to player object

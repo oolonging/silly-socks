@@ -3,75 +3,21 @@
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
-	// ProgressBar Static Defaults
-	// -------------------------------------------------------------------------
-	ElementStyle Slider::defaultStyle = UI_Element::getDefaultStyle();
-	TextStyle Slider::defaultTextStyle = UI_Element::getDefaultTextStyle();
-	ElementTexture Slider::defaultTexture = UI_Element::getDefaultTexture();
-
-	// Definitions for default setters
-	void Slider::setDefaultSliderStyle(ElementStyle newStyle) { defaultStyle = newStyle; }
-	void Slider::setDefaultSliderTextStyle(TextStyle newStyle) { defaultTextStyle = newStyle; }
-	void Slider::setDefaultSliderTexture(ElementTexture newTexture) { defaultTexture = newTexture; }
-
-	// Definitions for default setters
-	ElementStyle Slider::getDefaultSliderStyle(void) {
-		UI_Elements::ElementStyle defaultStyle;
-		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
-		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
-		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
-		defaultStyle.strokeWeight = 1;
-		return defaultStyle;
-	}
-
-	TextStyle Slider::getDefaultSliderTextStyle(void) {
-		UI_Elements::TextStyle defaultTextStyle;
-		defaultTextStyle.primaryColor = Color::Preset::defaultTextStylePrimary;
-		defaultTextStyle.primaryColor = Color::Preset::defaultTextStyleSecondary;
-		defaultTextStyle.fontSize = 10;
-		defaultTextStyle.fontName = "default";
-		return defaultTextStyle;
-	}
-
-	ElementTexture Slider::getDefaultSliderTexture(void) {
-		UI_Elements::ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/primary.png");
-		defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/secondary.png");
-		return defaultTexture;
-	}
-
-	void Slider::clearDefaultSliderTextures(void) {
-		if (defaultTexture.primaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.primaryTexture);
-			defaultTexture.primaryTexture = nullptr;
-		}
-
-		if (defaultTexture.secondaryTexture != nullptr) {
-			AEGfxTextureUnload(defaultTexture.secondaryTexture);
-			defaultTexture.secondaryTexture = nullptr;
-		}
-	}
-
-
-	// -------------------------------------------------------------------------
 	// Slider Implementation
 	// -------------------------------------------------------------------------
 	
 	Slider::Slider(float x, float y, float width, float height, float* value, float minVal, float maxVal, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), value(value), minValue(minVal), maxValue(maxVal) {
 
-		this->style = defaultStyle;
-		this->textStyle = defaultTextStyle;
-		this->texture = defaultTexture;
+		this->style = getDefaultStyle();
+		this->textStyle = getDefaultTextStyle();
+		
+		// Default texture
+		this->texture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/primary.png");
+		this->texture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Slider/secondary.png");
 	}
 
 	Slider::Slider(void) : Slider(0.0f, 0.0f, 100.0f, 10.0f, nullptr, 0.0f, 100.0f) {}
-
-	// TODO: ensure that the removal of the default constructor didnt break anything (for slider UI element)
-	// Note to anyone reading this in the future: The re ason theres no default constructor is because one of the members is a reference and cannot be a nullpointer
-	// You can either:
-	// a. have a global float value that this can change which the slider can point to (not recommended) OR
-	// b. change the ref member to a pointer so it can be assigned a nullptr at startup. Then disable the functionality that changes the pointed to value if the pointer is null
 
 	void Slider::clampValue(void) {
 		if (*value < minValue) *value = minValue;

@@ -21,35 +21,30 @@ namespace UI_Elements {
 
 	ElementStyle UI_Element::getDefaultStyle() {
 		ElementStyle defaultStyle;
-		defaultStyle.primaryColor = { 200.0f, 200.0f, 200.0f, 255.0f };
-		defaultStyle.secondaryColor = { 100.0f, 150.0f, 255.0f, 255.0f };
-		defaultStyle.strokeColor = { 0.0f, 0.0f, 0.0f, 255.0f };
+		defaultStyle.primaryColor = Color::Preset::defaultStylePrimary;
+		defaultStyle.secondaryColor = Color::Preset::defaultStyleSecondary;
+		defaultStyle.strokeColor = Color::Preset::defaultStyleStroke;
 		defaultStyle.strokeWeight = 1;
 		return defaultStyle;
-	}
-
-	ElementTexture UI_Element::getDefaultTexture() {
-		ElementTexture defaultTexture;
-		defaultTexture.primaryTexture = nullptr; // TODO: add texture when it gets added
-		defaultTexture.secondaryTexture = nullptr; // TODO: add texture when it gets added
-
-		// testing default textures
-		//defaultTexture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/argyle.png");
-		//defaultTexture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Defaults/arabesque.png");
-
-		return defaultTexture;
 	}
 
 	TextStyle UI_Element::getDefaultTextStyle() {
 		TextStyle defaultStyle;
 		defaultStyle.primaryColor = Color::Preset::Black;
 		defaultStyle.secondaryColor = Color::Preset::White;
-		defaultStyle.fontSize = 24;
+		defaultStyle.fontSize = 10;
 		defaultStyle.fontName = "default";
 		return defaultStyle;
 	}
 
-	// New implementation of isHover using input manager
+	ElementTexture UI_Element::getDefaultTexture() {
+		// Wont have a texture by default
+		ElementTexture defaultTexture;
+		defaultTexture.primaryTexture = nullptr;
+		defaultTexture.secondaryTexture = nullptr;
+		return defaultTexture;
+	}
+
 	bool UI_Element::isHovering(void) const {
 		bool xOverlap{};
 		bool yOverlap{};
@@ -110,10 +105,13 @@ namespace UI_Elements {
 
 	// Ctors
 	UI_Element::UI_Element(float x, float y, float width, float height, Shapes::SHAPE_MODE mode)
-		: x(x), y(y), width(width), height(height), drawMode(mode), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
+		: x(x), y(y), width(width), height(height), drawMode(mode) {
+		
+		this->textStyle = getDefaultTextStyle();
+
+		printf("UI Element constructor called\n");
 	}
 
-	UI_Element::UI_Element()
-		: x(0), y(0), width(100), height(50), drawMode(Shapes::CORNER), style(getDefaultStyle()), textStyle(getDefaultTextStyle()), texture(getDefaultTexture()) {
-	}
+	UI_Element::UI_Element(void)
+		: UI_Element(0.0f, 0.0f, 100.0f, 50.0f) {}
 }
