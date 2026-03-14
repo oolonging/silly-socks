@@ -583,8 +583,9 @@ namespace Text {
 		else if (vertical == BASELINE) worldOffsetY = -actualHeight * 0.25f;
 
 		if (Settings::gDebugMode) {
-			Color::fill(255.0f, 0.0f, 0.0f, 128.0f);
+			Color::fill(0.0f, 0.0f, 0.0f, 128.0f);
 			Color::noStroke();
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Shapes::rect(x + worldOffsetX, y + worldOffsetY, actualWidth, actualHeight, Shapes::CENTER);
 		}
 
