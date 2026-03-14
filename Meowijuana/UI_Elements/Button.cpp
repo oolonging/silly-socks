@@ -33,18 +33,19 @@ namespace UI_Elements {
 		if (hovering) {
 			Color::fill(this->style.secondaryColor);
 			Color::textFill(this->textStyle.secondaryColor);
+			Text::textSize(this->textStyle.fontSize * 1.5);
 		}
 		else {
 			Color::fill(this->style.primaryColor);
 			Color::textFill(this->textStyle.primaryColor);
+			Text::textSize(this->textStyle.fontSize);
 		}
 
 		// Draw button
 		Shapes::rect(this->x, this->y, this->width, this->height, this->drawMode);
 
-		// set text size and color
+		// set font
 		Text::setFont(this->textStyle.fontName);
-		Text::textSize(this->textStyle.fontSize);
 
 		// Draw the label
 		if (drawMode == Shapes::CORNER) {
