@@ -3,6 +3,8 @@
 
 #include "InputManager.hpp"
 #include "Managers/UIManager.hpp"
+#include "Managers/EntityManager.hpp"
+#include "Managers/ParticleManager.hpp"
 
 namespace Settings {
 	//////////////////////
@@ -29,6 +31,8 @@ namespace Settings {
 	// Sound
 	///////////
 
+	float gMusicVolume = 100.0f;
+	float gSFXVolume = 140.0f;
 	bool gMuteSFX = false;
 	bool gMuteMusic = false;
 
@@ -49,7 +53,8 @@ namespace Settings {
 		std::string output[] = {
 			"FPS: " + std::to_string(AEFrameRateControllerGetFrameRate()),
 			"Mouse Position: (" + std::to_string(Input::getMouseX()) + ", " + std::to_string(Input::getMouseY()) + ")",
-			"UI Elements: " + std::to_string(UIManager::elements.size())
+			"UI Elements: " + std::to_string(UIManager::elements.size()),
+			 "Active Entities: " + std::to_string(EntityManager::entities.size()),
 		};
 		int counter = 0;
 		

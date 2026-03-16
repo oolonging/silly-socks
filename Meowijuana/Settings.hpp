@@ -28,6 +28,9 @@ namespace Settings {
 	// Sound
 	///////////
 
+
+	extern float gMusicVolume;
+	extern float gSFXVolume;
 	extern bool gMuteSFX;
 	extern bool gMuteMusic;
 
