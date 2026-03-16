@@ -18,11 +18,16 @@ namespace Input {
 
 	// bounds checker
 	// TODO: reconsider the need for this function if collisions does something similar
+	// REMINDER: THIS IS FOR SCREEN COORDINATES
+	// TODO: Clean up the mouse bounds checking
 	bool isMouseInBounds(float x, float y, float width, float height) {
 		bool horizontalBounds = (sScreenMouseX >= x && (sScreenMouseX <= x + width));
 		bool verticalBounds = (sScreenMouseY >= y && (sScreenMouseY <= y + height));
 
 		return horizontalBounds && verticalBounds;
+	}
+	bool isMouseInBounds(Shapes::Quad quad) {
+		return isMouseInBounds(quad.position.x, quad.position.y, quad.width, quad.height);
 	}
 
 	// World coordinate functions

@@ -544,6 +544,9 @@ namespace Graphics {
 		AEGfxTextureSet(pTex, 0, 0);
 		Shapes::rect(x, y, width, height, drawMode);
 	}
+	void image(Shapes::Quad quad, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode) {
+		image(quad.position.x, quad.position.y, quad.width, quad.height, pTex, drawMode);
+	}
 }
 
 namespace Text {

@@ -84,6 +84,7 @@ namespace Shapes {
 namespace Graphics {
 	// image function
 	void image(float x, float y, float width, float height, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
+	void image(Shapes::Quad quad, AEGfxTexture* pTex, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
 }
 
 namespace Text {
