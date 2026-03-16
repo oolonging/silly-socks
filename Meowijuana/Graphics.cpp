@@ -488,6 +488,7 @@ namespace Shapes {
 			Settings::gFillColor.alpha / 255.0f
 		);
 		AEGfxMeshDraw(sTriangleMesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshFree(sTriangleMesh);
 	}
 	void triangle(Point p1, Point p2, Point p3) {
 		triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
@@ -531,6 +532,20 @@ namespace Shapes {
 			Shapes::line(topLeftX, topLeftY, topLeftX + width, topLeftY - height);
 			Shapes::line(topLeftX, topLeftY - height, topLeftX + width, topLeftY);
 		}
+	}
+
+	// Novel shapes
+	void heart(float x, float y, float size, SHAPE_MODE drawMode) {
+		float topLeftX = (drawMode == Shapes::CORNER) ? x : x - (size * 0.5f);
+		float topLeftY = (drawMode == Shapes::CORNER) ? y : y + (size * 0.5f);
+
+		ellipse(topLeftX + (0.333f * size), topLeftY - (0.333f * size), size * 0.5f, size * 0.5f, Shapes::CENTER);
+		ellipse(topLeftX + (0.666f * size), topLeftY - (0.333f * size), size * 0.5f, size * 0.5f, Shapes::CENTER);
+		triangle(
+			topLeftX + (0.333f * size), topLeftY - (0.333f * size),
+			topLeftX + (0.666f * size), topLeftY - (0.333f * size),
+			topLeftX + (0.5f * size), topLeftY - (1.0f * size)
+		);
 	}
 }
 

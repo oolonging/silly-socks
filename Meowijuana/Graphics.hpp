@@ -79,6 +79,9 @@ namespace Shapes {
 
 	// Debug shapes
 	void debugRect(float x, float y, float width, float height, SHAPE_MODE drawMode);
+
+	// Other novel shapes since I have time
+	void heart(float x, float y, float size, SHAPE_MODE drawMode = CENTER);
 }
 
 namespace Graphics {
