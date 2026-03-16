@@ -16,6 +16,7 @@
 #include "Managers/UIManager.hpp"
 #include "AudioManager.hpp"
 #include "Managers/ParticleManager.hpp"
+#include "Managers/AchievementManager.hpp"
 
 
 // ---------------------------------------------------------------------------
@@ -109,6 +110,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// init custom cursor(s);
 	Input::init();
 
+	// init the achievementManager
+	AchievementManager::get().init("Assets/achievement.txt");
+
+	// Immediately earn the achievement "Start the game"
+	AchievementManager::get().unlockAchievement("Start the game");
+
 	// load the meshes for global particles
 	gParticles.init();
 
@@ -164,6 +171,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				Settings::drawDebugOverlay();
 			}
 
+			// Draw achievement popup
+			AchievementManager::get().update();
+			AchievementManager::get().draw();
+
 			AESysFrameEnd();
 
 			// Handle restart
@@ -193,7 +204,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::exit();
 	Input::exit();
 	AudioManager::audio.exit();
-
+	
 	AESysExit();
 }
 

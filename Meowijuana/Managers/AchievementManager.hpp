@@ -4,16 +4,24 @@
 #include "../pch.h"
 
 
-struct Achievement {
+typedef struct Achievement {
 	std::string id;					// Unique ID for achievements
 	std::string name;				// Achievement name
 	std::string description;		// Achievement description, What needs to be done to get the achievement
 	bool isUnlocked = false;		// Tracks if the achievement is unlocked
-};
+
+	// Ctors
+	Achievement(void)
+		: Achievement("0000", "Invalid achievement", "You must have messed up really bad to be reading this. well done", false) {}
+
+	Achievement(std::string id, std::string name, std::string description, bool isUnlocked)
+		: id(id), name(name), description(description), isUnlocked(isUnlocked) {}
+} Achievement;
 
 class AchievementManager {
 	public:
 		// Return self
+		// Note: Just trying something new, the old is probably much better than this
 		static AchievementManager& get();
 		
 		// init the manager with the savefile path 

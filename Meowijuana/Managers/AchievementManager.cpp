@@ -1,5 +1,7 @@
 #include "AchievementManager.hpp"
 
+#include "../Graphics.hpp"
+
 AchievementManager& AchievementManager::get() {
 	static AchievementManager instance;
 	return instance;
@@ -7,6 +9,14 @@ AchievementManager& AchievementManager::get() {
 
 void AchievementManager::init(const std::string& saveFilepath) {
 	this->saveFilepath = saveFilepath;
+	
+	//TODO: add some achievements here
+	achievements.insert(std::pair<std::string, Achievement>(
+		"Start the game",
+		Achievement("0001", "Start the game", "Run the game for the first time", false)
+	));
+
+
 	LoadAchievements();
 }
 
@@ -54,8 +64,23 @@ void AchievementManager::update(float dt) {
 }
 
 void AchievementManager::draw() {
-	if (popupActive && popupQueue.empty()) {
+	if (popupActive && !popupQueue.empty()) {
 		const Popup& currentPopup = popupQueue.front();
+
+		// range from (0.0f - 1.0f)
+		float percentageLeft = popupTimer / POPUP_DURATION;
+
+		// TODO: play a sound
+		
+
+		// TODO: show an animation
+		// Placeholder rectangular overlay for now
+		Color::fill(255.0f, 0.0f, 0.0f, percentageLeft);
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Shapes::rect(0.0f, 0.0f, 500.0f, 500.0f, Shapes::CENTER);
+		Color::textFill(Color::Preset::White);
+		Text::text(currentPopup.name.c_str(), 0.0f, 0.0f, Text::CENTER_H, Text::TOP);
+		Text::text(currentPopup.description.c_str(), 0.0f, 0.0f, Text::CENTER_H, Text::BOTTOM);
 
 		// ill add the shapes later but i might have graphics I can use instead
 		// also modify the update function depending on if i want it to slide up or just vanish
