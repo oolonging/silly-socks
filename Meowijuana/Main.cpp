@@ -72,38 +72,18 @@ void screenSwitcher(void) {
 
 }
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-	_In_opt_ HINSTANCE hPrevInstance,
-	_In_ LPWSTR    lpCmdLine,
-	_In_ int       nCmdShow)
-{
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+// Helper function to initialize subsystem
+void InitSystems(int windowWidth, int windowHeight) {
+	Shapes::init();
+	grid.initGrid(windowWidth, windowHeight, 100);
 
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
-
-
-	int gGameRunning = 1;
-
-	// Create a 1600 x 900 windowed application at 60 FPS
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
-	AESysSetWindowTitle("Silly Socks | Meowijuana");
-
-	// reset the system modules
-	AESysReset();
-
-	// Init globals
-	Shapes::init(); // Shapes can now be drawn
-
-	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 100);
-
-	// TODO: font manager
+	// Font initialization
 	Text::createFont("Assets/Fonts/buggy-font.ttf", Settings::gDefaultTextSize, "default");
 	Text::createFont("Assets/Fonts/comic-sans.ttf", Settings::gDefaultTextSize, "comicsans");
 	Text::createFont("Assets/Fonts/impact.ttf", Settings::gDefaultTextSize, "impact");
 
 	Text::setFont("default"); // Redundant: but basically this is how you use it
-	
+
 	// set text align to center
 	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
@@ -124,10 +104,43 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AudioManager::audio.loadBGM("Assets/bgm.mp3");
 	AudioManager::audio.loadSFX("Assets/clicksfx.mp3");
 	AudioManager::audio.playBGM(bgVolume / 100.0f, true);
+}
+
+void ShutdownSystems(void) {
+	// Free resources
+	UIManager::clear();
+	World::freeGrid();
+	Shapes::exit();
+	Text::exit();
+	Input::exit();
+	AudioManager::audio.exit();
+}
+
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR    lpCmdLine,
+	_In_ int       nCmdShow)
+{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+
+	int gGameRunning = 1;
+
+	// Create a 1600 x 900 windowed application at 60 FPS
+	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
+	AESysSetWindowTitle("Silly Socks | Meowijuana");
+
+	// reset the system modules
+	AESysReset();
+
+	// Init subsystem
+	InitSystems(1600, 900);
 
 	GSM_Initialize(GS_SPLASH);
 
-	// fixed the loop
 	while (current != GS_QUIT) {
 		// set the function pointers for current state
 		GSM_Update();
@@ -152,24 +165,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				next = GS_QUIT;
 			}
 
-			// testing out the debugging feature before I implement it into the rest of the modules, its F3 to toggle
-			if (AEInputCheckTriggered(AEVK_F3)) {
-				Settings::toggleDebugMode();
-			}
-
-			// also temporary in case soemthing breaks without it
-			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
 			fpUpdate();
 			fpDraw();
 
 			// Update input manager every frame
 			Input::update();
 
-			// Draw debug overlay
-			if (Settings::gDebugMode) {
-				Settings::drawDebugOverlay();
-			}
+			// Draw debug overlay and toggle with F3
+			if (AEInputCheckTriggered(AEVK_F3)) Settings::toggleDebugMode();
+			if (Settings::gDebugMode) Settings::drawDebugOverlay();
 
 			// Draw achievement popup
 			AchievementManager::get().update();
@@ -197,13 +201,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		current = next;
 	}
 
-	// Free resources
-	UIManager::clear();
-	World::freeGrid();
-	Shapes::exit();
-	Text::exit();
-	Input::exit();
-	AudioManager::audio.exit();
+	// Shutdown subsystem
+	ShutdownSystems();
 	
 	AESysExit();
 }
