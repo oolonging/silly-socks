@@ -2,7 +2,16 @@ The information for the spritesheets are as follows
 
 cat_spritesheet
 Dimensions: 384x256
-sprite Dimensions: 32x32
+Sprite Dimensions: 32x32
 Rows: 8
 Columns: 12
 Total number of sprites: 96
+Details: Just a placeholder sprite sheet to test the Spritesheet Manager functions
+
+player_spritesheet
+Dimensions: 160x160
+Sprite Dimensions: 40x40
+Rows: 4
+Columns: 4
+Total number of sprites: 16
+Details: Spritesheet for the player entity
