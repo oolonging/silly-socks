@@ -4,12 +4,19 @@
 #include "Graphics.hpp"
 
 namespace Input {
+	// Custom cursor
+	CURSOR_TYPES gCursorType = POINTER;
+
 	// input buffer
 	std::deque<unsigned char> keyHistory{};
 	static bool sPrevKeyStates[256]{}; // Track prev frame key states to detect keypress (and not hold)
 
 	// custom cursor
-	static AEGfxTexture* customCursor = nullptr;
+	static AEGfxTexture* customCursorPointer = nullptr;
+	static AEGfxTexture* customCursorClickable = nullptr;
+	static AEGfxTexture* customCursorLoading = nullptr;
+	static AEGfxTexture* customCursorTextInsert = nullptr;
+	static AEGfxTexture* customCursorAreaSelect = nullptr;
 
 	static float sWorldMouseX{};
 	static float sWorldMouseY{};
@@ -73,12 +80,33 @@ namespace Input {
 
 	// custom cursor functions
 	void init(void) {
-		customCursor = AEGfxTextureLoad("Assets/Images/Cursors/Pointer.png");
+		customCursorPointer = AEGfxTextureLoad("Assets/Images/Cursors/Pointer.png");
+		customCursorClickable = AEGfxTextureLoad("Assets/Images/Cursors/Clickable.png");
+		customCursorLoading = AEGfxTextureLoad("Assets/Images/Cursors/Loading.png");
+		customCursorTextInsert = AEGfxTextureLoad("Assets/Images/Cursors/Text_Insert.png");
+		customCursorAreaSelect = AEGfxTextureLoad("Assets/Images/Cursors/Area_Select.png");
 	}
 
 	void exit(void) {
-		AEGfxTextureUnload(customCursor);
-		customCursor = nullptr;
+		// Clear pointer
+		AEGfxTextureUnload(customCursorPointer);
+		customCursorPointer = nullptr;
+	
+		// Clear clickable
+		AEGfxTextureUnload(customCursorClickable);
+		customCursorClickable = nullptr;
+
+		// Clear Loading
+		AEGfxTextureUnload(customCursorLoading);
+		customCursorLoading = nullptr;
+
+		// Clear Text insert
+		AEGfxTextureUnload(customCursorTextInsert);
+		customCursorTextInsert = nullptr;
+
+		// Clear Area select
+		AEGfxTextureUnload(customCursorAreaSelect);
+		customCursorAreaSelect = nullptr;
 	}
 
 	void update() {
@@ -99,12 +127,18 @@ namespace Input {
 
 		// if it is then hide the mouse
 		if(isMouseInWindow) {
-			//AESysShowCursor(false);
 			AEInputShowCursor(false);
 
+			AEGfxTexture* currentCursor = nullptr;
+			if (gCursorType == Input::POINTER) currentCursor = customCursorPointer;
+			if (gCursorType == Input::CLICKABLE) currentCursor = customCursorClickable;
+			if (gCursorType == Input::LOADING) currentCursor = customCursorLoading;
+			if (gCursorType == Input::TEXT_INSERT) currentCursor = customCursorTextInsert;
+			if (gCursorType == Input::AREA_SELECT) currentCursor = customCursorAreaSelect;
+
 			// instead of a cursor just show a blue ellipse
-			if (customCursor) {
-				Graphics::image(sWorldMouseX, sWorldMouseY, 32.0f, 32.0f, customCursor);
+			if (currentCursor) {
+				Graphics::image(sWorldMouseX, sWorldMouseY, 32.0f, 32.0f, currentCursor);
 			}
 			else {
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);

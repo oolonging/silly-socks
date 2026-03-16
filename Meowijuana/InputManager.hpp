@@ -10,6 +10,16 @@
 #include "GraphicsTypes.hpp"
 
 namespace Input {
+	// Custom cursor
+	enum CURSOR_TYPES {
+		POINTER,
+		CLICKABLE,
+		LOADING,
+		TEXT_INSERT,
+		AREA_SELECT,
+	};
+	extern CURSOR_TYPES gCursorType;
+
 	// input buffer
 	constexpr size_t MAX_BUFFER_SIZE = 10;
 	extern std::deque<unsigned char> keyHistory;

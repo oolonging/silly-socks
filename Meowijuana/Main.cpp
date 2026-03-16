@@ -132,6 +132,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Level loop
 		while (current == next) {
 			AESysFrameStart();
+			// Reset Cursor type
+			Input::gCursorType = Input::POINTER;
 
 			if (AEInputCheckTriggered(AEVK_LBUTTON)) {
 				AudioManager::audio.playSFX(sfxVolume / 100.0f);

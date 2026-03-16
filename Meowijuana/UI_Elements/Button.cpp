@@ -1,5 +1,6 @@
 ﻿#include "../pch.h"
 #include "UI_Elements.hpp"
+#include "../InputManager.hpp"
 
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
@@ -30,6 +31,9 @@ namespace UI_Elements {
 		}
 		
 		if (hovering) {
+			// change custom cursor to pointer
+			Input::gCursorType = Input::CLICKABLE;
+
 			Color::fill(this->style.secondaryColor);
 			Color::textFill(this->textStyle.secondaryColor);
 			Text::textSize(this->textStyle.fontSize * 1.5);
