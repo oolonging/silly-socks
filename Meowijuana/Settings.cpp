@@ -54,7 +54,8 @@ namespace Settings {
 			"FPS: " + std::to_string(AEFrameRateControllerGetFrameRate()),
 			"Mouse Position: (" + std::to_string(Input::getMouseX()) + ", " + std::to_string(Input::getMouseY()) + ")",
 			"UI Elements: " + std::to_string(UIManager::elements.size()),
-			 "Active Entities: " + std::to_string(EntityManager::entities.size()),
+			"Active Entities: " + std::to_string(EntityManager::entities.size()),
+			"Active particles: " + std::to_string(gParticles.getActiveParticleCount()) + "/" + std::to_string(gParticles.getMaxParticles())
 		};
 		int counter = 0;
 		
