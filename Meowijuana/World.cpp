@@ -548,7 +548,7 @@ namespace World {
 	}
 
 	// Player standing on tile 
-	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy)
+	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl)
 	{
 
 		// Get the tile ID at the player's current position
@@ -559,7 +559,7 @@ namespace World {
 		if (ID == Teleporter)
 		{
 			// Start teleporting to next 
-			next += 1;
+			next = nextlvl;
 		}
 	}
 

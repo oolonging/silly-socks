@@ -110,7 +110,7 @@ namespace World
 	bool useItemOnTile(std::pair<int, int> activeTile, World::worldGrid& grid, UI_Elements::PlayerInventory inven, Entity::Player& user);
 
 	// Based on user position -> check what tile user is on then change interactions respectively
-	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy);
+	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl);
 
 	// --- Tile Draw Stuff --- //
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);
