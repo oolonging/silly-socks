@@ -173,14 +173,23 @@ UI_Elements::PlayerInventory::~PlayerInventory() {
 
 void UI_Elements::PlayerInventory::giveCarrotSeeds(Entity::Player& player)
 {
-	// Find an empty slot
+	// If first slot empty give seeds
 	if (player.getInventoryItem(0) == nullptr)
 	{
 		Inventory::Item* seeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SEEDS);
-		seeds->setCount(5);
+		seeds->setCount(3);
 		player.setInventoryItem(0, seeds);
-		return; // stop after finding first empty slot
 	}
+
+	// If second slot empty give seed
+	if (player.getInventoryItem(1) == nullptr)
+	{
+		Inventory::Item* cseeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CHERRY_SEEDS);
+		cseeds->setCount(3);
+		player.setInventoryItem(1, cseeds);
+	}
+
+	return;
 	// No empty slot found, do nothing
 }
 
