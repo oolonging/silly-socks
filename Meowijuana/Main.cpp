@@ -15,6 +15,7 @@
 #include "InputManager.hpp"
 #include "Managers/UIManager.hpp"
 #include "AudioManager.hpp"
+#include "Managers/ParticleManager.hpp"
 
 
 // ---------------------------------------------------------------------------
@@ -101,13 +102,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Text::createFont("Assets/Fonts/impact.ttf", Settings::gDefaultTextSize, "impact");
 
 	Text::setFont("default"); // Redundant: but basically this is how you use it
-
+	
 	// set text align to center
 	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
 
 	// init custom cursor(s);
 	Input::init();
 
+	// load the meshes for global particles
+	gParticles.init();
 
 	//audio
 	AudioManager::audio.init();
