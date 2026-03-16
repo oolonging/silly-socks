@@ -10,56 +10,60 @@
 #include "../Settings.hpp"
 
 
-
-static UI_Elements::Slider* bgVolumeSlider;
-static UI_Elements::Slider* sfxVolumeSlider;
-static UI_Elements::Checkbox* bgmMuteCheckbox;
-static UI_Elements::Checkbox* sfxMuteCheckbox;
-static UI_Elements::Button* backButton;
-
 static void navigateToPrev(void) { next = GS_BACK; }
 
-using namespace AudioManager;
+namespace {
+	struct SettingsState {
+		UI_Elements::Slider* bgVolumeSlider;
+		UI_Elements::Slider* sfxVolumeSlider;
+		UI_Elements::Checkbox* bgmMuteCheckbox;
+		UI_Elements::Checkbox* sfxMuteCheckbox;
+		UI_Elements::Button* backButton;
+	};
+
+	// Unique ptr
+	std::unique_ptr<SettingsState> state;
+}
 
 void Settings_Load() {
-
+	state = std::make_unique<SettingsState>();
 }
 
 void Settings_Initialize() {
 
-	//create sliders
-	bgVolumeSlider = UIManager::create<UI_Elements::Slider>("bgmVolumeSlider", -200.0f, 200.0f, 400.0f, 50.0f, &bgVolume, 0.0f, 255.0f);
-	sfxVolumeSlider = UIManager::create<UI_Elements::Slider>("sfxVolumeSlider", -200.0f, 100.0f, 400.0f, 50.0f, &sfxVolume, 0.0f, 255.0f);
+	// Initialize sliders
+	state->bgVolumeSlider = UIManager::create<UI_Elements::Slider>("bgmVolumeSlider", -200.0f, 200.0f, 400.0f, 50.0f, &bgVolume, 0.0f, 255.0f);
+	state->sfxVolumeSlider = UIManager::create<UI_Elements::Slider>("sfxVolumeSlider", -200.0f, 100.0f, 400.0f, 50.0f, &sfxVolume, 0.0f, 255.0f);
 
-	//create checkboxes
-	bgmMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("bgmMuteCheckbox", 250.0f, 200.0f, 50.0f, "MUTE", Settings::gMuteMusic);
-	sfxMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("sfxMuteCheckbox", 250.0f, 100.0f, 50.0f, "MUTE", Settings::gMuteSFX);
+	// Initialize checkboxes
+	state->bgmMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("bgmMuteCheckbox", 250.0f, 200.0f, 50.0f, "MUTE", Settings::gMuteMusic);
+	state->sfxMuteCheckbox = UIManager::create<UI_Elements::Checkbox>("sfxMuteCheckbox", 250.0f, 100.0f, 50.0f, "MUTE", Settings::gMuteSFX);
 
-	//set element style for checkbox
-	UI_Elements::ElementStyle checkboxElementStyle = bgmMuteCheckbox->getStyle();
-	checkboxElementStyle.primaryColor = Color::createColorRGB(100, 200, 100, 255);
-	checkboxElementStyle.secondaryColor = Color::createColorRGB(200, 100, 50, 255);
-	checkboxElementStyle.strokeWeight = 5.0f;
 
 	//mute bgm when checkbox is toggled
-	bgmMuteCheckbox->setOnChange([](bool isMuted) {
-		if (isMuted) audio.setBGMVolume(0.0f);
-		else audio.setBGMVolume(bgVolume / 100.0f);
-		});
+	state->bgmMuteCheckbox->setOnChange([](bool isMuted) {
+		Settings::gMuteMusic = isMuted;
+		if (isMuted) {
+			AudioManager::audio.setBGMVolume(0.0f);
+		}
+		else {
+			AudioManager::audio.setBGMVolume(bgVolume / 100.0f);
+		}
+	});
 
 	//mute sfx when checkbox is toggled
-	sfxMuteCheckbox->setOnChange([](bool isMuted) {
-		if (isMuted) audio.setSFXVolume(0.0f);
-		else audio.setSFXVolume(sfxVolume / 100.0f);
+	state->sfxMuteCheckbox->setOnChange([](bool isMuted) {
+		if (isMuted) AudioManager::audio.setSFXVolume(0.0f);
+		else AudioManager::audio.setSFXVolume(sfxVolume / 100.0f);
 		});
 
 	//back button
-	backButton = UIManager::create<UI_Elements::Button>(
+	state->backButton = UIManager::create<UI_Elements::Button>(
 		"backButton", -300.0f, 300.0f, 50.0f, 50.0f, " ", Shapes::CENTER
 	);
 
 	//button function
-	backButton->setOnClick(navigateToPrev);
+	state->backButton->setOnClick(navigateToPrev);
 
 }
 
@@ -67,14 +71,14 @@ void Settings_Update() {
 
 	//bgm slider update
 	float newbgVolume = bgVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
-	if (!bgmMuteCheckbox->getChecked()) {
-		audio.setBGMVolume(bgVolume / 100.0f);
+	if (!state->bgmMuteCheckbox->getChecked()) {
+		AudioManager::audio.setBGMVolume(bgVolume / 100.0f);
 	}
 
 	//sfx slider update
 	float newsfxVolume = sfxVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
-	if (!sfxMuteCheckbox->getChecked()) {
-		audio.setSFXVolume(sfxVolume / 100.0f);
+	if (!state->sfxMuteCheckbox->getChecked()) {
+		AudioManager::audio.setSFXVolume(sfxVolume / 100.0f);
 	}
 
 
@@ -82,8 +86,7 @@ void Settings_Update() {
 
 void Settings_Draw() {
 
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	Color::textFill(0, 0, 0);
+	Color::textFill(Color::Preset::Black);
 	Color::background({ 162, 209, 213, 255 });
 
 	Text::textSize(30.0f);
@@ -97,10 +100,15 @@ void Settings_Draw() {
 	UIManager::drawAll();
 }
 
-void Settings_Free() {
-}
+void Settings_Free() {}
 
 void Settings_Unload() {
+	if (state) {
+
+		// Nothing else to unload yet
+		state.reset();
+	}
+
 	UIManager::clear();
 }
 
