@@ -152,6 +152,9 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\AchievementManager.cpp">
+      <Filter>Source files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\AchievementManager.hpp">
+      <Filter>Header files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,7 @@
 #ifndef SPRITE_MANAGER_HPP
 #define SPRITE_MANAGER_HPP
 
-#include <unordered_map>
-#include <vector>
-#include <string>
-#include "AEEngine.h"
+#include "../pch.h"
 
 namespace SpriteManager {
 	// SpriteSheet struct - holds the textuer and the grid information for the spritesheet

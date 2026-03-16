@@ -114,6 +114,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Managers\AchievementManager.cpp" />
     <ClCompile Include="Managers\EntityManager.cpp" />
     <ClCompile Include="Managers\Particlemanager.cpp" />
     <ClCompile Include="Managers\SpriteManager.cpp" />
@@ -168,6 +169,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="LevelSystem.hpp" />
+    <ClInclude Include="Managers\AchievementManager.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp" />
     <ClInclude Include="Managers\ParticleManager.hpp" />
     <ClInclude Include="Managers\SpriteManager.hpp" />
