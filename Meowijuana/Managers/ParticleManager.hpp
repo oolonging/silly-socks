@@ -1,10 +1,7 @@
 #ifndef PARTICLE_MANAGER_HPP
 #define PARTICLE_MANAGER_HPP
 
-#include "AEEngine.h"
-#include <vector>
-#include "../Graphics.hpp"  // Just for Color struct
-
+#include "../GraphicsTypes.hpp"
 
 enum class ParticleShape {
 	SQUARE,
@@ -91,8 +88,10 @@ struct ParticleConfig {
 
 // Main particle system class
 class ParticleSystem {
-private:
+public:
+	// temporary while i rewire some stuff
 	std::vector<Particle> particles;
+private:
 	size_t maxParticles;
 
 	// Cached meshes
@@ -117,7 +116,7 @@ public:
 	void init(void);
 
 	// core functions
-	void update(float dt);
+	void update(float dt = AEFrameRateControllerGetFrameTime());
 	void draw(void);
 	void clear(void);
 
@@ -136,5 +135,9 @@ public:
 		return static_cast<int>(this->maxParticles);
 	}
 };
+
+// extern particles
+extern ParticleSystem gParticles;
+
 
 #endif // PARTICLE_MANAGER_HPP

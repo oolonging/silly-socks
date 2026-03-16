@@ -5,6 +5,9 @@
 #include <cmath>
 #include <cstdlib>
 
+// init gParticles
+ParticleSystem gParticles(1000);
+
 // Ctors and Dtor
 ParticleSystem::ParticleSystem(size_t maxCount)
 	: maxParticles(maxCount), squareMesh(nullptr), diamondMesh(nullptr), ellipseMesh(nullptr) {

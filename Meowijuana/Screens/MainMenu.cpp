@@ -3,6 +3,8 @@
 
 #include "../Managers/UIManager.hpp"
 #include "../GameStateManager.hpp"
+#include "../Managers/ParticleManager.hpp"
+#include "../InputManager.hpp"
 
 // Button functions
 void navigateToGame(void) { next = GS_FARM; }
@@ -20,8 +22,12 @@ namespace {
 		UI_Elements::Button* testButton;
 		UI_Elements::Button* tutorialButton;
 		
+
 		// Pointer to background for Main menu
 		AEGfxTexture* CatastropheLogo = nullptr;
+
+		// Pointer to myCat image
+		AEGfxTexture* myCatImage = nullptr;
 	};
 
 	// Unique pointer to manage the state's lifetime strictly between Load and Unload
@@ -31,8 +37,9 @@ namespace {
 void Mainmenu_Load() {
 	state = std::make_unique<MainMenuState>();
 
-	// Load background image
+	// Load images
 	state->CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
+	state->myCatImage = AEGfxTextureLoad("Assets/myCat.png");
 }
 
 void Mainmenu_Initialize()
@@ -54,6 +61,9 @@ void Mainmenu_Initialize()
 
 void Mainmenu_Update() {
 	// TODO: consider separating the update and render logic of buttons for easier debugging
+
+	// Update particles with deltatime
+	gParticles.update();
 }
 
 void Mainmenu_Draw()
@@ -65,6 +75,15 @@ void Mainmenu_Draw()
 
 	// Draw all UI elements
 	UIManager::drawAll();
+
+	// Draw mycat
+	Graphics::image(-800.0f, 450.0f, 100.0f, 100.0f, state->myCatImage);
+
+
+	if (Input::isMouseInBounds(0.0f, 0.0f, 100.0f, 100.0f)) {
+		gParticles.spawnExplosion(Input::getMouseX(), Input::getMouseY(), 10);
+		gParticles.draw();
+	}
 }
 
 void Mainmenu_Free() {
