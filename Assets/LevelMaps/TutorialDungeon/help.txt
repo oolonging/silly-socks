@@ -28,5 +28,5 @@ How far in:
 
 sideRoomL1_32
 
-= side room, level 1, northbound, 2 rooms in
-= main room -> sideRoomL1_31 -> sideRoomL1_32
+= side room, level 1, second room, northbound, 2 rooms in
+= main room -> sideRoomL1_11 -> sideRoomL1_21
