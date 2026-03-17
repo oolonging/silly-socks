@@ -94,7 +94,8 @@ void InitSystems(int windowWidth, int windowHeight) {
 	AchievementManager::get().init("Assets/achievement.txt");
 
 	// Immediately earn the achievement "Start the game"
-	AchievementManager::get().unlockAchievement("Start the game");
+	// ill add this back later when the achievemnts are more fleshed out / have actual graphics to render	
+	//AchievementManager::get().unlockAchievement("Start the game");
 
 	// load the meshes for global particles
 	gParticles.init();
