@@ -86,6 +86,9 @@ void Settings_Update() {
 
 void Settings_Draw() {
 
+	Text::textAlign(Text::CENTER_H, Text::CENTER_V);
+	Text::setFont("default");
+
 	Color::textFill(Color::Preset::Black);
 	Color::background({ 162, 209, 213, 255 });
 
