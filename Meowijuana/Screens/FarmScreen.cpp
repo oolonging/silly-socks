@@ -77,7 +77,7 @@ void Farm_Initialize() {
 	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png")); 
 
 	Gerald->setDialogLines({
-		"Insert Dialogue Here",
+		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey!",
 
 		"@",
 
@@ -87,7 +87,7 @@ void Farm_Initialize() {
 		});
 
 	Gerald->setIdleLines({
-		"Go on! Don't feel bad!",
+		"Try Planting the seeds that I have just given you!",
 		});
 
 	// Initialize dialogue box
@@ -113,7 +113,7 @@ void Farm_Update() {
 
 	// Player update
 
-	player->update();
+	player->update(Grid);
 	inv.update();
 
 	activeT = World::activeTile(player->getX(), player->getY(), Grid);
@@ -128,15 +128,8 @@ void Farm_Update() {
 		World::interactTile(activeT, Grid, inv, *player);
 	}
 
-	// Will change this to after the player talks to Gerald
-	if (AEInputCheckTriggered(AEVK_F1))
-	{
-		inv.giveCarrotSeeds(*player);
-	}
-
 	World::standOnTile(next, *player, Grid, GS_DUNGEON);
 
-	World::collidableNearby(*player, Grid);
 
 	// NPC TALKING STUFFS
 
@@ -145,6 +138,7 @@ void Farm_Update() {
 		if (Gerald->getIsIdling()) {
 			FarmNPC::activeSpeaker->idleSpeak(FarmNPC::dialogueBox);
 		}
+
 		else {
 			FarmNPC::activeSpeaker->speak(FarmNPC::dialogueBox);
 		}
@@ -164,11 +158,25 @@ void Farm_Update() {
 			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
 		}
 
+		inv.giveCarrotSeeds(*player);
+
+		break;
+
+
+	case FarmNPC::TutorialState::GER_IDLE:
+
+		FarmNPC::activeSpeaker = Gerald;
+		Gerald->speak(FarmNPC::dialogueBox);
+
+		if (Gerald->getIsPaused()) {
+			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
+		}
+
 		break;
 	}
 
-	// Press E at dungeon entrance 
-	World::standOnTile(next, *player, Grid, GS_X);
+	//// Press E at dungeon entrance 
+	//World::standOnTile(next, *player, Grid, GS_X);
 
 }
 

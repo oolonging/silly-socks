@@ -1,9 +1,18 @@
 #ifndef WORLD_HPP
 #define WORLD_HPP
 
-#include "Entity.hpp"
 #include "Graphics.hpp"
 #include "Inventory.hpp"
+
+namespace Entity {
+	class Player;
+	class Entity;
+
+}
+
+namespace UI_Elements {
+	class PlayerInventory;
+}
 
 namespace World
 {
@@ -97,12 +106,12 @@ namespace World
 
 	// --- Tile Colliison stuff --- //
 	// Main function to handle collision
-	void collidableNearby(Entity::Player& user, World::worldGrid& Griddy);
+	//void collidableNearby(Entity::Player& user, World::worldGrid& Griddy);
 
-	// Helper to user collision function 
-	bool collideWithWall(Shapes::Quad user, Shapes::Quad wall);
+	//// Helper to user collision function 
+	//bool collideWithWall(Shapes::Quad user, Shapes::Quad wall);
 
-	void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir);
+	//void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir);
 
 	// --- Tile Interaction stuff --- //
 	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user);

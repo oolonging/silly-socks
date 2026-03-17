@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "World.hpp"
+#include "Entity.hpp"
 
 World::worldGrid grid;
 
@@ -298,10 +299,18 @@ namespace World {
 
 		auto playerTile = Griddy.getIndex(userX, userY);
 
+		// Clamp mouse to window bounds BEFORE converting to world coords
+		mouseX = max(0, min(mouseX, (int)AEGfxGetWindowWidth()));
+		mouseY = max(0, min(mouseY, (int)AEGfxGetWindowHeight()));
+
 		float worldMouseX = mouseX - AEGfxGetWindowWidth() / 2.0f;
 		float worldMouseY = AEGfxGetWindowHeight() / 2.0f - mouseY;
 
 		auto mouseTile = Griddy.getIndex(worldMouseX, worldMouseY);
+		
+		// Clamp to valid grid bounds
+		mouseTile.first = max(0, min(mouseTile.first, Griddy.getWidth() - 1));
+		mouseTile.second = max(0, min(mouseTile.second, Griddy.getHeight() - 1));
 
 		std::pair<int, int> ActiveTile;
 
@@ -319,9 +328,9 @@ namespace World {
 		int activeX = (dirX > 0) - (dirX < 0);
 		int activeY = (dirY > 0) - (dirY < 0);
 
-		ActiveTile = { 
-			playerTile.first += activeX, 
-			playerTile.second += activeY 
+		ActiveTile = {
+			playerTile.first + activeX,
+			playerTile.second + activeY
 		};
 
 		return ActiveTile;
@@ -420,147 +429,125 @@ namespace World {
 		return false;
 	}
 
-	void collidableNearby(Entity::Player& user, World::worldGrid& Griddy)
-	{ 
-		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
+	// OKAY SO I AM CHANGING THE ENTITY INSTEAD OF WORLD SO YEAH
+	//void collidableNearby(Entity::Entity* entity, World::worldGrid& Griddy)
+	//{
+	//	std::pair<int, int> cords = Griddy.getIndex(entity->getX(), entity->getY());
+	//	int col = cords.first;
+	//	int row = cords.second;
 
-		int col = cords.first;
-		int row = cords.second;
+	//	if (Griddy.getTileID(col + 1, row) != Wall &&
+	//		Griddy.getTileID(col - 1, row) != Wall &&
+	//		Griddy.getTileID(col, row + 1) != Wall &&
+	//		Griddy.getTileID(col, row - 1) != Wall &&
+	//		Griddy.getTileID(col + 1, row + 1) != Wall &&
+	//		Griddy.getTileID(col - 1, row - 1) != Wall &&
+	//		Griddy.getTileID(col + 1, row - 1) != Wall &&
+	//		Griddy.getTileID(col - 1, row + 1) != Wall)
+	//		return;
 
-		// Early exit if no walls nearby
-		if (Griddy.getTileID(col + 1, row) != Wall &&
-			Griddy.getTileID(col - 1, row) != Wall &&
-			Griddy.getTileID(col, row + 1) != Wall &&
-			Griddy.getTileID(col, row - 1) != Wall)
-			return;
+	//	Shapes::Quad player = { entity->getX(), entity->getY(), entity->getWidth(), entity->getHeight() };
+	//	bool(&dir)[4] = entity->getDirections();
+	//	const int UP = 0;
+	//	const int DOWN = 1;
+	//	const int LEFT = 2;
+	//	const int RIGHT = 3;
+	//	bool collisionOccured[2] = {};
 
-		Shapes::Quad player = { user.getX(), user.getY(), user.getWidth(), user.getHeight() };
+	//	if (dir[RIGHT] && Griddy.getTileID(col + 1, row) == Wall)
+	//	{
+	//		std::pair<float, float> worldCords4Tile = getWorldCoords({ col + 1, row }, Griddy);
+	//		Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//		if (collideWithWall(player, wall))
+	//			collisionOccured[0] = true;
+	//	}
+	//	else if (dir[LEFT] && Griddy.getTileID(col - 1, row) == Wall)
+	//	{
+	//		std::pair<float, float> worldCords4Tile = getWorldCoords({ col - 1, row }, Griddy);
+	//		Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//		if (collideWithWall(player, wall))
+	//			collisionOccured[0] = true;
+	//	}
 
-		bool(&dir)[4] = user.getDirections();
+	//	if (dir[UP] && Griddy.getTileID(col, row - 1) == Wall)
+	//	{
+	//		std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row - 1 }, Griddy);
+	//		Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//		if (collideWithWall(player, wall))
+	//			collisionOccured[1] = true;
+	//	}
+	//	else if (dir[DOWN] && Griddy.getTileID(col, row + 1) == Wall)
+	//	{
+	//		std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row + 1 }, Griddy);
+	//		Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//		if (collideWithWall(player, wall))
+	//			collisionOccured[1] = true;
+	//	}
 
-		const int UP = 0;
-		const int DOWN = 1;
-		const int LEFT = 2;
-		const int RIGHT = 3;
+	//	if (collisionOccured[0] || collisionOccured[1])
+	//		snapEntity(entity, Griddy, collisionOccured, dir);
+	//}
 
-		bool collisionOccured[2] = {}; // 0 -> horizontal collision, 1 -> vertical collision
 
-		// Check for horizontal collision //
-		if (dir[RIGHT] && Griddy.getTileID(col + 1, row) == Wall)
-		{
-			std::pair<float, float> worldCords4Tile = getWorldCoords({ col + 1, row }, Griddy);
-			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//bool collideWithWall(Shapes::Quad user, Shapes::Quad wall)
+	//{
+	//	return (Collision::rectInRect(user, wall, Shapes::CORNER));
+	//}
 
-			if (collideWithWall(player, wall))
-			{
-				collisionOccured[0] = true;
-			}
-		}
+	//void snapEntity(Entity::Entity* entity, World::worldGrid& Griddy, bool* collisionCheck, bool* dir)
+	//{
+	//	std::pair<int, int> index = Griddy.getIndex(entity->getX(), entity->getY());
+	//	int col = index.first;
+	//	int row = index.second;
+	//	float tileSize = static_cast<float>(Griddy.getTileSize());
+	//	const int UP = 0;
+	//	const int DOWN = 1;
+	//	const int LEFT = 2;
+	//	const int RIGHT = 3;
 
-		else if (dir[LEFT] && Griddy.getTileID(col - 1, row) == Wall)
-		{
-			std::pair<float, float> worldCords4Tile = getWorldCoords({ col - 1, row }, Griddy);
-			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
+	//	// Vertical Check
+	//	if (collisionCheck[0])
+	//	{
+	//		if (dir[RIGHT])
+	//		{
+	//			std::pair<float, float> wallCoords = getWorldCoords({ col + 1, row }, Griddy);
+	//			entity->setX(wallCoords.first - entity->getWidth());
+	//		}
+	//		else if (dir[LEFT])
+	//		{
+	//			std::pair<float, float> wallCoords = getWorldCoords({ col - 1, row }, Griddy);
+	//			entity->setX(wallCoords.first + tileSize);
+	//		}
+	//	}
 
-			if (collideWithWall(player, wall))
-			{
-				collisionOccured[0] = true;
-			}
+	//	// Horizontal Check
+	//	if (collisionCheck[1])
+	//	{
+	//		if (dir[DOWN])
+	//		{
+	//			std::pair<float, float> wallCoords = getWorldCoords({ col, row + 1 }, Griddy);
+	//			entity->setY(wallCoords.second - entity->getHeight());
+	//		}
+	//		else if (dir[UP])
+	//		{
+	//			std::pair<float, float> wallCoords = getWorldCoords({ col, row - 1 }, Griddy);
+	//			entity->setY(wallCoords.second + tileSize);
+	//		}
+	//	}
+	//}
 
-		}
-
-		// Check for vertical collision //
-		if (dir[UP] && Griddy.getTileID(col, row - 1) == Wall)
-		{
-			std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row - 1 }, Griddy);
-			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
-
-			if (collideWithWall(player, wall))
-			{
-				collisionOccured[1] = true;
-			}
-		}
-
-		else if (dir[DOWN] && Griddy.getTileID(col, row + 1) == Wall)
-		{
-			std::pair<float, float> worldCords4Tile = getWorldCoords({ col, row + 1 }, Griddy);
-			Shapes::Quad wall = { worldCords4Tile.first, worldCords4Tile.second, static_cast<float>(Griddy.getTileSize()), static_cast<float>(Griddy.getTileSize()) };
-
-			if (collideWithWall(player, wall))
-			{
-				collisionOccured[1] = true;
-			}
-		}
-
-		if (collisionOccured[0] == true || collisionOccured[1] == true)
-		{
-			snapPlayer(user, Griddy, collisionOccured, dir);
-		}
-	}
-
-	bool collideWithWall(Shapes::Quad user, Shapes::Quad wall)
+	void World::standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl)
 	{
-		return (Collision::rectInRect(user, wall, Shapes::CORNER));
-	}
-
-	void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir)
-	{
+		// Get the tile the player is currently standing on
 		std::pair<int, int> index = Griddy.getIndex(user.getX(), user.getY());
-		int col = index.first;
-		int row = index.second;
+		
+		int tileID = Griddy.getTileID(index.first, index.second);
 
-		float tileSize = static_cast<float>(Griddy.getTileSize());
-
-		const int UP = 0;
-		const int DOWN = 1;
-		const int LEFT = 2;
-		const int RIGHT = 3;
-
-		// If horizontal collision occurred (X axis)
-		if (collisionCheck[0])
+		if (tileID == World::Teleporter)
 		{
-			std::pair<float, float> tileCords = getWorldCoords({ col, row }, Griddy);
-
-			if (dir[RIGHT])
-			{
-				user.setX(tileCords.first + tileSize - user.getWidth()); // flush against right wall
-			}
-			else if (dir[LEFT])
-			{
-				user.setX(tileCords.first); // flush against left wall
-			}
+			next = nextlvl; // trigger level transition
 		}
 
-		// If vertical collision occurred (Y axis)
-		if (collisionCheck[1])
-		{
-			std::pair<float, float> tileCords = getWorldCoords({ col, row }, Griddy);
-
-			if (dir[DOWN])
-			{
-				user.setY(tileCords.second); // flush against top of wall below
-			}
-			else if (dir[UP])
-			{
-				user.setY(tileCords.second + tileSize - user.getHeight()); // flush against bottom of wall above
-			}
-		}
-	}
-
-	// Player standing on tile 
-	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl)
-	{
-
-		// Get the tile ID at the player's current position
-		std::pair<int, int> cords = Griddy.getIndex(user.getX(), user.getY());
-		int& ID = Griddy.pointerToTile(cords.first, cords.second);
-
-		// Check if the tile ID is a teleporter
-		if (ID == Teleporter)
-		{
-			// Start teleporting to next 
-			next = nextlvl;
-		}
 	}
 
 	// Drawing and other stuff //

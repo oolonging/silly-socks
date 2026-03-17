@@ -7,6 +7,7 @@
 #include "UI_Elements/UI_Elements.hpp"
 #include "LevelSystem.hpp"
 #include "Inventory.hpp"
+#include "World.hpp"
 
 namespace Entity {
 
@@ -97,7 +98,11 @@ namespace Entity {
 		int selectedInventorySlot; // 0-8
 
 		void handleMovement();
+		// Testing Movement ref the grid
+		void handleMovement(World::worldGrid& Griddy);
+
 		void handleMovement(LevelSystem::Level& level);
+
 
 	public:
 		// Inventory methods
@@ -113,7 +118,10 @@ namespace Entity {
 		bool(&getDirections())[4] { return movingDirections; }
 
 		void update();
+		void update(World::worldGrid& Griddy);
 		void update(LevelSystem::Level& level);
+		
+
 		void draw() override;
 
 		// Constructors

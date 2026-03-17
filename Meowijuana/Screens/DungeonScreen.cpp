@@ -31,7 +31,6 @@ void Dungeon_Initialize() {
     DungeonGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
     DungeonGrid.initMapTexture();
     DungeonGrid.initTextureBox();
-
     dungeon.generateDungeon(3);
 
 
@@ -41,12 +40,14 @@ void Dungeon_Initialize() {
 
     auto* player = EntityManager::getPlayer("player");
     player->setPosition(0.0f, 50.0f);
+
+    DungeonGrid.outWorldMap("../../Assets/LevelMaps/Check.txt");
 }
 
 
 void Dungeon_Update() {
     auto* player = EntityManager::getPlayer("player");
-    player->update();
+    player->update(DungeonGrid);
     player->tickAttackTimer(); // TODO: combat
 
     bool moved = false;
@@ -55,7 +56,7 @@ void Dungeon_Update() {
     float hw = AEGfxGetWindowWidth() / 2.0f;
     float hh = AEGfxGetWindowHeight() / 2.0f;
 
-
+    dungeonActiveTile = World::activeTile(player->getX(), player->getY(), DungeonGrid);
 
     // just a lot of boundary checking  vv
     if (player->getY() > hh) {
@@ -102,7 +103,6 @@ void Dungeon_Draw() {
   
     DungeonGrid.drawTexture(DungeonGrid);
     World::drawTile(dungeonActiveTile, DungeonGrid);
-    World::drawTile({ 0,0 }, DungeonGrid);
 
     // ---------- ENTITIES  (gotta figure out entity spawning) ------------------
 

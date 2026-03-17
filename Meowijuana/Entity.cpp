@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 #include "Entity.hpp"
-
 #include "Collision.hpp"
 #include "Tiles.hpp"
 
@@ -287,6 +286,60 @@ namespace Entity {
 
 	}
 
+	// Movement using GRID to check for collision
+	void Player::handleMovement(World::worldGrid& Griddy)
+	{
+		movingDirections[0] = AEInputCheckCurr(AEVK_W);
+		movingDirections[1] = AEInputCheckCurr(AEVK_S);
+		movingDirections[2] = AEInputCheckCurr(AEVK_A);
+		movingDirections[3] = AEInputCheckCurr(AEVK_D);
+
+		float deltaX = 0.0f;
+		float deltaY = 0.0f;
+		if (movingDirections[0]) deltaY += speed;
+		if (movingDirections[1]) deltaY -= speed;
+		if (movingDirections[2]) deltaX -= speed;
+		if (movingDirections[3]) deltaX += speed;
+
+		if (deltaX != 0.0f && deltaY != 0.0f) {
+			float length = sqrtf(deltaX * deltaX + deltaY * deltaY);
+			deltaX = (deltaX / length) * speed;
+			deltaY = (deltaY / length) * speed;
+		}
+
+		float halfWidth = width / 2.0f;
+		float halfHeight = height / 2.0f;
+
+		// Test X independently
+		float newX = x + deltaX;
+		std::pair<int, int> Tile1 = Griddy.getIndex(newX - halfWidth, y + halfHeight);
+		std::pair<int, int> Tile2 = Griddy.getIndex(newX + halfWidth, y + halfHeight);
+		std::pair<int, int> Tile3 = Griddy.getIndex(newX - halfWidth, y - halfHeight);
+		std::pair<int, int> Tile4 = Griddy.getIndex(newX + halfWidth, y - halfHeight);
+
+		bool canMoveX =
+			Griddy.getTileID(Tile1.first, Tile1.second) != World::Wall &&
+			Griddy.getTileID(Tile2.first, Tile2.second) != World::Wall &&
+			Griddy.getTileID(Tile3.first, Tile3.second) != World::Wall &&
+			Griddy.getTileID(Tile4.first, Tile4.second) != World::Wall;
+		if (canMoveX) x = newX;
+
+		// Test Y independently
+		float newY = y + deltaY;
+		std::pair<int, int> TileA = Griddy.getIndex(x - halfWidth, newY + halfHeight);
+		std::pair<int, int> TileB = Griddy.getIndex(x + halfWidth, newY + halfHeight);
+		std::pair<int, int> TileC = Griddy.getIndex(x - halfWidth, newY - halfHeight);
+		std::pair<int, int> TileD = Griddy.getIndex(x + halfWidth, newY - halfHeight);
+
+		bool canMoveY =
+			Griddy.getTileID(TileA.first, TileA.second) != World::Wall &&
+			Griddy.getTileID(TileB.first, TileB.second) != World::Wall &&
+			Griddy.getTileID(TileC.first, TileC.second) != World::Wall &&
+			Griddy.getTileID(TileD.first, TileD.second) != World::Wall;
+		if (canMoveY) y = newY;
+
+		setPosition(x, y);
+	}
 
 	// ==================================== additional (for collision)
 
@@ -332,10 +385,14 @@ namespace Entity {
 		handleMovement();
 	}
 
+	void Player::update(World::worldGrid& Griddy)
+	{
+		handleMovement(Griddy);
+	}
+
 	void Player::update(LevelSystem::Level& level) {
 		handleMovement(level);
 	}
-
 
 	void Player::draw() {
 		// this + override made me add a player update im so sorry

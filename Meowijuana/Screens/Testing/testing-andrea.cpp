@@ -26,12 +26,6 @@ void Andrea_Initialize()
 {
 	Inventory::init();
 
-	user = Entity::Player(
-		0.0f, 0.0f,
-		50.0f, 50.0f,
-		100.0f, 5.0f, 0.0f
-	);
-
 	// Setting position for inventory
 	float screenWidth = AEGfxGetWindowWidth();
 	float screenHeight = AEGfxGetWindowHeight();
@@ -59,6 +53,9 @@ void Andrea_Update() {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	Color::textFill(255, 255, 255);
 	Text::text("Andrea's testing screen", 0, 0);
+	
+	//World::collidableNearby(user, Griddy);
+
 	activeTile = World::activeTile(user.getX(), user.getY(), Griddy);
 
 	if (AEInputCheckTriggered(AEVK_F9))
@@ -81,9 +78,7 @@ void Andrea_Update() {
 			printf("Slot 0 is empty!\n");
 	}
 
-	World::standOnTile(next, user, Griddy);
-
-	World::collidableNearby(user, Griddy);
+	World::standOnTile(next, user, Griddy, GS_X);
 
 	user.update();
 	inven.update();
