@@ -72,10 +72,8 @@ void Xuan_Initialize() {
 
 		"@",
 
-		"Nice! OK, seems like my job here is done. I'm gonna go clock off for the day.",
-		"To get to the next floor, just head to that teleporter over there to continue. They're those white squares on the ground. The next time you come back in, you'll be directed straight to the first floor.",
-		"You can continue in the dungeons if you'd like! I'll cart you out if something bad happens.",
-		"See you around!",
+		"Nice! OK, seems like my job here is done. To get to the next floor, just head to that teleporter over there to continue. They're those circles on the ground. \nYou can head there to continue in the dungeons if you'd like! I'll cart you out if something bad happens. No going back from there, though, so watch out!",
+		"That's all from me. Good luck, have fun, and see you around!",
 
 		"@"
 	});
@@ -238,7 +236,7 @@ void Xuan_Update() {
 
 	
 	case TutorialScreen::TutorialState::FINISHED:
-
+		World::standOnTile(next, *player, Griddtwo, GS_TUTDUN);
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
