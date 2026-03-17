@@ -122,6 +122,7 @@ namespace Entity {
 			return;
 		}
 
+
 		std::cout << "Attack called\n";
 
 		float range = equippedWeapon->getRange();
@@ -137,9 +138,9 @@ namespace Entity {
 			return;
 
 		std::cout << "Collision non-issue\n";
-
+		std::cout << "Target HP before onAttack: " << target.getHp() << "\n";
 		equippedWeapon->onAttack(*this, target);
-
+		std::cout << "Target HP after onAttack: " << target.getHp() << "\n";
 	}
 
 	void Entity::draw() {
@@ -421,13 +422,13 @@ namespace Entity {
 
 	Enemy::Enemy(float posX, float posY, float w, float h, float health, float spd, float arm)
 		: Entity(posX, posY, w, h, health, spd, arm),
-		fov(500.0f), deltaX(0.0f), deltaY(0.0f),
+		fov(300.0f), deltaX(0.0f), deltaY(0.0f),
 		walking(false), endAtX(0.0f), endAtY(0.0f), wait(2.0f), waited(0.0f) {
 	}
 
 	Enemy::Enemy()
 		: Entity(),
-		fov(500.0f), deltaX(0.0f), deltaY(0.0f),
+		fov(300.0f), deltaX(0.0f), deltaY(0.0f),
 		walking(false), endAtX(0.0f), endAtY(0.0f), wait(2.0f), waited(0.0f) {
 	}
 

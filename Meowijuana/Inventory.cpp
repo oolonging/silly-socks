@@ -164,7 +164,7 @@ namespace Inventory {
 			"Commonly seen wielded by monsters and kids alike",
 			10.0f,      // value
 			15.0f,      // damage
-			2.0f,       // attackSpeed
+			1.5f,       // attackSpeed
 			85.0f,       // range
 			Common,     // rarity
 			5.0f        // knockback

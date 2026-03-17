@@ -106,11 +106,10 @@ namespace EntityManager {
 		}
 	}
 
-	void weaponEnemies(Inventory::Weapon* weapon) {
-		for (auto& e : enemies) {
+	void weaponEnemies(Inventory::Weapon* weapon) { 
+		for (auto& e : enemies) { 
 			e->setWeapon(weapon);
-			e->setAtkSpd(weapon->getAttackSpeed());
-		}
+		} 
 	}
 
 	void attackEnemies(Entity::Player& player) {
