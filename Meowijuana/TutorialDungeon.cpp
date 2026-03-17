@@ -18,7 +18,11 @@ bool pause = false;
 
 
 //  TODO : CHARACTER DEATH, MAKE ROOMS MORE INTERESTING, ENTITY COLLISION WITH WALL, PARTICLES IF POSSIBLE, KNOCKBACK???????
-
+namespace Death {
+    float opacity = 0.0f;
+    bool dead = false;
+    float fade;
+}
 
 // ------------- ROOM STATE (similar to the non-hard coded dungeonsS) ----------------------------'
 struct TutorialRoomState {
@@ -108,13 +112,27 @@ void TutorialDungeon_Update() {
     }
 
 
-    if (!tutorialRooms[tutorialRoomIndex].cleared && EntityManager::allEnemiesDead()){
+    if (!tutorialRooms[tutorialRoomIndex].cleared && EntityManager::allEnemiesDead()) {
         tutorialRooms[tutorialRoomIndex].cleared = true;
     }
 
-    if (tutPlayer->getHp() <= 0) tutPlayer->setHp(0);
 
-    
+
+    if (tutPlayer->getHp() <= 0) {
+        tutPlayer->setHp(0);
+
+        Death::dead = true;
+
+        if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
+
+        if (Death::opacity >= 255.0f) {
+            Death::opacity = 255.0f;
+            next = GS_RESPAWN;
+        }
+
+    }
+
+
 
     float halfHeight = AEGfxGetWindowHeight() / 2.0f;
     float halfWidth = AEGfxGetWindowWidth() / 2.0f;
@@ -169,12 +187,23 @@ void TutorialDungeon_Draw() {
     tutPlayer->draw();
 
     EntityManager::drawEnemies(*tutPlayer, TDungeonGrid, pause);
+
+
+
+    if (Death::dead) {
+        AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+        Color::fill(255.0f, 255.0f, 255.0f, Death::opacity);
+        Shapes::rect(0, 0, 1600, 900, Shapes::CENTER);
+
+    }
 }
 
 void TutorialDungeon_Free() {
     TDungeonGrid.unloadMapTexture();
     World::freeGrid();
     EntityManager::clearEnemies();
+    Death::dead = false;
+    Death::opacity = 0.0f;
 }
 
 void TutorialDungeon_Unload() {

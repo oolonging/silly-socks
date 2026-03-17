@@ -189,6 +189,7 @@ namespace Entity {
 		bool getConditionTrue();
 
 		void setConditionTrue();
+		void setIdling(bool value);
 		void resumeDialogue(UI_Elements::DialogueBox& dialogueBox);
 
 		void speak(UI_Elements::DialogueBox& dialogueBox);

@@ -623,6 +623,10 @@ namespace Entity {
 		return idling;
 	}
 
+	void NPC::setIdling(bool value) {
+		idling = value;
+	}
+
 	bool NPC::getConditionTrue() {
 		return conditionTrue;
 	}
