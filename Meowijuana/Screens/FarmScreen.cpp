@@ -131,10 +131,6 @@ void Farm_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* Gerald = EntityManager::getNPC("Gerald");
 
-	// Rendering state
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	Color::textFill(255, 255, 255);
-
 	// Player update
 
 	player->update(grid);
@@ -253,6 +249,10 @@ void Farm_Update() {
 
 
 void Farm_Draw() {
+
+	// Rendering state
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	Color::textFill(255, 255, 255);
 
 	auto* player = EntityManager::getPlayer("player");
 	auto* Gerald = EntityManager::getNPC("Gerald");

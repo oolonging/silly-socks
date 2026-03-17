@@ -24,6 +24,9 @@ void PauseMenu_Load() {
 
 void PauseMenu_Initialize() {
 
+    //reset every new game state
+    isPaused = false;
+
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
     //create buttons
@@ -38,16 +41,6 @@ void PauseMenu_Initialize() {
         0.0f, -130.0f, 200.0f, 100.0f, "Quit", Shapes::CENTER
     );
 
-    //text not showing
-    UI_Elements::TextStyle buttonTextStyle = resumeButton.getTextStyle();
-    buttonTextStyle.primaryColor = Color::createColorRGB(0, 0, 0, 255);
-    resumeButton.setTextStyle(buttonTextStyle);
-
-    //manual text first
-    Color::textFill(0, 0, 0);
-    Text::text("Resume", 0.0f, 130.0f);
-    Text::text("Settings", 0.0f, 0.0f);
-    Text::text("Quit", 0.0f, -130.0f);
     
     //button functions
     resumeButton.setOnClick(navigateToPrev);

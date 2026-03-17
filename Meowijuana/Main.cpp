@@ -18,6 +18,7 @@
 #include "Managers/ParticleManager.hpp"
 #include "Managers/AchievementManager.hpp"
 #include "Inventory.hpp"
+#include "PauseMenu.hpp"
 
 
 // ---------------------------------------------------------------------------
@@ -112,6 +113,7 @@ void InitSystems(int windowWidth, int windowHeight) {
 	AudioManager::audio.loadBGM("Assets/bgm.mp3");
 	AudioManager::audio.loadSFX("Assets/clicksfx.mp3");
 	AudioManager::audio.playBGM(bgVolume / 100.0f, true);
+
 }
 
 void ShutdownSystems(void) {
@@ -156,6 +158,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Enter state
 		fpLoad();
 		fpInitialize();
+		PauseMenu_Initialize();
+
+		//game states that can be paused
+		bool canPause = (current == GS_LEVEL1 ||
+			current == GS_LEVEL2 ||
+			current == GS_DUNGEON ||
+			current == GS_FARM ||
+			current == GS_TUTDUN ||
+			current == GS_TUTORIAL
+			);
 
 		// Level loop
 		while (current == next) {
@@ -169,12 +181,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			// temporary  during the debugging phase
 			screenSwitcher();
+
+			//pause logic
 			if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 				next = GS_QUIT;
 			}
 
-			fpUpdate();
+			if (AEInputCheckTriggered(AEVK_P) && canPause)
+				isPaused = !isPaused;
+
+			if (isPaused) {
+				PauseMenu_Update();
+			}
+			else {
+				fpUpdate();  //only runs level update when not paused
+			}
+
+			//draw game
 			fpDraw();
+
+			//draw pause menu
+			if (isPaused)
+				PauseMenu_Draw();
 
 			// Update input manager every frame
 			Input::update();

@@ -180,22 +180,16 @@ void Level1_Initialize()
         std::cout << "Grid " << (checked ? "enabled" : "disabled") << "\n";
         });
 
-    //pause menu initialise
-    PauseMenu_Initialize();
 }
 
 void Level1_Update()
 {
-    //toggle pause
-    if (AEInputCheckTriggered(AEVK_P)) {
-        isPaused = !isPaused;
-    }
 
-    //call pause menu update if paused
-    if (isPaused) {
-        PauseMenu_Update();
-        return;
-    }
+    testButton.setOnClick([]() {
+        std::cout << "Button clicked! Progress increased.\n";
+        progressValue += 10.0f;
+        if (progressValue > 100.0f) progressValue = 100.0f;
+        });
 
     // TODO: do better i guess
 
@@ -295,12 +289,25 @@ void Level1_Draw()
     // TODO: fix the rendering jazz in UI_ELEMENTS which doesnt default to color render
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
-    // Draw UI Elements first (behind game objects)
-    testButton.draw();
-    testSlider.draw();
-    testProgressBar.draw();
-    testTextBox.draw();
-    testCheckbox.draw();
+    //still gotta add guard here, see how for other screens
+    if (!isPaused)
+    {
+        // Draw UI Elements first (behind game objects)
+        testButton.draw();
+        testSlider.draw();
+        testProgressBar.draw();
+        testTextBox.draw();
+        testCheckbox.draw();
+
+        // Draw UI labels
+        Color::textFill(0, 0, 0, 255); // set text color to black
+        Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset);
+        Text::text("Speed Control:", -300.0f, 240.0f + heightOffset);
+        Text::text("Progress (auto-drains):", -300.0f, 150.0f + heightOffset);
+        Text::text("Text Input:", -300.0f, 60.0f + heightOffset);
+        Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset);
+        Text::text("Difficulty:", -300.0f, -140.0f + heightOffset);
+    }
 
 
     // Draw game objects
@@ -317,20 +324,7 @@ void Level1_Draw()
 
     /*   weapon.draw();*/
 
-       // Draw UI labels
-    Color::textFill(0, 0, 0, 255); // set text color to black
-    Text::text("Click to add progress:", -300.0f, 330.0f + heightOffset);
-    Text::text("Speed Control:", -300.0f, 240.0f + heightOffset);
-    Text::text("Progress (auto-drains):", -300.0f, 150.0f + heightOffset);
-    Text::text("Text Input:", -300.0f, 60.0f + heightOffset);
-    Text::text("Press Enter to print text", -300.0f, -60.0f + heightOffset);
-    Text::text("Difficulty:", -300.0f, -140.0f + heightOffset);
 
-    //draw pause menu if paused
-    if (isPaused) {
-        PauseMenu_Draw();
-    }
-    //enemy still moves when paused, i think its bc the enemy draw has movement inside
 }
 
 
