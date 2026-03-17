@@ -48,7 +48,7 @@ void Xuan_Initialize() {
 	Griddtwo.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	Griddtwo.initMapTexture();
 	Griddtwo.initTextureBox();
-	Griddtwo.fillGrid("../../Assets/LevelMaps/l1sidebutbetter.txt");
+	Griddtwo.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
 	Griddtwo.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
 
 

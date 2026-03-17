@@ -72,6 +72,69 @@ namespace EntityManager {
 			});
 	}
 
+
+
+	// enemies stored separately so we can clear per-room
+	std::vector<std::unique_ptr<Entity::Enemy>> enemies;
+
+	void spawnEnemies(int count, float areaW, float areaH) {
+		enemies.clear();
+		for (int i = 0; i < count; i++) {
+
+			// random position within room bounds, with some padding
+			float x = AERandFloat() * areaW - (areaW / 2.0f);
+			float y = AERandFloat() * areaH - (areaH / 2.0f);
+			enemies.push_back(std::make_unique<Entity::Enemy>(
+				x, y, 50.0f, 50.0f, 100.0f, 2.0f, 0.0f 
+			));
+		}
+	}
+
+	void clearEnemies() {
+		enemies.clear();
+	}
+
+	void updateEnemies(Entity::Player& player) {
+		for (auto& e : enemies) {
+			if (e->isAlive()) {
+				e->tickAttackTimer();
+				if (e->canAttack()) {
+					e->attack(player);
+					e->resetAttackTimer();
+				}
+			}
+		}
+	}
+
+	void weaponEnemies(Inventory::Weapon* weapon) {
+		for (auto& e : enemies) {
+			e->setWeapon(weapon);
+			e->setAtkSpd(weapon->getAttackSpeed());
+		}
+	}
+
+	void attackEnemies(Entity::Player& player) {
+		for (auto& e : enemies) {
+			if (e->isAlive()) {
+				player.attack(*e);
+				if (e->getHp() <= 0) e->setHp(0);
+			}
+		}
+	}
+
+	void drawEnemies(Entity::Player& player) {
+		for (auto& e : enemies) {
+			if (e->getHp() > 0)
+				e->draw(player);
+		}
+	}
+
+	bool allEnemiesDead() {
+		for (auto& e : enemies)
+			if (e->isAlive()) return false;
+		return true;
+	}
+
 	void clear() {
 		entities.clear();
 	}

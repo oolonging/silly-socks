@@ -39,6 +39,18 @@ namespace EntityManager {
 
 	// Cleanup
 	void clear();
+
+
+
+	// ENEMY STUFF
+
+	void spawnEnemies(int count, float areaW, float areaH);
+	void clearEnemies();
+	void updateEnemies(Entity::Player& player);
+	void attackEnemies(Entity::Player& player);
+	void drawEnemies(Entity::Player& player);
+	void weaponEnemies(Inventory::Weapon* weapon);
+	bool allEnemiesDead();
 }
 
 #endif // ENTITY_MANAGER_HPP
