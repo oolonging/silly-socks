@@ -14,7 +14,7 @@
 //#include "../Attack.h"
 #include "../PauseMenu.hpp"
 
-
+extern World::worldGrid grid;
 bool drawGrid = false;
 
 // Entities player and enemy
@@ -308,7 +308,7 @@ void Level1_Draw()
 
     // Enemy disappears when dead
     if (testEnemy.getHp() > 0) {
-        testEnemy.draw(testPlayer);
+        testEnemy.draw(testPlayer, grid, false);
     }
     else {
 

@@ -9,6 +9,9 @@
 #include "../../World.hpp"
 
 
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
+
 // will update with new dialogue once tiletypes and consumables come into play
 
 World::worldGrid Griddtwo;
@@ -103,6 +106,10 @@ void Xuan_Initialize() {
 	{
 		player->setWeapon(weapon);
 		player->setAtkSpd(weapon->getAttackSpeed());
+		Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
+		Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
+
+		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD, 1); // <-- add this
 	}
 
 }
@@ -246,6 +253,8 @@ void Xuan_Update() {
 	{
 		World::dungeonTracker[World::checkNum] = true;
 	}
+
+	inv.update();
 }
 
 
@@ -267,13 +276,17 @@ void Xuan_Draw() {
 	EntityManager::draw("smelly");
 	EntityManager::draw("player");
 	
+	/*if (showInventory)
+	{
+		inv.draw();
+	}*/
 
 	if (dummy->getHp() > 0) {
-		dummy->draw(*player);
+		dummy->draw(*player, Griddtwo, false);
 	}
 	else {
 		// placaeholder here for now but hopefully switch to sprite of destroyed dummy
-		dummy->draw(*player);
+		dummy->draw(*player, Griddtwo, false);
 	}
 
 

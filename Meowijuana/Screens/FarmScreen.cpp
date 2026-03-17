@@ -64,7 +64,7 @@ void Farm_Initialize() {
 
 	// Setting inventory to bottom 
 	inv.setPosition(x, y);
-	inv.setPlayer(player);
+	inv.setPlayer(EntityManager::getPlayer("player"));
 
 	// Set player position
 	player->setX(0);
@@ -142,6 +142,7 @@ void Farm_Update() {
 
 	activeT = World::activeTile(player->getX(), player->getY(), grid);
 
+	// Keybindings for tests
 	if (AEInputCheckTriggered(AEVK_F9))
 	{
 		onGrid = !onGrid;
@@ -157,21 +158,25 @@ void Farm_Update() {
 		World::interactTile(activeT, grid, inv, *player);
 	}
 
+	// Makes it so that user is stuck in tutorial area until done w tutorial, it player completed tutorial already, teleporter shld be normal
 	if (firstStartGame)
 	{
 		if (inv.isEmpty(*player))
 		{
 			World::standOnTile(next, *player, grid, GS_X);
 		}
-
 		else
 		{
 			std::pair<int, int> currTile = grid.getIndex(player->getX(), player->getY());
-
 			if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter)
 			{
 				FarmNPC::activeSpeaker = Gerald;
 				Gerald->idleSpeak(FarmNPC::dialogueBox);
+
+			}
+			else
+			{
+				World::standOnTile(next, *player, grid, GS_X); // handle non-teleporter tiles
 			}
 		}
 	}
@@ -180,6 +185,7 @@ void Farm_Update() {
 	{
 		World::standOnTile(next, *player, grid, GS_X);
 	}
+
 	// NPC TALKING STUFFS
 
 	if (FarmNPC::dialogueBox.getIsActive() && FarmNPC::activeSpeaker) {

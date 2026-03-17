@@ -48,7 +48,7 @@ namespace EntityManager {
 	void clearEnemies();
 	void updateEnemies(Entity::Player& player);
 	void attackEnemies(Entity::Player& player);
-	void drawEnemies(Entity::Player& player);
+	void drawEnemies(Entity::Player& player, World::worldGrid& Griddy, bool pause);
 	void weaponEnemies(Inventory::Weapon* weapon);
 	bool allEnemiesDead();
 }

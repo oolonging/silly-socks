@@ -121,10 +121,10 @@ namespace EntityManager {
 		}
 	}
 
-	void drawEnemies(Entity::Player& player) {
+	void drawEnemies(Entity::Player& player, World::worldGrid& Griddy, bool pause) {
 		for (auto& e : enemies) {
 			if (e->getHp() > 0)
-				e->draw(player);
+				e->draw(player, Griddy, pause);
 		}
 	}
 

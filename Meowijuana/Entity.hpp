@@ -143,11 +143,13 @@ namespace Entity {
 		float wait;
 		float waited;
 
-		void movement(const Player& player, float deltaTime);
+		/*void movement(const Player& player, World::worldGrid& Griddy, float deltaTime);*/
 
 	public:
+		void movement(const Player& player, float deltaTime, World::worldGrid& Griddy);
+
 		// Draw that takes player reference for AI
-		void draw(const Player& player);
+		void draw(const Player& player, World::worldGrid& Griddy, bool pause);
 
 		// Setters
 		void setFov(float newFov);

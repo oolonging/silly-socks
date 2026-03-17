@@ -441,13 +441,17 @@ namespace Entity {
 	}
 
 
-	void Enemy::movement(const Player& player, float deltaTime) {
+	void Enemy::movement(const Player& player, float deltaTime, World::worldGrid& Griddy)
+	{
 		bool playerSpotted = Collision::collidedWith(
 			x, y,
 			player.getX(), player.getY(),
 			fov,
 			player.getWidth(), player.getHeight()
 		);
+
+		float deltaX = 0.0f;
+		float deltaY = 0.0f;
 
 		if (!playerSpotted) {
 			// Wander behavior
@@ -458,15 +462,12 @@ namespace Entity {
 				walking = true;
 				waited = 0.0f;
 			}
-
 			float dirX = endAtX - x;
 			float dirY = endAtY - y;
 			float dist = sqrtf(dirX * dirX + dirY * dirY);
-
 			if (dist > speed) {
-				dirX /= dist;
-				dirY /= dist;
-				setPosition(x + dirX * speed, y + dirY * speed);
+				deltaX = (dirX / dist) * speed;
+				deltaY = (dirY / dist) * speed;
 			}
 			else {
 				waited += deltaTime;
@@ -481,25 +482,76 @@ namespace Entity {
 			float diffX = player.getX() - x;
 			float diffY = player.getY() - y;
 			float dist = sqrtf((diffX * diffX) + (diffY * diffY));
-
 			if (dist > 1.0f) {
 				diffX /= dist;
 				diffY /= dist;
 			}
-
-			// Stop at distance threshold
 			const float stopDistance = 70.0f;
 			if (dist >= stopDistance) {
-				setPosition(x + diffX * speed, y + diffY * speed);
+				deltaX = diffX * speed;
+				deltaY = diffY * speed;
 			}
-
 		}
+
+		// Grid collision — same corner-check pattern as Player
+		float halfWidth = width / 2.0f;
+		float halfHeight = height / 2.0f;
+
+		// Test X independently
+		float newX = x + deltaX;
+		std::pair<int, int> Tile1 = Griddy.getIndex(newX - halfWidth, y + halfHeight);
+		std::pair<int, int> Tile2 = Griddy.getIndex(newX + halfWidth, y + halfHeight);
+		std::pair<int, int> Tile3 = Griddy.getIndex(newX - halfWidth, y - halfHeight);
+		std::pair<int, int> Tile4 = Griddy.getIndex(newX + halfWidth, y - halfHeight);
+		bool canMoveX =
+			Griddy.getTileID(Tile1.first, Tile1.second) != World::Wall &&
+			Griddy.getTileID(Tile2.first, Tile2.second) != World::Wall &&
+			Griddy.getTileID(Tile3.first, Tile3.second) != World::Wall &&
+			Griddy.getTileID(Tile4.first, Tile4.second) != World::Wall;
+
+		if (canMoveX) {
+			x = newX;
+		}
+
+		else {
+			// Wall hit on X — flip target and pick new wander point next frame
+			endAtX = x - (endAtX - x); // mirror target
+			walking = false;            // force new random point next frame
+		}
+
+		// Test Y independently
+		float newY = y + deltaY;
+		std::pair<int, int> TileA = Griddy.getIndex(x - halfWidth, newY + halfHeight);
+		std::pair<int, int> TileB = Griddy.getIndex(x + halfWidth, newY + halfHeight);
+		std::pair<int, int> TileC = Griddy.getIndex(x - halfWidth, newY - halfHeight);
+		std::pair<int, int> TileD = Griddy.getIndex(x + halfWidth, newY - halfHeight);
+		bool canMoveY =
+			Griddy.getTileID(TileA.first, TileA.second) != World::Wall &&
+			Griddy.getTileID(TileB.first, TileB.second) != World::Wall &&
+			Griddy.getTileID(TileC.first, TileC.second) != World::Wall &&
+			Griddy.getTileID(TileD.first, TileD.second) != World::Wall;
+
+		if (canMoveY) {
+			y = newY;
+		}
+
+		else {
+			// Wall hit on Y — same treatment
+			endAtY = y - (endAtY - y); // mirror target
+			walking = false;            // force new random point next frame
+		}
+
+		setPosition(x, y);
 	}
 
 
 
-	void Enemy::draw(const Player& player) {
-		movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()));
+
+	void Enemy::draw(const Player& player, World::worldGrid& Griddy, bool pause) {
+		if (!pause)
+		{
+			movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()), Griddy);
+		}
 
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
