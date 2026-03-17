@@ -169,7 +169,7 @@ void Farm_Update() {
 	// Makes it so that user is stuck in tutorial area until done w tutorial, it player completed tutorial already, teleporter shld be normal
 	if (firstStartGame)
 	{
-		if (!inv.findItem(*player,Inventory::ItemID::CARROT_SEEDS))
+		if (!inv.findItem(*player,Inventory::ItemID::CARROT_SEEDS) && !inv.findItem(*player, Inventory::ItemID::CHERRY_SEEDS))
 		{
 			World::standOnTile(next, *player, grid, GS_X);
 		}

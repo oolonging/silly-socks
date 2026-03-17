@@ -625,6 +625,8 @@ namespace World {
 	// Draw highlighted tile based on the coords 
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy)
 	{
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
 		int tileSize = Griddy.getTileSize();
 		std::pair<float, float> coords = getWorldCoords(tile, Griddy);
 
