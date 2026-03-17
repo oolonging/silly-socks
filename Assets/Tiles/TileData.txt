@@ -1,0 +1,13 @@
+0 Ground Assets/Tiles/Ground.png
+1 Wall Assets/Tiles/Wall.png
+2 InteractableObj Assets/Tiles/Wall.png
+3 EmptyCropTile Assets/Tiles/Empty_Crop.png
+4 PlantedCarrotCropTile Assets/Tiles/Planted_Crop.png
+5 PlantedCherryCropTile Assets/Tiles/Planted_Crop.png
+6 PlantedPotatoCropTile Assets/Tiles/Planted_Crop.png
+7 CarrotCropTile Assets/Tiles/Done_Crop.png
+8 CherryCropTile Assets/Tiles/Done_Crop.png
+9 PotatoCropTile Assets/Tiles/Done_Crop.png
+10 OOB Assets/Tiles/VOID.png
+11 Teleporter Assets/Tiles/Teleporter.png
+12 TeleporterOtherSide Assets/Tiles/Teleporter.png

@@ -16,6 +16,9 @@ namespace UI_Elements {
 
 namespace World
 {
+	extern bool dungeonTracker[4];
+	extern int checkNum;
+
 	enum behaviourFlag
 	{
 		// -- Misc. -- //
@@ -26,9 +29,13 @@ namespace World
 		// -- Crops -- //
 		// Might need Change Grown Crops to the diff crops instead
 		EmptyCropTile,
-		PlantedCropTile,
-		GrownCropTile,
-		DoneCropTile,
+		PlantedCarrotCropTile,
+		PlantedCherryCropTile,
+		PlantedPotatoCropTile,
+
+		CarrotCropTile,
+		CherryCropTile,
+		PotatoCropTile,
 
 		// -- New Stuff -- //
 		OOB,
@@ -95,6 +102,7 @@ namespace World
 		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();
 		void unloadMapTexture();
+		void growPlants(World::worldGrid& Griddy);
 	};
 
 	// --- Tiler Helper functions --- //

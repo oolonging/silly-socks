@@ -6,6 +6,9 @@ World::worldGrid grid;
 
 namespace World {
 
+	bool dungeonTracker[4] = { false,false,false, false };
+	int checkNum = 0;
+
 	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;
 	AEGfxVertexList* tileMesh = nullptr;
@@ -18,96 +21,28 @@ namespace World {
 	// Initialising all the map textures
 	void worldGrid::initMapTexture()
 	{
-		//// -- Misc. -- //
-		//Ground, // normal ground
-		//Wall, // walls, obstacle objects
-		//InteractableObj, // chest etc.
 
-		//// -- Crops -- //
-		//EmptyCropTile,
-		//PlantedCropTile,
-		//GrownCropTile,
-		//DoneCropTile
+		std::ifstream file("Assets/Tiles/TileData.txt");
+		if (!file.is_open())
+		{
+			std::cerr << "Failed to open TileData.txt\n";
+			return;
+		}
 
-		tileObject ground;
-		ground.objID = 0;
-		ground.name = "Ground";
-		ground.description = "Assets/Tiles/Ground.png";
-		ground.image = AEGfxTextureLoad(ground.description.c_str());
+		int id;
+		std::string name, texturePath;
 
-		tileDatabase[0] = ground;
+		while (file >> id >> name >> texturePath)
+		{
+			tileObject tile;
+			tile.objID = id;
+			tile.name = name;
+			tile.description = texturePath;
+			tile.image = AEGfxTextureLoad(texturePath.c_str());
+			tileDatabase[id] = tile;
+		}
 
-		tileObject wall;
-		wall.objID = 1;
-		wall.name = "Wall";
-		wall.description = "Assets/Tiles/Wall.png";
-		wall.image = AEGfxTextureLoad(wall.description.c_str());
-
-		tileDatabase[1] = wall;
-
-		tileObject inter;
-		inter.objID = 2;
-		inter.name = "Interactable Object";
-		inter.description = "Assets/Tiles/Wall.png";
-		inter.image = AEGfxTextureLoad(inter.description.c_str());
-
-		tileDatabase[2] = inter;
-
-		tileObject emptyCrop;
-		emptyCrop.objID = 3;
-		emptyCrop.name = "Empty Crop Land";
-		emptyCrop.description = "Assets/Tiles/Empty_Crop.png";
-		emptyCrop.image = AEGfxTextureLoad(emptyCrop.description.c_str());
-
-		tileDatabase[3] = emptyCrop;
-
-		tileObject plantedCrop;
-		plantedCrop.objID = 4;
-		plantedCrop.name = "Planted Crop Land";
-		plantedCrop.description = "Assets/Tiles/Planted_Crop.png";
-		plantedCrop.image = AEGfxTextureLoad(plantedCrop.description.c_str());
-
-		tileDatabase[4] = plantedCrop;
-
-		tileObject grownCrop;
-		grownCrop.objID = 5;
-		grownCrop.name = "Grown Crop Land";
-		grownCrop.description = "Assets/Tiles/Growing_Crop.png";
-		grownCrop.image = AEGfxTextureLoad(grownCrop.description.c_str());
-
-		tileDatabase[5] = grownCrop;
-
-		tileObject doneCrop;
-		doneCrop.objID = 6;
-		doneCrop.name = "Grown Crop Land";
-		doneCrop.description = "Assets/Tiles/Done_Crop.png";
-		doneCrop.image = AEGfxTextureLoad(doneCrop.description.c_str());
-
-		tileDatabase[6] = doneCrop;
-
-		tileObject OOB;
-		OOB.objID = 7;
-		OOB.name = "Out Of Bounds (void)";
-		OOB.description = "Assets/Tiles/VOID.png";
-		OOB.image = AEGfxTextureLoad(OOB.description.c_str());
-
-		tileDatabase[7] = OOB;
-
-		tileObject Teleporter;
-		Teleporter.objID = 8;
-		Teleporter.name = "Teleporter";
-		Teleporter.description = "Assets/Tiles/WHITE.png";
-		Teleporter.image = AEGfxTextureLoad(Teleporter.description.c_str());
-
-		tileDatabase[8] = Teleporter;
-
-		tileObject TeleporterOtherSide;
-		TeleporterOtherSide.objID = 9;
-		TeleporterOtherSide.name = "TeleporterOtherSide";
-		TeleporterOtherSide.description = "Assets/Tiles/WHITE.png";
-		TeleporterOtherSide.image = AEGfxTextureLoad(TeleporterOtherSide.description.c_str());
-
-		tileDatabase[9] = TeleporterOtherSide;
+		file.close();
 	}
 	
 	// Free the assests and stuff
@@ -359,27 +294,66 @@ namespace World {
 
 		switch (ID)
 		{
-		case EmptyCropTile:
 
-			// Inventory check 
+		case EmptyCropTile:
+		{
+			int slotIndex = inven.getSelectedSlot();
+			Inventory::Item* item = user.getInventoryItem(slotIndex);
+
+			if (item == nullptr) break;
+
+			int itemID = item->getID();
+
 			if (useItemOnTile(tile, Griddy, inven, user))
 			{
-				printf("Planted Crops! Yay!!\n");
-				ID = PlantedCropTile;
-			}
+				switch (itemID)
+				{
+				case Inventory::ItemID::CARROT_SEEDS:
+					printf("Planted Carrot! Yay!!\n");
+					ID = PlantedCarrotCropTile;
+					break;
 
+				case Inventory::ItemID::CHERRY_SEEDS:
+					printf("Planted Cherry! Yay!!\n");
+					ID = PlantedCherryCropTile;
+					break;
+				
+				case Inventory::ItemID::POTATO_SEEDS:
+					printf("Planted Potato! Yay!!\n");
+					ID = PlantedPotatoCropTile;
+					break;
+				}
+			}
+			break;
+		}
+
+		case PlantedCarrotCropTile:
+			printf("A Carrot is growing! Yay!!\n");
 			break;
 
-		case PlantedCropTile:
-			// If users try to press E with the crop -> shld give little message saying
-			if (!useItemOnTile(tile, Griddy, inven, user))
-			{
-				printf("Seeds has already been planted!\n");
-			}
+		case PlantedCherryCropTile:
+			printf("A Cherry is growing! Yay!!\n");
 			break;
 
-		case DoneCropTile:
-			printf("Collected Plants! Yay!!\n");
+		case PlantedPotatoCropTile:
+			printf("A Potato is growing! Yay!!\n");
+			break;
+
+		case CarrotCropTile:
+			printf("Collected Carrot! Yay!!\n");
+			inven.giveItem(user, Inventory::ItemID::CARROT, 1);
+			ID = EmptyCropTile;
+			break;
+
+		case CherryCropTile:
+			printf("Collected Cherry! Yay!!\n");
+			inven.giveItem(user, Inventory::ItemID::CHERRY, 1);
+			ID = EmptyCropTile;
+			break;
+
+		case PotatoCropTile:
+			printf("Collected Potato! Yay!!\n");
+			inven.giveItem(user, Inventory::ItemID::POTATO, 1);
 			ID = EmptyCropTile;
 			break;
 
@@ -388,6 +362,33 @@ namespace World {
 			break;
 		}
 
+	}
+
+	void worldGrid::growPlants(World::worldGrid& Griddy)
+	{
+		if (dungeonTracker[checkNum])
+		{
+			for (int row = 0; row < Griddy.getHeight(); row++)
+			{
+				for (int col = 0; col < Griddy.getWidth(); col++)
+				{
+					int& tileID = Griddy.pointerToTile(col, row);
+					switch (tileID)
+					{
+					case PlantedCarrotCropTile:
+						tileID = CarrotCropTile;
+						break;
+					case PlantedCherryCropTile:
+						tileID = CherryCropTile;
+						break;
+					case PlantedPotatoCropTile:
+						tileID = PotatoCropTile;
+						break;
+					}
+
+				}
+			}
+		}
 	}
 
 	// Returns true if the interaction succeeded

@@ -3,7 +3,7 @@
 
 #include "../Graphics.hpp"
 
-// Forward declaration to break circular dependency
+
 namespace Entity {
 	class Player;
 }
@@ -303,7 +303,10 @@ namespace UI_Elements {
 		void setPlayer(Entity::Player* player);
 		void setPosition(float newX, float newY); // Soz just making it so that it looks a lil nicer 
 
-		void giveCarrotSeeds(Entity::Player& player);
+		/*void giveSeeds(Entity::Player& player);*/
+		bool findItem(Entity::Player& player, int check);
+		bool isEmpty(Entity::Player& player);
+		void giveItem(Entity::Player& player, int itemID, int itemCount);
 
 		// Constructors
 		PlayerInventory(float x, float y, float slotSize, float slotSpacing, Entity::Player* player, Shapes::SHAPE_MODE mode = Shapes::CORNER);

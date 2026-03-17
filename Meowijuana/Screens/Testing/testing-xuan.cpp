@@ -241,6 +241,11 @@ void Xuan_Update() {
 	if (player->getX() < -(AEGfxGetWindowWidth() / 2)) {
 		next = GS_FARM;
 	}
+
+	if (AEInputCheckTriggered(AEVK_F10))
+	{
+		World::dungeonTracker[World::checkNum] = true;
+	}
 }
 
 

@@ -9,14 +9,17 @@
 bool firstLoad = true;
 bool firstDungeon = true;
 
-UI_Elements::PlayerInventory inv;
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
 
 // For world grid
 std::pair<int, int> prevActiveT;
 std::pair<int, int> activeT;
 
-World::worldGrid Grid;
-//bool turnGridOn = false;
+extern World::worldGrid grid;
+bool onGrid = false;
+
+bool firstStartGame = true;
 
 namespace FarmNPC {
 
@@ -26,8 +29,8 @@ namespace FarmNPC {
 	enum class TutorialState {
 		GER_TALK,
 		GER_IDLE,
+		GER_TALK2,
 		FINISHED
-
 	};
 
 	TutorialState state = TutorialState::GER_TALK;
@@ -36,7 +39,7 @@ namespace FarmNPC {
 
 void Farm_Load() 
 {
-	Inventory::load();
+	showInventory = true;
 }
 
 
@@ -44,7 +47,6 @@ void Farm_Initialize() {
 
 	// Initialising stuffs
 	EntityManager::init();
-	Inventory::init();
 
 	// Initialising Player
 	auto* player = EntityManager::getPlayer("player");
@@ -68,8 +70,6 @@ void Farm_Initialize() {
 	player->setX(0);
 	player->setY(0);
 
-	// Temporary using the same layout as my temp farm stuff
-	Grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
 
 	// Initialising NPCs
 	auto* Gerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
@@ -81,24 +81,48 @@ void Farm_Initialize() {
 
 		"@",
 
-		"Next Dialogue Here",
+		"Good Job! After planting the seeds, it will grow everytime you finish a dungeon level so make sure you make full use of your farm space!",
+		"You can get more seeds while exploring the dungeons so look out for that!",
 
 		"@"
 		});
 
 	Gerald->setIdleLines({
-		"Try Planting the seeds that I have just given you!",
+		"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
 		});
 
 	// Initialize dialogue box
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	// Initialise Grid Stuff
-	Grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
-	Grid.initMapTexture();
-	Grid.initTextureBox();
-	Grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
-	Grid.outWorldMap("../../Assets/LevelMaps/Check.txt");
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+	grid.initMapTexture();
+	grid.initTextureBox();
+	
+	if (firstStartGame)
+	{
+		grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
+		firstStartGame = false;
+	}
+
+	else
+	{
+		std::ifstream file("../../Assets/LevelMaps/Farm_User_layout.txt");
+
+		if (!file.is_open())
+		{
+			grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
+		}
+
+		else
+		{
+			file.close();
+			grid.fillGrid("../../Assets/LevelMaps/Farm_User_layout.txt");
+		}
+	}
+
+	// Growing plant
+	grid.growPlants(grid);
 
 }
 
@@ -113,24 +137,49 @@ void Farm_Update() {
 
 	// Player update
 
-	player->update(Grid);
+	player->update(grid);
 	inv.update();
 
-	activeT = World::activeTile(player->getX(), player->getY(), Grid);
+	activeT = World::activeTile(player->getX(), player->getY(), grid);
 
-	/*if (AEInputCheckTriggered(AEVK_F9))
+	if (AEInputCheckTriggered(AEVK_F9))
 	{
-		turnGridOn = !turnGridOn;
-	}*/
+		onGrid = !onGrid;
+	}
+
+	if (AEInputCheckTriggered(AEVK_F10))
+	{
+		grid.outWorldMap("../../Assets/LevelMaps/Check.txt");
+	}
 
 	if (AEInputCheckTriggered(AEVK_E))
 	{
-		World::interactTile(activeT, Grid, inv, *player);
+		World::interactTile(activeT, grid, inv, *player);
 	}
 
-	World::standOnTile(next, *player, Grid, GS_DUNGEON);
+	if (firstStartGame)
+	{
+		if (inv.isEmpty(*player))
+		{
+			World::standOnTile(next, *player, grid, GS_X);
+		}
 
+		else
+		{
+			std::pair<int, int> currTile = grid.getIndex(player->getX(), player->getY());
 
+			if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter)
+			{
+				FarmNPC::activeSpeaker = Gerald;
+				Gerald->idleSpeak(FarmNPC::dialogueBox);
+			}
+		}
+	}
+
+	else
+	{
+		World::standOnTile(next, *player, grid, GS_X);
+	}
 	// NPC TALKING STUFFS
 
 	if (FarmNPC::dialogueBox.getIsActive() && FarmNPC::activeSpeaker) {
@@ -142,7 +191,6 @@ void Farm_Update() {
 		else {
 			FarmNPC::activeSpeaker->speak(FarmNPC::dialogueBox);
 		}
-
 
 		return;
 	}
@@ -156,30 +204,46 @@ void Farm_Update() {
 
 		if (Gerald->getIsPaused()) {
 			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
+			inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
+			inv.giveItem(*player, Inventory::ItemID::CHERRY_SEEDS, 6);
 		}
-
-		inv.giveCarrotSeeds(*player);
 
 		break;
 
 
 	case FarmNPC::TutorialState::GER_IDLE:
 
-		FarmNPC::activeSpeaker = Gerald;
-		Gerald->speak(FarmNPC::dialogueBox);
+		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			Gerald->getX(), Gerald->getY(),
+			75.0f,
+			Gerald->getWidth(), Gerald->getHeight()))
+		{
+			FarmNPC::activeSpeaker = Gerald;
+			Gerald->idleSpeak(FarmNPC::dialogueBox);
+		}
 
+		break;
+
+	// Check if all seeds are planted then next step in dialogue
+	case FarmNPC::TutorialState::GER_TALK2:
+			
+		FarmNPC::activeSpeaker = Gerald;
+		Gerald->resumeDialogue(FarmNPC::dialogueBox);
+				
 		if (Gerald->getIsPaused()) {
-			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
+			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
 		}
 
 		break;
 	}
 
-	//// Press E at dungeon entrance 
-	//World::standOnTile(next, *player, Grid, GS_X);
+	if (inv.isEmpty(*player) && FarmNPC::state == FarmNPC::TutorialState::GER_IDLE)
+	{
+		FarmNPC::state = FarmNPC::TutorialState::GER_TALK2;
+	}
 
 }
-
 
 
 void Farm_Draw() {
@@ -187,20 +251,22 @@ void Farm_Draw() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* Gerald = EntityManager::getNPC("Gerald");
 
-	World::drawTile(activeT, Grid);
-	Grid.drawTexture(Grid);
+	grid.drawTexture(grid);
 
-	/*if (turnGridOn)
+	if (onGrid)
 	{
 		World::drawGrid();
-	}*/
+	}
 
-	World::drawTile(activeT, Grid);
+	World::drawTile(activeT, grid);
 	EntityManager::draw("Gerald");
 
 	player->draw();
 
-	inv.draw();
+	if (showInventory)
+	{
+		inv.draw();
+	}	
 
 	// Basically the stuff that draws the floating pointer on top of the npc
 	/*if (!FarmNPC::dialogueBox.getIsActive()) {
@@ -233,19 +299,19 @@ void Farm_Draw() {
 
 void Farm_Free() 
 {
+	grid.outWorldMap("../../Assets/LevelMaps/Farm_User_layout.txt");
+
 	auto* player = EntityManager::getPlayer("player");
 	auto* Gerald = EntityManager::getNPC("Gerald");
 
-	Grid.unloadMapTexture();
-	World::freeGrid();
-	Inventory::ItemRegistry::cleanup();
-	player->freeInventory();
+	/*grid.unloadMapTexture();
+	Inventory::ItemRegistry::cleanup();*/
 
 }
 
 void Farm_Unload() 
 {
-	Inventory::unload();
+	/*Inventory::unload();*/
 
 	auto* Gerald = EntityManager::getNPC("Gerald");
 	if (Gerald && Gerald->getSprite()) {

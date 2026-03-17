@@ -49,9 +49,16 @@ namespace Inventory {
 		const int SPINACH = 7;
 		const int GOLDEN_CARROT_SWORD = 8; // Merged version
 		const int WOODEN_SWORD = 9; // for the weaker enemies int he dungeon
+		
+		// SEEDS
 		const int CARROT_SEEDS = 10;
 		const int CHERRY_SEEDS = 11;
 		const int POTATO_SEEDS = 12;
+
+		// CROP
+		const int CARROT = 13;
+		const int CHERRY = 14;
+		const int POTATO = 15;
 	}
 
 	class Item {

@@ -171,26 +171,77 @@ UI_Elements::PlayerInventory::~PlayerInventory() {
 	playerRef = nullptr;
 }
 
-void UI_Elements::PlayerInventory::giveCarrotSeeds(Entity::Player& player)
+// Made giveItem which is more general, will be using that instead
+//void UI_Elements::PlayerInventory::giveSeeds(Entity::Player& player)
+//{
+//	// If first slot empty give seeds
+//	if (player.getInventoryItem(0) == nullptr)
+//	{
+//		Inventory::Item* seeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SEEDS);
+//		seeds->setCount(3);
+//		player.setInventoryItem(0, seeds);
+//	}
+//
+//	// If second slot empty give seed
+//	if (player.getInventoryItem(1) == nullptr)
+//	{
+//		Inventory::Item* cseeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CHERRY_SEEDS);
+//		cseeds->setCount(6);
+//		player.setInventoryItem(1, cseeds);
+//	}
+//
+//	// No empty slot found, do nothing
+//	return;
+//}
+
+void UI_Elements::PlayerInventory::giveItem(Entity::Player& player, int itemID, int itemCount)
 {
-	// If first slot empty give seeds
-	if (player.getInventoryItem(0) == nullptr)
+	for (int i = 0; i < player.getInventorySize(); i++)
 	{
-		Inventory::Item* seeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SEEDS);
-		seeds->setCount(3);
-		player.setInventoryItem(0, seeds);
-	}
+		if (player.getInventoryItem(i) != nullptr)
+		{
+			if (player.getInventoryItem(i)->getID() == itemID)
+			{
+				int count = player.getInventoryItem(i)->getCount();
+				player.getInventoryItem(i)->setCount(count += itemCount);
+				return;
+			}
+		}
 
-	// If second slot empty give seed
-	if (player.getInventoryItem(1) == nullptr)
+		else
+		{
+			Inventory::Item* item = Inventory::ItemRegistry::createItem(itemID);
+			item->setCount(itemCount);
+			player.setInventoryItem(i, item);
+			return;
+		}
+	}
+}
+
+bool UI_Elements::PlayerInventory::findItem(Entity::Player& player, int check)
+{
+	for (int i = 0; i < player.getInventorySize(); i++)
 	{
-		Inventory::Item* cseeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CHERRY_SEEDS);
-		cseeds->setCount(3);
-		player.setInventoryItem(1, cseeds);
+		Inventory::Item* item = player.getInventoryItem(i);
+		if (item != nullptr && item->getID() == check)
+		{
+			return true; 
+		}
 	}
+	return false;
+}
 
-	return;
-	// No empty slot found, do nothing
+bool UI_Elements::PlayerInventory::isEmpty(Entity::Player& player)
+{
+	for (int i = 0; i < player.getInventorySize(); i++)
+	{
+		Inventory::Item* item = player.getInventoryItem(i);
+		if (item != nullptr)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 

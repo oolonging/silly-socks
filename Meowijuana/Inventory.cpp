@@ -3,13 +3,22 @@
 
 #include "Entity.hpp"
 
+UI_Elements::PlayerInventory inv;
+bool showInventory;
+
 namespace Inventory {
 	
 	namespace Textures {
+
+		// Icons for seeds
 		AEGfxTexture* carrotSeedIcon = nullptr;
 		AEGfxTexture* cherrySeedIcon = nullptr;
 		AEGfxTexture* potatoSeedIcon = nullptr;
-		// ... all other item icons
+
+		// Icons for plants
+		AEGfxTexture* carrotIcon = nullptr;
+		AEGfxTexture* cherryIcon = nullptr;
+		AEGfxTexture* potatoIcon = nullptr;
 	}
 
 	void load(void)
@@ -17,6 +26,10 @@ namespace Inventory {
 		Textures::carrotSeedIcon = AEGfxTextureLoad("Assets/Images/Items/CarrotSeeds.png");
 		Textures::cherrySeedIcon = AEGfxTextureLoad("Assets/Images/Items/CherrySeeds.png");
 		Textures::potatoSeedIcon = AEGfxTextureLoad("Assets/Images/Items/PotatoSeeds.png");
+
+		Textures::carrotIcon = AEGfxTextureLoad("Assets/Images/Items/Carrot.png");
+		Textures::cherryIcon = AEGfxTextureLoad("Assets/Images/Items/Cherry.png");
+		Textures::potatoIcon = AEGfxTextureLoad("Assets/Images/Items/Potato.png");
 	}
 
 	// Static member initialization
@@ -196,6 +209,33 @@ namespace Inventory {
 			Textures::potatoSeedIcon,
 			0
 		));
+
+		ItemRegistry::registerItem(new Item(
+			ItemID::CARROT,
+			"Carrot Crop",
+			"Carrot grown with care!",
+			5.0f,
+			Textures::carrotIcon,
+			0
+		));
+		
+		ItemRegistry::registerItem(new Item(
+			ItemID::CHERRY,
+			"Cherry Crop",
+			"Cherry grown with care!",
+			5.0f,
+			Textures::cherryIcon,
+			0
+		));
+
+		ItemRegistry::registerItem(new Item(
+			ItemID::POTATO,
+			"Potato Crop",
+			"Potato grown with care!",
+			5.0f,
+			Textures::potatoIcon,
+			0
+		));
 	}
 
 	void unload(void)
@@ -206,6 +246,10 @@ namespace Inventory {
 		if (Textures::carrotSeedIcon) { AEGfxTextureUnload(Textures::carrotSeedIcon); Textures::carrotSeedIcon = nullptr; }
 		if (Textures::cherrySeedIcon) { AEGfxTextureUnload(Textures::cherrySeedIcon); Textures::cherrySeedIcon = nullptr; }
 		if (Textures::potatoSeedIcon) { AEGfxTextureUnload(Textures::potatoSeedIcon); Textures::potatoSeedIcon = nullptr; }
+
+		if (Textures::carrotIcon) { AEGfxTextureUnload(Textures::carrotIcon); Textures::carrotIcon = nullptr; }
+		if (Textures::cherryIcon) { AEGfxTextureUnload(Textures::cherryIcon); Textures::cherryIcon = nullptr; }
+		if (Textures::potatoIcon) { AEGfxTextureUnload(Textures::potatoIcon); Textures::potatoIcon = nullptr; }
 	}
 
 }

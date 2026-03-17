@@ -17,12 +17,16 @@
 #include "AudioManager.hpp"
 #include "Managers/ParticleManager.hpp"
 #include "Managers/AchievementManager.hpp"
+#include "Inventory.hpp"
 
 
 // ---------------------------------------------------------------------------
 // main
 
 extern World::worldGrid grid;
+
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
 
 namespace AudioManager {
 	Audio audio;
@@ -75,7 +79,10 @@ void screenSwitcher(void) {
 // Helper function to initialize subsystem
 void InitSystems(int windowWidth, int windowHeight) {
 	Shapes::init();
-	grid.initGrid(windowWidth, windowHeight, 100);
+	grid.initGrid(windowWidth, windowHeight, 50);
+
+	Inventory::load();
+	Inventory::init();
 
 	// Font initialization
 	Text::createFont("Assets/Fonts/buggy-font.ttf", Settings::gDefaultTextSize, "default");
@@ -201,6 +208,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		previous = current;
 		current = next;
 	}
+
+	// Free global stuffs
+	grid.unloadMapTexture();
+	World::freeGrid();
+	Inventory::ItemRegistry::cleanup();
+	Inventory::unload();
 
 	// Shutdown subsystem
 	ShutdownSystems();

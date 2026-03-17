@@ -45,7 +45,6 @@ void Andrea_Initialize()
 	Griddy.initMapTexture();
 	Griddy.initTextureBox();
 	Griddy.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
-	Griddy.outWorldMap("../../Assets/LevelMaps/Check.txt");
 
 }
 
@@ -68,15 +67,15 @@ void Andrea_Update() {
 		World::interactTile(activeTile, Griddy, inven, user);
 	}
 
-	if (AEInputCheckTriggered(AEVK_F1))
+	/*if (AEInputCheckTriggered(AEVK_F1))
 	{
-		inven.giveCarrotSeeds(user);
+		inven.giveSeeds(user);
 		Inventory::Item* test = user.getInventoryItem(0);
 		if (test != nullptr)
 			printf("Slot 0 has: %s x%d\n", test->getName().c_str(), test->getCount());
 		else
 			printf("Slot 0 is empty!\n");
-	}
+	}*/
 
 	World::standOnTile(next, user, Griddy, GS_X);
 
