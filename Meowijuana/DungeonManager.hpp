@@ -12,6 +12,8 @@ namespace Room {
 		Main,
 		SideSmall,
 		SideMedium,
+		SideSmall2,
+		SideMedium2,
 	};
 
 	enum class Direction
