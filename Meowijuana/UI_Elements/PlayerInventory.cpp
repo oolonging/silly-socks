@@ -244,5 +244,52 @@ bool UI_Elements::PlayerInventory::isEmpty(Entity::Player& player)
 	return true;
 }
 
+void UI_Elements::PlayerInventory::saveInventory(Entity::Player* player, GameData& gameData)
+{
+	if (!player) return;
 
+	// clear old saved data first (IMPORTANT)
+	gameData.inventory.clear();
+
+	for (int i = 0; i < player->getInventorySize(); i++)
+	{
+		Inventory::Item* item = player->getInventoryItem(i);
+
+		if (item)
+		{
+			gameData.inventory.push_back({ item->getID(), item->getCount() });
+		}
+		else
+		{
+			gameData.inventory.push_back({ -1, 0 }); // empty slot
+		}
+	}
+}
+
+void UI_Elements::PlayerInventory::loadInventory(Entity::Player* player, GameData& gameData)
+{
+	if (!player) return;
+	if (gameData.inventory.empty()) return;
+
+	// clear player's current inventory first
+	for (int i = 0; i < player->getInventorySize(); i++)
+	{
+		player->setInventoryItem(i, nullptr);
+	}
+
+	// restore items
+	for (int i = 0; i < gameData.inventory.size(); i++)
+	{
+		int id = gameData.inventory[i].first;
+		int count = gameData.inventory[i].second;
+
+		if (id < 0) continue; // skip empty slots
+
+		Inventory::Item* item = Inventory::ItemRegistry::createItem(id);
+		if (!item) continue;
+
+		item->setCount(count);
+		player->setInventoryItem(i, item);
+	}
+}
 

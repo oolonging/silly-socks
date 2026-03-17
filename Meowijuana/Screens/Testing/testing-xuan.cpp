@@ -11,6 +11,7 @@
 
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
+extern GameData gameData;
 
 // will update with new dialogue once tiletypes and consumables come into play
 
@@ -94,8 +95,9 @@ void Xuan_Initialize() {
 	auto* player = EntityManager::getPlayer("player");
 	player->setPosition(-800.0f, 50.0f);
 
+	inv.setPlayer(EntityManager::getPlayer("player"));
+	inv.loadInventory(player, gameData);
 
-	Inventory::init();
 	Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
 
 	Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
@@ -252,6 +254,12 @@ void Xuan_Update() {
 		World::dungeonTracker[World::checkNum] = true;
 	}
 
+	if (AEInputCheckTriggered(AEVK_F9))
+	{
+		inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
+	}
+
+
 	inv.update();
 }
 
@@ -274,10 +282,10 @@ void Xuan_Draw() {
 	EntityManager::draw("smelly");
 	EntityManager::draw("player");
 	
-	/*if (showInventory)
+	if (showInventory)
 	{
 		inv.draw();
-	}*/
+	}
 
 	if (dummy->getHp() > 0) {
 		dummy->draw(*player, Griddtwo, false);
@@ -316,16 +324,19 @@ void Xuan_Draw() {
 
 	}
 
-
-
 	// Draw dialogue box on top of everything
 	TutorialScreen::dialogueBox.draw();
 }
 
 void Xuan_Free() {
 	
+	auto* player = EntityManager::getPlayer("player");
 	Griddtwo.unloadMapTexture();
 	World::freeGrid();
+
+	inv.saveInventory(player, gameData);
+	inv.setPlayer(nullptr);
+
 }
 
 void Xuan_Unload() {

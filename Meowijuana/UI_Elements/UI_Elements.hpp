@@ -3,6 +3,10 @@
 
 #include "../Graphics.hpp"
 
+struct GameData {
+	std::vector<std::pair<int, int>> inventory;
+	// (itemID, count)
+};
 
 namespace Entity {
 	class Player;
@@ -307,6 +311,9 @@ namespace UI_Elements {
 		bool findItem(Entity::Player& player, int check);
 		bool isEmpty(Entity::Player& player);
 		void giveItem(Entity::Player& player, int itemID, int itemCount);
+
+		void saveInventory(Entity::Player* player, GameData& gameData);
+		void loadInventory(Entity::Player* player, GameData& gameData);
 
 		// Constructors
 		PlayerInventory(float x, float y, float slotSize, float slotSpacing, Entity::Player* player, Shapes::SHAPE_MODE mode = Shapes::CORNER);

@@ -19,6 +19,8 @@ namespace Inventory {
 		AEGfxTexture* carrotIcon = nullptr;
 		AEGfxTexture* cherryIcon = nullptr;
 		AEGfxTexture* potatoIcon = nullptr;
+
+		AEGfxTexture* carrotSword = nullptr;
 	}
 
 	void load(void)
@@ -30,6 +32,7 @@ namespace Inventory {
 		Textures::carrotIcon = AEGfxTextureLoad("Assets/Images/Items/Carrot.png");
 		Textures::cherryIcon = AEGfxTextureLoad("Assets/Images/Items/Cherry.png");
 		Textures::potatoIcon = AEGfxTextureLoad("Assets/Images/Items/Potato.png");
+		Textures::carrotSword = AEGfxTextureLoad("Assets/Images/Items/CarrotSword.png");
 	}
 
 	// Static member initialization
@@ -236,6 +239,16 @@ namespace Inventory {
 			Textures::potatoIcon,
 			0
 		));
+		
+		ItemRegistry::registerItem(new Item(
+			ItemID::CARROT_SWORD,
+			"Carrot Sword",
+			"Carrot sword surprisingly sharp",
+			5.0f,
+			Textures::carrotSword,
+			0
+		));
+
 	}
 
 	void unload(void)
@@ -250,6 +263,7 @@ namespace Inventory {
 		if (Textures::carrotIcon) { AEGfxTextureUnload(Textures::carrotIcon); Textures::carrotIcon = nullptr; }
 		if (Textures::cherryIcon) { AEGfxTextureUnload(Textures::cherryIcon); Textures::cherryIcon = nullptr; }
 		if (Textures::potatoIcon) { AEGfxTextureUnload(Textures::potatoIcon); Textures::potatoIcon = nullptr; }
+		if (Textures::carrotSword) { AEGfxTextureUnload(Textures::carrotSword); Textures::carrotSword = nullptr; }
 	}
 
 }

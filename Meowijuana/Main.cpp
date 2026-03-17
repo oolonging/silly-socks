@@ -25,7 +25,7 @@
 // main
 
 extern World::worldGrid grid;
-
+extern GameData gameData;
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 

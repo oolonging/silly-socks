@@ -11,6 +11,7 @@ bool firstDungeon = true;
 
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
+extern GameData gameData;
 
 // For world grid
 std::pair<int, int> prevActiveT;
@@ -20,6 +21,9 @@ extern World::worldGrid grid;
 bool onGrid = false;
 
 bool firstStartGame = true;
+
+float lastposX = 0;
+float lastposY = 0;
 
 namespace FarmNPC {
 
@@ -65,11 +69,20 @@ void Farm_Initialize() {
 	// Setting inventory to bottom 
 	inv.setPosition(x, y);
 	inv.setPlayer(EntityManager::getPlayer("player"));
+	
+	inv.loadInventory(player, gameData);
 
 	// Set player position
-	player->setX(0);
-	player->setY(0);
-
+	if (firstStartGame)
+	{
+		player->setX(0);
+		player->setY(0);
+	}
+	else
+	{
+		player->setX(lastposX);
+		player->setY(lastposY);
+	}
 
 	// Initialising NPCs
 	auto* Gerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
@@ -77,7 +90,7 @@ void Farm_Initialize() {
 	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png")); 
 
 	Gerald->setDialogLines({
-		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey!",
+		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.",
 
 		"@",
 
@@ -102,7 +115,6 @@ void Farm_Initialize() {
 	if (firstStartGame)
 	{
 		grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
-		firstStartGame = false;
 	}
 
 	else
@@ -132,7 +144,6 @@ void Farm_Update() {
 	auto* Gerald = EntityManager::getNPC("Gerald");
 
 	// Player update
-
 	player->update(grid);
 	inv.update();
 
@@ -146,7 +157,8 @@ void Farm_Update() {
 
 	if (AEInputCheckTriggered(AEVK_F10))
 	{
-		grid.outWorldMap("../../Assets/LevelMaps/Check.txt");
+		World::dungeonTracker[World::checkNum] = true;
+		grid.growPlants(grid);
 	}
 
 	if (AEInputCheckTriggered(AEVK_E))
@@ -157,7 +169,7 @@ void Farm_Update() {
 	// Makes it so that user is stuck in tutorial area until done w tutorial, it player completed tutorial already, teleporter shld be normal
 	if (firstStartGame)
 	{
-		if (inv.isEmpty(*player))
+		if (!inv.findItem(*player,Inventory::ItemID::CARROT_SEEDS))
 		{
 			World::standOnTile(next, *player, grid, GS_X);
 		}
@@ -310,8 +322,26 @@ void Farm_Free()
 	auto* player = EntityManager::getPlayer("player");
 	auto* Gerald = EntityManager::getNPC("Gerald");
 
+	lastposX = player->getX();
+	lastposY = player->getY();
+
+	std::pair<int, int> currTile = grid.getIndex(lastposX, lastposY);
+
+	if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter)
+	{
+		currTile.second -= 1;
+		std::pair<float, float> newCords = World::getWorldCoords(currTile, grid);
+		lastposX = newCords.first;
+		lastposY = newCords.second;
+	}
+
 	/*grid.unloadMapTexture();
 	Inventory::ItemRegistry::cleanup();*/
+
+	firstStartGame = false;
+
+	inv.saveInventory(player, gameData);
+	inv.setPlayer(nullptr);
 
 }
 

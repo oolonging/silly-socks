@@ -3,6 +3,8 @@
 
 #include "../InputManager.hpp"
 
+GameData gameData;
+
 namespace UI_Elements {
 	// -------------------------------------------------------------------------
 	// Static Member Initialization
