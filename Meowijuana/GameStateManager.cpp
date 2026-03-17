@@ -9,6 +9,7 @@
 #include "Screens/TutorialScreen.hpp"
 #include "Screens/FarmScreen.hpp"
 #include "Screens/DungeonScreen.hpp"
+#include "RespawnArea.hpp"
 
 // testing imports
 #include "Screens/TestingScreen.hpp"
@@ -160,6 +161,15 @@ void GSM_Update()
 			fpDraw = Xuan_Draw;
 			fpFree = Xuan_Free;
 			fpUnload = Xuan_Unload;
+			break;
+
+		case GS_RESPAWN:
+			fpLoad = RespawnArea_Load;
+			fpInitialize = RespawnArea_Initialize;
+			fpUpdate = RespawnArea_Update;
+			fpDraw = RespawnArea_Draw;
+			fpFree = RespawnArea_Free;
+			fpUnload = RespawnArea_Unload;
 			break;
 
 		// Utility states (TODO: technically these 2 can be removed since itll be caught by default but we'll see)

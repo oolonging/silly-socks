@@ -31,7 +31,8 @@ enum GSM_STATES
 	GS_BACK,
 
 	GS_A,				// farming tutorial 
-	GS_X				// to the right of farm, dungeon tutorial for now (remind me to add an option to skip tutorial && ask if dungeon can be removed) 
+	GS_X,				// to the right of farm, dungeon tutorial for now (remind me to add an option to skip tutorial && ask if dungeon can be removed) 
+	GS_RESPAWN
 
 };
 

@@ -155,6 +155,9 @@
     <ClCompile Include="Managers\AchievementManager.cpp">
       <Filter>Source files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="RespawnArea.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -276,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="Managers\AchievementManager.hpp">
       <Filter>Header files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RespawnArea.hpp">
+      <Filter>Header files\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

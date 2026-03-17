@@ -106,6 +106,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision.hpp" />
+    <ClCompile Include="RespawnArea.cpp" />
     <ClCompile Include="DungeonManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
@@ -177,6 +178,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="Managers\UIManager.hpp" />
     <ClInclude Include="PauseMenu.hpp" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RespawnArea.hpp" />
     <ClInclude Include="Screens\CreditsScreen.hpp" />
     <ClInclude Include="Screens\DungeonScreen.hpp" />
     <ClInclude Include="Screens\FarmScreen.hpp" />
