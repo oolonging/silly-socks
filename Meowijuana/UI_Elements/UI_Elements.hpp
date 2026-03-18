@@ -322,6 +322,35 @@ namespace UI_Elements {
 		// Destructor
 		~PlayerInventory();
 	};
+
+	// -------------------------------------------------------------------------
+	// PopupBox class
+	// -------------------------------------------------------------------------
+	class PopupBox : public UI_Element {
+	private:
+		bool isVisible;
+		char const* title;
+		char const* message;
+		char const* message2;
+		float width;
+		float height;
+		void (*onDismiss)(void);
+		Button dismissButton;
+
+	public:
+		void draw(void) override;
+		void show();
+		void hide();
+		bool getVisible() const;
+		void setVisible(bool visible);
+		void setTitle(char const* title);
+		void setMessage(char const* message);
+		void setOnDismiss(void (*func)(void));
+
+		// Constructors
+		PopupBox(float x, float y, float width, float height, char const* title, char const* message, char const* message2, bool initialState = false, Shapes::SHAPE_MODE mode = Shapes::CORNER);
+		PopupBox(void);
+	};
 }
 
 #endif // UI_ELEMENTS_HPP

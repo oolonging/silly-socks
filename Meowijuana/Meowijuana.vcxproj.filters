@@ -158,6 +158,9 @@
     <ClCompile Include="RespawnArea.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Elements\PopupBox.cpp">
+      <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
