@@ -24,7 +24,6 @@ void testingParticles_Draw() {
 
 	if (AEInputCheckTriggered(AEVK_LBUTTON)) {
 		gParticles.spawnDamageNumbers(Input::getMouseX(), Input::getMouseY(), 50);
-		printf("SPAWNING PARTICLES");
 	}
 
 	gParticles.spawnTrail(Input::getMouseX(), Input::getMouseY(), 5);
