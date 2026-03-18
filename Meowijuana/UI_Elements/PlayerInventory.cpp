@@ -54,6 +54,9 @@ void UI_Elements::PlayerInventory::handleKeyInput() {
 }
 
 void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float slotY) {
+	// Set render mode to color
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
 	// Set fill color for slot background
 	Color::fill(style.primaryColor);
 

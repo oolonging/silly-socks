@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include "Collision.hpp"
 #include "Tiles.hpp"
+#include "Managers/ParticleManager.hpp"
 
 namespace Entity {
 
@@ -140,6 +141,7 @@ namespace Entity {
 		std::cout << "Collision non-issue\n";
 		std::cout << "Target HP before onAttack: " << target.getHp() << "\n";
 		equippedWeapon->onAttack(*this, target);
+		gParticles.spawnExplosion(target.getX(), target.getY(), 20);
 		std::cout << "Target HP after onAttack: " << target.getHp() << "\n";
 	}
 

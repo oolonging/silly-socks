@@ -3,15 +3,11 @@
 
 #include "../Managers/UIManager.hpp"
 #include "../GameStateManager.hpp"
-#include "../Managers/ParticleManager.hpp"
-#include "../InputManager.hpp"
 
 // Button functions
 void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
-void navigateToTest(void) { next = GS_A; }
-void navigateToTutorial(void) { next = GS_DUNGEON; }
 
 namespace {
 	// Group everything into a state struct to isolate variables per game state
@@ -19,15 +15,9 @@ namespace {
 		UI_Elements::Button* creditsButton;
 		UI_Elements::Button* playButton;
 		UI_Elements::Button* settingsButton;
-		UI_Elements::Button* testButton;
-		UI_Elements::Button* tutorialButton;
-		
 
 		// Pointer to background for Main menu
 		AEGfxTexture* CatastropheLogo = nullptr;
-
-		// Pointer to myCat image
-		AEGfxTexture* myCatImage = nullptr;
 	};
 
 	// Unique pointer to manage the state's lifetime strictly between Load and Unload
@@ -39,7 +29,6 @@ void Mainmenu_Load() {
 
 	// Load images
 	state->CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
-	state->myCatImage = AEGfxTextureLoad("Assets/myCat.png");
 }
 
 void Mainmenu_Initialize()
@@ -48,22 +37,15 @@ void Mainmenu_Initialize()
 	state->creditsButton = UIManager::create<UI_Elements::Button>("creditsButton", -300.0f, -200.0f, 200.0f, 100.0f, "Credits", Shapes::CENTER);
 	state->playButton = UIManager::create<UI_Elements::Button>("playButton", 0.0f, -200.0f, 200.0f, 100.0f, "Play", Shapes::CENTER);
 	state->settingsButton = UIManager::create<UI_Elements::Button>("settingsButton", 300.0f, -200.0f, 200.0f, 100.0f, "Settings", Shapes::CENTER);
-	state->testButton = UIManager::create<UI_Elements::Button>("testButton", 400.0f, 200.0f, 200.0f, 100.0f, "Test", Shapes::CENTER);
-	state->tutorialButton = UIManager::create<UI_Elements::Button>("tutorialButton", 600.0f, 400.0f, 200.0f, 100.0f, "Tutorial", Shapes::CENTER);
 	
 	// set the button functions
 	state->playButton->setOnClick(navigateToGame);
 	state->creditsButton->setOnClick(navigateToCredits);
 	state->settingsButton->setOnClick(navigateToSettings);
-	state->testButton->setOnClick(navigateToTest);
-	state->tutorialButton->setOnClick(navigateToTutorial);
 }
 
 void Mainmenu_Update() {
 	// TODO: consider separating the update and render logic of buttons for easier debugging
-
-	// Update particles with deltatime
-	gParticles.update();
 }
 
 void Mainmenu_Draw()
@@ -75,15 +57,6 @@ void Mainmenu_Draw()
 
 	// Draw all UI elements
 	UIManager::drawAll();
-
-	// Draw mycat
-	Graphics::image(-800.0f, 450.0f, 100.0f, 100.0f, state->myCatImage);
-
-
-	if (Input::isMouseInBounds(0.0f, 0.0f, 100.0f, 100.0f)) {
-		gParticles.spawnExplosion(Input::getMouseX(), Input::getMouseY(), 10);
-		gParticles.draw();
-	}
 }
 
 void Mainmenu_Free() {
@@ -98,5 +71,3 @@ void Mainmenu_Unload()
 
 	UIManager::clear();
 }
-
-

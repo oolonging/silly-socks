@@ -207,6 +207,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Update input manager every frame
 			Input::update();
 
+			// gParticles
+			gParticles.update();
+			gParticles.draw();
+
 			// Draw debug overlay and toggle with F3
 			if (AEInputCheckTriggered(AEVK_F3)) Settings::toggleDebugMode();
 			if (Settings::gDebugMode) Settings::drawDebugOverlay();
