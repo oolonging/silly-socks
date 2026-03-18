@@ -175,6 +175,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Reset Cursor type
 			Input::gCursorType = Input::POINTER;
 
+			// update animation time
+			SpriteManager::updateAnimationTime();
+
 			// temp removing while i test hitting sound
 			//if (AEInputCheckTriggered(AEVK_LBUTTON)) {
 			//	AudioManager::audio.playSFX(sfxVolume / 100.0f);

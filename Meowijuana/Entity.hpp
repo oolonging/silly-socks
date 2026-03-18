@@ -32,12 +32,16 @@ namespace Entity {
 		bool isWalking = false;
 		int facingDirection = 0; // 0 = LEFT, 1 = RIGHT
 
+		// attack vars
+		bool isAttacking = false;
+
 
 		// Spritesheet and animations
 		AEGfxTexture* sprite;
 		std::string spriteSheetName;
 		SpriteManager::SpriteSheet* spriteSheet = nullptr;
 		SpriteManager::Animation* walkAnimation = nullptr;
+		SpriteManager::Animation* attackAnimation = nullptr;
 		
 		
 		// Atack
@@ -77,6 +81,13 @@ namespace Entity {
 		}
 		void setWalkAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
 			this->walkAnimation = SpriteManager::createAnimationFromRange(
+				name, sheetName,
+				x, y, count,
+				duration, loop
+			);
+		}
+		void setAttackAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
+			this->attackAnimation = SpriteManager::createAnimationFromRange(
 				name, sheetName,
 				x, y, count,
 				duration, loop

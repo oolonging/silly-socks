@@ -4,6 +4,9 @@
 namespace EntityManager {
 	std::unordered_map<std::string, std::unique_ptr<Entity::Entity>> entities;
 
+	// dumping this here for now so i can test it
+	SpriteManager::SpriteSheet* playerAttackSpritesheet = nullptr;
+	
 	Entity::Entity* get(const std::string& name) {
 		auto it = entities.find(name);
 		return (it != entities.end()) ? it->second.get() : nullptr;
@@ -42,6 +45,9 @@ namespace EntityManager {
 	}
 
 	void init(void) {
+		// initialize the sprite sheet to attack
+		playerAttackSpritesheet = SpriteManager::loadSpriteSheet("playerAttackSpritesheet", "Assets/Images/Items/-sword.png", 297.0f, 117.0f, 99.0f, 117.0f);
+
 		// Initialize player
 		EntityManager::create<Entity::Player>("player", 0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 5.0f);
 
@@ -51,6 +57,7 @@ namespace EntityManager {
 			40.0f, 40.0f
 		);
 		player->setWalkAnimation("playerWalk", "playerSpritesheet", 0, 1, 4, 0.4);
+		player->setAttackAnimation("playerAttack", "playerAttackSpritesheet", 0, 0, 3, 0.4f, true);
 
 
 		// Initialize NPCs

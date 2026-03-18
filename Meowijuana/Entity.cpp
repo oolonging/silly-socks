@@ -146,6 +146,7 @@ namespace Entity {
 		std::cout << "Target HP before onAttack: " << target.getHp() << "\n";
 		equippedWeapon->onAttack(*this, target);
 		gParticles.spawnExplosion(target.getX(), target.getY(), 20);
+
 		AudioManager::audio.playSFX(1.0f);
 		std::cout << "Target HP after onAttack: " << target.getHp() << "\n";
 	}
@@ -428,7 +429,6 @@ namespace Entity {
 		Color::fill(0, 0, 255, 255);
 
 		//Shapes::rect(x, y, width, height, Shapes::CENTER);
-		SpriteManager::updateAnimationTime();
 
 		if (this->isWalking)
 			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, (this->facingDirection) ? -this->width : this->width, this->height);
@@ -436,6 +436,12 @@ namespace Entity {
 			SpriteManager::drawSprite(
 				SpriteManager::createSprite(this->spriteSheetName, 0, 0),
 				this->x, this->y, this->width, this->height
+		);
+
+		if(AEInputCheckCurr(AEVK_LBUTTON))
+			SpriteManager::drawAnimation(*(this->attackAnimation), 
+				this->x + (0.5f * (this->facingDirection) ? this->width : -this->width), this->y,
+				(this->facingDirection) ? this->width : -this->width, this->height
 			);
 
 		// Draw health bar if HP is less than max
