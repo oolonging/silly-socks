@@ -53,6 +53,7 @@ void Settings_Initialize() {
 
 	//mute sfx when checkbox is toggled
 	state->sfxMuteCheckbox->setOnChange([](bool isMuted) {
+		Settings::gMuteSFX = isMuted;
 		if (isMuted) AudioManager::audio.setSFXVolume(0.0f);
 		else AudioManager::audio.setSFXVolume(sfxVolume / 100.0f);
 		});
