@@ -1,9 +1,6 @@
 #ifndef ENTITY_MANAGER_HPP
 #define ENTITY_MANAGER_HPP
 
-#include <unordered_map>
-#include <string>
-#include <memory>
 #include "../Entity.hpp"
 
 namespace EntityManager {
