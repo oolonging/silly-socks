@@ -301,8 +301,15 @@ namespace Entity {
 		float deltaY = 0.0f;
 		if (movingDirections[0]) deltaY += speed;
 		if (movingDirections[1]) deltaY -= speed;
-		if (movingDirections[2]) deltaX -= speed;
-		if (movingDirections[3]) deltaX += speed;
+		if (movingDirections[2]) {
+			deltaX -= speed;
+			this->facingDirection = 0;
+		}
+		if (movingDirections[3]) {
+			deltaX += speed;
+			this->facingDirection = 1;
+		}
+			
 
 		if (deltaX != 0.0f && deltaY != 0.0f) {
 			float length = sqrtf(deltaX * deltaX + deltaY * deltaY);
@@ -408,7 +415,9 @@ namespace Entity {
 		Color::strokeWeight(2.0f);
 		Color::fill(0, 0, 255, 255);
 
-		Shapes::rect(x, y, width, height, Shapes::CENTER);
+		//Shapes::rect(x, y, width, height, Shapes::CENTER);
+		SpriteManager::updateAnimationTime();
+		SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, (this->facingDirection) ? -this->width : this->width, this->height);
 
 		// Draw health bar if HP is less than max
 		if (hp < maxHp) {

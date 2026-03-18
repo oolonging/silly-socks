@@ -8,6 +8,7 @@
 #include "LevelSystem.hpp"
 #include "Inventory.hpp"
 #include "World.hpp"
+#include "../../Managers/SpriteManager.hpp"
 
 namespace Entity {
 
@@ -25,9 +26,18 @@ namespace Entity {
 		float maxHp;
 		float speed;
 		float armor;
-		AEGfxTexture* sprite;
 		UI_Elements::ProgressBar healthBar;
 
+		// facing direction
+		int facingDirection = 0; // 0 = LEFT, 1 = RIGHT
+
+
+		// Spritesheet and animations
+		AEGfxTexture* sprite;
+		SpriteManager::SpriteSheet* spriteSheet = nullptr;
+		SpriteManager::Animation* walkAnimation = nullptr;
+		
+		
 		// Atack
 		float atkCD = 2.0;
 		float atkSpd = 0.8;
@@ -53,7 +63,22 @@ namespace Entity {
 		void setHp(float health);
 		void setSpeed(float spd);
 		void setArmor(float arm);
+
 		void setSprite(AEGfxTexture* tex);
+		void setSpritesheet(std::string name, std::string filepath, float sheetWidth, float sheetHeight, float spriteWidth, float spriteheight) {
+			this->spriteSheet = SpriteManager::loadSpriteSheet(
+				name, filepath,
+				sheetWidth, sheetHeight,
+				spriteWidth, spriteheight
+			);
+		}
+		void setWalkAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
+			this->walkAnimation = SpriteManager::createAnimationFromRange(
+				name, sheetName,
+				x, y, count,
+				duration, loop
+			);
+		}
 
 		// Attack
 		void setAtkSpd(float spd);

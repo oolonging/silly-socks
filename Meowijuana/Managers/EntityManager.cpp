@@ -45,6 +45,14 @@ namespace EntityManager {
 		// Initialize player
 		EntityManager::create<Entity::Player>("player", 0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 5.0f);
 
+		auto* player = EntityManager::getPlayer("player");
+		player->setSpritesheet("playerSpritesheet", "Assets/Images/SpriteSheets/player_spritesheet.png",
+			160.0f, 160.0f,
+			40.0f, 40.0f
+		);
+		player->setWalkAnimation("playerWalk", "playerSpritesheet", 0, 1, 4, 0.4);
+
+
 		// Initialize NPCs
 		auto* prasanna = EntityManager::create<Entity::NPC>("prasanna", 200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 		auto* soroor = EntityManager::create<Entity::NPC>("soroor", 400.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);

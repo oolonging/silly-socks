@@ -198,7 +198,7 @@ namespace SpriteManager {
 	void drawAnimationAtTimeWithAlpha(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
 
 	// Update the global animation timer (call this once per frame in the game loop)
-	void updateAnimationTime(float deltaTime);
+	void updateAnimationTime(float deltaTime = AEFrameRateControllerGetFrameTime());
 
 	// Reset the global animation timer
 	void resetAnimationTime(void);
