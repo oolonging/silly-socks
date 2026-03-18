@@ -168,7 +168,7 @@ void TutorialDungeon_Update() {
         }
 
         if (tutorialRooms[3].cleared) {
-            World::standOnTile(next, *tutPlayer, TDungeonGrid, GS_FARM);
+            World::standOnTile(next, *tutPlayer, TDungeonGrid, GS_A);
         }
     }
 }
