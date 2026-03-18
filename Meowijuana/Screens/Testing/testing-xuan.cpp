@@ -240,7 +240,7 @@ void Xuan_Update() {
 
 	
 	case TutorialScreen::TutorialState::FINISHED:
-
+		World::standOnTile(next, *player, Griddtwo, GS_TUTDUN);
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
