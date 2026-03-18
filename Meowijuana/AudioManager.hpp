@@ -9,6 +9,10 @@ namespace AudioManager {
 		AEAudio soundEffect;
 		AEAudioGroup bgm;
 		AEAudioGroup sfx;
+
+		// testing hit
+		AEAudio hitSFX;
+
 		float bgVolume;
 		float sfxVolume;
 		bool bgMuted;

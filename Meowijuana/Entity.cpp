@@ -3,6 +3,7 @@
 #include "Collision.hpp"
 #include "Tiles.hpp"
 #include "Managers/ParticleManager.hpp"
+#include "AudioManager.hpp"
 
 namespace Entity {
 
@@ -55,6 +56,9 @@ namespace Entity {
 	}
 
 	void Entity::drawHealthBar() {
+		// set render mode to color
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
 		// Update health bar value
 		healthBar.setValue(hp);
 
@@ -142,6 +146,7 @@ namespace Entity {
 		std::cout << "Target HP before onAttack: " << target.getHp() << "\n";
 		equippedWeapon->onAttack(*this, target);
 		gParticles.spawnExplosion(target.getX(), target.getY(), 20);
+		AudioManager::audio.playSFX(1.0f);
 		std::cout << "Target HP after onAttack: " << target.getHp() << "\n";
 	}
 

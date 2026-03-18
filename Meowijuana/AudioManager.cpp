@@ -40,6 +40,7 @@ namespace AudioManager {
 	//sfx
 	void Audio::loadSFX(const std::string& path) {
 		soundEffect = AEAudioLoadSound(path.c_str());
+		hitSFX = AEAudioLoadSound("Assets/Sounds/hit.wav");
 	}
 
 	void Audio::playSFX(float volume = 1.0f) {

@@ -111,7 +111,7 @@ void InitSystems(int windowWidth, int windowHeight) {
 	//audio
 	AudioManager::audio.init();
 	AudioManager::audio.loadBGM("Assets/bgm.mp3");
-	AudioManager::audio.loadSFX("Assets/clicksfx.mp3");
+	AudioManager::audio.loadSFX("Assets/Sounds/hit.wav");
 	AudioManager::audio.playBGM(bgVolume / 100.0f, true);
 
 }
@@ -175,9 +175,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Reset Cursor type
 			Input::gCursorType = Input::POINTER;
 
-			if (AEInputCheckTriggered(AEVK_LBUTTON)) {
-				AudioManager::audio.playSFX(sfxVolume / 100.0f);
-			}
+			// temp removing while i test hitting sound
+			//if (AEInputCheckTriggered(AEVK_LBUTTON)) {
+			//	AudioManager::audio.playSFX(sfxVolume / 100.0f);
+			//}
 
 			// temporary  during the debugging phase
 			screenSwitcher();
