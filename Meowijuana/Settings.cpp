@@ -49,13 +49,16 @@ namespace Settings {
 		else printf("off\n");
 	}
 
+	std::string currentScreen = "Splash"; // For the actual release, this is what the game will start with
+
 	void drawDebugOverlay(void) {
 		std::string output[] = {
 			"FPS: " + std::to_string(AEFrameRateControllerGetFrameRate()),
 			"Mouse Position: (" + std::to_string(Input::getMouseX()) + ", " + std::to_string(Input::getMouseY()) + ")",
 			"UI Elements: " + std::to_string(UIManager::elements.size()),
 			"Active Entities: " + std::to_string(EntityManager::entities.size()),
-			"Active particles: " + std::to_string(gParticles.getActiveParticleCount()) + "/" + std::to_string(gParticles.getMaxParticles())
+			"Active particles: " + std::to_string(gParticles.getActiveParticleCount()) + "/" + std::to_string(gParticles.getMaxParticles()),
+			"Current room: " + currentScreen
 		};
 		int counter = 0;
 		
