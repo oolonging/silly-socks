@@ -1,10 +1,10 @@
 ﻿#include "../pch.h"
-#include "AEEngine.h"
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
 #include "FarmScreen.hpp"
 #include "../Managers/EntityManager.hpp"
 #include "../../World.hpp"
+#include "../Settings.hpp"
 
 bool firstLoad = true;
 bool firstDungeon = true;
@@ -43,6 +43,8 @@ namespace FarmNPC {
 
 void Farm_Load() 
 {
+	Settings::currentScreen = "FarmScreen.cpp";
+
 	showInventory = true;
 }
 
