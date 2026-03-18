@@ -147,6 +147,7 @@ namespace UI_Elements {
 		float textX = (drawMode == Shapes::CORNER) ? this->x + (this->width * 0.5f) : this->x;
 		float textY = (drawMode == Shapes::CORNER) ? this->y - (this->height * 0.5f) : this->y;
 
+		Text::textSize(this->textStyle.fontSize);
 		if (text.empty()) {
 			// Draw placeholder in gray
 			Color::textFill(150, 150, 150, 255);

@@ -82,6 +82,7 @@ namespace UI_Elements {
 
 		// Draw label
 		Color::textFill(textStyle.primaryColor);
+		Text::textSize(this->textStyle.fontSize);
 		float labelX = (drawMode == Shapes::CORNER) ? this->x + this->width : this->x + this->width * 0.5f;
 		float labelY = (drawMode == Shapes::CORNER) ? this->y : this->y + (this->height * 0.5f);
 
