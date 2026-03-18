@@ -28,12 +28,14 @@ namespace Entity {
 		float armor;
 		UI_Elements::ProgressBar healthBar;
 
-		// facing direction
+		// movement vars
+		bool isWalking = false;
 		int facingDirection = 0; // 0 = LEFT, 1 = RIGHT
 
 
 		// Spritesheet and animations
 		AEGfxTexture* sprite;
+		std::string spriteSheetName;
 		SpriteManager::SpriteSheet* spriteSheet = nullptr;
 		SpriteManager::Animation* walkAnimation = nullptr;
 		
@@ -66,6 +68,7 @@ namespace Entity {
 
 		void setSprite(AEGfxTexture* tex);
 		void setSpritesheet(std::string name, std::string filepath, float sheetWidth, float sheetHeight, float spriteWidth, float spriteheight) {
+			this->spriteSheetName = name;
 			this->spriteSheet = SpriteManager::loadSpriteSheet(
 				name, filepath,
 				sheetWidth, sheetHeight,

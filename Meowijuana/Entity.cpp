@@ -309,7 +309,14 @@ namespace Entity {
 			deltaX += speed;
 			this->facingDirection = 1;
 		}
-			
+		
+		// set iswalking var
+		if (!deltaX && !deltaY) {
+			this->isWalking = false;
+		}
+		else {
+			this->isWalking = true;
+		}
 
 		if (deltaX != 0.0f && deltaY != 0.0f) {
 			float length = sqrtf(deltaX * deltaX + deltaY * deltaY);
@@ -417,7 +424,14 @@ namespace Entity {
 
 		//Shapes::rect(x, y, width, height, Shapes::CENTER);
 		SpriteManager::updateAnimationTime();
-		SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, (this->facingDirection) ? -this->width : this->width, this->height);
+
+		if (this->isWalking)
+			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, (this->facingDirection) ? -this->width : this->width, this->height);
+		else
+			SpriteManager::drawSprite(
+				SpriteManager::createSprite(this->spriteSheetName, 0, 0),
+				this->x, this->y, this->width, this->height
+			);
 
 		// Draw health bar if HP is less than max
 		if (hp < maxHp) {
