@@ -9,7 +9,7 @@ namespace Path {
 		float direction = (AERandFloat() * 360);
 		float distance = (AERandFloat() * 200);
 
-		// sketchy ahh formula i saw
+		// move in a random direction for a random distance
 		return Vect{ distance * AECos(direction), distance * AESin(direction) };
 	}
 

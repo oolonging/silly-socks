@@ -3,24 +3,36 @@
 
 // okay its a little messy rn but i'll clean it up eventually... i think
 namespace Collision {
-	// circle rectangle intersection
+	// circle rectangle intersection between
+	// circle centered at (enemyX, enemyY) with radius (AABB) (playerX, player)
 	bool collidedWith(float enemyX, float enemyY, float playerX, float playerY, float radius, float playerW, float playerH) {
+		
+		// find rectangle bounds from its center position
 		float left = playerX - playerW * 0.5f;
 		float right = playerX + playerW * 0.5f;
 		float up = playerY - playerH * 0.5f;
 		float down = playerY + playerH * 0.5f;
 
+		// find the closest point on the rectangle to the circle center
 		float closestX = enemyX;
 		float closestY = enemyY;
+
+		// clamp X to rect bounds
 		if (closestX < left) closestX = left;
 		else if (closestX > right) closestX = right;
+
+		// clamp Y to rect bounds
 		if (closestY < up) closestY = up;
 		else if (closestY > down) closestY = down;
 
+		// compute distance from circle center to this closest point
 		float distX = enemyX - closestX;
 		float distY = enemyY - closestY;
+
+		// using euclidean distance
 		float distance = sqrt((distX * distX) + (distY * distY));
 
+		// collision if distance < radius
 		return (distance <= radius);
 
 	}
