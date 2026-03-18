@@ -9,12 +9,12 @@
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
 #include "../../GameStateManager.hpp"
+#include "../../PauseMenu.hpp"
 
 
 World::worldGrid TDungeonGrid;
 std::pair<int, int> tutActiveTile;
 int tutorialRoomIndex = 0;
-bool pause = false;
 
 
 //  TODO : CHARACTER DEATH, MAKE ROOMS MORE INTERESTING, ENTITY COLLISION WITH WALL, PARTICLES IF POSSIBLE, KNOCKBACK???????
@@ -186,7 +186,7 @@ void TutorialDungeon_Draw() {
 
     tutPlayer->draw();
 
-    EntityManager::drawEnemies(*tutPlayer, TDungeonGrid, pause);
+    EntityManager::drawEnemies(*tutPlayer, TDungeonGrid, isPaused);
 
 
 

@@ -366,6 +366,7 @@ namespace World {
 
 	void worldGrid::growPlants(World::worldGrid& Griddy)
 	{
+		// Basically using global bool array to update based on level clear
 		if (dungeonTracker[checkNum])
 		{
 			for (int row = 0; row < Griddy.getHeight(); row++)
@@ -408,6 +409,7 @@ namespace World {
 		if (currentItem->getCount() <= 0) return false;
 
 		// Check if item is useable 
+		// must be >= 10 and <= 12 because those are the seed numbers -> 
 		if (currentItem->getID() >= 10 && currentItem->getID() <= 12)
 		{
 			currentItem->setCount(currentItem->getCount() - 1);
@@ -578,13 +580,10 @@ namespace World {
 	// Drawing each tile based on the ID in the world coords
 	void worldGrid::drawTexture(const World::worldGrid& Griddy)
 	{
-		static bool backgroundSet = false;
-
-		if (!backgroundSet) {
-			Color::background({ 150, 75, 0, 255 });
-			backgroundSet = true;
-		}
-
+		
+		Color::background({ 150, 75, 0, 255 });
+	
+	
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);

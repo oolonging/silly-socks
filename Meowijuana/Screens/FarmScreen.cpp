@@ -53,6 +53,7 @@ void Farm_Initialize() {
 
 	// Initialising stuffs
 	EntityManager::init();
+	FarmNPC::dialogueBox.setSpeaker("Gerald");
 
 	// Initialising Player
 	auto* player = EntityManager::getPlayer("player");
@@ -216,6 +217,7 @@ void Farm_Update() {
 	case FarmNPC::TutorialState::GER_TALK:
 
 		FarmNPC::activeSpeaker = Gerald;
+
 		Gerald->speak(FarmNPC::dialogueBox);
 
 		if (Gerald->getIsPaused()) {
