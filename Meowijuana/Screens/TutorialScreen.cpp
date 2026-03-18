@@ -1,9 +1,10 @@
 ﻿#include "../pch.h"
 #include "TutorialScreen.hpp"
-#include "AEEngine.h"
+
 #include "../Graphics.hpp"
 #include "../Entity.hpp"
 #include "../UI_Elements/UI_Elements.hpp"
+#include "../Settings.hpp"
 
 extern Entity::Player testPlayer;
 
@@ -19,6 +20,8 @@ namespace TutorialScreen {
 }
 
 void Tutorial_Load() {
+	Settings::currentScreen = "TutorialScreen.cpp";
+
 	TutorialScreen::pTex = AEGfxTextureLoad("Assets/mycat.png");
 }
 

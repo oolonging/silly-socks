@@ -2,6 +2,7 @@
 #include "CreditsScreen.hpp"
 
 #include "../Graphics.hpp"
+#include "../Settings.hpp"
 
 //global variables for credits screen
 float scrollY;
@@ -23,7 +24,7 @@ const char* credits[] = {
 int creditsCount = sizeof(credits) / sizeof(credits[0]);
 
 void Credits_Load() {
-
+	Settings::currentScreen = "CreditsScreen.cpp";
 }
 
 void Credits_Initialize() {

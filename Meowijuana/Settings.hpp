@@ -44,6 +44,9 @@ namespace Settings {
 	// Call to switch debug mode on or off
 	void toggleDebugMode(void);
 
+	// Var that says where you are
+	extern std::string currentScreen;
+
 	// Draw debug overlay
 	void drawDebugOverlay(void);
 }
