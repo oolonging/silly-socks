@@ -132,7 +132,7 @@ void Xuan_Update() {
 
 
 	// Update the player
-	player->update();
+	player->update(Griddtwo);
 	player->tickAttackTimer();
 
 	smellind.x = smelly->getX();
