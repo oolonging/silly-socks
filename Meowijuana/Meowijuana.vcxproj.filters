@@ -158,9 +158,6 @@
     <ClCompile Include="RespawnArea.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
-    <ClCompile Include="Screens\Dungeon\level1.cpp">
-      <Filter>Source files\Screens\Dungeon</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -286,9 +283,6 @@
     <ClInclude Include="RespawnArea.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\Dungeon\level1.hpp">
-      <Filter>Header files\Screens\Dungeon</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
@@ -317,12 +311,6 @@
     </Filter>
     <Filter Include="Header files\Managers">
       <UniqueIdentifier>{824864c1-273e-4511-9058-1eadcd2fc5d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Screens\Dungeon">
-      <UniqueIdentifier>{0cb05cd7-c33b-4f9f-8e54-c4a5003a868b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\Screens\Dungeon">
-      <UniqueIdentifier>{d408e5ec-6e7f-4cc1-9c53-57b61cb27017}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
