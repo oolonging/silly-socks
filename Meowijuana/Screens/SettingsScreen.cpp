@@ -59,7 +59,7 @@ void Settings_Initialize() {
 
 	//back button
 	state->backButton = UIManager::create<UI_Elements::Button>(
-		"backButton", -300.0f, 300.0f, 50.0f, 50.0f, " ", Shapes::CENTER
+		"backButton", -300.0f, 300.0f, 100.0f, 50.0f, "Back", Shapes::CENTER
 	);
 
 	//button function
@@ -98,7 +98,6 @@ void Settings_Draw() {
 	Text::textSize(20.0f);
 	Text::text("BGM", -200.0f, 220.0f);
 	Text::text("SFX", -200.0f, 120.0f);
-	Text::text("Back", -380.0f, 300.0f);
 
 	UIManager::drawAll();
 }
