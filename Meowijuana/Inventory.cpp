@@ -240,14 +240,14 @@ namespace Inventory {
 			0
 		));
 		
-		ItemRegistry::registerItem(new Item(
-			ItemID::CARROT_SWORD,
-			"Carrot Sword",
-			"Carrot sword surprisingly sharp",
-			5.0f,
-			Textures::carrotSword,
-			0
-		));
+		//ItemRegistry::registerItem(new Item(
+		//	ItemID::CARROT_SWORD,
+		//	"Carrot Sword",
+		//	"Carrot sword surprisingly sharp",
+		//	5.0f,
+		//	Textures::carrotSword,
+		//	0
+		//));
 
 	}
 
