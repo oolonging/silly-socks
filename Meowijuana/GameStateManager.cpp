@@ -164,14 +164,14 @@ void GSM_Update()
 			fpUnload = Xuan_Unload;
 			break;
 
-		case GS_NEW:
-			fpLoad = NewDungeon_Load;
-			fpInitialize = NewDungeon_Initialize;
-			fpUpdate = NewDungeon_Update;
-			fpDraw = NewDungeon_Draw;
-			fpFree = NewDungeon_Free;
-			fpUnload = NewDungeon_Unload;
-			break;
+		//case GS_NEW:
+		//	fpLoad = NewDungeon_Load;
+		//	fpInitialize = NewDungeon_Initialize;
+		//	fpUpdate = NewDungeon_Update;
+		//	fpDraw = NewDungeon_Draw;
+		//	fpFree = NewDungeon_Free;
+		//	fpUnload = NewDungeon_Unload;
+		//	break;
 
 		case GS_RESPAWN:
 			fpLoad = RespawnArea_Load;

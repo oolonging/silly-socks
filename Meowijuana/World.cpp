@@ -46,24 +46,24 @@ namespace World {
 	}
 
 
-	void worldGrid::initMapTextureSprite(const std::string& filename) {
-		std::ifstream file(filename);
-		if (!file.is_open()) { return; }
+	//void worldGrid::initMapTextureSprite(const std::string& filename) {
+	//	std::ifstream file(filename);
+	//	if (!file.is_open()) { return; }
 
-		int id, col, row;
-		std::string name;
+	//	int id, col, row;
+	//	std::string name;
 
-		while (file >> id >> name >> col >> row) {
-			tileObject tile;
-			tile.objID = id;
-			tile.name = name;
-			tile.sprite = SpriteManager::createSprite("dungeon", col, row);
-			tile.useSprite = true;
-			tileDatabase[id] = tile;
-		}
-		file.close();
-	}
-	
+	//	while (file >> id >> name >> col >> row) {
+	//		tileObject tile;
+	//		tile.objID = id;
+	//		tile.name = name;
+	//		tile.sprite = SpriteManager::createSprite("dungeon", col, row);
+	//		tile.useSprite = true;
+	//		tileDatabase[id] = tile;
+	//	}
+	//	file.close();
+	//}
+	//
 	// Free the assests and stuff
 	void worldGrid::unloadMapTexture()
 	{
@@ -625,17 +625,17 @@ namespace World {
 
 				// == thing ===
 
-				if (def.useSprite) {
-					SpriteManager::drawSpriteFromSheet(def.sprite, coords.first, coords.second, tileSize, tileSize);
-				}
-				else if (def.image) {
-					AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-					AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-					AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-					AEGfxSetTransparency(1.0f);
-					AEGfxTextureSet(def.image, 0, 0);
-					AEGfxMeshDraw(tileMesh, AE_GFX_MDM_TRIANGLES);
-				}
+				//if (def.useSprite) {
+				//	SpriteManager::drawSpriteFromSheet(def.sprite, coords.first, coords.second, tileSize, tileSize);
+				//}
+				//else if (def.image) {
+				//	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+				//	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+				//	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+				//	AEGfxSetTransparency(1.0f);
+				//	AEGfxTextureSet(def.image, 0, 0);
+				//	AEGfxMeshDraw(tileMesh, AE_GFX_MDM_TRIANGLES);
+				//}
 
 
 				if (!def.image)
