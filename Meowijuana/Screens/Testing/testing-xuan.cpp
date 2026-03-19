@@ -282,19 +282,19 @@ void Xuan_Draw() {
 	World::drawTile({ 0,0 }, Griddtwo);
 
 	EntityManager::draw("smelly");
-	EntityManager::draw("player");
+
 	
 	if (showInventory)
 	{
 		inv.draw();
 	}
 
-	if (dummy->getHp() > 0) {
+	if (!dummy->dead()) {
 		dummy->draw(*player, Griddtwo, false);
 	}
 	else {
 		// placaeholder here for now but hopefully switch to sprite of destroyed dummy
-		dummy->draw(*player, Griddtwo, false);
+		/*dummy->draw(*player, Griddtwo, false);*/
 	}
 
 
@@ -325,6 +325,8 @@ void Xuan_Draw() {
 		}
 
 	}
+
+	EntityManager::draw("player");
 
 	// Draw dialogue box on top of everything
 	TutorialScreen::dialogueBox.draw();

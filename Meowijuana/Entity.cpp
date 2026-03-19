@@ -180,6 +180,10 @@ namespace Entity {
 		}
 	}
 
+	// -------------------------------------------------------------------------
+	// Player Inventory
+	// -------------------------------------------------------------------------
+
 	Inventory::Item* Player::getInventoryItem(int slot) const {
 		if (slot >= 0 && slot < 9) {
 			return inventory[slot];
@@ -294,6 +298,33 @@ namespace Entity {
 		}
 
 	}
+
+	void Player::giveItem(int itemID, int itemCount)
+	{
+		for (int i = 0; i < this->getInventorySize(); i++)
+		{
+			if (this->getInventoryItem(i) != nullptr)
+			{
+				if (this->getInventoryItem(i)->getID() == itemID)
+				{
+					int count = this->getInventoryItem(i)->getCount();
+					this->getInventoryItem(i)->setCount(count + itemCount);
+					return;
+				}
+			}
+			else
+			{
+				Inventory::Item* item = Inventory::ItemRegistry::createItem(itemID);
+				item->setCount(itemCount);
+				this->setInventoryItem(i, item);
+				return;
+			}
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Player Movement
+	// -------------------------------------------------------------------------
 
 	// Movement using GRID to check for collision
 	void Player::handleMovement(World::worldGrid& Griddy)
@@ -474,6 +505,8 @@ namespace Entity {
 		fov(300.0f), deltaX(0.0f), deltaY(0.0f),
 		walking(false), endAtX(0.0f), endAtY(0.0f), wait(2.0f), waited(0.0f) {
 
+		this->isDead = false;
+
 		// default skin
 		this->sprite = AEGfxTextureLoad("Assets/Images/Entities/Enemies/crab.png");
 
@@ -597,12 +630,15 @@ namespace Entity {
 
 
 
-	void Enemy::draw(const Player& player, World::worldGrid& Griddy, bool pause) {
+	void Enemy::draw(Player& player, World::worldGrid& Griddy, bool pause) {
+		
+		// Pause movement when on pause screen
 		if (!pause)
 		{
 			movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()), Griddy);
 		}
 
+		static bool giveItem = false;
 
 		// Apply stroke and fill
 		if (this->sprite == nullptr) {
@@ -613,9 +649,19 @@ namespace Entity {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			Shapes::rect(x, y, width, height, Shapes::CENTER);
 		}
+
 		else {
 			Color::fill(Color::Preset::White);
 			Graphics::image(this->x, this->y, this->width, this->height, this->sprite, Shapes::CENTER);
+		}
+
+		if (this->getHp() <= 0 && !this->isDead)
+		{
+			this->isDead = true;
+			gParticles.spawnExplosion(this->getX(), this->getY(), 40);
+			AudioManager::audio.playSFX(1.0f);
+
+			player.giveItem(Inventory::ItemID::CARROT_SEEDS, 1);  // drop item once on death
 		}
 
 		// Always draw health bar for enemies

@@ -152,6 +152,7 @@ namespace Entity {
 		int getInventorySize() const { return 9; }
 		void clearInventorySlot(int slot);
 		void freeInventory();
+		void giveItem(int itemID, int itemCount);
 
 		// Getting moving directions
 		bool(&getDirections())[4] { return movingDirections; }
@@ -177,6 +178,7 @@ namespace Entity {
 		
 		// Wander behavior
 		bool walking;
+		bool isDead;
 		float endAtX;
 		float endAtY;
 		float wait;
@@ -188,11 +190,12 @@ namespace Entity {
 		void movement(const Player& player, float deltaTime, World::worldGrid& Griddy);
 
 		// Draw that takes player reference for AI
-		void draw(const Player& player, World::worldGrid& Griddy, bool pause);
+		void draw(Player& player, World::worldGrid& Griddy, bool pause);
 
 		// Setters
 		void setFov(float newFov);
 		float getFov() const;
+		bool dead() { return isDead; };
 
 		// Constructors
 		Enemy(float posX, float posY, float w, float h, float health, float spd, float arm);
