@@ -105,7 +105,7 @@ namespace World
 	
 		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();
-		// void initMapTextureSprite(const std::string& filename);
+		void initMapTextureSprite(const std::string& filename);
 		void unloadMapTexture();
 		void growPlants(World::worldGrid& Griddy);
 	};
