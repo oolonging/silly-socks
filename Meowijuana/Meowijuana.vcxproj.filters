@@ -158,10 +158,11 @@
     <ClCompile Include="RespawnArea.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
-    <ClCompile Include="NewDungeon.cpp">
-      <Filter>Source files\Screens\Testing</Filter>
     <ClCompile Include="UI_Elements\PopupBox.cpp">
       <Filter>Source files\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="NewDungeon.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
