@@ -11,23 +11,22 @@ namespace UI_Elements {
 		: UI_Element(x, y, width, height, mode), message(message), speakerName(speakerName),
 		characterSprite(sprite), showSprite(sprite != nullptr), isActive(false),
 		spriteSize(120.0f), textPadding(20.0f), nameBoxHeight(40.0f), onDismiss(nullptr) {
+
 		// Custom default style for dialogue box
 		style.primaryColor = Color::createColorRGB(240, 240, 240, 255);      // Light gray background
 		style.secondaryColor = Color::createColorRGB(60, 60, 80, 255);       // Dark blue-gray for name box
 		style.strokeColor = Color::createColorRGB(40, 40, 50, 255);          // Dark border
 		style.strokeWeight = 3;
+
+		// Text style for dialogue box
+		textStyle.primaryColor = Color::Preset::Black;
+		textStyle.secondaryColor = Color::Preset::Blue;
+		textStyle.fontSize = 10.0f;
+		textStyle.fontName = "default";
 	}
 
-	// TODO: set up the position properly, add easter egg message here too, add graphical rendering if assets are available
 	DialogueBox::DialogueBox(void)
-		: UI_Element(0, 0, 800, 200, Shapes::CORNER), message("You found a hidden easter egg"), speakerName(nullptr),
-		characterSprite(nullptr), showSprite(false), isActive(false),
-		spriteSize(120.0f), textPadding(20.0f), nameBoxHeight(40.0f), onDismiss(nullptr) {
-		style.primaryColor = Color::createColorRGB(240, 240, 240, 255);
-		style.secondaryColor = Color::createColorRGB(60, 60, 80, 255);
-		style.strokeColor = Color::createColorRGB(40, 40, 50, 255);
-		style.strokeWeight = 3;
-	}
+		: DialogueBox(0.0f, 0.0f, 800.0f, 200.0f) {}
 
 	void DialogueBox::setText(const std::string& text) {
 		message = text;
@@ -192,6 +191,8 @@ namespace UI_Elements {
 		Color::textFill(0, 0, 0, 255); // Black text
 		float lineHeight = 25.0f; // Adjust based on your font size
 
+		Color::textFill(this->textStyle.primaryColor);
+		Text::textSize(this->textStyle.fontSize);
 		for (size_t i = 0; i < wrappedLines.size(); ++i) {
 			float lineY = textStartY - (i * lineHeight);
 			Text::text(wrappedLines[i].c_str(), textStartX, lineY);

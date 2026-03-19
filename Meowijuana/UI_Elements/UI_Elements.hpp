@@ -270,7 +270,7 @@ namespace UI_Elements {
 		void setOnDismiss(void(*func)(void));
 
 		// Ctors
-		DialogueBox(float x, float y, float width, float height, char const* speakerName = nullptr,
+		DialogueBox(float x, float y, float width, float height, char const* speakerName = "speaker",
 			const std::string& message = "You arent supposed to be seeing this but if you are, congrats. You broke something",
 			AEGfxTexture* sprite = nullptr, Shapes::SHAPE_MODE drawMode = Shapes::CORNER);
 		DialogueBox(void);
