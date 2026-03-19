@@ -160,6 +160,8 @@
     </ClCompile>
     <ClCompile Include="NewDungeon.cpp">
       <Filter>Source files\Screens\Testing</Filter>
+    <ClCompile Include="UI_Elements\PopupBox.cpp">
+      <Filter>Source files\UI Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

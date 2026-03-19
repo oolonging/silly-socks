@@ -5,6 +5,7 @@
 #include "../Managers/EntityManager.hpp"
 #include "../../World.hpp"
 #include "../Settings.hpp"
+#include "../../Managers/UIManager.hpp"
 
 bool firstLoad = true;
 bool firstDungeon = true;
@@ -40,6 +41,9 @@ namespace FarmNPC {
 	TutorialState state = TutorialState::GER_TALK;
 
 }
+
+//popup
+static UI_Elements::PopupBox* cropPopup;
 
 void Farm_Load() 
 {
@@ -139,6 +143,12 @@ void Farm_Initialize() {
 	// Growing plant
 	grid.growPlants(grid);
 
+	//tutorial popup box
+	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 350.0f, 250.0f, "Planting Crops", "These are crop tiles!", "Press E over one to plant a seed!");
+	cropPopup->setOnDismiss([]() {
+		cropPopup->hide();
+		});
+
 }
 
 void Farm_Update() {
@@ -224,6 +234,7 @@ void Farm_Update() {
 			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
 			inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
 			inv.giveItem(*player, Inventory::ItemID::CHERRY_SEEDS, 6);
+			cropPopup->show();
 		}
 
 		break;
@@ -316,6 +327,8 @@ void Farm_Draw() {
 
 	// Draw dialogue box on top of everything
 	FarmNPC::dialogueBox.draw();
+
+	cropPopup->draw();
 
 }
 
