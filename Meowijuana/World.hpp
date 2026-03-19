@@ -3,6 +3,7 @@
 
 #include "Graphics.hpp"
 #include "Inventory.hpp"
+#include "../../Managers/SpriteManager.hpp"
 
 namespace Entity {
 	class Player;
@@ -49,6 +50,9 @@ namespace World
 		std::string name;
 		std::string description;
 		AEGfxTexture* image = nullptr;
+
+		SpriteManager::Sprite sprite;
+		bool useSprite = false;
 	};
 
 	class worldGrid
@@ -101,6 +105,7 @@ namespace World
 	
 		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();
+		void initMapTextureSprite(const std::string& filename);
 		void unloadMapTexture();
 		void growPlants(World::worldGrid& Griddy);
 	};

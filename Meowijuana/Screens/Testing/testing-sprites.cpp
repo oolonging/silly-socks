@@ -39,6 +39,7 @@ void testingSprites_Update() {
 void testingSprites_Draw() {
 	SpriteManager::drawAnimation("catWalk", 0.0f, 0.0f, 128.0f, 128.0f);
 
+
 }
 
 void testingSprites_Free() {

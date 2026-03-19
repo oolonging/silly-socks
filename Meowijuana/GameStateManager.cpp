@@ -18,6 +18,7 @@
 #include "Screens/Testing/testing-sprites.hpp"
 #include "Screens/Testing/testing-ui-elements.hpp"
 #include "TutorialDungeon.hpp"
+#include "NewDungeon.hpp"
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
@@ -161,6 +162,15 @@ void GSM_Update()
 			fpDraw = Xuan_Draw;
 			fpFree = Xuan_Free;
 			fpUnload = Xuan_Unload;
+			break;
+
+		case GS_NEW:
+			fpLoad = NewDungeon_Load;
+			fpInitialize = NewDungeon_Initialize;
+			fpUpdate = NewDungeon_Update;
+			fpDraw = NewDungeon_Draw;
+			fpFree = NewDungeon_Free;
+			fpUnload = NewDungeon_Unload;
 			break;
 
 		case GS_RESPAWN:

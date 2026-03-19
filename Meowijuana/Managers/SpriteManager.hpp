@@ -167,6 +167,8 @@ namespace SpriteManager {
 	// Draw a sprite with custom transparency
 	void drawWithAlpha(const Sprite& sprite, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
 
+	void drawSpriteFromSheet(const Sprite& sprite, float x, float y, float width, float height, float alpha = 1.0f, float rotation = 0.0f);
+
 	// ----- Animation functions -----
 
 	// Create an animation from a sequence of sprites

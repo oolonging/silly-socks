@@ -158,6 +158,9 @@
     <ClCompile Include="RespawnArea.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="NewDungeon.cpp">
+      <Filter>Source files\Screens\Testing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -282,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="RespawnArea.hpp">
       <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="NewDungeon.hpp">
+      <Filter>Header files\Screens\Testing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

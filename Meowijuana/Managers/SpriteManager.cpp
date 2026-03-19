@@ -1,8 +1,26 @@
 ﻿#include "../pch.h"
 #include "SpriteManager.hpp"
 #include <iostream>
-
+#include <../../World.hpp>
 #include "../Graphics.hpp"
+
+
+AEGfxVertexList* mesh = nullptr;
+
+void initMesh(float uScale, float vScale) {
+	if (mesh != nullptr) return;
+
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, vScale,
+		0.5f, -0.5f, 0xFFFFFFFF, uScale, vScale,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFFFFFF, uScale, vScale,
+		0.5f, 0.5f, 0xFFFFFFFF, uScale, 0.0f,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
+	mesh = AEGfxMeshEnd();
+}
 
 namespace SpriteManager {
 	// For spritesheet
@@ -162,6 +180,58 @@ namespace SpriteManager {
 		// Free the mesh
 		AEGfxMeshFree(mesh);
 	}
+	
+
+
+	// basically the same but without mesh creation because i was lagging super hard? might still hae issues though :(
+	void drawSpriteFromSheet(const Sprite& sprite, float x, float y, float width, float height, float alpha, float rotation) {
+		if (!sprite.isValid()) {
+			std::cerr << "[SpriteManager] Error: Cannot draw invalid sprite.\n";
+			return;
+		}
+
+		SpriteSheet* sheet = sprite.spriteSheet;
+
+		if (mesh == nullptr) {
+			float uScale = sheet->spriteWidth / sheet->sheetWidth;
+			float vScale = sheet->spriteHeight / sheet->sheetHeight;
+			initMesh(uScale, vScale);
+		}
+
+		// Calculate UV coordinates for the sprite within the sprite sheet
+		float uOffset = (sprite.x * sheet->spriteWidth) / sheet->sheetWidth;
+		float vOffset = (sprite.y * sheet->spriteHeight) / sheet->sheetHeight;
+
+		// Set render mode to texture
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(alpha);
+
+		// Set texture with UV offset and scale to render only the specific sprite
+		AEGfxTextureSet(sheet->texture, uOffset, vOffset);
+
+		// Set transform matrix
+		AEMtx33 transform;
+		AEMtx33 scale, rotate, translate;
+
+		AEMtx33Scale(&scale, width, height);
+		AEMtx33Rot(&rotate, rotation);
+		AEMtx33Trans(&translate, x, y);
+
+		// Combine transformations: Scale -> Rotate -> Translate
+		AEMtx33Concat(&transform, &rotate, &scale);
+		AEMtx33Concat(&transform, &translate, &transform);
+
+		AEGfxSetTransform(transform.m);
+		AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
+
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxTextureSet(nullptr, 0, 0);
+
+	}
+
+
 
 	// ----- Animation implementations -----
 
