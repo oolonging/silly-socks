@@ -431,13 +431,26 @@ namespace Entity {
 		//Shapes::rect(x, y, width, height, Shapes::CENTER);
 
 		if (this->isWalking)
-			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, (this->facingDirection) ? -this->width : this->width, this->height);
+		{
+			if (movingDirections[0])
+				this->setWalkAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4);
+			else if (movingDirections[1])
+				this->setWalkAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4);
+			else if (movingDirections[2])
+				this->setWalkAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4);
+			else if (movingDirections[3])
+				this->setWalkAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4);
+
+			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, this->width, this->height);
+		}
+
 		else
 			SpriteManager::drawSprite(
 				SpriteManager::createSprite(this->spriteSheetName, 0, 0),
 				this->x, this->y, this->width, this->height
-		);
+			);
 
+		// Need to add check to see if selected item is carrot weapon
 		if(AEInputCheckCurr(AEVK_LBUTTON))
 			SpriteManager::drawAnimation(*(this->attackAnimation), 
 				this->x + (0.5f * (this->facingDirection) ? this->width : -this->width), this->y,

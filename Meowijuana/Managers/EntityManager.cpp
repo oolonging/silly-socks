@@ -56,7 +56,7 @@ namespace EntityManager {
 			160.0f, 160.0f,
 			40.0f, 40.0f
 		);
-		player->setWalkAnimation("playerWalk", "playerSpritesheet", 0, 1, 4, 0.4);
+		
 		player->setAttackAnimation("playerAttack", "playerAttackSpritesheet", 0, 0, 3, 0.4f, true);
 
 
