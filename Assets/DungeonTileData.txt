@@ -1,31 +1,61 @@
-0   Dirt  		  0   0
-1   Door    		  2   0
-2   Dirt_Speckled	  0   1
-3   Dirt_Rocks		  0   2
+0   Dirt  		      0  0
+1   Door    		      2  0
+2   Dirt_Speckled	      0  1
+3   Dirt_Rocks		      0  2
 
-4   SDoor_Open		  9   0
-5   DDoor_Open_Left	  10  0
-6   DDoor_Open_Right 	  11  0
-7   SDoor_Openish	  9   1
-8   DDoor_Openish_Left	  10  1
-9   DDoor_Openish_Right   11  1
-10  SDoor_Opening	  9   2
-11  DDoor_Opening_Left	  10  2
-12  DDoor_Opening_Right   11  2
-13  SDoor_Closed	  9   3
-14  DDoor_Closed_Left	  10  3
-15  DDoor_Closed_Right 	  11  3
+4   SDoor_Open		      9  0
+5   SDoor_Openish	      9  1
+6  SDoor_Opening	      9  2
+7   SDoor_Closed	      9  3
 
-16  Faucet_Dry		  7  0
-17  Faucet_Wet		  8  0
-18  Embellishment_Dry	  7  1	
-19  Embellishment_Wet	  8  1
-20  Basin_Dry	 	  7  2	
-21  Basin_Wet	 	  8  2
-22  Drain_Dry	 	  7  3	
-23  Drain_Wet	 	  8  3
+8   DDoor_Open_Left	     10  0
+9   DDoor_Openish_Left	     10  1
+10  DDoor_Opening_Left	     10  2
+11  DDoor_Closed_Left	     10  3
 
-24  Castle_Wall		  4  3
-25  Castle_Bars		  4  2
-26  Castle_Flag		  5  2
+12  DDoor_Open_Right 	     11  0
+13  DDoor_Openish_Right      11  1
+14  DDoor_Opening_Right      11  2
+15  DDoor_Closed_Right 	     11  3
+
+16  Faucet_Dry		      7  0
+17  Faucet_Wet		      8  0
+18  Embellishment_Dry	      7  1	
+19  Embellishment_Wet	      8  1
+20  Basin_Dry	 	      7  2	
+21  Basin_Wet	 	      8  2
+22  Drain_Dry	 	      7  3	
+23  Drain_Wet	 	      8  3
+
+24  Castle_Wall		      4  3
+25  Castle_Bars		      4  2
+26  Castle_Flag		      5  2
+27  Castle_Trap		      5  3
+28  Castle_Wallpaper	      2  2
+29  Castle_Left		      9  4
+30  Castle_Middle	     10  4
+31  Castle_Right	     11  4
+
+32  Rock_Fence_Left_Top	      0  4
+33  Rock_Fence_Left_Bot	      1  4
+34  Rock_Fence_Right_Top      0  5
+35  Rock_Fence_Right_Bot      1  5
+
+36  Pillar_Top 		      6  0
+37  Pillar_Mid		      6  1
+38  Pillar_Bot		      6  2
+
+39  Sand		      0  4
+40  Sand_Speckled	      1  4
+41  Sand_Top_Border	      2  4
+42  Sand_Top_Border2	      3  4
+43  Sand_Top_Right_Border     4  4
+44  Sand_Top_Left_Speck       5  4
+45  Sand_Rocks		      6  3
+
+46  Box_Vertical	      3  5
+47  Box_Horizontal	      3  6
+
+48  Table                     0  6
+49  Stool 		      1  6
 
