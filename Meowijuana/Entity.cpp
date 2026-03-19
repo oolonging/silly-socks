@@ -460,13 +460,14 @@ namespace Entity {
 		: Entity(posX, posY, w, h, health, spd, arm),
 		fov(300.0f), deltaX(0.0f), deltaY(0.0f),
 		walking(false), endAtX(0.0f), endAtY(0.0f), wait(2.0f), waited(0.0f) {
+
+		// default skin
+		this->sprite = AEGfxTextureLoad("Assets/Images/Entities/Enemies/crab.png");
+
 	}
 
-	Enemy::Enemy()
-		: Entity(),
-		fov(300.0f), deltaX(0.0f), deltaY(0.0f),
-		walking(false), endAtX(0.0f), endAtY(0.0f), wait(2.0f), waited(0.0f) {
-	}
+	Enemy::Enemy(void)
+		: Enemy(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 1.0f, 0.0f) {}
 
 	void Enemy::setFov(float newFov) {
 		fov = newFov;
@@ -589,14 +590,20 @@ namespace Entity {
 			movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()), Griddy);
 		}
 
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 		// Apply stroke and fill
-		Color::stroke(0, 0, 0, 255);
-		Color::strokeWeight(2.0f);
-		Color::fill(255, 0, 0, 255);
+		if (this->sprite == nullptr) {
+			Color::stroke(0, 0, 0, 255);
+			Color::strokeWeight(2.0f);
+			Color::fill(255, 0, 0, 255);
 
-		Shapes::rect(x, y, width, height, Shapes::CENTER);
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			Shapes::rect(x, y, width, height, Shapes::CENTER);
+		}
+		else {
+			Color::fill(Color::Preset::White);
+			Graphics::image(this->x, this->y, this->width, this->height, this->sprite, Shapes::CENTER);
+		}
 
 		// Always draw health bar for enemies
 		drawHealthBar();

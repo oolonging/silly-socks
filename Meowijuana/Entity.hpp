@@ -37,7 +37,7 @@ namespace Entity {
 
 
 		// Spritesheet and animations
-		AEGfxTexture* sprite;
+		AEGfxTexture* sprite = nullptr;
 		std::string spriteSheetName;
 		SpriteManager::SpriteSheet* spriteSheet = nullptr;
 		SpriteManager::Animation* walkAnimation = nullptr;
