@@ -20,7 +20,7 @@ void NewDungeon_Load() {
 	newGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	newGrid.initTextureBox();
 	newGrid.initMapTextureSprite("Assets/DungeonTileData.txt");
-	newGrid.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
+	newGrid.fillGrid("../../Assets/LevelMaps/TasteTest.txt");
 }
 
 void NewDungeon_Initialize() {
