@@ -1,13 +1,6 @@
 #ifndef INVENTORY_HPP
 #define INVENTORY_HPP
 
-#include "AEEngine.h"
-#include <string>
-#include <map>
-#include <memory>
-#include <functional>
-
-
 namespace Entity {
 	class Entity;
 }
