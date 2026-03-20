@@ -41,7 +41,7 @@ namespace World
 		// -- New Stuff -- //
 		OOB,
 		Teleporter,
-		TeleporterOtherSide,
+		ActivatedTeleporter,
 	};
 
 	struct tileObject

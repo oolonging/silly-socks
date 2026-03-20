@@ -459,7 +459,7 @@ namespace World {
 		
 		int tileID = Griddy.getTileID(index.first, index.second);
 
-		if (tileID == World::Teleporter)
+		if (tileID == World::ActivatedTeleporter)
 		{
 			next = nextlvl; // trigger level transition
 		}
@@ -484,9 +484,19 @@ namespace World {
 	// Draw indicator on all of 1 type of tile
 	void drawIndicatorsOnTileType(const World::worldGrid& Griddy, int ID, Animations::Indicator& ind)
 	{
-		for (int row = 0; row < Griddy.getHeight(); row++) {
-			for (int col = 0; col < Griddy.getWidth(); col++) {
-				if (Griddy.getTileID(col, row) == ID) {
+		// Update ONCE per frame, outside the loop
+		// For bobbing effect
+		static float t = 0.0f;
+		t += 0.05f;
+		if (t > 6.2832f) t = 0.0f;
+		ind.offset = (sinf(t) + 1.0f) * 5.0f;
+
+		for (int row = 0; row < Griddy.getHeight(); row++) 
+		{
+			for (int col = 0; col < Griddy.getWidth(); col++)
+			{
+				if (Griddy.getTileID(col, row) == ID) 
+				{
 					std::pair<float, float> tileCord = World::getWorldCoords({ col, row }, Griddy);
 					Animations::drawIndicator(tileCord.first, tileCord.second, ind.offset);
 				}

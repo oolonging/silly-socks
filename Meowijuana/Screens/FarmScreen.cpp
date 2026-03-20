@@ -270,6 +270,7 @@ void Farm_Update() {
 				
 		if (Gerald->dialogueDone()) {
 			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
+			grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
 		}
 
 		break;
@@ -320,7 +321,7 @@ void Farm_Draw() {
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
-			World::drawIndicatorsOnTileType(grid, World::Teleporter, dirt);
+			World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, dirt);
 			break;
 
 		}

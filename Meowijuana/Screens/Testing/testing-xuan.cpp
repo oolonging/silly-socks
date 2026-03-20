@@ -241,6 +241,7 @@ void Xuan_Update() {
 
 	
 	case TutorialScreen::TutorialState::FINISHED:
+		Griddtwo.replacingID(World::Teleporter, World::ActivatedTeleporter);
 		World::standOnTile(next, *player, Griddtwo, GS_TUTDUN);
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
@@ -321,6 +322,7 @@ void Xuan_Draw() {
 				break;
 
 			case TutorialScreen::TutorialState::FINISHED:
+				World::drawIndicatorsOnTileType(Griddtwo, World::ActivatedTeleporter, smellind);
 				break;
 
 		}
