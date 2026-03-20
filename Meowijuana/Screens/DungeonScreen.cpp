@@ -1,6 +1,6 @@
 ﻿#include "../pch.h"
-#include "AEEngine.h"
-#include <iostream>
+#include "DungeonScreen.hpp"
+
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
 #include "../LevelSystem.hpp"
@@ -9,7 +9,6 @@
 #include "../TileTypes.hpp"
 #include "../Managers/EntityManager.hpp"
 #include "../DungeonManager.hpp"
-#include "DungeonScreen.hpp"
 
 World::worldGrid DungeonGrid;
 std::pair<int, int> prevActive;

@@ -1,9 +1,6 @@
 #ifndef DUNGEON_MANAGER_HPP
 #define DUNGEON_MANAGER_HPP
 
-#include "AEEngine.h"
-#include <string>
-
 namespace Room {
 
 	// randomized:

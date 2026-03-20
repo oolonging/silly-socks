@@ -2,9 +2,6 @@
 // TODO: go over best practices when arranging includes in order
 #include "Level1.hpp"
 
-#include <iostream>
-#include "AEEngine.h"
-
 #include "../Inventory.hpp"
 #include "../GameStateManager.hpp"
 #include "../Graphics.hpp"
