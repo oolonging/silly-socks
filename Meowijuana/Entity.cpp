@@ -14,13 +14,12 @@ namespace Entity {
 
 	Entity::Entity(float posX, float posY, float w, float h, float health, float spd, float arm)
 		: x(posX), y(posY), width(w), height(h), hp(health), maxHp(health), speed(spd), armor(arm), sprite(nullptr),
-		healthBar(0.0f, 0.0f, w, 10.0f, &health, 0.0f, health, Shapes::CORNER) {
+		healthBar(0.0f, 0.0f, w, 10.0f, &health, 0.0f, health, Shapes::CORNER), isDead(false) {
+
 	}
 
-	Entity::Entity()
-		: x(0), y(0), width(50), height(50), hp(100), maxHp(100), speed(1), armor(0), sprite(nullptr),
-		healthBar(0.0f, 0.0f, 50.0f, 10.0f, nullptr, 0.0f, 100.0f, Shapes::CORNER) {
-	}
+	Entity::Entity(void)
+		: Entity(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 1.0f, 0.0f) {}
 
 	void Entity::setPosition(float posX, float posY) {
 		x = posX;
