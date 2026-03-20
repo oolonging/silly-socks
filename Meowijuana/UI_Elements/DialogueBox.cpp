@@ -143,7 +143,11 @@ namespace UI_Elements {
 
 		// Draw main dialogue box background
 		Color::stroke(style.strokeColor);
-		Color::strokeWeight(style.strokeWeight);
+		
+		// removed the stroke just so it looks a bit better
+		//Color::strokeWeight(style.strokeWeight);
+		Color::noStroke();
+		
 		Color::fill(style.primaryColor);
 		Shapes::rect(boxX, boxY, width, height, Shapes::CORNER);
 
@@ -169,8 +173,10 @@ namespace UI_Elements {
 
 			// Draw sprite box background
 			Color::noStroke();
-			Color::fill(255, 255, 255, 255);
-			Shapes::rect(spriteX, spriteY, calculatedSpriteSize, calculatedSpriteSize, Shapes::CORNER);
+
+			// Removed white background from sprite
+			//Color::fill(255, 255, 255, 255);
+			//Shapes::rect(spriteX, spriteY, calculatedSpriteSize, calculatedSpriteSize, Shapes::CORNER);
 
 			// Draw sprite
 			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
