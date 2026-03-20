@@ -85,8 +85,10 @@ namespace Settings {
 		gTextFillColor = oldTextFill;
 		Text::textSize(oldTextSize);
 		Text::textAlign(oldAlignH, oldAlignV);
-
 	}
+
+	/// Testing area
+	bool gHoldingCarrot = false;
 }
 
 

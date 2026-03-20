@@ -133,8 +133,7 @@ namespace Entity {
 	class Player : public Entity {
 	private:
 		bool movingDirections[4];
-		Inventory::Item* inventory[9]; // Array of 9 inventory slots
-		int selectedInventorySlot; // 0-8
+		int selectedInventorySlot = 0; // 0-8
 
 		void handleMovement();
 		// Testing Movement ref the grid
@@ -144,6 +143,18 @@ namespace Entity {
 
 
 	public:
+		Inventory::Item* inventory[9]{
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr
+		}; // Array of 9 inventory slots
+		
 		// Inventory methods
 		Inventory::Item* getInventoryItem(int slot) const;
 		void setInventoryItem(int slot, Inventory::Item* item);

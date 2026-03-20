@@ -4,6 +4,7 @@
 #include "Tiles.hpp"
 #include "Managers/ParticleManager.hpp"
 #include "AudioManager.hpp"
+#include "Settings.hpp"
 
 namespace Entity {
 
@@ -393,6 +394,13 @@ namespace Entity {
 		if (canMoveY) y = newY;
 
 		setPosition(x, y);
+
+		// update holding sword status
+		if (inventory[selectedInventorySlot] != nullptr) {
+			int itemId = (*inventory)->getID();
+			Settings::gHoldingCarrot = itemId == Inventory::ItemID::CARROT;
+			printf("Holding: %d\n", itemId);
+		}
 	}
 
 	// ==================================== additional (for collision)
@@ -482,7 +490,7 @@ namespace Entity {
 			);
 
 		// Need to add check to see if selected item is carrot weapon
-		if(AEInputCheckCurr(AEVK_LBUTTON))
+		if(AEInputCheckCurr(AEVK_LBUTTON) && Settings::gHoldingCarrot)
 			SpriteManager::drawAnimation(*(this->attackAnimation), 
 				this->x + (0.5f * (this->facingDirection) ? this->width : -this->width), this->y,
 				(this->facingDirection) ? this->width : -this->width, this->height

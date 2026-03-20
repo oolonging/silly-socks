@@ -2,6 +2,7 @@
 #define SETTINGS_HPP
 
 #include "Graphics.hpp"
+#include "UI_Elements/UI_Elements.hpp"
 
 namespace Settings {
 	///////////////////
@@ -49,6 +50,12 @@ namespace Settings {
 
 	// Draw debug overlay
 	void drawDebugOverlay(void);
+
+	////////////////
+	// Testing area
+	////////////////
+
+	extern bool gHoldingCarrot;
 }
 
 #endif // SETTINGS_HPP
