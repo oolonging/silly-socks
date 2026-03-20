@@ -449,6 +449,7 @@ namespace Entity {
 
 	void Player::update(World::worldGrid& Griddy)
 	{
+		if(!this->isDead)
 		handleMovement(Griddy);
 	}
 

@@ -32,6 +32,7 @@ namespace Entity {
 		bool isWalking = false;
 		int facingDirection = 0; // 0 = LEFT, 1 = RIGHT
 
+
 		// attack vars
 		bool isAttacking = false;
 
@@ -50,6 +51,9 @@ namespace Entity {
 		Inventory::Weapon* equippedWeapon = nullptr;
 
 	public:
+		// dead check
+		bool isDead = false;
+
 		// Getters
 		float getX() const { return x; }
 		float getY() const { return y; }
@@ -189,7 +193,6 @@ namespace Entity {
 		
 		// Wander behavior
 		bool walking;
-		bool isDead;
 		float endAtX;
 		float endAtY;
 		float wait;

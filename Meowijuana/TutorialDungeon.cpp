@@ -122,11 +122,13 @@ void TutorialDungeon_Update() {
         tutPlayer->setHp(0);
 
         Death::dead = true;
+        tutPlayer->isDead = true;
 
         if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
 
         if (Death::opacity >= 255.0f) {
             Death::opacity = 255.0f;
+            tutPlayer->isDead = false;
             next = GS_RESPAWN;
         }
 
