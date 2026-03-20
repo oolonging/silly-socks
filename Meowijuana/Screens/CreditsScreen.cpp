@@ -28,10 +28,11 @@ const char* credits[] = {
 int creditsCount = sizeof(credits) / sizeof(credits[0]);
 
 void Credits_Load() {
-	Settings::currentScreen = "CreditsScreen.cpp";
 }
 
 void Credits_Initialize() {
+	Settings::currentScreen = "CreditsScreen.cpp";
+
 	scrollY = -(AEGfxGetWindowHeight() * 0.5f) - (creditsCount * 100.0f);
 	scrollSpeed = 100.0f;
 }

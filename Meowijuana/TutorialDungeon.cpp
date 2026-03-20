@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
-#include "AEEngine.h"
-#include <iostream>
 #include "TutorialDungeon.hpp"
+
 #include "../../Graphics.hpp"
 #include "../../Tiles.hpp"
 #include "../../Entity.hpp"
@@ -10,6 +9,7 @@
 #include "../../World.hpp"
 #include "../../GameStateManager.hpp"
 #include "../../PauseMenu.hpp"
+#include "../../Settings.hpp"
 
 
 World::worldGrid TDungeonGrid;
@@ -70,6 +70,8 @@ void TutorialDungeon_Load() {
 
 
 void TutorialDungeon_Initialize() {
+    Settings::currentScreen = "TutorialDungeon.cpp";
+
     TDungeonGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
     TDungeonGrid.initMapTexture();
     TDungeonGrid.initTextureBox();
@@ -184,6 +186,7 @@ void TutorialDungeon_Draw() {
     // debug: show weapon attack range
     float attackRange = 170; // i put 170 since i put it as i believe 85 as range?
 
+    if(Settings::gDebugMode)
     circle(tutPlayer->getX(), tutPlayer->getY(), attackRange, Shapes::CENTER);
 
     tutPlayer->draw();

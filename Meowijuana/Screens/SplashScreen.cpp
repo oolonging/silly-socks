@@ -1,9 +1,9 @@
 ﻿#include "../pch.h"
-#include "AEEngine.h"
-#include "../GameStateManager.hpp"
-#include "../Graphics.hpp"
 #include "SplashScreen.hpp"
 
+#include "../GameStateManager.hpp"
+#include "../Graphics.hpp"
+#include "../Settings.hpp"
 
 namespace SplashScreen {
 	// Assets
@@ -19,6 +19,8 @@ void Splash_Load() {
 }
 
 void Splash_Initialize() {
+	Settings::currentScreen = "SplashScreen.cpp";
+
 	SplashScreen::opacity = 0.0f;
 }
 

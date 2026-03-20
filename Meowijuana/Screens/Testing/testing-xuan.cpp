@@ -7,6 +7,7 @@
 #include "../../Entity.hpp"
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
+#include "../../Settings.hpp"
 
 
 extern UI_Elements::PlayerInventory inv;
@@ -46,6 +47,8 @@ void Xuan_Load() {
 }
 
 void Xuan_Initialize() {
+	Settings::currentScreen = "testing-xuan.cpp";
+
 
 	//TileManager::init();
 

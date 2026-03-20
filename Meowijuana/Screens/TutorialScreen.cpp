@@ -20,12 +20,12 @@ namespace TutorialScreen {
 }
 
 void Tutorial_Load() {
-	Settings::currentScreen = "TutorialScreen.cpp";
-
 	TutorialScreen::pTex = AEGfxTextureLoad("Assets/mycat.png");
 }
 
 void Tutorial_Initialize() {
+	Settings::currentScreen = "TutorialScreen.cpp";
+	
 	// Non default constructor
 	float dialogueWidth = 1200.0f;
 	float dialogueHeight = 250.0f;

@@ -49,13 +49,14 @@ static UI_Elements::PopupBox* cropPopup;
 
 void Farm_Load() 
 {
-	Settings::currentScreen = "FarmScreen.cpp";
 
 	showInventory = true;
 }
 
 
 void Farm_Initialize() {
+	Settings::currentScreen = "FarmScreen.cpp";
+
 
 	// Initialising stuffs
 	EntityManager::init();

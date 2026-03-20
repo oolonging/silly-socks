@@ -7,7 +7,7 @@
 #include "../../Entity.hpp"
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
-
+#include "../../Settings.hpp"
 
 // idle lines are broken rn but i'll have to fix after playtest
 
@@ -41,6 +41,7 @@ void RespawnArea_Load() {
 
 
 void RespawnArea_Initialize() {
+	Settings::currentScreen = "RespawnArea.cpp";
 
 	RespawnAreaGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	RespawnAreaGrid.initMapTexture();

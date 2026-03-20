@@ -30,6 +30,7 @@ void Settings_Load() {
 }
 
 void Settings_Initialize() {
+	Settings::currentScreen = "SettingsScreen.cpp";
 
 	// Initialize sliders
 	state->bgVolumeSlider = UIManager::create<UI_Elements::Slider>("bgmVolumeSlider", -200.0f, 200.0f, 400.0f, 50.0f, &bgVolume, 0.0f, 255.0f);

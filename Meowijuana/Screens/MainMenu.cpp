@@ -3,6 +3,7 @@
 
 #include "../Managers/UIManager.hpp"
 #include "../GameStateManager.hpp"
+#include "../Settings.hpp"
 
 // Button functions
 void navigateToGame(void) { next = GS_FARM; }
@@ -33,6 +34,8 @@ void Mainmenu_Load() {
 
 void Mainmenu_Initialize()
 {
+	Settings::currentScreen = "MainMenu.cpp";
+
 	// set the button values
 	state->creditsButton = UIManager::create<UI_Elements::Button>("creditsButton", -300.0f, -200.0f, 200.0f, 100.0f, "Credits", Shapes::CENTER);
 	state->playButton = UIManager::create<UI_Elements::Button>("playButton", 0.0f, -200.0f, 200.0f, 100.0f, "Play", Shapes::CENTER);
