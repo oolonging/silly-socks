@@ -13,6 +13,7 @@ bool firstDungeon = true;
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 extern GameData gameData;
+static Animations::Indicator dirt;
 
 // For world grid
 std::pair<int, int> prevActiveT;
@@ -158,6 +159,7 @@ void Farm_Update() {
 
 	// Player update
 	player->update(grid);
+	Gerald->setCharName("Gerald");
 	inv.update();
 
 	activeT = World::activeTile(player->getX(), player->getY(), grid);
@@ -177,6 +179,12 @@ void Farm_Update() {
 	if (AEInputCheckTriggered(AEVK_E))
 	{
 		World::interactTile(activeT, grid, inv, *player);
+		
+		if (cropPopup->getVisible())
+		{
+			if (inv.findItemCount(*player, Inventory::ItemID::CARROT_SEEDS) < 3 || inv.findItemCount(*player, Inventory::ItemID::CHERRY_SEEDS) < 6)
+				cropPopup->hide();
+		}
 	}
 
 	// Makes it so that user is stuck in tutorial area until done w tutorial, it player completed tutorial already, teleporter shld be normal
@@ -260,7 +268,7 @@ void Farm_Update() {
 		FarmNPC::activeSpeaker = Gerald;
 		Gerald->resumeDialogue(FarmNPC::dialogueBox);
 				
-		if (Gerald->getIsPaused()) {
+		if (Gerald->dialogueDone()) {
 			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
 		}
 
@@ -302,34 +310,27 @@ void Farm_Draw() {
 	}	
 
 	// Basically the stuff that draws the floating pointer on top of the npc
-	/*if (!FarmNPC::dialogueBox.getIsActive()) {
+	if (!FarmNPC::dialogueBox.getIsActive()) {
+;
 
 		switch (FarmNPC::state) {
 
-		case FarmNPC::TutorialState::GER_TALK:
-			if (smellind.active == 1) {
-				Animations::drawIndicator(smellind);
-			}
-			break;
-
-
 		case FarmNPC::TutorialState::GER_IDLE:
-			Animations::drawIndicator(dummind);
+			World::drawIndicatorsOnTileType(grid, World::EmptyCropTile, dirt);
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
+			World::drawIndicatorsOnTileType(grid, World::Teleporter, dirt);
 			break;
 
 		}
-
-	}*/
-
+	}
 
 	// Draw dialogue box on top of everything
 	FarmNPC::dialogueBox.draw();
 
 	cropPopup->draw();
-
+	
 }
 
 void Farm_Free() 

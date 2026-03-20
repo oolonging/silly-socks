@@ -107,6 +107,7 @@ namespace World
 		void initTextureBox();
 		void initMapTextureSprite(const std::string& filename);
 		void unloadMapTexture();
+		void replacingID(int oldID, int newID);
 		void growPlants(World::worldGrid& Griddy);
 	};
 
@@ -117,19 +118,12 @@ namespace World
 	// Get World Coords -> Translate Array index to real word coordinates
 	std::pair<float, float> getWorldCoords(std::pair<int, int> tile, const World::worldGrid& Griddy);
 
-	// --- Tile Colliison stuff --- //
-	// Main function to handle collision
-	//void collidableNearby(Entity::Player& user, World::worldGrid& Griddy);
-
-	//// Helper to user collision function 
-	//bool collideWithWall(Shapes::Quad user, Shapes::Quad wall);
-
-	//void snapPlayer(Entity::Player& user, World::worldGrid& Griddy, bool* collisionCheck, bool* dir);
-
 	// --- Tile Interaction stuff --- //
 	void interactTile(std::pair<int, int> tile, World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user);
 
 	bool useItemOnTile(std::pair<int, int> activeTile, World::worldGrid& grid, UI_Elements::PlayerInventory inven, Entity::Player& user);
+
+	void drawIndicatorsOnTileType(const World::worldGrid& Griddy, int ID, Animations::Indicator& ind);
 
 	// Based on user position -> check what tile user is on then change interactions respectively
 	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl);

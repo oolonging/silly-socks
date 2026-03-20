@@ -206,6 +206,7 @@ namespace Entity {
 	private:
 		std::vector<std::string> dialogLines;
 		std::vector<std::string> idleLines;
+		const char* charName;
 		size_t linenum = 0;
 		size_t idlenum = 0;
 		bool started = false;
@@ -222,6 +223,7 @@ namespace Entity {
 		const std::vector<std::string>& getIdleLines() const;
 		void setIdleLines(const std::vector<std::string>& lines);
 		void addIdleLine(const std::string& line);
+		void setCharName(const char* name) { charName = name; };
 
 		size_t getLineNum();
 		size_t getIdleNum();
@@ -238,6 +240,7 @@ namespace Entity {
 		void idleSpeak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;
 
+		bool dialogueDone();
 
 		// Constructors
 		NPC(float posX, float posY, float w, float h, float health, float spd, float arm);

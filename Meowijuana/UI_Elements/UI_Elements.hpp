@@ -261,7 +261,7 @@ namespace UI_Elements {
 	public:
 		void draw(void) override;
 		void setText(const std::string& text);
-		void setSpeaker(char const* name);
+		void setSpeaker(char const *name);
 		void setCharacterSprite(AEGfxTexture* pSprite);
 		void setShowSprite(bool showSprite);
 		void activate();
@@ -309,6 +309,7 @@ namespace UI_Elements {
 
 		/*void giveSeeds(Entity::Player& player);*/
 		bool findItem(Entity::Player& player, int check);
+		int findItemCount(Entity::Player& player, int check);
 		bool isEmpty(Entity::Player& player);
 		void giveItem(Entity::Player& player, int itemID, int itemCount);
 

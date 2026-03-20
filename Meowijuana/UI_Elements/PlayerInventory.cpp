@@ -234,6 +234,22 @@ bool UI_Elements::PlayerInventory::findItem(Entity::Player& player, int check)
 	return false;
 }
 
+int UI_Elements::PlayerInventory::findItemCount(Entity::Player& player, int check)
+{
+	int count = 0;
+
+	for (int i = 0; i < player.getInventorySize(); i++)
+	{
+		Inventory::Item* item = player.getInventoryItem(i);
+		if (item != nullptr && item->getID() == check)
+		{
+			count = item->getCount();
+			return count;
+		}
+	}
+	return count;
+}
+
 bool UI_Elements::PlayerInventory::isEmpty(Entity::Player& player)
 {
 	for (int i = 0; i < player.getInventorySize(); i++)

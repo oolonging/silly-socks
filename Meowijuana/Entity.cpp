@@ -750,7 +750,7 @@ namespace Entity {
 			return;
 		}
 
-		dialogueBox.setSpeaker("NPC");
+		dialogueBox.setSpeaker(this->charName);
 		dialogueBox.setCharacterSprite(this->sprite);
 		dialogueBox.setText(dialogLines[linenum]);
 		dialogueBox.activate();
@@ -793,13 +793,12 @@ namespace Entity {
 			started = true;
 			linenum = 0;
 
-			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setSpeaker(this->charName);
 			dialogueBox.setCharacterSprite(this->sprite);
 			dialogueBox.setText(dialogLines[linenum]);
 			dialogueBox.activate();
 		}
 	}
-
 
 	// code modularity might just be my biggest enemy :heartbroken:
 	void NPC::idleSpeak(UI_Elements::DialogueBox& dialogueBox) {
@@ -835,7 +834,7 @@ namespace Entity {
 		if (idling && idlenum < idleLines.size()) {
 			idling = true;
 
-			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setSpeaker(this->charName);
 			dialogueBox.setCharacterSprite(this->sprite);
 			dialogueBox.setText(idleLines[idlenum]);
 			dialogueBox.activate();
@@ -846,11 +845,16 @@ namespace Entity {
 			idling = true;
 			idlenum = 0;
 
-			dialogueBox.setSpeaker("NPC");
+			dialogueBox.setSpeaker(this->charName);
 			dialogueBox.setCharacterSprite(this->sprite);
 			dialogueBox.setText(idleLines[idlenum]);
 			dialogueBox.activate();
 		}
+	}
+
+	bool NPC::dialogueDone()
+	{
+		return started && linenum >= dialogLines.size();
 	}
 
 	void NPC::draw() {
