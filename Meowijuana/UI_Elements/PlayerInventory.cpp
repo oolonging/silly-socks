@@ -67,6 +67,12 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 	// Draw the slot box
 	Shapes::rect(slotX, slotY, slotSize, slotSize, drawMode);
 
+	// Draw slot number above the slot
+	Color::textFill(255, 255, 255);
+	Text::text(std::to_string(slotIndex + 1).c_str(),
+		slotX + slotSize / 2.0f,
+		slotY + slotSize * 0.5f); // above the slot
+
 	// Draw item icon if slot has an item
 	if (playerRef && slotIndex < playerRef->getInventorySize()) {
 		Inventory::Item* item = playerRef->getInventoryItem(slotIndex);

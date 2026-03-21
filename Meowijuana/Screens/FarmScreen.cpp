@@ -49,6 +49,7 @@ namespace FarmNPC {
 
 //popup
 static UI_Elements::PopupBox* cropPopup;
+static UI_Elements::PopupBox* inventoryPopup;
 
 void Farm_Load() 
 {
@@ -147,7 +148,13 @@ void Farm_Initialize() {
 	// Growing plant
 	grid.growPlants(grid);
 
-	//tutorial popup box
+	//tutorial popup boxes
+	inventoryPopup = UIManager::create<UI_Elements::PopupBox>("inventoryPopup", 120.0f, -80.0f, 500.0f, 250.0f, "Inventory", "This is your inventory.", "Access your items with your keyboard numbers!");
+	inventoryPopup->setOnDismiss([]() {
+		inventoryPopup->hide();
+		cropPopup->show();
+		});
+
 	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 350.0f, 250.0f, "Planting Crops", "These are crop tiles!", "Press E over one to plant a seed!");
 	cropPopup->setOnDismiss([]() {
 		cropPopup->hide();
@@ -250,7 +257,8 @@ void Farm_Update() {
 			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
 			inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
 			inv.giveItem(*player, Inventory::ItemID::CHERRY_SEEDS, 6);
-			cropPopup->show();
+
+			inventoryPopup->show();
 		}
 
 		break;
@@ -339,6 +347,7 @@ void Farm_Draw() {
 	// Draw dialogue box on top of everything
 	FarmNPC::dialogueBox.draw();
 
+	inventoryPopup->draw();
 	cropPopup->draw();
 	
 }
