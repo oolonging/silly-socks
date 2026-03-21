@@ -122,6 +122,7 @@ namespace Entity {
 
 
 	void Entity::attack(Entity& target) {
+		
 		if (!equippedWeapon) {
 			std::cout << "No weapon\n";
 			return;
@@ -394,12 +395,12 @@ namespace Entity {
 
 		setPosition(x, y);
 
-		// update holding sword status
-		if (inventory[selectedInventorySlot] != nullptr) {
-			int itemId = (*inventory)->getID();
-			Settings::gHoldingCarrot = itemId == Inventory::ItemID::CARROT;
-			printf("Holding: %d\n", itemId);
-		}
+		//// update holding sword status
+		//if (inventory[selectedInventorySlot] != nullptr) {
+		//	int itemId = (*inventory)->getID();
+		//	Settings::gHoldingCarrot = itemId == Inventory::ItemID::CARROT_SWORD_INV;
+		//	printf("Holding: %d\n", itemId);
+		//}
 	}
 
 	// ==================================== additional (for collision)
@@ -489,13 +490,38 @@ namespace Entity {
 				this->x, this->y, this->width, this->height
 			);
 
-		// Need to add check to see if selected item is carrot weapon
-		if(AEInputCheckCurr(AEVK_LBUTTON) && Settings::gHoldingCarrot)
-			SpriteManager::drawAnimation(*(this->attackAnimation), 
-				this->x + (0.5f * (this->facingDirection) ? this->width : -this->width), this->y,
-				(this->facingDirection) ? this->width : -this->width, this->height
-			);
 
+		if (AEInputCheckTriggered(AEVK_LBUTTON))
+		{
+			int currSlot = this->getSelectedInventorySlot(); // make sure you're actually calling this
+			Inventory::Item* selectedItem = this->getInventoryItem(currSlot);
+			
+			// Check if currently selected item is carrot sword
+			if (selectedItem != nullptr && selectedItem->getID() == Inventory::ItemID::CARROT_SWORD_INV)
+			{
+				if (!isAttacking) {
+					isAttacking = true;
+					attackTimer = 0.0f; // reset timer when attack starts
+				}
+			}
+		}
+
+		float deltaTime = (float)AEFrameRateControllerGetFrameTime();
+
+		// Making it so the animation plays for 3 seconds
+		if (isAttacking)
+		{
+			attackTimer += deltaTime;
+
+			SpriteManager::drawAnimationAtTime(*(this->attackAnimation), attackTimer,
+				this->x + (this->facingDirection ? this->width : -this->width) * 0.5f, this->y,
+				this->facingDirection ? this->width : -this->width, this->height);
+
+			if (attackTimer >= attackDuration) {
+				isAttacking = false; // stop after full duration
+			}
+		}
+;
 		// Draw health bar if HP is less than max
 		if (hp < maxHp) {
 			drawHealthBar();

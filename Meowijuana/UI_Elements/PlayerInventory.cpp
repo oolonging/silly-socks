@@ -153,11 +153,10 @@ void UI_Elements::PlayerInventory::setSelectedSlot(int slot) {
 	if (slot >= 0 && slot < slotCount) {
 		selectedSlot = slot;
 
-		// TODO: Update the player's selectedInventorySlot
-		// You'll need to add this field to your Player class
-		// if (playerRef) {
-		//     playerRef->setSelectedInventorySlot(selectedSlot);
-		// }
+		if (playerRef)
+		{
+			playerRef->setSelectedInventorySlot(selectedSlot);
+		}
 	}
 }
 
@@ -173,29 +172,6 @@ void UI_Elements::PlayerInventory::setPosition(float newX, float newY) {
 UI_Elements::PlayerInventory::~PlayerInventory() {
 	playerRef = nullptr;
 }
-
-// Made giveItem which is more general, will be using that instead
-//void UI_Elements::PlayerInventory::giveSeeds(Entity::Player& player)
-//{
-//	// If first slot empty give seeds
-//	if (player.getInventoryItem(0) == nullptr)
-//	{
-//		Inventory::Item* seeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SEEDS);
-//		seeds->setCount(3);
-//		player.setInventoryItem(0, seeds);
-//	}
-//
-//	// If second slot empty give seed
-//	if (player.getInventoryItem(1) == nullptr)
-//	{
-//		Inventory::Item* cseeds = Inventory::ItemRegistry::createItem(Inventory::ItemID::CHERRY_SEEDS);
-//		cseeds->setCount(6);
-//		player.setInventoryItem(1, cseeds);
-//	}
-//
-//	// No empty slot found, do nothing
-//	return;
-//}
 
 void UI_Elements::PlayerInventory::giveItem(Entity::Player& player, int itemID, int itemCount)
 {
@@ -267,7 +243,7 @@ void UI_Elements::PlayerInventory::saveInventory(Entity::Player* player, GameDat
 {
 	if (!player) return;
 
-	// clear old saved data first (IMPORTANT)
+	// clear old saved data first 
 	gameData.inventory.clear();
 
 	for (int i = 0; i < player->getInventorySize(); i++)
@@ -283,11 +259,17 @@ void UI_Elements::PlayerInventory::saveInventory(Entity::Player* player, GameDat
 			gameData.inventory.push_back({ -1, 0 }); // empty slot
 		}
 	}
+
+	gameData.selectedSlot = this->getSelectedSlot();
 }
 
 void UI_Elements::PlayerInventory::loadInventory(Entity::Player* player, GameData& gameData)
 {
+	
 	if (!player) return;
+	
+	player->setSelectedInventorySlot(gameData.selectedSlot);
+
 	if (gameData.inventory.empty()) return;
 
 	// clear player's current inventory first

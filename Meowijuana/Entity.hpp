@@ -35,7 +35,8 @@ namespace Entity {
 
 		// attack vars
 		bool isAttacking = false;
-
+		float attackTimer = 0.0f;
+		float attackDuration = .5f;
 
 		// Spritesheet and animations
 		AEGfxTexture* sprite = nullptr;

@@ -12,6 +12,12 @@
 // idle lines are broken rn but i'll have to fix after playtest
 
 
+// Externs for Inventory
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
+extern GameData gameData;
+
+
 World::worldGrid RespawnAreaGrid;
 std::pair<int, int> prevActiveRespawnTile;
 static Animations::Indicator smellind;
@@ -120,6 +126,8 @@ void RespawnArea_Initialize() {
 	auto* player = EntityManager::getPlayer("player");
 	player->setPosition(-800.0f, 50.0f);
 
+	inv.setPlayer(EntityManager::getPlayer("player"));
+	inv.loadInventory(player, gameData);
 
 	RespawnArea::state = RespawnArea::SpeakState::SMELLY_CONDOLENCES;
 	RespawnArea::activeSpeaker = nullptr;
@@ -132,7 +140,7 @@ void RespawnArea_Update() {
 	auto* smelly = EntityManager::getNPC("smelly");
 
 	player->update(RespawnAreaGrid);
-
+	inv.update();
 	
 	if (RespawnArea::dialogueBox.getIsActive() && RespawnArea::activeSpeaker) {
 
@@ -174,13 +182,12 @@ void RespawnArea_Update() {
 			smelly->idleSpeak(RespawnArea::dialogueBox);
 		}
 
+		RespawnAreaGrid.replacingID(World::Teleporter, World::ActivatedTeleporter);
 		World::standOnTile(next, *player, RespawnAreaGrid, GS_TUTDUN);
 
 		break;
 
 	}
-
-
 
 	smellind.x = smelly->getX();
 	smellind.y = smelly->getY();
@@ -198,10 +205,14 @@ void RespawnArea_Draw() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* smelly = EntityManager::getNPC("smelly");
 
-
 	RespawnAreaGrid.drawTexture(RespawnAreaGrid);
 	World::drawTile(prevActiveRespawnTile, RespawnAreaGrid);
 	World::drawTile({ 0,0 }, RespawnAreaGrid);
+
+	if (showInventory)
+	{
+		inv.draw();
+	}
 
 	EntityManager::draw("smelly");
 	EntityManager::draw("player");
@@ -213,6 +224,10 @@ void RespawnArea_Draw() {
 
 
 void RespawnArea_Free() {
+
+	auto* tutPlayer = EntityManager::getPlayer("player");
+	inv.saveInventory(tutPlayer, gameData);
+	inv.setPlayer(nullptr);
 
 	RespawnAreaGrid.unloadMapTexture();
 	World::freeGrid();

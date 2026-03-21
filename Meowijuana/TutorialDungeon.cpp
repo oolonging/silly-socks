@@ -11,6 +11,10 @@
 #include "../../PauseMenu.hpp"
 #include "../../Settings.hpp"
 
+// Externs for Inventory
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
+extern GameData gameData;
 
 World::worldGrid TDungeonGrid;
 std::pair<int, int> tutActiveTile;
@@ -79,18 +83,14 @@ void TutorialDungeon_Initialize() {
     EntityManager::init();
     auto* tutPlayer = EntityManager::getPlayer("player");
 
-    Inventory::init();
+    inv.setPlayer(EntityManager::getPlayer("player"));
+    inv.loadInventory(tutPlayer, gameData);
+
     Inventory::Weapon* pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
     if (pWeapon) {
         tutPlayer->setWeapon(pWeapon);
         tutPlayer->setAtkSpd(pWeapon->getAttackSpeed());
     }
-
-    //Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
-    //if (eWeapon) {
-    //    EntityManager::weaponEnemies(eWeapon);
-    //    std::cout << "has weapon";
-    //}
 
     LoadRoom(tutorialRoomIndex);
 }
@@ -104,6 +104,8 @@ void TutorialDungeon_Update() {
 
     tutPlayer->update(TDungeonGrid);
     tutPlayer->tickAttackTimer();
+
+    inv.update();
 
     EntityManager::updateEnemies(*tutPlayer);
 
@@ -135,8 +137,6 @@ void TutorialDungeon_Update() {
         }
 
     }
-
-
 
     float halfHeight = AEGfxGetWindowHeight() / 2.0f;
     float halfWidth = AEGfxGetWindowWidth() / 2.0f;
@@ -186,14 +186,17 @@ void TutorialDungeon_Draw() {
     // debug: show weapon attack range
     float attackRange = 170; // i put 170 since i put it as i believe 85 as range?
 
+    if (showInventory)
+    {
+        inv.draw();
+    }
+
     if(Settings::gDebugMode)
     circle(tutPlayer->getX(), tutPlayer->getY(), attackRange, Shapes::CENTER);
 
     tutPlayer->draw();
 
     EntityManager::drawEnemies(*tutPlayer, TDungeonGrid, isPaused);
-
-
 
     if (Death::dead) {
         AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -209,6 +212,10 @@ void TutorialDungeon_Free() {
     EntityManager::clearEnemies();
     Death::dead = false;
     Death::opacity = 0.0f;
+
+    auto* tutPlayer = EntityManager::getPlayer("player");
+    inv.saveInventory(tutPlayer, gameData);
+    inv.setPlayer(nullptr);
 }
 
 void TutorialDungeon_Unload() {

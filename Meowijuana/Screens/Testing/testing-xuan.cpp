@@ -114,7 +114,7 @@ void Xuan_Initialize() {
 		Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
 		Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
 
-		//inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD, 1); 
+		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1); 
 	}
 
 }

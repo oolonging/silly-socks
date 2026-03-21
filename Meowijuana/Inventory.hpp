@@ -52,6 +52,9 @@ namespace Inventory {
 		const int CARROT = 13;
 		const int CHERRY = 14;
 		const int POTATO = 15;
+
+		// Inventory item version of weapon
+		const int CARROT_SWORD_INV = 16;
 	}
 
 	class Item {

@@ -5,6 +5,7 @@
 
 struct GameData {
 	std::vector<std::pair<int, int>> inventory;
+	int selectedSlot;
 	// (itemID, count)
 };
 

@@ -87,7 +87,7 @@ namespace Settings {
 		Text::textAlign(oldAlignH, oldAlignV);
 	}
 
-	/// Testing area
+	///// Testing area
 	bool gHoldingCarrot = false;
 }
 
