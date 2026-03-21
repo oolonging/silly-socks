@@ -125,7 +125,8 @@ void Xuan_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* smelly = EntityManager::getNPC("smelly");
 	auto* dummy = EntityManager::getEnemy("dummy");
-	smelly->setCharName("Smelly");
+	smelly->setCharName("Soroor");
+	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 	activeTile2 = World::activeTile(player->getX(), player->getY(), Griddtwo);
 
