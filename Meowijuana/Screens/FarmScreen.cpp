@@ -16,6 +16,9 @@ extern bool showInventory;
 extern GameData gameData;
 static Animations::Indicator dirt;
 
+static Entity::Player* localPlayer = nullptr;
+static Entity::NPC* localGerald = nullptr;
+
 // For world grid
 std::pair<int, int> prevActiveT;
 std::pair<int, int> activeT;
@@ -49,25 +52,25 @@ static UI_Elements::PopupBox* cropPopup;
 
 void Farm_Load() 
 {
-
 	showInventory = true;
 }
 
-
 void Farm_Initialize() {
+	// Set the debug "Current Screen" property
 	Settings::currentScreen = "FarmScreen.cpp";
 
-
-	// Initialising stuffs
+	// init Entitymanager
 	EntityManager::init();
+
 	FarmNPC::dialogueBox.setSpeaker("Gerald");
 
 	// Initialising Player
-	auto* player = EntityManager::getPlayer("player");
+	localPlayer = EntityManager::getPlayer("player");
+	auto* player = localPlayer;
 	player->setPosition(-800.0f, 50.0f);
 	player->setSpeed(10.f);
 
-	// Setting position for inventory
+	// Setting position for inventory 
 	float screenWidth = AEGfxGetWindowWidth();
 	float screenHeight = AEGfxGetWindowHeight();
 	float invWidth = inv.getSlotSize() * 9 + player->getInventorySize() * 8;
@@ -95,24 +98,22 @@ void Farm_Initialize() {
 	}
 
 	// Initialising NPCs
-	auto* Gerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
-
+	localGerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
+	auto* Gerald = localGerald;
+	Gerald->setCharName("Gerald");
 	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png")); 
 
-	Gerald->setDialogLines({
-		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.",
 
-		"@",
+	Gerald->setDialogLines({
+		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.", "@",
 
 		"Good Job! After planting the seeds, it will grow everytime you finish a dungeon level so make sure you make full use of your farm space!",
-		"You can get more seeds while exploring the dungeons so look out for that!",
-
-		"@"
-		});
+		"You can get more seeds while exploring the dungeons so look out for that!", "@"
+	});
 
 	Gerald->setIdleLines({
 		"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
-		});
+	});
 
 	// Initialize dialogue box
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
@@ -156,12 +157,11 @@ void Farm_Initialize() {
 
 void Farm_Update() {
 
-	auto* player = EntityManager::getPlayer("player");
-	auto* Gerald = EntityManager::getNPC("Gerald");
+	auto* player = localPlayer;
+	auto* Gerald = localGerald;
 
 	// Player update
 	player->update(grid);
-	Gerald->setCharName("Gerald");
 	inv.update();
 
 	activeT = World::activeTile(player->getX(), player->getY(), grid);
@@ -285,16 +285,17 @@ void Farm_Update() {
 
 }
 
-
 void Farm_Draw() {
 
 	// Rendering state
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	Color::textFill(255, 255, 255);
 
-	auto* player = EntityManager::getPlayer("player");
-	auto* Gerald = EntityManager::getNPC("Gerald");
+	auto* player = localPlayer;
+	auto* Gerald = localGerald;
 
+	Color::background(Color::Preset::Purple); // The more purple you can see the better, not every single tile should be drawing its own graphic
+	
 	grid.drawTexture(grid);
 
 	if (onGrid)
@@ -340,8 +341,8 @@ void Farm_Free()
 {
 	grid.outWorldMap("../../Assets/LevelMaps/Farm_User_layout.txt");
 
-	auto* player = EntityManager::getPlayer("player");
-	auto* Gerald = EntityManager::getNPC("Gerald");
+	auto* player = localPlayer;
+	auto* Gerald = localGerald;
 
 	lastposX = player->getX();
 	lastposY = player->getY();
@@ -370,7 +371,7 @@ void Farm_Unload()
 {
 	/*Inventory::unload();*/
 
-	auto* Gerald = EntityManager::getNPC("Gerald");
+	auto* Gerald = localGerald;
 	if (Gerald && Gerald->getSprite()) {
 		AEGfxTextureUnload(Gerald->getSprite()); // unload sprite
 	}
@@ -379,5 +380,3 @@ void Farm_Unload()
 	EntityManager::clear();
 
 }
-
-
