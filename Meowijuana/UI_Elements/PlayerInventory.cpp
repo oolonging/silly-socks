@@ -141,8 +141,27 @@ void UI_Elements::PlayerInventory::draw(void) {
 	}
 }
 
-void UI_Elements::PlayerInventory::update() {
+void UI_Elements::PlayerInventory::update(Entity::Player* player) {
 	handleKeyInput();
+
+	int currentSlot = this->getSelectedSlot();
+	Inventory::Item* currentItem = player->getInventoryItem(currentSlot);
+
+	if (currentItem != nullptr)
+	{
+		if (currentItem->getID() == Inventory::ItemID::CARROT_SWORD_INV)
+		{
+			player->weaponCheck(true);
+		}
+		else
+		{
+			player->weaponCheck(false);
+		}
+	}
+	else
+	{
+		player->weaponCheck(false); // no item in slot, no weapon
+	}
 }
 
 int UI_Elements::PlayerInventory::getSelectedSlot() const {
@@ -239,12 +258,21 @@ bool UI_Elements::PlayerInventory::isEmpty(Entity::Player& player)
 	return true;
 }
 
+void UI_Elements::PlayerInventory::clear(Entity::Player* player)
+{
+	for (int i = 0; i < this->slotCount; i++)
+	{
+		player->clearInventorySlot(i);
+	}
+}
+
 void UI_Elements::PlayerInventory::saveInventory(Entity::Player* player, GameData& gameData)
 {
 	if (!player) return;
 
 	// clear old saved data first 
 	gameData.inventory.clear();
+	gameData.selectedSlot = player->getSelectedInventorySlot();
 
 	for (int i = 0; i < player->getInventorySize(); i++)
 	{
@@ -259,16 +287,13 @@ void UI_Elements::PlayerInventory::saveInventory(Entity::Player* player, GameDat
 			gameData.inventory.push_back({ -1, 0 }); // empty slot
 		}
 	}
-
-	gameData.selectedSlot = this->getSelectedSlot();
 }
 
 void UI_Elements::PlayerInventory::loadInventory(Entity::Player* player, GameData& gameData)
 {
-	
-	if (!player) return;
-	
 	player->setSelectedInventorySlot(gameData.selectedSlot);
+
+	if (!player) return;
 
 	if (gameData.inventory.empty()) return;
 

@@ -37,6 +37,7 @@ namespace Entity {
 		bool isAttacking = false;
 		float attackTimer = 0.0f;
 		float attackDuration = .5f;
+		bool holdingWeapon;
 
 		// Spritesheet and animations
 		AEGfxTexture* sprite = nullptr;
@@ -74,6 +75,7 @@ namespace Entity {
 		void setHp(float health);
 		void setSpeed(float spd);
 		void setArmor(float arm);
+		void weaponCheck(bool check) { holdingWeapon = check; };
 
 		void setSprite(AEGfxTexture* tex);
 		void setSpritesheet(std::string name, std::string filepath, float sheetWidth, float sheetHeight, float spriteWidth, float spriteheight) {

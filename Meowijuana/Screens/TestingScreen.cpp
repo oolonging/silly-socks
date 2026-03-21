@@ -106,7 +106,7 @@ void Testing_Update() {
 
 
 	// Update inventory UI (handles keyboard input for slot selection)
-	Cashew::inventoryUI.update();
+	/*Cashew::inventoryUI.update();*/
 
 	if (prasind.active == 1) {
 		Animations::drawIndicator(prasind);

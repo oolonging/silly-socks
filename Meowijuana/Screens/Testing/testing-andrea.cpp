@@ -80,7 +80,7 @@ void Andrea_Update() {
 	World::standOnTile(next, user, Griddy, GS_X);
 
 	user.update();
-	inven.update();
+	/*inven.update();*/
 }
 
 void Andrea_Draw() 

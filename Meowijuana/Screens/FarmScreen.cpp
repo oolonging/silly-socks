@@ -162,17 +162,23 @@ void Farm_Update() {
 
 	// Player update
 	player->update(grid);
-	inv.update();
+	inv.update(player);
 
 	activeT = World::activeTile(player->getX(), player->getY(), grid);
 
 	// Keybindings for tests
-	if (AEInputCheckTriggered(AEVK_F9))
+	if (AEInputCheckTriggered(AEVK_F11)) // Clear Inventory
+	{
+		World::dungeonTracker[World::checkNum] = true;
+		inv.clear(player);
+	}
+
+	if (AEInputCheckTriggered(AEVK_F9)) // Toggle Grid
 	{
 		onGrid = !onGrid;
 	}
 
-	if (AEInputCheckTriggered(AEVK_F10))
+	if (AEInputCheckTriggered(AEVK_F10)) // Plant grow wow!
 	{
 		World::dungeonTracker[World::checkNum] = true;
 		grid.growPlants(grid);

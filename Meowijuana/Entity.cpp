@@ -128,6 +128,10 @@ namespace Entity {
 			return;
 		}
 
+		if (!holdingWeapon)
+		{
+			return;
+		}
 
 		std::cout << "Attack called\n";
 

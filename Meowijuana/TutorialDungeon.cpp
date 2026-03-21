@@ -105,7 +105,7 @@ void TutorialDungeon_Update() {
     tutPlayer->update(TDungeonGrid);
     tutPlayer->tickAttackTimer();
 
-    inv.update();
+    inv.update(tutPlayer);
 
     EntityManager::updateEnemies(*tutPlayer);
 

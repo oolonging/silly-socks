@@ -60,7 +60,7 @@ void Tutorial_Initialize() {
 void Tutorial_Update() {
 	auto* tutPlayer = EntityManager::getPlayer("player");
 	tutPlayer->update();
-	inv.update();
+	inv.update(tutPlayer);
 
 	// just for debugging: reactivates the dialogue box when you press space
 	if (AEInputCheckTriggered(AEVK_SPACE)) {

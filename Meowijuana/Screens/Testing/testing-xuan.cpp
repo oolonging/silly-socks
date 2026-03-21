@@ -268,7 +268,7 @@ void Xuan_Update() {
 	}
 
 
-	inv.update();
+	inv.update(player);
 }
 
 

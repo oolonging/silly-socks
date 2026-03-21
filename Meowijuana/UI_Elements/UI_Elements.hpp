@@ -299,7 +299,8 @@ namespace UI_Elements {
 
 	public:
 		void draw(void) override;
-		void update(); // Call this each frame to handle input
+		void update(Entity::Player* player); // Call this each frame to handle input
+		void clear(Entity::Player* player);
 
 		// Getters/Setters
 		int getSelectedSlot() const;

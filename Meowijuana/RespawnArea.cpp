@@ -140,7 +140,7 @@ void RespawnArea_Update() {
 	auto* smelly = EntityManager::getNPC("smelly");
 
 	player->update(RespawnAreaGrid);
-	inv.update();
+	inv.update(player);
 	
 	if (RespawnArea::dialogueBox.getIsActive() && RespawnArea::activeSpeaker) {
 
