@@ -120,8 +120,6 @@ void TutorialDungeon_Update() {
         tutorialRooms[tutorialRoomIndex].cleared = true;
     }
 
-
-
     if (tutPlayer->getHp() <= 0) {
         tutPlayer->setHp(0);
 
@@ -172,6 +170,8 @@ void TutorialDungeon_Update() {
         }
 
         if (tutorialRooms[3].cleared) {
+            TDungeonGrid.replacingID(World::Teleporter, World::ActivatedTeleporter);
+            World::dungeonTracker[World::checkNum] = true;
             World::standOnTile(next, *tutPlayer, TDungeonGrid, GS_FARM);
         }
     }

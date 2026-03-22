@@ -139,8 +139,7 @@ namespace EntityManager {
 
 	void drawEnemies(Entity::Player& player, World::worldGrid& Griddy, bool pause) {
 		for (auto& e : enemies) {
-			if (e->getHp() > 0)
-				e->draw(player, Griddy, pause);
+			e->draw(player, Griddy, pause);
 		}
 	}
 

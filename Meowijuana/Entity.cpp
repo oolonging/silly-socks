@@ -670,6 +670,11 @@ namespace Entity {
 
 	void Enemy::draw(Player& player, World::worldGrid& Griddy, bool pause) {
 		
+		if (this->isDead)
+		{
+			return;
+		}
+
 		// Pause movement when on pause screen
 		if (!pause)
 		{
@@ -693,7 +698,7 @@ namespace Entity {
 			Graphics::image(this->x, this->y, this->width, this->height, this->sprite, Shapes::CENTER);
 		}
 
-		if (this->getHp() <= 0 && !this->isDead)
+		if (this->getHp() <= 0)
 		{
 			this->isDead = true;
 			gParticles.spawnExplosion(this->getX(), this->getY(), 40);

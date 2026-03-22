@@ -50,6 +50,7 @@ namespace FarmNPC {
 //popup
 static UI_Elements::PopupBox* cropPopup;
 static UI_Elements::PopupBox* inventoryPopup;
+static UI_Elements::PopupBox* tutPopup;
 
 void Farm_Load() 
 {
@@ -157,6 +158,11 @@ void Farm_Initialize() {
 
 	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 350.0f, 250.0f, "Planting Crops", "These are crop tiles!", "Press E over one to plant a seed!");
 	cropPopup->setOnDismiss([]() {
+		cropPopup->hide();
+		});
+
+	tutPopup = UIManager::create<UI_Elements::PopupBox>("tutPopup", 0.0f, 0.0f, 350.0f, 250.0f, "You have cleared the tutorial!", "You will be on your own now", "Please explore the dungeons and save the world!");
+	tutPopup->setOnDismiss([]() {
 		cropPopup->hide();
 		});
 
@@ -295,6 +301,11 @@ void Farm_Update() {
 	if (inv.isEmpty(*player) && FarmNPC::state == FarmNPC::TutorialState::GER_IDLE)
 	{
 		FarmNPC::state = FarmNPC::TutorialState::GER_TALK2;
+	}
+
+	if (World::dungeonTracker[0])
+	{
+		tutPopup->show();
 	}
 
 }
