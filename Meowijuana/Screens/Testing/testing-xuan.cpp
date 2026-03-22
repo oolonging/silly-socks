@@ -8,6 +8,7 @@
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
 #include "../../Settings.hpp"
+#include "../../Managers/SpriteManager.hpp"
 
 
 extern UI_Elements::PlayerInventory inv;
@@ -43,6 +44,22 @@ namespace TutorialScreen {
 
 void Xuan_Load() {
 
+	SpriteManager::init();
+
+	if (!SpriteManager::getSpriteSheet("dungeon")) {
+
+		std::cout << "loading file...";
+		SpriteManager::loadSpriteSheet("dungeon", "Assets/LevelMaps/NewDungeons/Tilemap/tilemap_packed.png", 192.0f, 176.0f, 16.0f, 16.0f);
+	}
+
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+	grid.initTextureBox();
+	grid.initMapTextureSprite("Assets/DungeonTileData.txt");
+	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2_bin.txt");
+	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2.txt");
+
+
+
 
 }
 
@@ -55,8 +72,10 @@ void Xuan_Initialize() {
 	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
 	//grid.initMapTexture();
 	//grid.initTextureBox();
-	grid.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
-	grid.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
+
+
+	//grid.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
+	//grid.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
 
 
 	// Initialize entities
