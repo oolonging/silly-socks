@@ -101,14 +101,6 @@ namespace Entity {
 			);
 		}
 
-		SpriteManager::Animation* getOrCreateAnimation(const std::string& name, const std::string& sheet, int x, int y, int frames, float duration)
-		{
-			SpriteManager::Animation* anim = SpriteManager::getAnimation(name);
-			if (anim == nullptr)
-				anim = SpriteManager::createAnimationFromRange(name, sheet, x, y, frames, duration, true);
-			return anim;
-		}
-
 		// Attack
 		void setAtkSpd(float spd);
 		void setAtkCD(float CD);

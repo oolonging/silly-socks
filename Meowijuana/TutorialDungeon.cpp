@@ -6,6 +6,7 @@
 #include "../../Entity.hpp"
 #include "../../DungeonManager.hpp"
 #include "../../Managers/EntityManager.hpp"
+#include "../../Managers/UIManager.hpp"
 #include "../../World.hpp"
 #include "../../GameStateManager.hpp"
 #include "../../PauseMenu.hpp"
@@ -16,10 +17,13 @@ extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 extern GameData gameData;
 
+static Animations::Indicator point;
+
 World::worldGrid TDungeonGrid;
 std::pair<int, int> tutActiveTile;
 int tutorialRoomIndex = 0;
 
+static UI_Elements::PopupBox* tutPopup;
 
 //  TODO : CHARACTER DEATH, MAKE ROOMS MORE INTERESTING, ENTITY COLLISION WITH WALL, PARTICLES IF POSSIBLE, KNOCKBACK???????
 namespace Death {
@@ -91,6 +95,11 @@ void TutorialDungeon_Initialize() {
         tutPlayer->setWeapon(pWeapon);
         tutPlayer->setAtkSpd(pWeapon->getAttackSpeed());
     }
+
+    tutPopup = UIManager::create<UI_Elements::PopupBox>("tutPopup", 120.0f, -80.0f, 500.0f, 250.0f, "You have cleared the tutorial!", "You will be on your own now", "Please explore the dungeons and save the world!");
+    tutPopup->setOnDismiss([]() {
+        tutPopup->hide();
+        });
 
     LoadRoom(tutorialRoomIndex);
 }
@@ -172,6 +181,7 @@ void TutorialDungeon_Update() {
         if (tutorialRooms[3].cleared) {
             TDungeonGrid.replacingID(World::Teleporter, World::ActivatedTeleporter);
             World::dungeonTracker[World::checkNum] = true;
+            tutPopup->show();
             World::standOnTile(next, *tutPlayer, TDungeonGrid, GS_FARM);
         }
     }
@@ -203,6 +213,11 @@ void TutorialDungeon_Draw() {
         Color::fill(255.0f, 255.0f, 255.0f, Death::opacity);
         Shapes::rect(0, 0, 1600, 900, Shapes::CENTER);
 
+    }
+
+    if (tutorialRooms[3].cleared)
+    {
+        World::drawIndicatorsOnTileType(TDungeonGrid, World::ActivatedTeleporter, point);
     }
 }
 

@@ -128,11 +128,6 @@ namespace Entity {
 			return;
 		}
 		
-		if (this->isPlayer() && !holdingWeapon) {
-			std::cout << "No weapon\n";
-			return;
-		}
-
 		std::cout << "Attack called\n";
 
 		float range = equippedWeapon->getRange();
@@ -477,13 +472,26 @@ namespace Entity {
 		if (this->isWalking)
 		{
 			if (movingDirections[0])
-				this->setWalkAnimation(getOrCreateAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f));
+			{
+				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
+				this->setWalkAnimation(anim);
+			}
 			else if (movingDirections[1])
-				this->setWalkAnimation(getOrCreateAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f));
+			{
+				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
+				this->setWalkAnimation(anim);
+			}
+
 			else if (movingDirections[2])
-				this->setWalkAnimation(getOrCreateAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f));
+			{
+				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
+				this->setWalkAnimation(anim);
+			}
 			else if (movingDirections[3])
-				this->setWalkAnimation(getOrCreateAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f));
+			{
+				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
+				this->setWalkAnimation(anim);
+			}
 
 			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, this->width, this->height);
 		}
@@ -670,11 +678,6 @@ namespace Entity {
 
 	void Enemy::draw(Player& player, World::worldGrid& Griddy, bool pause) {
 		
-		if (this->isDead)
-		{
-			return;
-		}
-
 		// Pause movement when on pause screen
 		if (!pause)
 		{
@@ -698,7 +701,7 @@ namespace Entity {
 			Graphics::image(this->x, this->y, this->width, this->height, this->sprite, Shapes::CENTER);
 		}
 
-		if (this->getHp() <= 0)
+		if (this->getHp() <= 0 && !this->isDead)
 		{
 			this->isDead = true;
 			gParticles.spawnExplosion(this->getX(), this->getY(), 40);
