@@ -14,6 +14,7 @@ s32 mouseWheelDelta{};
 const char* credits[] = {
 	"Thank you for playing!",
 	" ",
+	"piglevelwin2 | Tuudurt (FreeSound)",
 	"Pixel Sound Effect #4 | hmmm101 (FreeSound)",
 	"Enchanted Valley | ondrosik",
 	"Audio",

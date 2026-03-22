@@ -106,6 +106,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision.hpp" />
+    <ClCompile Include="LoseScreen.cpp" />
     <ClCompile Include="NewDungeon.cpp" />
     <ClCompile Include="RespawnArea.cpp" />
     <ClCompile Include="DungeonManager.cpp" />
@@ -161,6 +162,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="UI_Elements\Slider.cpp" />
     <ClCompile Include="UI_Elements\TextBox.cpp" />
     <ClCompile Include="UI_Elements\UI_elements.cpp" />
+    <ClCompile Include="WinScreen.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +174,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="LevelSystem.hpp" />
+    <ClInclude Include="LoseScreen.hpp" />
     <ClInclude Include="Managers\AchievementManager.hpp" />
     <ClInclude Include="Managers\EntityManager.hpp" />
     <ClInclude Include="Managers\ParticleManager.hpp" />
@@ -205,6 +208,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClInclude Include="TileTypes.hpp" />
     <ClInclude Include="TutorialDungeon.hpp" />
     <ClInclude Include="UI_Elements\UI_Elements.hpp" />
+    <ClInclude Include="WinScreen.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

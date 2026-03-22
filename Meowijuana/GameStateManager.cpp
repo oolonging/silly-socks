@@ -10,6 +10,8 @@
 #include "Screens/FarmScreen.hpp"
 #include "Screens/DungeonScreen.hpp"
 #include "RespawnArea.hpp"
+#include "WinScreen.hpp"
+#include "LoseScreen.hpp"
 
 // testing imports
 #include "Screens/TestingScreen.hpp"
@@ -180,6 +182,24 @@ void GSM_Update()
 			fpDraw = RespawnArea_Draw;
 			fpFree = RespawnArea_Free;
 			fpUnload = RespawnArea_Unload;
+			break;
+
+		case GS_WIN:
+			fpLoad = Win_Load;
+			fpInitialize = Win_Initialize;
+			fpUpdate = Win_Update;
+			fpDraw = Win_Draw;
+			fpFree = Win_Free;
+			fpUnload = Win_Unload;
+			break;
+
+		case GS_LOSE:
+			fpLoad = Lose_Load;
+			fpInitialize = Lose_Initialize;
+			fpUpdate = Lose_Update;
+			fpDraw = Lose_Draw;
+			fpFree = Lose_Free;
+			fpUnload = Lose_Unload;
 			break;
 
 		// Utility states (TODO: technically these 2 can be removed since itll be caught by default but we'll see)
