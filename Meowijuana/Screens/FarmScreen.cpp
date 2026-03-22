@@ -19,6 +19,8 @@ static Animations::Indicator dirt;
 static Entity::Player* localPlayer = nullptr;
 static Entity::NPC* localGerald = nullptr;
 
+AEGfxTexture* bg = nullptr;
+
 // For world grid
 std::pair<int, int> prevActiveT;
 std::pair<int, int> activeT;
@@ -57,7 +59,8 @@ void Farm_Load()
 	showInventory = true;
 	grid.initMapTexture();
 	grid.initTextureBox();
-
+	bg = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Farm.png");
+	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Farm.txt");
 }
 
 void Farm_Initialize() {
@@ -126,7 +129,7 @@ void Farm_Initialize() {
 	// Initialise Grid Stuff
 	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
 	
-	if (firstStartGame)
+	/*if (firstStartGame)
 	{
 		grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
 	}
@@ -145,7 +148,7 @@ void Farm_Initialize() {
 			file.close();
 			grid.fillGrid("../../Assets/LevelMaps/Farm_User_layout.txt");
 		}
-	}
+	}*/
 
 	// Growing plant
 	grid.growPlants(grid);
@@ -312,6 +315,8 @@ void Farm_Update() {
 }
 
 void Farm_Draw() {
+
+	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), bg, Shapes::CENTER);
 
 	// Rendering state
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);

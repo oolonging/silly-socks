@@ -587,7 +587,7 @@ namespace Entity {
 		if (!playerSpotted) {
 			// Wander behavior
 			if (!walking) {
-				Path::Vect set = Path::randPoint();
+				Path::Vect set = {0,0};
 				endAtX = x + set.x;
 				endAtY = y + set.y;
 				walking = true;

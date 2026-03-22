@@ -546,6 +546,7 @@ namespace World {
 				auto it = tileDatabase.find(tileID);
 				if (it == tileDatabase.end()) continue;
 				if (tileID == Ground) continue;
+				else if (tileID == Wall) continue;
 
 				const tileObject& def = it->second;
 				std::pair<float, float> coords = getWorldCoords({ x, y }, Griddy);
