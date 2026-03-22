@@ -170,6 +170,9 @@
     <ClCompile Include="LoseScreen.cpp">
       <Filter>Source files\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="DesertDungeon.cpp">
+      <Filter>Source files\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.hpp">
@@ -302,6 +305,9 @@
       <Filter>Header files\Screens</Filter>
     </ClInclude>
     <ClInclude Include="LoseScreen.hpp">
+      <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="DesertDungeon.hpp">
       <Filter>Header files\Screens</Filter>
     </ClInclude>
   </ItemGroup>

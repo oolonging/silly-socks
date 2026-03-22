@@ -106,6 +106,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision.hpp" />
+    <ClCompile Include="DesertDungeon.cpp" />
     <ClCompile Include="LoseScreen.cpp" />
     <ClCompile Include="NewDungeon.cpp" />
     <ClCompile Include="RespawnArea.cpp" />
@@ -166,6 +167,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DesertDungeon.hpp" />
     <ClInclude Include="DungeonManager.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="GameStateManager.hpp" />
