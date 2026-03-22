@@ -48,17 +48,13 @@ namespace EntityManager {
 	void init(void) {
 		// initialize the sprite sheet to attack
 		playerAttackSpritesheet = SpriteManager::loadSpriteSheet("playerAttackSpritesheet", "Assets/Images/Items/-sword.png", 297.0f, 117.0f, 99.0f, 117.0f);
-		
+		/*movementSpritesheet = SpriteManager::loadSpriteSheet("playerSpritesheet", "Assets/Images/SpriteSheets/player_spritesheet.png", 160.0f, 160.0f, 40.0f, 40.0f);*/
+
 		// Initialize player
 		EntityManager::create<Entity::Player>("player", 0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 5.0f);
 
-		// Initialize Walking cycle
-		SpriteManager::createAnimationFromRange("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
-		SpriteManager::createAnimationFromRange("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
-		SpriteManager::createAnimationFromRange("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
-		SpriteManager::createAnimationFromRange("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
-
 		auto* player = EntityManager::getPlayer("player");
+
 		player->setSpritesheet("playerSpritesheet", "Assets/Images/SpriteSheets/player_spritesheet.png",
 			160.0f, 160.0f,
 			40.0f, 40.0f
@@ -157,6 +153,7 @@ namespace EntityManager {
 
 	void clear() {
 		entities.clear();
+		SpriteManager::clear();
 	}
 }
 

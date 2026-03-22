@@ -21,6 +21,7 @@ namespace World {
 	// Initialising all the map textures
 	void worldGrid::initMapTexture()
 	{
+		if (!tileDatabase.empty()) return;
 
 		std::ifstream file("Assets/Tiles/TileData.txt");
 		if (!file.is_open())

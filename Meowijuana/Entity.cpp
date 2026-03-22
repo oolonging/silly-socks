@@ -479,24 +479,20 @@ namespace Entity {
 		{
 			if (movingDirections[0])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
 			}
 			else if (movingDirections[1])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
 			}
 
 			else if (movingDirections[2])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
 			}
 			else if (movingDirections[3])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
 			}
 
 			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, this->width, this->height);

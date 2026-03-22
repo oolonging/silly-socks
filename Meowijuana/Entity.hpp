@@ -89,8 +89,15 @@ namespace Entity {
 			);
 		}
 
-		void setWalkAnimation(SpriteManager::Animation* anim) {
-			this->walkAnimation = anim;
+		void setWalkAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
+			this->walkAnimation = SpriteManager::createAnimationFromRange(
+				name, sheetName,
+				x, y, count,
+				duration, loop
+			);
+
+			if (!this->walkAnimation->isValid() || this->walkAnimation == nullptr)
+				this->walkAnimation = SpriteManager::getAnimation(name);
 		}
 
 		void setAttackAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {

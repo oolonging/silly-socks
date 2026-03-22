@@ -22,6 +22,7 @@ std::pair<int, int> prevActiveTile2;
 std::pair<int, int> activeTile2;
 static Animations::Indicator smellind;
 static Animations::Indicator dummind;
+static bool hasCarrotSword = false;
 
 
 namespace TutorialScreen {
@@ -132,9 +133,26 @@ void Xuan_Initialize() {
 		player->setAtkSpd(weapon->getAttackSpeed());
 		Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
 		Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
-
-		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1); 
 	}
+	// check if player already has it
+	for (int i = 0; i < player->getInventorySize(); i++)
+	{
+		if (player->getInventoryItem(i) != nullptr &&
+			player->getInventoryItem(i)->getID() == Inventory::ItemID::CARROT_SWORD_INV)
+		{
+			hasCarrotSword = true;
+			break;
+		}
+	}
+
+	// only give if first time AND doesn't have it
+	if (!hasCarrotSword)
+	{
+		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1);
+	}
+
+	smelly->setCharName("Soroor");
+	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 }
 
@@ -144,8 +162,6 @@ void Xuan_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* smelly = EntityManager::getNPC("smelly");
 	auto* dummy = EntityManager::getEnemy("dummy");
-	smelly->setCharName("Soroor");
-	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 	activeTile2 = World::activeTile(player->getX(), player->getY(), grid);
 
@@ -304,10 +320,8 @@ void Xuan_Draw() {
 
 	grid.drawTexture(grid);
 	World::drawTile(activeTile2, grid);
-	World::drawTile({ 0,0 }, grid);
 
 	EntityManager::draw("smelly");
-
 	
 	if (showInventory)
 	{
@@ -374,6 +388,7 @@ void Xuan_Unload() {
 	if (smelly && smelly->getSprite()) {
 		AEGfxTextureUnload(smelly->getSprite()); // unload sprite
 	}
+
 	TutorialScreen::activeSpeaker = nullptr;
 	EntityManager::clear();
 
