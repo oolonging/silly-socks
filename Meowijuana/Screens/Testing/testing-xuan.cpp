@@ -14,6 +14,7 @@
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 extern GameData gameData;
+AEGfxTexture* respawnDungeon = nullptr;
 
 // will update with new dialogue once tiletypes and consumables come into play
 
@@ -47,20 +48,11 @@ void Xuan_Load() {
 
 	SpriteManager::init();
 
-	if (!SpriteManager::getSpriteSheet("dungeon")) {
-
-		std::cout << "loading file...";
-		SpriteManager::loadSpriteSheet("dungeon", "Assets/LevelMaps/NewDungeons/Tilemap/tilemap_packed.png", 192.0f, 176.0f, 16.0f, 16.0f);
-	}
-
 	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	grid.initTextureBox();
-	grid.initMapTextureSprite("Assets/DungeonTileData.txt");
-	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2_bin.txt");
-	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2.txt");
 
-
-
+	respawnDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Respawn.png");
+	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Respawn.txt");
 
 }
 
@@ -319,6 +311,7 @@ void Xuan_Draw() {
 	/*TileManager::draw();*/
 
 	grid.drawTexture(grid);
+	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), respawnDungeon, Shapes::CENTER);
 	World::drawTile(activeTile2, grid);
 
 	EntityManager::draw("smelly");
@@ -391,6 +384,9 @@ void Xuan_Unload() {
 
 	TutorialScreen::activeSpeaker = nullptr;
 	EntityManager::clear();
+
+	AEGfxTextureUnload(respawnDungeon);
+	respawnDungeon = nullptr;
 
 	//TileManager::exit();
 } 
