@@ -128,6 +128,7 @@ namespace Animations {
 	void updateIndicator(Indicator& ind);
 	void drawIndicator(Indicator& ind);
 	void drawIndicator(float x, float y, float offset);
+	void drawCoolerIndicator(float x, float y, AEGfxTexture* image);
 }
 
 #endif // GRAPHICS_HPP

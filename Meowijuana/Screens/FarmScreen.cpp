@@ -20,6 +20,7 @@ static Entity::Player* localPlayer = nullptr;
 static Entity::NPC* localGerald = nullptr;
 
 AEGfxTexture* bg = nullptr;
+AEGfxTexture* indicator = nullptr;
 
 // For world grid
 std::pair<int, int> prevActiveT;
@@ -52,7 +53,6 @@ namespace FarmNPC {
 //popup
 static UI_Elements::PopupBox* cropPopup;
 static UI_Elements::PopupBox* inventoryPopup;
-static UI_Elements::PopupBox* tutPopup;
 
 void Farm_Load() 
 {
@@ -86,6 +86,8 @@ void Farm_Initialize() {
 	float x = -invWidth / 2.0f;         // centered horizontally
 	float y = -(screenHeight / 2.0f) + inv.getSlotSize() + offset; // near the bottom 
 
+	indicator = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
+
 	// Setting inventory to bottom 
 	inv.setPosition(x, y);
 	inv.setPlayer(EntityManager::getPlayer("player"));
@@ -105,7 +107,7 @@ void Farm_Initialize() {
 	}
 
 	// Initialising NPCs
-	localGerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
+	localGerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 100.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 	auto* Gerald = localGerald;
 	Gerald->setCharName("Gerald"); 
 	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png"));
@@ -118,9 +120,17 @@ void Farm_Initialize() {
 		"You can get more seeds while exploring the dungeons so look out for that!", "@"
 	});
 
+	if (!World::dungeonTracker[0])
 	Gerald->setIdleLines({
 		"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
 	});
+
+	else
+		Gerald->setIdleLines({
+		"Carrots increase your sword damage!", "@",
+		"Cherries can be used to heal!", "@",
+		"Have fun farming!", "@"
+			});
 
 	// Initialize dialogue box
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
@@ -164,11 +174,6 @@ void Farm_Initialize() {
 		cropPopup->hide();
 		});
 
-	tutPopup = UIManager::create<UI_Elements::PopupBox>("tutPopup", 0.0f, 0.0f, 350.0f, 250.0f, "You have cleared the tutorial!", "You will be on your own now", "Please explore the dungeons and save the world!");
-	tutPopup->setOnDismiss([]() {
-		cropPopup->hide();
-		});
-
 }
 
 void Farm_Update() {
@@ -199,6 +204,7 @@ void Farm_Update() {
 		World::dungeonTracker[World::checkNum] = true;
 		grid.growPlants(grid);
 	}
+
 
 	if (AEInputCheckTriggered(AEVK_E))
 	{
@@ -301,6 +307,31 @@ void Farm_Update() {
 		}
 
 		break;
+
+	case FarmNPC::TutorialState::FINISHED:
+		
+		Gerald->setIdleLines({
+		"Carrots increase your sword damage!", "#",
+		"Cherries can be used to heal!", "#",
+		"Have fun farming!", "#"
+			});
+		
+		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
+			player->getX(), player->getY(),
+			Gerald->getX(), Gerald->getY(),
+			75.0f,
+			Gerald->getWidth(), Gerald->getHeight()
+		)) {
+			FarmNPC::activeSpeaker = Gerald;
+			Gerald->setIdling(true);
+			Gerald->idleSpeak(FarmNPC::dialogueBox);
+	
+			if (Gerald->idleDone())
+			{
+				Gerald->restartIdle();
+			}
+		}
+
 	}
 
 	if (inv.isEmpty(*player) && FarmNPC::state == FarmNPC::TutorialState::GER_IDLE)
@@ -358,10 +389,12 @@ void Farm_Draw() {
 
 		case FarmNPC::TutorialState::GER_IDLE:
 			World::drawIndicatorsOnTileType(grid, World::EmptyCropTile, dirt);
+			Animations::drawCoolerIndicator(Gerald->getX(), Gerald->getY(), indicator);
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
 			World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, dirt);
+			Animations::drawCoolerIndicator(Gerald->getX(), Gerald->getY(), indicator);
 			break;
 
 		}

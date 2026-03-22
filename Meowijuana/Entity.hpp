@@ -265,6 +265,8 @@ namespace Entity {
 		void idleSpeak(UI_Elements::DialogueBox& dialogueBox);
 		void draw() override;
 
+		void restartIdle();
+		bool idleDone();
 		bool dialogueDone();
 
 		// Constructors

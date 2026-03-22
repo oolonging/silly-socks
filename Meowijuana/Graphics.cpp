@@ -686,7 +686,17 @@ namespace Animations {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		Color::fill(176, 222, 88, 255);
 		Shapes::triangle(x, y + 50 + offset, x - 10, y + 60 + offset, x + 10, y + 60 + offset);
+	}
 
+	void drawCoolerIndicator(float x, float y, AEGfxTexture* image)
+	{
+		static float t = 0.0f;
+		t += 0.05f;
+		if (t > 6.2832f) t = 0.0f;
+
+		float offset = sinf(t) * 5.0f; 
+
+		Graphics::image(x, y + 40 + offset, 20.0f, 20.0f, image, Shapes::CENTER);
 	}
 
 }

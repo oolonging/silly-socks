@@ -366,7 +366,7 @@ namespace Entity {
 			deltaY = (deltaY / length) * speed;
 		}
 
-		const float epsilon = 18.f;
+		const float epsilon = 20.f;
 		float halfWidth = (width / 2.0f) - epsilon;
 		float halfHeight = (height / 2.0f) - epsilon;
 
@@ -382,6 +382,7 @@ namespace Entity {
 			Griddy.getTileID(Tile2.first, Tile2.second) != World::Wall &&
 			Griddy.getTileID(Tile3.first, Tile3.second) != World::Wall &&
 			Griddy.getTileID(Tile4.first, Tile4.second) != World::Wall;
+
 		if (canMoveX) x = newX;
 
 		// Test Y independently
@@ -908,6 +909,17 @@ namespace Entity {
 	bool NPC::dialogueDone()
 	{
 		return started && linenum >= dialogLines.size();
+	}
+
+	bool NPC::idleDone()
+	{
+		return idlenum >= idleLines.size();
+	}
+
+	void NPC::restartIdle()
+	{
+		idling = false;
+		idlenum = 0;
 	}
 
 	void NPC::draw() {

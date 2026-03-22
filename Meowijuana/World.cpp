@@ -6,7 +6,7 @@ World::worldGrid grid;
 
 namespace World {
 
-	bool dungeonTracker[4] = { false,false,false, false };
+	bool dungeonTracker[4] = {false,false,false,false};
 	int checkNum = 0;
 
 	// Meshes stored in the world namespace
