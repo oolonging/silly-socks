@@ -127,9 +127,9 @@ namespace Entity {
 			std::cout << "No weapon\n";
 			return;
 		}
-
-		if (!holdingWeapon)
-		{
+		
+		if (this->isPlayer() && !holdingWeapon) {
+			std::cout << "No weapon\n";
 			return;
 		}
 
@@ -477,13 +477,13 @@ namespace Entity {
 		if (this->isWalking)
 		{
 			if (movingDirections[0])
-				this->setWalkAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4);
+				this->setWalkAnimation(getOrCreateAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f));
 			else if (movingDirections[1])
-				this->setWalkAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4);
+				this->setWalkAnimation(getOrCreateAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f));
 			else if (movingDirections[2])
-				this->setWalkAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4);
+				this->setWalkAnimation(getOrCreateAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f));
 			else if (movingDirections[3])
-				this->setWalkAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4);
+				this->setWalkAnimation(getOrCreateAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f));
 
 			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, this->width, this->height);
 		}

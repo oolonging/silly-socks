@@ -6,6 +6,7 @@ namespace EntityManager {
 
 	// dumping this here for now so i can test it
 	SpriteManager::SpriteSheet* playerAttackSpritesheet = nullptr;
+	SpriteManager::SpriteSheet* movementSpritesheet = nullptr;
 	
 	Entity::Entity* get(const std::string& name) {
 		auto it = entities.find(name);
@@ -47,7 +48,7 @@ namespace EntityManager {
 	void init(void) {
 		// initialize the sprite sheet to attack
 		playerAttackSpritesheet = SpriteManager::loadSpriteSheet("playerAttackSpritesheet", "Assets/Images/Items/-sword.png", 297.0f, 117.0f, 99.0f, 117.0f);
-
+		
 		// Initialize player
 		EntityManager::create<Entity::Player>("player", 0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 5.0f);
 

@@ -50,11 +50,13 @@ namespace Entity {
 		// Atack
 		float atkCD = 2.0;
 		float atkSpd = 0.8;
+
 		Inventory::Weapon* equippedWeapon = nullptr;
 
 	public:
 		// dead check
 		bool isDead = false;
+		virtual bool isPlayer() const { return false; }
 
 		// Getters
 		float getX() const { return x; }
@@ -86,19 +88,25 @@ namespace Entity {
 				spriteWidth, spriteheight
 			);
 		}
-		void setWalkAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
-			this->walkAnimation = SpriteManager::createAnimationFromRange(
-				name, sheetName,
-				x, y, count,
-				duration, loop
-			);
+
+		void setWalkAnimation(SpriteManager::Animation* anim) {
+			this->walkAnimation = anim;
 		}
+
 		void setAttackAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
 			this->attackAnimation = SpriteManager::createAnimationFromRange(
 				name, sheetName,
 				x, y, count,
 				duration, loop
 			);
+		}
+
+		SpriteManager::Animation* getOrCreateAnimation(const std::string& name, const std::string& sheet, int x, int y, int frames, float duration)
+		{
+			SpriteManager::Animation* anim = SpriteManager::getAnimation(name);
+			if (anim == nullptr)
+				anim = SpriteManager::createAnimationFromRange(name, sheet, x, y, frames, duration, true);
+			return anim;
 		}
 
 		// Attack
@@ -171,6 +179,7 @@ namespace Entity {
 		void clearInventorySlot(int slot);
 		void freeInventory();
 		void giveItem(int itemID, int itemCount);
+		bool isPlayer() const override { return true; };
 
 		// Getting moving directions
 		bool(&getDirections())[4] { return movingDirections; }
