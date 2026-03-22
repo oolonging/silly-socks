@@ -50,7 +50,6 @@ void Xuan_Load() {
 
 	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	grid.initTextureBox();
-	grid.initMapTexture();
 
 	respawnDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Respawn.png");
 	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Respawn.txt");
@@ -309,8 +308,10 @@ void Xuan_Draw() {
 	//Color::background(Color::Preset::White);
 	//Color::fill(Color::Preset::Blue);
 
-	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), respawnDungeon, Shapes::CENTER);
+	/*TileManager::draw();*/
+
 	grid.drawTexture(grid);
+	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), respawnDungeon, Shapes::CENTER);
 	World::drawTile(activeTile2, grid);
 
 	EntityManager::draw("smelly");

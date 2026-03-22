@@ -247,6 +247,12 @@ void Farm_Update() {
 		World::standOnTile(next, *player, grid, GS_X, World::TeleporterRed);
 	}
 
+
+	if (player->getX() > (AEGfxGetWindowWidth()/2)) {
+		next = GS_X;
+
+	}
+
 	// NPC TALKING STUFFS
 
 	if (FarmNPC::dialogueBox.getIsActive() && FarmNPC::activeSpeaker) {
