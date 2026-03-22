@@ -127,6 +127,11 @@ namespace Entity {
 			std::cout << "No weapon\n";
 			return;
 		}
+
+		if (isPlayer() && !holdingWeapon) {
+			std::cout << "No weapon\n";
+			return;
+		}
 		
 		std::cout << "Attack called\n";
 
@@ -361,8 +366,9 @@ namespace Entity {
 			deltaY = (deltaY / length) * speed;
 		}
 
-		float halfWidth = width / 2.0f;
-		float halfHeight = height / 2.0f;
+		const float epsilon = 18.f;
+		float halfWidth = (width / 2.0f) - epsilon;
+		float halfHeight = (height / 2.0f) - epsilon;
 
 		// Test X independently
 		float newX = x + deltaX;
@@ -682,6 +688,11 @@ namespace Entity {
 		if (!pause)
 		{
 			movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()), Griddy);
+		}
+
+		if (this->isDead)
+		{
+			return;
 		}
 
 		static bool giveItem = false;

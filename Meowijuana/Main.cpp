@@ -251,8 +251,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Free global stuffs
 	grid.unloadMapTexture();
 	World::freeGrid();
-	Inventory::ItemRegistry::cleanup();
-	Inventory::unload();
+	Inventory::unload();      
 
 	// Shutdown subsystem
 	ShutdownSystems();

@@ -533,68 +533,35 @@ namespace World {
 	{
 		
 		Color::background({ 150, 75, 0, 255 });
-	
-	
+		// Set these ONCE before the loop
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTransparency(1.0f);
 
-		for (int y = 0; y < gridHeight; y++)
-		{
-			for (int x = 0; x < gridWidth; x++)
-			{
+		for (int y = 0; y < gridHeight; y++) {
+			for (int x = 0; x < gridWidth; x++) {
 				int tileID = tilesID[y][x];
-				
 				auto it = tileDatabase.find(tileID);
-				if (it == tileDatabase.end())
-					continue;
+				if (it == tileDatabase.end()) continue;
+				if (tileID == Ground) continue;
 
-				if (tileID == Ground) continue; // Dun draw ground
 				const tileObject& def = it->second;
-
 				std::pair<float, float> coords = getWorldCoords({ x, y }, Griddy);
-
-
-				// == thing ===
 
 				if (def.useSprite) {
 					Color::background({ 234, 165, 108, 255 });
 					SpriteManager::drawSpriteFromSheet(def.sprite, coords.first, coords.second, tileSize, tileSize);
+					continue;
 				}
 
 				if (def.image) {
-					AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-					AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-					AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-					AEGfxSetTransparency(1.0f); 
-
-					AEMtx33 transform;
 					AEMtx33 trans;
 					AEMtx33Trans(&trans, coords.first, coords.second);
-					transform = trans;
-					AEGfxSetTransform(transform.m);
-
+					AEGfxSetTransform(trans.m);
 					AEGfxTextureSet(def.image, 0, 0);
 					AEGfxMeshDraw(tileMesh, AE_GFX_MDM_TRIANGLES);
-					continue;
 				}
-
-
-				if (!def.image)
-					continue;
-
-
-				AEMtx33 transform;
-				AEMtx33 trans;
-
-				AEMtx33Trans(&trans, coords.first, coords.second);
-				transform = trans;
-
-				AEGfxSetTransform(transform.m);
-
-				AEGfxTextureSet(def.image, 0, 0);
-
-				AEGfxMeshDraw(tileMesh, AE_GFX_MDM_TRIANGLES);
 			}
 		}
 	}

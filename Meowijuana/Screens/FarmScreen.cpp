@@ -55,6 +55,9 @@ static UI_Elements::PopupBox* tutPopup;
 void Farm_Load() 
 {
 	showInventory = true;
+	grid.initMapTexture();
+	grid.initTextureBox();
+
 }
 
 void Farm_Initialize() {
@@ -102,8 +105,8 @@ void Farm_Initialize() {
 	// Initialising NPCs
 	localGerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 0.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 	auto* Gerald = localGerald;
-	Gerald->setCharName("Gerald");
-	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png")); 
+	Gerald->setCharName("Gerald"); 
+	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png"));
 
 
 	Gerald->setDialogLines({
@@ -121,9 +124,7 @@ void Farm_Initialize() {
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	// Initialise Grid Stuff
-	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
-	grid.initMapTexture();
-	grid.initTextureBox();
+	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
 	
 	if (firstStartGame)
 	{
@@ -389,8 +390,8 @@ void Farm_Free()
 	firstStartGame = false;
 
 	inv.saveInventory(player, gameData);
+	inv.clear(player);
 	inv.setPlayer(nullptr);
-
 }
 
 void Farm_Unload() 

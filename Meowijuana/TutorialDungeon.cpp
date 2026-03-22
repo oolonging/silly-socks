@@ -19,7 +19,7 @@ extern GameData gameData;
 
 static Animations::Indicator point;
 
-World::worldGrid TDungeonGrid;
+extern World::worldGrid grid;
 std::pair<int, int> tutActiveTile;
 int tutorialRoomIndex = 0;
 
@@ -45,13 +45,13 @@ TutorialRoomState tutorialRooms[4];
 // placeholder til teleporter comes in
 void LoadRoom(int roomIndex) {
     if (roomIndex == 1)
-        TDungeonGrid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_11.txt");
+        grid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_11.txt");
     else if (roomIndex == 2)
-        TDungeonGrid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_21.txt");
+        grid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_21.txt");
     else if (roomIndex == 3)
-        TDungeonGrid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_33.txt");
+        grid.fillGrid("Assets/LevelMaps/TutorialDungeon/sideRoomL1_33.txt");
     else
-        TDungeonGrid.fillGrid("Assets/LevelMaps/TutorialDungeon/mainRoomL1.txt");
+        grid.fillGrid("Assets/LevelMaps/TutorialDungeon/mainRoomL1.txt");
 
 
     if (!tutorialRooms[roomIndex].visited) {
@@ -80,9 +80,9 @@ void TutorialDungeon_Load() {
 void TutorialDungeon_Initialize() {
     Settings::currentScreen = "TutorialDungeon.cpp";
 
-    TDungeonGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
-    TDungeonGrid.initMapTexture();
-    TDungeonGrid.initTextureBox();
+    /*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+    grid.initMapTexture();
+    grid.initTextureBox();*/
 
     EntityManager::init();
     auto* tutPlayer = EntityManager::getPlayer("player");
@@ -109,9 +109,9 @@ void TutorialDungeon_Initialize() {
 void TutorialDungeon_Update() {
     auto* tutPlayer = EntityManager::getPlayer("player");
 
-    tutActiveTile = World::activeTile(tutPlayer->getX(), tutPlayer->getY(), TDungeonGrid);
+    tutActiveTile = World::activeTile(tutPlayer->getX(), tutPlayer->getY(), grid);
 
-    tutPlayer->update(TDungeonGrid);
+    tutPlayer->update(grid);
     tutPlayer->tickAttackTimer();
 
     inv.update(tutPlayer);
@@ -179,10 +179,10 @@ void TutorialDungeon_Update() {
         }
 
         if (tutorialRooms[3].cleared) {
-            TDungeonGrid.replacingID(World::Teleporter, World::ActivatedTeleporter);
+            grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
             World::dungeonTracker[World::checkNum] = true;
             tutPopup->show();
-            World::standOnTile(next, *tutPlayer, TDungeonGrid, GS_FARM);
+            World::standOnTile(next, *tutPlayer, grid, GS_FARM);
         }
     }
 }
@@ -190,8 +190,8 @@ void TutorialDungeon_Update() {
 
 void TutorialDungeon_Draw() {
     auto* tutPlayer = EntityManager::getPlayer("player");
-    TDungeonGrid.drawTexture(TDungeonGrid);
-    World::drawTile(tutActiveTile, TDungeonGrid);
+    grid.drawTexture(grid);
+    World::drawTile(tutActiveTile, grid);
 
     // debug: show weapon attack range
     float attackRange = 170; // i put 170 since i put it as i believe 85 as range?
@@ -206,7 +206,7 @@ void TutorialDungeon_Draw() {
 
     tutPlayer->draw();
 
-    EntityManager::drawEnemies(*tutPlayer, TDungeonGrid, isPaused);
+    EntityManager::drawEnemies(*tutPlayer, grid, isPaused);
 
     if (Death::dead) {
         AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -217,13 +217,13 @@ void TutorialDungeon_Draw() {
 
     if (tutorialRooms[3].cleared)
     {
-        World::drawIndicatorsOnTileType(TDungeonGrid, World::ActivatedTeleporter, point);
+        World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, point);
     }
 }
 
 void TutorialDungeon_Free() {
-    TDungeonGrid.unloadMapTexture();
-    World::freeGrid();
+    //grid.unloadMapTexture();
+    //World::freeGrid();
     EntityManager::clearEnemies();
     Death::dead = false;
     Death::opacity = 0.0f;
