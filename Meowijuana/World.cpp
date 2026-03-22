@@ -419,6 +419,7 @@ namespace World {
 
 		int& ID = Griddy.pointerToTile(tile.first, tile.second);
 
+
 		// Ensure only plant on Empty Crop
 		if (ID != EmptyCropTile) return false;
 
@@ -546,7 +547,7 @@ namespace World {
 				auto it = tileDatabase.find(tileID);
 				if (it == tileDatabase.end()) continue;
 				if (tileID == Ground) continue;
-				else if (tileID == Wall) continue;
+				else if (tileID == Wall && !grid.drawWall) continue;
 
 				const tileObject& def = it->second;
 				std::pair<float, float> coords = getWorldCoords({ x, y }, Griddy);

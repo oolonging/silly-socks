@@ -69,6 +69,7 @@ namespace World
 		int gridWidth, gridHeight, tileSize;
 		int row, column;
 		float offsetX, offsetY;
+		bool drawWall = false;
 
 	public:
 		/*
@@ -108,6 +109,7 @@ namespace World
 		int getColumn() const { return column; }
 		float getOffsetX() const { return offsetX; }
 		float getOffsetY() const { return offsetY; }
+		void toggleWall() { drawWall = !drawWall; }
 	
 		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();

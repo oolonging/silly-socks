@@ -68,8 +68,6 @@ void LoadRoom(int roomIndex) {
         }
     }
 
-
-
 }
 
 
@@ -100,6 +98,8 @@ void TutorialDungeon_Initialize() {
     tutPopup->setOnDismiss([]() {
         tutPopup->hide();
         });
+
+    grid.toggleWall();
 
     LoadRoom(tutorialRoomIndex);
 }
@@ -231,6 +231,7 @@ void TutorialDungeon_Free() {
     auto* tutPlayer = EntityManager::getPlayer("player");
     inv.saveInventory(tutPlayer, gameData);
     inv.setPlayer(nullptr);
+    grid.toggleWall();
 }
 
 void TutorialDungeon_Unload() {
