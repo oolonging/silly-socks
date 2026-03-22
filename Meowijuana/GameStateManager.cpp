@@ -21,6 +21,7 @@
 #include "Screens/Testing/testing-ui-elements.hpp"
 #include "TutorialDungeon.hpp"
 #include "NewDungeon.hpp"
+#include "DesertDungeon.hpp"
 
 // the ones to be removed soon
 #include "Screens/Level1.hpp"
@@ -173,6 +174,15 @@ void GSM_Update()
 			fpDraw = NewDungeon_Draw;
 			fpFree = NewDungeon_Free;
 			fpUnload = NewDungeon_Unload;
+			break;
+
+		case GS_DESERT:
+			fpLoad = DesertDungeon_Load;
+			fpInitialize = DesertDungeon_Initialize;
+			fpUpdate = DesertDungeon_Update;
+			fpDraw = DesertDungeon_Draw;
+			fpFree = DesertDungeon_Free;
+			fpUnload = DesertDungeon_Unload;
 			break;
 
 		case GS_RESPAWN:

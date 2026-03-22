@@ -243,8 +243,8 @@ void Farm_Update() {
 	else
 	{
 		World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
-		World::standOnTile(next, *player, grid, GS_X, World::TeleporterGreen);
-		World::standOnTile(next, *player, grid, GS_X, World::TeleporterRed);
+		World::standOnTile(next, *player, grid, GS_NEW, World::TeleporterGreen);
+		World::standOnTile(next, *player, grid, GS_DESERT, World::TeleporterRed);
 	}
 
 
