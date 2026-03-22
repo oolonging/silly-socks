@@ -58,7 +58,11 @@ namespace Inventory {
 
 	void ItemRegistry::cleanup() {
 		for (auto& pair : prototypes) {
-			delete pair.second;
+			Item* item = pair.second;
+			if (item->getIcon()) {
+				AEGfxTextureUnload(item->getIcon());
+			}
+			delete item;
 		}
 		prototypes.clear();
 	}
@@ -253,17 +257,8 @@ namespace Inventory {
 
 	void unload(void)
 	{
-		ItemRegistry::cleanup(); // deletes prototypes but NOT textures
-
-		// Unload textures separately
-		if (Textures::carrotSeedIcon) { AEGfxTextureUnload(Textures::carrotSeedIcon); Textures::carrotSeedIcon = nullptr; }
-		if (Textures::cherrySeedIcon) { AEGfxTextureUnload(Textures::cherrySeedIcon); Textures::cherrySeedIcon = nullptr; }
-		if (Textures::potatoSeedIcon) { AEGfxTextureUnload(Textures::potatoSeedIcon); Textures::potatoSeedIcon = nullptr; }
-
-		if (Textures::carrotIcon) { AEGfxTextureUnload(Textures::carrotIcon); Textures::carrotIcon = nullptr; }
-		if (Textures::cherryIcon) { AEGfxTextureUnload(Textures::cherryIcon); Textures::cherryIcon = nullptr; }
-		if (Textures::potatoIcon) { AEGfxTextureUnload(Textures::potatoIcon); Textures::potatoIcon = nullptr; }
-		if (Textures::carrotSword) { AEGfxTextureUnload(Textures::carrotSword); Textures::carrotSword = nullptr; }
+		// Then free prototypes + their textures
+		ItemRegistry::cleanup(); 
 	}
 
 }

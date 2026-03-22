@@ -29,7 +29,7 @@ void Mainmenu_Load() {
 	state = std::make_unique<MainMenuState>();
 
 	// Load images
-	state->CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/Cat.png");
+	state->CatastropheLogo = AEGfxTextureLoad("Assets/Images/Backgrounds/main.png");
 }
 
 void Mainmenu_Initialize()

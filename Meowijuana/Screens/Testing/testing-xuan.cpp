@@ -8,6 +8,7 @@
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
 #include "../../Settings.hpp"
+#include "../../Managers/SpriteManager.hpp"
 
 
 extern UI_Elements::PlayerInventory inv;
@@ -16,11 +17,12 @@ extern GameData gameData;
 
 // will update with new dialogue once tiletypes and consumables come into play
 
-World::worldGrid Griddtwo;
+extern World::worldGrid grid;
 std::pair<int, int> prevActiveTile2;
 std::pair<int, int> activeTile2;
 static Animations::Indicator smellind;
 static Animations::Indicator dummind;
+static bool hasCarrotSword = false;
 
 
 namespace TutorialScreen {
@@ -43,6 +45,22 @@ namespace TutorialScreen {
 
 void Xuan_Load() {
 
+	SpriteManager::init();
+
+	if (!SpriteManager::getSpriteSheet("dungeon")) {
+
+		std::cout << "loading file...";
+		SpriteManager::loadSpriteSheet("dungeon", "Assets/LevelMaps/NewDungeons/Tilemap/tilemap_packed.png", 192.0f, 176.0f, 16.0f, 16.0f);
+	}
+
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+	grid.initTextureBox();
+	grid.initMapTextureSprite("Assets/DungeonTileData.txt");
+	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2_bin.txt");
+	grid.fillGrid("../../Assets/LevelMaps/NewDungeons/2.txt");
+
+
+
 
 }
 
@@ -52,11 +70,13 @@ void Xuan_Initialize() {
 
 	//TileManager::init();
 
-	Griddtwo.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
-	Griddtwo.initMapTexture();
-	Griddtwo.initTextureBox();
-	Griddtwo.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
-	Griddtwo.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
+	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
+	//grid.initMapTexture();
+	//grid.initTextureBox();
+
+
+	//grid.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
+	//grid.outWorldMap("../../Assets/LevelMaps/Checkalso.txt");
 
 
 	// Initialize entities
@@ -113,9 +133,26 @@ void Xuan_Initialize() {
 		player->setAtkSpd(weapon->getAttackSpeed());
 		Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
 		Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
-
-		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1); 
 	}
+	// check if player already has it
+	for (int i = 0; i < player->getInventorySize(); i++)
+	{
+		if (player->getInventoryItem(i) != nullptr &&
+			player->getInventoryItem(i)->getID() == Inventory::ItemID::CARROT_SWORD_INV)
+		{
+			hasCarrotSword = true;
+			break;
+		}
+	}
+
+	// only give if first time AND doesn't have it
+	if (!hasCarrotSword)
+	{
+		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1);
+	}
+
+	smelly->setCharName("Soroor");
+	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 }
 
@@ -125,19 +162,17 @@ void Xuan_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	auto* smelly = EntityManager::getNPC("smelly");
 	auto* dummy = EntityManager::getEnemy("dummy");
-	smelly->setCharName("Soroor");
-	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
-	activeTile2 = World::activeTile(player->getX(), player->getY(), Griddtwo);
+	activeTile2 = World::activeTile(player->getX(), player->getY(), grid);
 
 	/*if (AEInputCheckTriggered(AEVK_E))
 	{
-		World::interactTile(activeTile2, Griddtwo);
+		World::interactTile(activeTile2, grid);
 	}*/
 
 
 	// Update the player
-	player->update(Griddtwo);
+	player->update(grid);
 	player->tickAttackTimer();
 
 	smellind.x = smelly->getX();
@@ -245,8 +280,8 @@ void Xuan_Update() {
 
 	
 	case TutorialScreen::TutorialState::FINISHED:
-		Griddtwo.replacingID(World::Teleporter, World::ActivatedTeleporter);
-		World::standOnTile(next, *player, Griddtwo, GS_TUTDUN);
+		grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
+		World::standOnTile(next, *player, grid, GS_TUTDUN);
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
@@ -283,12 +318,10 @@ void Xuan_Draw() {
 
 	/*TileManager::draw();*/
 
-	Griddtwo.drawTexture(Griddtwo);
-	World::drawTile(activeTile2, Griddtwo);
-	World::drawTile({ 0,0 }, Griddtwo);
+	grid.drawTexture(grid);
+	World::drawTile(activeTile2, grid);
 
 	EntityManager::draw("smelly");
-
 	
 	if (showInventory)
 	{
@@ -296,11 +329,11 @@ void Xuan_Draw() {
 	}
 
 	if (!dummy->dead()) {
-		dummy->draw(*player, Griddtwo, false);
+		dummy->draw(*player, grid, false);
 	}
 	else {
 		// placaeholder here for now but hopefully switch to sprite of destroyed dummy
-		/*dummy->draw(*player, Griddtwo, false);*/
+		/*dummy->draw(*player, grid, false);*/
 	}
 
 
@@ -326,7 +359,7 @@ void Xuan_Draw() {
 				break;
 
 			case TutorialScreen::TutorialState::FINISHED:
-				World::drawIndicatorsOnTileType(Griddtwo, World::ActivatedTeleporter, smellind);
+				World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, smellind);
 				break;
 
 		}
@@ -342,8 +375,8 @@ void Xuan_Draw() {
 void Xuan_Free() {
 	
 	auto* player = EntityManager::getPlayer("player");
-	Griddtwo.unloadMapTexture();
-	World::freeGrid();
+	/*grid.unloadMapTexture();
+	World::freeGrid();*/
 
 	inv.saveInventory(player, gameData);
 	inv.setPlayer(nullptr);
@@ -355,6 +388,7 @@ void Xuan_Unload() {
 	if (smelly && smelly->getSprite()) {
 		AEGfxTextureUnload(smelly->getSprite()); // unload sprite
 	}
+
 	TutorialScreen::activeSpeaker = nullptr;
 	EntityManager::clear();
 

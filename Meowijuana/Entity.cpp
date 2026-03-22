@@ -127,6 +127,11 @@ namespace Entity {
 			std::cout << "No weapon\n";
 			return;
 		}
+
+		if (isPlayer() && !holdingWeapon) {
+			std::cout << "No weapon\n";
+			return;
+		}
 		
 		std::cout << "Attack called\n";
 
@@ -361,8 +366,9 @@ namespace Entity {
 			deltaY = (deltaY / length) * speed;
 		}
 
-		float halfWidth = width / 2.0f;
-		float halfHeight = height / 2.0f;
+		const float epsilon = 18.f;
+		float halfWidth = (width / 2.0f) - epsilon;
+		float halfHeight = (height / 2.0f) - epsilon;
 
 		// Test X independently
 		float newX = x + deltaX;
@@ -473,24 +479,20 @@ namespace Entity {
 		{
 			if (movingDirections[0])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerUp", "playerSpritesheet", 0, 3, 4, 0.4f, true);
 			}
 			else if (movingDirections[1])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerDown", "playerSpritesheet", 0, 0, 4, 0.4f, true);
 			}
 
 			else if (movingDirections[2])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerLeft", "playerSpritesheet", 0, 1, 4, 0.4f, true);
 			}
 			else if (movingDirections[3])
 			{
-				SpriteManager::Animation* anim = SpriteManager::createAnimationFromRange("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
-				this->setWalkAnimation(anim);
+				this->setWalkAnimation("playerRight", "playerSpritesheet", 0, 2, 4, 0.4f, true);
 			}
 
 			SpriteManager::drawAnimation(*(this->walkAnimation), this->x, this->y, this->width, this->height);
@@ -682,6 +684,11 @@ namespace Entity {
 		if (!pause)
 		{
 			movement(player, static_cast<float>(AEFrameRateControllerGetFrameTime()), Griddy);
+		}
+
+		if (this->isDead)
+		{
+			return;
 		}
 
 		static bool giveItem = false;
