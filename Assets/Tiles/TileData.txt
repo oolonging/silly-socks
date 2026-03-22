@@ -10,4 +10,8 @@
 9 PotatoCropTile Assets/Tiles/Done_Crop.png
 10 OOB Assets/Tiles/VOID.png
 11 Teleporter Assets/Tiles/Unactivated_Teleporter.png
-12 TeleporterActivated Assets/Tiles/Blue_Teleporter.png
+12 TeleporterBlue Assets/Tiles/Blue_Teleporter.png
+13 Teleporter2 Assets/Tiles/Unactivated_Teleporter.png
+14 TeleporterGreen Assets/Tiles/Green_Teleporter.png
+15 Teleporter3 Assets/Tiles/Unactivated_Teleporter.png
+16 TeleporterRed Assets/Tiles/Red_Teleporter.png

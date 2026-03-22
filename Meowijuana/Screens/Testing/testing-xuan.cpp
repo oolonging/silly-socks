@@ -272,8 +272,8 @@ void Xuan_Update() {
 
 	
 	case TutorialScreen::TutorialState::FINISHED:
-		grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
-		World::standOnTile(next, *player, grid, GS_TUTDUN);
+		grid.replacingID(World::Teleporter1, World::TeleporterBlue);
+		World::standOnTile(next, *player, grid, GS_TUTDUN, World::TeleporterBlue);
 		// if interact with teleporter set next game state to tutorialdungeon.cpp
 		break;
 	}
@@ -352,7 +352,7 @@ void Xuan_Draw() {
 				break;
 
 			case TutorialScreen::TutorialState::FINISHED:
-				World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, smellind);
+				World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, smellind);
 				break;
 
 		}

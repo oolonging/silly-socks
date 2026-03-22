@@ -77,7 +77,7 @@ void Andrea_Update() {
 			printf("Slot 0 is empty!\n");
 	}*/
 
-	World::standOnTile(next, user, Griddy, GS_X);
+	World::standOnTile(next, user, Griddy, GS_X, World::TeleporterBlue);
 
 	user.update();
 	/*inven.update();*/

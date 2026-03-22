@@ -60,7 +60,6 @@ void Farm_Load()
 	grid.initMapTexture();
 	grid.initTextureBox();
 	bg = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Farm.png");
-	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Farm.txt");
 }
 
 void Farm_Initialize() {
@@ -129,9 +128,9 @@ void Farm_Initialize() {
 	// Initialise Grid Stuff
 	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
 	
-	/*if (firstStartGame)
+	if (firstStartGame)
 	{
-		grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
+		grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Farm.txt");
 	}
 
 	else
@@ -140,7 +139,7 @@ void Farm_Initialize() {
 
 		if (!file.is_open())
 		{
-			grid.fillGrid("../../Assets/LevelMaps/Farm_layout.txt");
+			grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Farm.txt");
 		}
 
 		else
@@ -148,7 +147,7 @@ void Farm_Initialize() {
 			file.close();
 			grid.fillGrid("../../Assets/LevelMaps/Farm_User_layout.txt");
 		}
-	}*/
+	}
 
 	// Growing plant
 	grid.growPlants(grid);
@@ -217,12 +216,12 @@ void Farm_Update() {
 	{
 		if (!inv.findItem(*player,Inventory::ItemID::CARROT_SEEDS) && !inv.findItem(*player, Inventory::ItemID::CHERRY_SEEDS))
 		{
-			World::standOnTile(next, *player, grid, GS_X);
+			World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
 		}
 		else
 		{
 			std::pair<int, int> currTile = grid.getIndex(player->getX(), player->getY());
-			if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter)
+			if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter1)
 			{
 				FarmNPC::activeSpeaker = Gerald;
 				Gerald->idleSpeak(FarmNPC::dialogueBox);
@@ -230,14 +229,16 @@ void Farm_Update() {
 			}
 			else
 			{
-				World::standOnTile(next, *player, grid, GS_X); // handle non-teleporter tiles
+				World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue); // handle non-teleporter tiles
 			}
 		}
 	}
 
 	else
 	{
-		World::standOnTile(next, *player, grid, GS_X);
+		World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
+		World::standOnTile(next, *player, grid, GS_X, World::TeleporterGreen);
+		World::standOnTile(next, *player, grid, GS_X, World::TeleporterRed);
 	}
 
 	// NPC TALKING STUFFS
@@ -296,7 +297,7 @@ void Farm_Update() {
 				
 		if (Gerald->dialogueDone()) {
 			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
-			grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
+			grid.replacingID(World::Teleporter1, World::TeleporterBlue);
 		}
 
 		break;
@@ -309,9 +310,14 @@ void Farm_Update() {
 
 	if (World::dungeonTracker[0])
 	{
-		tutPopup->show();
+		grid.replacingID(World::Teleporter2, World::TeleporterGreen);
+
 	}
 
+	if (World::dungeonTracker[1])
+	{
+		grid.replacingID(World::Teleporter3, World::TeleporterRed);
+	}
 }
 
 void Farm_Draw() {
@@ -355,7 +361,7 @@ void Farm_Draw() {
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
-			World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, dirt);
+			World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, dirt);
 			break;
 
 		}
@@ -381,12 +387,12 @@ void Farm_Free()
 
 	std::pair<int, int> currTile = grid.getIndex(lastposX, lastposY);
 
-	if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter)
+	if (grid.getTileID(currTile.first, currTile.second) == World::TeleporterBlue)
 	{
 		currTile.second -= 1;
 		std::pair<float, float> newCords = World::getWorldCoords(currTile, grid);
-		lastposX = newCords.first;
-		lastposY = newCords.second;
+		lastposX = newCords.first + 20.0f;
+		lastposY = newCords.second + 20.0f;
 	}
 
 	/*grid.unloadMapTexture();

@@ -453,14 +453,14 @@ namespace World {
 		return false;
 	}
 
-	void World::standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl)
+	void World::standOnTile(int& next, Entity::Player& user, World::worldGrid& Griddy, int nextlvl, int teleporterID)
 	{
 		// Get the tile the player is currently standing on
 		std::pair<int, int> index = Griddy.getIndex(user.getX(), user.getY());
 		
 		int tileID = Griddy.getTileID(index.first, index.second);
 
-		if (tileID == World::ActivatedTeleporter)
+		if (tileID == teleporterID)
 		{
 			next = nextlvl; // trigger level transition
 		}

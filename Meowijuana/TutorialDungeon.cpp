@@ -179,10 +179,10 @@ void TutorialDungeon_Update() {
         }
 
         if (tutorialRooms[3].cleared) {
-            grid.replacingID(World::Teleporter, World::ActivatedTeleporter);
+            grid.replacingID(World::Teleporter1, World::TeleporterBlue);
             World::dungeonTracker[World::checkNum] = true;
             tutPopup->show();
-            World::standOnTile(next, *tutPlayer, grid, GS_FARM);
+            World::standOnTile(next, *tutPlayer, grid, GS_FARM, World::TeleporterBlue);
         }
     }
 }
@@ -217,7 +217,7 @@ void TutorialDungeon_Draw() {
 
     if (tutorialRooms[3].cleared)
     {
-        World::drawIndicatorsOnTileType(grid, World::ActivatedTeleporter, point);
+        World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, point);
     }
 }
 

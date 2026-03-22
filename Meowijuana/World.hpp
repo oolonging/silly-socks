@@ -40,8 +40,14 @@ namespace World
 
 		// -- New Stuff -- //
 		OOB,
-		Teleporter,
-		ActivatedTeleporter,
+		Teleporter1,
+		TeleporterBlue,
+
+		Teleporter2,
+		TeleporterGreen,
+
+		Teleporter3,
+		TeleporterRed,
 	};
 
 	struct tileObject
@@ -126,7 +132,7 @@ namespace World
 	void drawIndicatorsOnTileType(const World::worldGrid& Griddy, int ID, Animations::Indicator& ind);
 
 	// Based on user position -> check what tile user is on then change interactions respectively
-	void standOnTile(int& next, Entity::Player user, World::worldGrid& Griddy, int nextlvl);
+	void standOnTile(int& next, Entity::Player& user, World::worldGrid& Griddy, int nextlvl, int teleporterID);
 
 	// --- Tile Draw Stuff --- //
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);

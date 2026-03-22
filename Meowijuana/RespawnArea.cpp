@@ -182,8 +182,8 @@ void RespawnArea_Update() {
 			smelly->idleSpeak(RespawnArea::dialogueBox);
 		}
 
-		RespawnAreaGrid.replacingID(World::Teleporter, World::ActivatedTeleporter);
-		World::standOnTile(next, *player, RespawnAreaGrid, GS_TUTDUN);
+		RespawnAreaGrid.replacingID(World::Teleporter1, World::TeleporterBlue);
+		World::standOnTile(next, *player, RespawnAreaGrid, GS_TUTDUN, World::TeleporterBlue);
 
 		break;
 
