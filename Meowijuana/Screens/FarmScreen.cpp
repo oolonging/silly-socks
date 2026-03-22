@@ -192,6 +192,8 @@ void Farm_Update() {
 	{
 		World::dungeonTracker[World::checkNum] = true;
 		inv.clear(player);
+		firstStartGame = false;
+		grid.replacingID(World::Teleporter3, World::TeleporterRed);
 	}
 
 	if (AEInputCheckTriggered(AEVK_F9)) // Toggle Grid
@@ -452,6 +454,8 @@ void Farm_Unload()
 	if (Gerald && Gerald->getSprite()) {
 		AEGfxTextureUnload(Gerald->getSprite()); // unload sprite
 	}
+
+	AEGfxTextureUnload(indicator);
 
 	FarmNPC::activeSpeaker = nullptr;
 	EntityManager::clear();

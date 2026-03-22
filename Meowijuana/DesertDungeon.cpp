@@ -7,19 +7,22 @@
 #include "../../Settings.hpp"
 #include "World.hpp"
 #include "NewDungeon.hpp"
+#include "TutorialDungeon.hpp"
 
-
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
+extern GameData gameData;
 
 extern World::worldGrid grid;
 std::pair<int, int> desertGridTile;
 AEGfxTexture* desertDungeon = nullptr;
 
 
-namespace Death {
-	float opacity = 0.0f;
-	bool dead = false;
-	float fade;
-}
+//namespace Death {
+//	float opacity = 0.0f;
+//	bool dead = false;
+//	float fade;
+//}
 
 void DesertDungeon_Load() {
 	SpriteManager::init();
@@ -57,8 +60,13 @@ void DesertDungeon_Initialize() {
 void DesertDungeon_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	player->update(grid);
+	inv.update(player);
 
-
+	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
+		EntityManager::attackEnemies(*player);
+		World::checkCarrotSwordConsume(inv, *player);
+		player->resetAttackTimer(); // reset once after hitting all enemies
+	}
 
 	if (player->getHp() <= 0) {
 		player->setHp(0);
@@ -73,8 +81,9 @@ void DesertDungeon_Update() {
 			player->isDead = false;
 			next = GS_RESPAWN;
 		}
-
 	}
+
+	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterRed);
 }
 
 void DesertDungeon_Draw() {
@@ -83,11 +92,22 @@ void DesertDungeon_Draw() {
 	World::drawTile(desertGridTile, grid);
 
 	EntityManager::draw("player");
+
+	if (showInventory)
+	{
+		inv.draw();
+	}
+
 }
 
 void DesertDungeon_Free() {
+	auto* player = EntityManager::getPlayer("player");
 	grid.unloadMapTexture();
 	World::freeGrid();
+
+	inv.saveInventory(player, gameData);
+	inv.clear(player);
+	inv.setPlayer(nullptr);
 }
 
 void DesertDungeon_Unload() {

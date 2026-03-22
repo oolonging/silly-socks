@@ -5,19 +5,22 @@
 #include "../../Managers/EntityManager.hpp"
 #include "World.hpp"
 #include "NewDungeon.hpp"
+#include "TutorialDungeon.hpp"
 
+
+extern UI_Elements::PlayerInventory inv;
+extern bool showInventory;
+extern GameData gameData;
 
 extern World::worldGrid grid;
 std::pair<int, int> activeGridTile;
 AEGfxTexture* bgDungeon = nullptr;
 
-
-
-namespace Death {
-	float opacity = 0.0f;
-	bool dead = false;
-	float fade;
-}
+//namespace Death {
+//	float opacity = 0.0f;
+//	bool dead = false;
+//	float fade;
+//}
 
 void NewDungeon_Load() {
 	SpriteManager::init();
@@ -37,13 +40,24 @@ void NewDungeon_Load() {
 void NewDungeon_Initialize() {
 
 	EntityManager::init();
+
+	auto* player = EntityManager::getPlayer("player");
+
+	inv.setPlayer(EntityManager::getPlayer("player"));
+	inv.loadInventory(player, gameData);
 	
 }
 
 void NewDungeon_Update() {
 	auto* player = EntityManager::getPlayer("player");
 	player->update(grid);
-	
+	inv.update(player);
+
+	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
+		EntityManager::attackEnemies(*player);
+		World::checkCarrotSwordConsume(inv, *player);
+		player->resetAttackTimer(); // reset once after hitting all enemies
+	}
 
 	grid.replacingID(World::Teleporter1, World::TeleporterBlue);
 	World::standOnTile(next, *player, grid, GS_TUTDUN, World::TeleporterBlue);
@@ -65,6 +79,7 @@ void NewDungeon_Update() {
 
 	}
 
+	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterGreen);
 }
 
 void NewDungeon_Draw() {
@@ -74,11 +89,21 @@ void NewDungeon_Draw() {
 	World::drawTile({ 0,0 }, grid);
 
 	EntityManager::draw("player");
+
+	if (showInventory)
+	{
+		inv.draw();
+	}
 }
 
 void NewDungeon_Free() {
+	auto* player = EntityManager::getPlayer("player");
 	grid.unloadMapTexture();
 	World::freeGrid();
+
+	inv.saveInventory(player, gameData);
+	inv.clear(player);
+	inv.setPlayer(nullptr);
 }
 
 void NewDungeon_Unload() {
