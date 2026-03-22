@@ -131,6 +131,9 @@ namespace World
 
 	bool useItemOnTile(std::pair<int, int> activeTile, World::worldGrid& grid, UI_Elements::PlayerInventory inven, Entity::Player& user);
 
+	void useInventoryItem(World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user);
+	void checkCarrotSwordConsume(UI_Elements::PlayerInventory& inven, Entity::Player& user);
+
 	void drawIndicatorsOnTileType(const World::worldGrid& Griddy, int ID, Animations::Indicator& ind);
 
 	// Based on user position -> check what tile user is on then change interactions respectively

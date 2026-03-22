@@ -235,7 +235,7 @@ void Farm_Update() {
 			}
 			else
 			{
-				World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue); // handle non-teleporter tiles
+				World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
 			}
 		}
 	}
@@ -400,7 +400,7 @@ void Farm_Draw() {
 		}
 	}
 
-	// Draw dialogue box on top of everything
+	// Draw dialogue box on top of everything 
 	FarmNPC::dialogueBox.draw();
 
 	inventoryPopup->draw();

@@ -132,7 +132,7 @@ namespace Entity {
 			std::cout << "No weapon\n";
 			return;
 		}
-		
+
 		std::cout << "Attack called\n";
 
 		float range = equippedWeapon->getRange();
@@ -146,6 +146,12 @@ namespace Entity {
 
 		if (!hit)
 			return;
+
+		if (this->isPlayer() && hit)
+		{
+			Player* p = dynamic_cast<Player*>(this);
+			if (p) p->increaseSwingCount();
+		}
 
 		std::cout << "Collision non-issue\n";
 		std::cout << "Target HP before onAttack: " << target.getHp() << "\n";
@@ -210,6 +216,18 @@ namespace Entity {
 		if (slot >= 0 && slot < 9) {
 			selectedInventorySlot = slot;
 		}
+	}
+
+	int Player::findItem(int itemID)
+	{
+		for (int i = 0; i < this->getInventorySize(); i++)
+		{
+			if (this->getInventoryItem(i) == nullptr) continue;
+			if (this->getInventoryItem(i)->getID() == itemID)
+				return i;
+		}
+
+		return -1;
 	}
 
 	void Player::clearInventorySlot(int slot)

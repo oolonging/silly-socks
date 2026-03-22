@@ -121,9 +121,20 @@ void TutorialDungeon_Update() {
 
     if (AEInputCheckTriggered(AEVK_LBUTTON) && tutPlayer->canAttack()) {
         EntityManager::attackEnemies(*tutPlayer);
+        World::checkCarrotSwordConsume(inv, *tutPlayer);
         tutPlayer->resetAttackTimer(); // reset once after hitting all enemies
     }
 
+    if (AEInputCheckTriggered(AEVK_E))
+    {
+        World::useInventoryItem(grid, inv, *tutPlayer);
+    }
+
+    if (AEInputCheckTriggered(AEVK_F9))
+    {
+        inv.giveItem(*tutPlayer, Inventory::ItemID::CARROT, 10);
+        inv.giveItem(*tutPlayer, Inventory::ItemID::CHERRY, 10);
+    }
 
     if (!tutorialRooms[tutorialRoomIndex].cleared && EntityManager::allEnemiesDead()) {
         tutorialRooms[tutorialRoomIndex].cleared = true;

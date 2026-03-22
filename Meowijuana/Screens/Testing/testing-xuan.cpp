@@ -290,12 +290,6 @@ void Xuan_Update() {
 		World::dungeonTracker[World::checkNum] = true;
 	}
 
-	if (AEInputCheckTriggered(AEVK_F9))
-	{
-		inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
-	}
-
-
 	inv.update(player);
 }
 

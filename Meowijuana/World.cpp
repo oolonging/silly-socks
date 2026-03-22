@@ -454,6 +454,49 @@ namespace World {
 		return false;
 	}
 
+	void useInventoryItem(World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user)
+	{
+		
+		int slot = inven.getSelectedSlot();
+		if (user.getInventoryItem(slot) == nullptr) return;
+
+		Inventory::Item* currentItem = user.getInventoryItem(slot);
+
+		if (currentItem->getID() == Inventory::ItemID::CHERRY)
+		{
+			currentItem->setCount(currentItem->getCount() - 1);
+
+			float health = user.getHp();
+			user.setHp(health += (health * .30f));
+
+			if (currentItem->getCount() <= 0)
+			{
+				printf("Clearing slot %d\n", slot); // does this print?
+				user.clearInventorySlot(slot);
+
+				// Verify it's null
+				printf("Slot after clear: %p\n", user.getInventoryItem(slot)); // should print 0
+			}
+		}
+	}
+
+	void checkCarrotSwordConsume(UI_Elements::PlayerInventory& inven, Entity::Player& user)
+	{
+		// only check if equipped weapon is carrot sword
+		if (user.getSwingCount() >= 3)
+		{
+			int carrotSlot = user.findItem(Inventory::ItemID::CARROT);
+			if (carrotSlot < 0) return;
+
+			Inventory::Item* carrot = user.getInventoryItem(carrotSlot);
+			carrot->setCount(carrot->getCount() - 1);
+			if (carrot->getCount() <= 0)
+				user.clearInventorySlot(carrotSlot);
+
+			user.resetSwing();
+		}
+	}
+
 	void World::standOnTile(int& next, Entity::Player& user, World::worldGrid& Griddy, int nextlvl, int teleporterID)
 	{
 		// Get the tile the player is currently standing on

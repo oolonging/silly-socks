@@ -148,7 +148,7 @@ namespace Entity {
 	private:
 		bool movingDirections[4];
 		int selectedInventorySlot = 0; // 0-8
-
+		int weaponSwungCount;
 		void handleMovement();
 		// Testing Movement ref the grid
 		void handleMovement(World::worldGrid& Griddy);
@@ -175,10 +175,15 @@ namespace Entity {
 		int getSelectedInventorySlot() const;
 		void setSelectedInventorySlot(int slot);
 		int getInventorySize() const { return 9; }
+		int findItem(int itemID);
 		void clearInventorySlot(int slot);
 		void freeInventory();
 		void giveItem(int itemID, int itemCount);
 		bool isPlayer() const override { return true; };
+		
+		int getSwingCount() { return weaponSwungCount; };
+		void increaseSwingCount() { weaponSwungCount++; };
+		void resetSwing() { weaponSwungCount = 0; };
 
 		// Getting moving directions
 		bool(&getDirections())[4] { return movingDirections; }

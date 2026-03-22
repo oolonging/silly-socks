@@ -76,7 +76,31 @@ namespace Inventory {
 	}
 
 	void Weapon::onAttack(Entity::Entity& attacker, Entity::Entity& target) {
-		target.takeDamage(getDamage());
+
+		float finalDamage = this->getDamage();
+
+		if (attacker.isPlayer())
+		{
+			Entity::Player* p = dynamic_cast<Entity::Player*>(&attacker);
+			if (p->getSwingCount() < 3 && p->findItem(Inventory::ItemID::CARROT) >= 0 && p)
+			{
+				p->increaseSwingCount();
+				int slot = p->findItem(Inventory::ItemID::CARROT);
+				if (slot < 0)
+				{
+					target.takeDamage(finalDamage);
+					return;
+				}
+				
+				else
+				{
+					int carrotCount = p->getInventoryItem(slot)->getCount();
+					finalDamage = this->getDamage() + (carrotCount * 5.f);
+				}
+			}
+		}
+
+		target.takeDamage(finalDamage);
 	}
 
 	void init(void) {
