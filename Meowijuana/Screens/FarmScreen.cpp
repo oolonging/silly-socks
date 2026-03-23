@@ -69,13 +69,17 @@ void Farm_Initialize() {
 	// init Entitymanager
 	EntityManager::init();
 
-	FarmNPC::dialogueBox.setSpeaker("Gerald");
-
 	// Initialising Player
 	localPlayer = EntityManager::getPlayer("player");
 	auto* player = localPlayer;
 	player->setPosition(-800.0f, 50.0f);
 	player->setSpeed(10.f);
+
+
+
+	FarmNPC::dialogueBox.setSpeaker("Gerald");
+
+
 
 	// Setting position for inventory 
 	float screenWidth = static_cast<float>(AEGfxGetWindowWidth());
