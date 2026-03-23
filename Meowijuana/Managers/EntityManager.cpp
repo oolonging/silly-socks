@@ -95,7 +95,7 @@ namespace EntityManager {
 	// enemies stored separately so we can clear per-room
 	std::vector<std::unique_ptr<Entity::Enemy>> enemies;
 
-	void spawnEnemies(int count, float areaW, float areaH) {
+	void spawnEnemies(int count, float areaW, float areaH, float difficultyMult) {
 		enemies.clear();
 		for (int i = 0; i < count; i++) {
 
@@ -103,7 +103,7 @@ namespace EntityManager {
 			float x = AERandFloat() * areaW - (areaW / 2.0f);
 			float y = AERandFloat() * areaH - (areaH / 2.0f);
 			enemies.push_back(std::make_unique<Entity::Enemy>(
-				x, y, 50.0f, 50.0f, 100.0f, 2.0f, 0.0f 
+				x, y, 50.0f * difficultyMult, 50.0f * difficultyMult, 50.0f * difficultyMult, 2.0f, 0.0f 
 			));
 		}
 		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));

@@ -41,7 +41,7 @@ namespace EntityManager {
 
 	// ENEMY STUFF
 
-	void spawnEnemies(int count, float areaW, float areaH);
+	void spawnEnemies(int count, float areaW, float areaH, float difficultyMult = 1.0f);
 	void clearEnemies();
 	void updateEnemies(Entity::Player& player);
 	void attackEnemies(Entity::Player& player);

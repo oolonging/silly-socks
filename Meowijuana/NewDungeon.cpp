@@ -54,7 +54,7 @@ void NewDungeon_Initialize() {
 	inv.loadInventory(localPlayer, gameData);
 
 	// spawn 3 enemies
-	EntityManager::spawnEnemies(2, 400.0f, 400.0f);
+	EntityManager::spawnEnemies(2, 400.0f, 200.0f, 1.5f);
 
 	// give the player a weapon
 	pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
@@ -68,7 +68,7 @@ void NewDungeon_Initialize() {
 }
 
 void NewDungeon_Update() {
-	auto* player = EntityManager::getPlayer("player");
+	auto* player = localPlayer;
 	player->update(grid);
 	inv.update(player);
 
