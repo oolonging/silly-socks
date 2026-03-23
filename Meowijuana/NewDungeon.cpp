@@ -20,13 +20,13 @@ AEGfxTexture* bgDungeon = nullptr;
 static Entity::Player* localPlayer;
 static Inventory::Weapon* pWeapon;
 
-bool ifClear;
+struct NewDungeonState {
+	bool visited = false;
+	bool cleared = false;
+};
 
-//namespace Death {
-//	float opacity = 0.0f;
-//	bool dead = false;
-//	float fade;
-//}
+NewDungeonState newDungeonState;
+
 
 void NewDungeon_Load() {
 	SpriteManager::init();
@@ -54,6 +54,7 @@ void NewDungeon_Initialize() {
 	inv.loadInventory(localPlayer, gameData);
 
 	// spawn 3 enemies
+	if(!newDungeonState.visited)
 	EntityManager::spawnEnemies(2, 400.0f, 200.0f, 1.5f);
 
 	// give the player a weapon
@@ -64,37 +65,46 @@ void NewDungeon_Initialize() {
 	}
 
 
-	
+	// marks this dungeon as visited
+	newDungeonState.visited = true;
 }
 
 void NewDungeon_Update() {
-	auto* player = localPlayer;
-	player->update(grid);
-	inv.update(player);
+	localPlayer->update(grid);
+	localPlayer->tickAttackTimer();
+	inv.update(localPlayer);
 
-	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
-		EntityManager::attackEnemies(*player);
-		World::checkCarrotSwordConsume(inv, *player);
-		player->resetAttackTimer(); // reset once after hitting all enemies
+
+	// sets the room as cleared when all the enemies are dead
+	if (EntityManager::allEnemiesDead()) {
+		World::dungeonTracker[1] = true;
+		newDungeonState.cleared = true;
+	}
+
+
+	if (AEInputCheckTriggered(AEVK_LBUTTON) && localPlayer->canAttack()) {
+		EntityManager::attackEnemies(*localPlayer);
+		World::checkCarrotSwordConsume(inv, *localPlayer);
+		localPlayer->resetAttackTimer(); // reset once after hitting all enemies
 	}
 
 	grid.replacingID(World::Teleporter1, World::TeleporterBlue);
-	World::standOnTile(next, *player, grid, GS_TUTDUN, World::TeleporterBlue);
+	World::standOnTile(next, *localPlayer, grid, GS_TUTDUN, World::TeleporterBlue);
 
 	EntityManager::updateEnemies(*localPlayer);
 
 
-	if (player->getHp() <= 0) {
-		player->setHp(0);
+	if (localPlayer->getHp() <= 0) {
+		localPlayer->setHp(0);
 
 		Death::dead = true;
-		player->isDead = true;
+		localPlayer->isDead = true;
 
 		if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
 
 		if (Death::opacity >= 255.0f) {
 			Death::opacity = 255.0f;
-			player->isDead = false;
+			localPlayer->isDead = false;
 			Death::deathCounter++;
 			next = GS_RESPAWN;
 		}
@@ -104,11 +114,13 @@ void NewDungeon_Update() {
 			next = GS_LOSE;
 		}
 	}
+	
 
 	if (AEInputCheckTriggered(AEVK_0))
 	{
 		World::dungeonTracker[1] = true;
 		World::checkNum = 1;
+		newDungeonState.cleared = true;
 	}
 
 	if (AEInputCheckTriggered(AEVK_F10))
@@ -123,7 +135,7 @@ void NewDungeon_Update() {
 	}
 
 
-	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterGreen);
+	World::standOnTile(next, *localPlayer, grid, GS_FARM, World::TeleporterGreen);
 }
 
 void NewDungeon_Draw() {
@@ -142,12 +154,11 @@ void NewDungeon_Draw() {
 }
 
 void NewDungeon_Free() {
-	auto* player = EntityManager::getPlayer("player");
 	grid.unloadMapTexture();
 	World::freeGrid();
 
-	inv.saveInventory(player, gameData);
-	inv.clear(player);
+	inv.saveInventory(localPlayer, gameData);
+	inv.clear(localPlayer);
 	inv.setPlayer(nullptr);
 }
 

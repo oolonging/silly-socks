@@ -306,8 +306,8 @@ void Xuan_Draw() {
 
 	/*TileManager::draw();*/
 
-	grid.drawTexture(grid);
 	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), respawnDungeon, Shapes::CENTER);
+	grid.drawTexture(grid);
 	World::drawTile(activeTile2, grid);
 
 	EntityManager::draw("smelly");

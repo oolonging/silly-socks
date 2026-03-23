@@ -180,11 +180,11 @@ namespace Input {
 	}
 
 	void printKeyHistory() {
-		printf("Key History: ");
-		for (unsigned char key : keyHistory) {
-			printf("%c", key);
-		}
-		printf("\n");
+		//printf("Key History: ");
+		//for (unsigned char key : keyHistory) {
+		//	printf("%c", key);
+		//}
+		//printf("\n");
 	}
 }
 

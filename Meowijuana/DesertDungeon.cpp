@@ -18,11 +18,20 @@ std::pair<int, int> desertGridTile;
 AEGfxTexture* desertDungeon = nullptr;
 
 
-//namespace Death {
-//	float opacity = 0.0f;
-//	bool dead = false;
-//	float fade;
-//}
+struct DesertDungeonState {
+	bool visited = false;
+	bool cleared = false;
+
+	// Entities
+	Entity::Player* localPlayer;
+
+	Inventory::Weapon* pWeapon;
+
+
+};
+
+DesertDungeonState desertDungeonState;
+
 
 void DesertDungeon_Load() {
 	SpriteManager::init();
@@ -37,6 +46,9 @@ void DesertDungeon_Load() {
 	// this one is?? okay-ish????
 	desertDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Desert.png");
 	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Desert.txt");
+
+
+
 
 }
 
@@ -54,12 +66,38 @@ void DesertDungeon_Initialize() {
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(tutPlayer, gameData);
+	
+	// Initialize the boss if the room is not cleared yet
+	if (!desertDungeonState.cleared) {
+		// summon the boss enemy
+		EntityManager::spawnEnemies(1, 10.0f, 10.0f, 3);
 
+		// Give the boss a weapon
+		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
+		
+	}
+
+
+	if (!desertDungeonState.visited) {
+
+	}
+
+	// Initialize local player
+	desertDungeonState.localPlayer = EntityManager::getPlayer("player");
+	desertDungeonState.localPlayer->setPosition(0.0f, 350.0f);
+
+	// Give the player a weapon
+	desertDungeonState.pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
+	if (desertDungeonState.pWeapon) {
+		desertDungeonState.localPlayer->setWeapon(desertDungeonState.pWeapon);
+		desertDungeonState.localPlayer->setAtkSpd(desertDungeonState.pWeapon->getAttackSpeed());
+	}
 }
 
 void DesertDungeon_Update() {
-	auto* player = EntityManager::getPlayer("player");
+	auto* player = desertDungeonState.localPlayer;
 	player->update(grid);
+	player->tickAttackTimer();
 	inv.update(player);
 
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
@@ -122,6 +160,9 @@ void DesertDungeon_Update() {
 		}
 	}
 
+	// update the boss entity
+	EntityManager::updateEnemies(*(desertDungeonState.localPlayer));
+
 	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterRed);
 }
 
@@ -130,8 +171,13 @@ void DesertDungeon_Draw() {
 	grid.drawTexture(grid);
 	World::drawTile(desertGridTile, grid);
 
-	EntityManager::draw("player");
 
+	// draws the boss enemy
+	EntityManager::drawEnemies(*(desertDungeonState.localPlayer), grid, false);
+
+	// Draw the player entity
+	EntityManager::draw("player");
+	
 	if (showInventory)
 	{
 		inv.draw();
@@ -143,6 +189,7 @@ void DesertDungeon_Free() {
 	auto* player = EntityManager::getPlayer("player");
 	grid.unloadMapTexture();
 	World::freeGrid();
+
 
 	inv.saveInventory(player, gameData);
 	inv.clear(player);

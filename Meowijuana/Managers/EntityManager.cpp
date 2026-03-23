@@ -7,6 +7,10 @@ namespace EntityManager {
 	// dumping this here for now so i can test it
 	SpriteManager::SpriteSheet* playerAttackSpritesheet = nullptr;
 	SpriteManager::SpriteSheet* movementSpritesheet = nullptr;
+
+	// boss sprite
+	AEGfxTexture* bossSprite = nullptr;
+	
 	
 	Entity::Entity* get(const std::string& name) {
 		auto it = entities.find(name);
@@ -55,6 +59,9 @@ namespace EntityManager {
 
 		auto* player = EntityManager::getPlayer("player");
 
+		// set the boss sprite
+		bossSprite = AEGfxTextureLoad("Assets/Images/Entities/Enemies/ghost.png");
+
 		player->setSpritesheet("playerSpritesheet", "Assets/Images/SpriteSheets/player_spritesheet.png",
 			160.0f, 160.0f,
 			40.0f, 40.0f
@@ -97,16 +104,30 @@ namespace EntityManager {
 
 	void spawnEnemies(int count, float areaW, float areaH, float difficultyMult) {
 		enemies.clear();
+		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
 		for (int i = 0; i < count; i++) {
 
 			// random position within room bounds, with some padding
 			float x = AERandFloat() * areaW - (areaW / 2.0f);
 			float y = AERandFloat() * areaH - (areaH / 2.0f);
+
+			float newArmor = 0.0f;
+			if (difficultyMult >= 3.0f) {
+				newArmor = 5.0f;
+				eWeapon->setDamage(30.0f);
+			}
+
+			Entity::Enemy newEnemy{ x, y, 50.0f * difficultyMult, 50.0f * difficultyMult, 50.0f * difficultyMult, 2.0f, newArmor };
+			
+			// TODO: streamline
+			if (difficultyMult >= 3.0f) {
+				newEnemy.setSprite(bossSprite);
+			}
+
 			enemies.push_back(std::make_unique<Entity::Enemy>(
-				x, y, 50.0f * difficultyMult, 50.0f * difficultyMult, 50.0f * difficultyMult, 2.0f, 0.0f 
+				 newEnemy
 			));
 		}
-		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
 
 		weaponEnemies(eWeapon);
 	}
@@ -155,8 +176,15 @@ namespace EntityManager {
 	}
 
 	void clear() {
+		// TODO: one of the memory leaks is here, because the vector isnt cleared of the pointed textures
 		entities.clear();
 		SpriteManager::clear();
+
+		// clear out the boss texture
+		if (bossSprite != nullptr) {
+			AEGfxTextureUnload(bossSprite);
+			bossSprite = nullptr;
+		}
 	}
 }
 

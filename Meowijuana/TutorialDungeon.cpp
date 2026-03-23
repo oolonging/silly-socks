@@ -255,9 +255,12 @@ void TutorialDungeon_Free() {
     Death::opacity = 0.0f;
 
     auto* tutPlayer = EntityManager::getPlayer("player");
+
     inv.saveInventory(tutPlayer, gameData);
     inv.setPlayer(nullptr);
     grid.toggleWall();
+
+    EntityManager::clear();
 }
 
 void TutorialDungeon_Unload() {
