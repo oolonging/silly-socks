@@ -28,7 +28,7 @@ namespace SpriteManager {
 	
 	// For animations
 	std::unordered_map<std::string, Animation> animations;
-	float gAnimationTime = 0.0f;
+	f64 gAnimationTime = 0.0f;
 
 	SpriteSheet* loadSpriteSheet(const std::string& name, const std::string& filepath,
 								float sheetWidth, float sheetHeight,
@@ -350,21 +350,21 @@ namespace SpriteManager {
 		drawAnimationAtTimeWithAlpha(animation, gAnimationTime, x, y, width, height, alpha, rotation);
 	}
 
-	void drawAnimationAtTime(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float rotation) {
+	void drawAnimationAtTime(const Animation& animation, f64 elapsedTime, float x, float y, float width, float height, float rotation) {
 		drawAnimationAtTimeWithAlpha(animation, elapsedTime, x, y, width, height, 1.0f, rotation);
 	}
 
-	void drawAnimationAtTimeWithAlpha(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float alpha, float rotation) {
+	void drawAnimationAtTimeWithAlpha(const Animation& animation, f64 elapsedTime, float x, float y, float width, float height, float alpha, float rotation) {
 		if (!animation.isValid()) {
 			std::cerr << "[SpriteManager] Error: Cannot draw invalid animation." << std::endl;
 			return;
 		}
 
-		const Sprite& currentFrame = animation.getFrame(elapsedTime);
+		const Sprite& currentFrame = animation.getFrame(static_cast<float>(elapsedTime));
 		drawWithAlpha(currentFrame, x, y, width, height, alpha, rotation);
 	}
 
-	void updateAnimationTime(float deltaTime) {
+	void updateAnimationTime(f64 deltaTime) {
 		gAnimationTime += deltaTime;
 	}
 

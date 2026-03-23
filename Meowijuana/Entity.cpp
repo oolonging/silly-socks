@@ -14,7 +14,7 @@ namespace Entity {
 
 	Entity::Entity(float posX, float posY, float w, float h, float health, float spd, float arm)
 		: x(posX), y(posY), width(w), height(h), hp(health), maxHp(health), speed(spd), armor(arm), sprite(nullptr),
-		healthBar(0.0f, 0.0f, w, 10.0f, &health, 0.0f, health, Shapes::CORNER), isDead(false) {
+		healthBar(0.0f, 0.0f, w, 10.0f, &health, 0.0f, health, Shapes::CORNER), isDead(false), holdingWeapon(false) {
 
 	}
 
@@ -77,7 +77,7 @@ namespace Entity {
 
 		// Draw background
 		Color::stroke(0, 0, 0, 255);
-		Color::strokeWeight(1.0f);
+		Color::strokeWeight(1);
 		Color::fill(100, 100, 100, 255);
 		Shapes::rect(barX, barY, width, 10.0f, Shapes::CORNER);
 
@@ -166,7 +166,7 @@ namespace Entity {
 		// Default implementation (can be overridden)
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		Color::stroke(0, 0, 0, 255);
-		Color::strokeWeight(2.0f);
+		Color::strokeWeight(2);
 		Color::fill(128, 128, 128, 255);
 		Shapes::rect(x, y, width, height, Shapes::CENTER);
 	}
@@ -489,7 +489,7 @@ namespace Entity {
 
 		// Apply stroke and fill
 		Color::stroke(0, 0, 0, 255);
-		Color::strokeWeight(2.0f);
+		Color::strokeWeight(2);
 		Color::fill(0, 0, 255, 255);
 
 		//Shapes::rect(x, y, width, height, Shapes::CENTER);
@@ -715,7 +715,7 @@ namespace Entity {
 		// Apply stroke and fill
 		if (this->sprite == nullptr) {
 			Color::stroke(0, 0, 0, 255);
-			Color::strokeWeight(2.0f);
+			Color::strokeWeight(2);
 			Color::fill(255, 0, 0, 255);
 
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -951,7 +951,7 @@ namespace Entity {
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			// Apply stroke and fill
 			Color::stroke(0, 0, 0, 255);
-			Color::strokeWeight(2.0f);
+			Color::strokeWeight(2);
 			Color::fill(0, 255, 0, 255);
 
 			Shapes::rect(x, y, width, height, Shapes::CENTER);

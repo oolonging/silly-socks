@@ -116,8 +116,8 @@ namespace Text {
 namespace Animations {
 
 	struct Indicator {
-		float x;
-		float y;
+		float x = 0.0f;
+		float y = 0.0f;
 
 		float offset = 0.0f;
 		float dir = 1.0f;

@@ -77,7 +77,7 @@ namespace UI_Elements {
 			float centerX = (this->drawMode == Shapes::CORNER) ? (this->x + this->width * 0.5f) : this->x;
 			float centerY = (this->drawMode == Shapes::CORNER) ? (this->y - this->height * 0.5f) : this->y;
 
-			rect(centerX, centerY, boxSize * 0.5, boxSize * 0.5, Shapes::CENTER);
+			rect(centerX, centerY, boxSize * 0.5f, boxSize * 0.5f, Shapes::CENTER);
 		}
 
 		// Draw label

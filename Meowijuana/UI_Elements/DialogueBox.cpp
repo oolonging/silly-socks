@@ -21,7 +21,7 @@ namespace UI_Elements {
 		// Text style for dialogue box
 		textStyle.primaryColor = Color::Preset::Black;
 		textStyle.secondaryColor = Color::Preset::Blue;
-		textStyle.fontSize = 10.0f;
+		textStyle.fontSize = 10;
 		textStyle.fontName = "default";
 	}
 

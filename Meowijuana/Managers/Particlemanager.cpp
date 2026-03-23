@@ -107,23 +107,23 @@ Particle* ParticleSystem::getInactiveParticle() {
 
 // Core functions
 
-void ParticleSystem::update(float dt) {
+void ParticleSystem::update(f64 dt) {
 	for (auto& particle : particles) {
 		if (!particle.active) continue;
 
 		// update lifetime
-		particle.lifetime += dt;
+		particle.lifetime += static_cast<float>(dt);
 		if (particle.lifetime >= particle.maxLifetime) {
 			particle.active = false;
 			continue;
 		}
 
 		// update position
-		particle.x += particle.vx * dt;
-		particle.y += particle.vy * dt;
+		particle.x += particle.vx * static_cast<float>(dt);
+		particle.y += particle.vy * static_cast<float>(dt);
 
 		// update rotation
-		particle.rotation += particle.rotationSpeed * dt;
+		particle.rotation += particle.rotationSpeed * static_cast<float>(dt);
 
 		// Calculate alpha based on lifetime (if fading)
 		particle.alpha = 1.0f - (particle.lifetime / particle.maxLifetime);

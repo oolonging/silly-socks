@@ -119,7 +119,7 @@ void Level1_Initialize()
     buttonStyle.primaryColor = Color::createColorRGB(50, 150, 200, 255);
     buttonStyle.secondaryColor = Color::createColorRGB(100, 200, 255, 255);
     buttonStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-    buttonStyle.strokeWeight = 3.0f;
+    buttonStyle.strokeWeight = 3;
     testButton.setStyle(buttonStyle);
 
     // Slider is already initialized at global scope with sliderValue reference
@@ -128,7 +128,7 @@ void Level1_Initialize()
     sliderStyle.primaryColor = Color::createColorRGB(150, 150, 150, 255);
     sliderStyle.secondaryColor = Color::createColorRGB(255, 150, 0, 255);
     sliderStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-    sliderStyle.strokeWeight = 2.0f;
+    sliderStyle.strokeWeight = 2;
     testSlider.setStyle(sliderStyle);
 
     // Progress Bar
@@ -145,7 +145,7 @@ void Level1_Initialize()
     progressStyle.primaryColor = Color::createColorRGB(80, 80, 80, 255);
     progressStyle.secondaryColor = Color::createColorRGB(0, 255, 100, 255);
     progressStyle.strokeColor = Color::createColorRGB(0, 0, 0, 255);
-    progressStyle.strokeWeight = 2.0f;
+    progressStyle.strokeWeight = 2;
     testProgressBar.setStyle(progressStyle);
 
     // TextBox (for entering player name or other text)
@@ -162,7 +162,7 @@ void Level1_Initialize()
     textBoxStyle.primaryColor = Color::createColorRGB(255, 255, 255, 255);
     textBoxStyle.secondaryColor = Color::createColorRGB(230, 240, 255, 255);
     textBoxStyle.strokeColor = Color::createColorRGB(150, 150, 150, 255);
-    textBoxStyle.strokeWeight = 2.0f;
+    textBoxStyle.strokeWeight = 2;
     testTextBox.setStyle(textBoxStyle);
 
     // Checkbox (toggle debug grid)

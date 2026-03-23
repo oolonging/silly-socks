@@ -601,7 +601,7 @@ namespace World {
 
 				if (def.useSprite) {
 					Color::background({ 234, 165, 108, 255 });
-					SpriteManager::drawSpriteFromSheet(def.sprite, coords.first, coords.second, tileSize, tileSize);
+					SpriteManager::drawSpriteFromSheet(def.sprite, coords.first, coords.second, static_cast<float>(tileSize), static_cast<float>(tileSize));
 					continue;
 				}
 
@@ -626,7 +626,7 @@ namespace World {
 
 		// Filling the square as red for highlight
 		Color::fill(255, 0, 0, 50);
-		Shapes::square(coords.first, coords.second, tileSize);
+		Shapes::square(coords.first, coords.second, static_cast<float>(tileSize));
 	}
 
 	void freeGrid()

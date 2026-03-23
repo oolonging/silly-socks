@@ -48,8 +48,8 @@ namespace Entity {
 		
 		
 		// Atack
-		float atkCD = 2.0;
-		float atkSpd = 0.8;
+		float atkCD = 2.0f;
+		float atkSpd = 0.8f;
 
 		Inventory::Weapon* equippedWeapon = nullptr;
 

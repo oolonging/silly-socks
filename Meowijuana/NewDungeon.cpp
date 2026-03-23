@@ -85,7 +85,7 @@ void NewDungeon_Update() {
 }
 
 void NewDungeon_Draw() {
-	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), bgDungeon, Shapes::CENTER);
+	Graphics::image(0, 0, 1600.0f, 900.0f, bgDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
 	World::drawTile(activeGridTile, grid);
 	World::drawTile({ 0,0 }, grid);

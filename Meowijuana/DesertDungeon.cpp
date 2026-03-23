@@ -87,7 +87,7 @@ void DesertDungeon_Update() {
 }
 
 void DesertDungeon_Draw() {
-	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), desertDungeon, Shapes::CENTER);
+	Graphics::image(0, 0, 1600.0f, 900.0f, desertDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
 	World::drawTile(desertGridTile, grid);
 

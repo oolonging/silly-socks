@@ -55,7 +55,7 @@ namespace World {
 					Color::fill(255, 0, 0, 255); // Red for unknown
 				}
 				Color::stroke(0, 0, 0, 255); // Black border
-				Color::strokeWeight(2.0f);
+				Color::strokeWeight(2);
 				Shapes::rect(this->worldX, this->worldY, GRID_SIZE, GRID_SIZE, Shapes::CORNER);
 			}
 			// Don't draw empty tiles
@@ -64,7 +64,7 @@ namespace World {
 
 	// Grid functions
 
-	bool mouseOnTile(Tile& const tile) {
+	bool mouseOnTile(const Tile& tile) {
 		float mouseX = Input::getMouseX();
 		float mouseY = Input::getMouseY();
 

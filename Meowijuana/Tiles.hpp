@@ -22,8 +22,8 @@ namespace World {
 	private:
 		float worldX;
 		float worldY;
-		float gridX;
-		float gridY;
+		int gridX;
+		int gridY;
 
 		TileObject* pTileObject;
 
@@ -68,7 +68,7 @@ namespace World {
 	extern Tile grid[GRID_HEIGHT][GRID_WIDTH];
 
 	// see if the mouse is over a tile
-	bool mouseOnTile(Tile& const tile);
+	bool mouseOnTile(const Tile& tile);
 	// get a tile from world coordinates
 	Tile& getTileFromWorld(float x, float y);
 

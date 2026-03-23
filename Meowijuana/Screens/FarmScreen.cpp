@@ -78,8 +78,8 @@ void Farm_Initialize() {
 	player->setSpeed(10.f);
 
 	// Setting position for inventory 
-	float screenWidth = AEGfxGetWindowWidth();
-	float screenHeight = AEGfxGetWindowHeight();
+	float screenWidth = static_cast<float>(AEGfxGetWindowWidth());
+	float screenHeight = static_cast<float>(AEGfxGetWindowHeight());
 	float invWidth = inv.getSlotSize() * 9 + player->getInventorySize() * 8;
 	float offset = 10.0f;
 
@@ -361,7 +361,7 @@ void Farm_Update() {
 
 void Farm_Draw() {
 
-	Graphics::image(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), bg, Shapes::CENTER);
+	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), bg, Shapes::CENTER);
 
 	// Rendering state
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);

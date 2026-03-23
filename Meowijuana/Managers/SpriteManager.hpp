@@ -87,9 +87,9 @@ namespace SpriteManager {
 
 		// Get the current frame based on elapsed time
 		const Sprite& getFrame(float elapsedTime) const {
+			static Sprite invalidSprite;
+
 			if (frames.empty()) {
-				// TODO: understand whats happening here
-				static Sprite invalidSprite;
 				return invalidSprite;
 			}
 
@@ -105,6 +105,8 @@ namespace SpriteManager {
 				}
 				return frames[frameIndex];
 			}
+
+			return invalidSprite;
 		}
 
 		// Get current frame index based on elapsed time
@@ -144,7 +146,7 @@ namespace SpriteManager {
 	extern std::unordered_map<std::string, Animation> animations;
 
 	// Global animation timer (updated every frame)
-	extern float gAnimationTime;
+	extern f64 gAnimationTime;
 
 	// Load a sprite sheet from file (NOTE: PNG ONLY, AT LEAST FOR NOW)
 	SpriteSheet* loadSpriteSheet(const std::string& name, const std::string& filepath,
@@ -196,11 +198,11 @@ namespace SpriteManager {
 
 
 	// Draw an animation at a specific elapsed time (in case they have a custom timer divorced from the world time)
-	void drawAnimationAtTime(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float rotation = 0.0f);
-	void drawAnimationAtTimeWithAlpha(const Animation& animation, float elapsedTime, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
+	void drawAnimationAtTime(const Animation& animation, f64 elapsedTime, float x, float y, float width, float height, float rotation = 0.0f);
+	void drawAnimationAtTimeWithAlpha(const Animation& animation, f64 elapsedTime, float x, float y, float width, float height, float alpha, float rotation = 0.0f);
 
 	// Update the global animation timer (call this once per frame in the game loop)
-	void updateAnimationTime(float deltaTime = AEFrameRateControllerGetFrameTime());
+	void updateAnimationTime(f64 deltaTime = AEFrameRateControllerGetFrameTime());
 
 	// Reset the global animation timer
 	void resetAnimationTime(void);

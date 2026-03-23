@@ -124,19 +124,16 @@ namespace Room {
 
 	// either small room or medium room (i wanna add more rooms too but uhhhh if i have time)
 	RoomType DungeonManager::randomizeType() {
+		bool roomSize = rand() % 2;
 
-		if (bool roomSize = rand() % 2 ? 1 : 0) {
+		// if roomsize medium
+		if (roomSize) {
+			return rand() % 2 ? Room::RoomType::SideMedium : Room::RoomType::SideMedium2;
+		}
 
-			// if roomsize medium
-			if (roomSize) {
-				return rand() % 2 ? Room::RoomType::SideMedium : Room::RoomType::SideMedium2;
-			}
-
-			// for small 
-			else {
-				return rand() % 2 ? Room::RoomType::SideSmall : Room::RoomType::SideSmall2;
-			}
-
+		// for small 
+		else {
+			return rand() % 2 ? Room::RoomType::SideSmall : Room::RoomType::SideSmall2;
 		}
 	}
 

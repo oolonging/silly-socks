@@ -26,7 +26,7 @@ namespace UI_Elements {
 	typedef struct {
 		Color::Color primaryColor;
 		Color::Color secondaryColor;
-		int fontSize;
+		float fontSize;
 		std::string fontName;
 	} TextStyle;
 	typedef struct {

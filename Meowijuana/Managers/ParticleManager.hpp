@@ -116,7 +116,7 @@ public:
 	void init(void);
 
 	// core functions
-	void update(float dt = AEFrameRateControllerGetFrameTime());
+	void update(f64 dt = AEFrameRateControllerGetFrameTime());
 	void draw(void);
 	void clear(void);
 

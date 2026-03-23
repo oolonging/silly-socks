@@ -36,7 +36,7 @@ namespace UI_Elements {
 
 			Color::fill(this->style.secondaryColor);
 			Color::textFill(this->textStyle.secondaryColor);
-			Text::textSize(this->textStyle.fontSize * 1.5);
+			Text::textSize(this->textStyle.fontSize * 1.5f);
 		}
 		else {
 			Color::fill(this->style.primaryColor);

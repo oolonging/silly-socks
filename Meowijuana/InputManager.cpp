@@ -114,16 +114,16 @@ namespace Input {
 		s32 screenY{};
 
 		AEInputGetCursorPosition(&screenX, &screenY);
-		sWorldMouseX = screenX - (AEGfxGetWindowWidth() * 0.5f);
-		sWorldMouseY = screenY - (AEGfxGetWindowHeight() * 0.5f);
-		sScreenMouseX = screenX;
-		sScreenMouseY = screenY;
+		sWorldMouseX = static_cast<float>(screenX - (AEGfxGetWindowWidth() * 0.5f));
+		sWorldMouseY = static_cast<float>(screenY - (AEGfxGetWindowHeight() * 0.5f));
+		sScreenMouseX = static_cast<float>(screenX);
+		sScreenMouseY = static_cast<float>(screenY);
 
 		// and then negate the sWorldMouseY (TODO: not the most elegant solution but it works for now)
 		sWorldMouseY = -sWorldMouseY;
 
 		// testing stuff
-		bool isMouseInWindow = isMouseInBounds(0, 0, AEGfxGetWindowWidth(), AEGfxGetWindowHeight());
+		bool isMouseInWindow = isMouseInBounds(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()));
 
 		// if it is then hide the mouse
 		if(isMouseInWindow) {

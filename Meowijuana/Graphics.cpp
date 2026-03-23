@@ -503,7 +503,7 @@ namespace Shapes {
 		float length = sqrtf(dx * dx + dy * dy);
 		float angle = atan2f(dy, dx);
 		
-		rectAdvanced(x1, y1, length, Settings::gStrokeWeight, angle, CORNER);
+		rectAdvanced(x1, y1, length, static_cast<float>(Settings::gStrokeWeight), angle, CORNER);
 	}
 
 	void line(Point p1, Point p2) {
