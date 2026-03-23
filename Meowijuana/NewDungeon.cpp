@@ -64,6 +64,10 @@ void NewDungeon_Initialize() {
 		localPlayer->setAtkSpd(pWeapon->getAttackSpeed());
 	}
 
+	if (newDungeonState.visited || newDungeonState.cleared) {
+		// disable the way back.
+		grid.replacingID(World::TeleporterGreen, World::Teleporter2);
+	}
 
 	// marks this dungeon as visited
 	newDungeonState.visited = true;
@@ -79,6 +83,7 @@ void NewDungeon_Update() {
 	if (EntityManager::allEnemiesDead()) {
 		World::dungeonTracker[1] = true;
 		newDungeonState.cleared = true;
+		grid.replacingID(World::Teleporter2, World::TeleporterGreen);
 	}
 
 
