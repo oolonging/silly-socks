@@ -8,6 +8,7 @@
 #include "../../Managers/EntityManager.hpp"
 #include "../../World.hpp"
 #include "../../Settings.hpp"
+#include "../../Managers/SpriteManager.hpp"
 
 // idle lines are broken rn but i'll have to fix after playtest
 
@@ -16,11 +17,13 @@
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 extern GameData gameData;
+AEGfxTexture* indicatorRespawn = nullptr;
 
 
-World::worldGrid RespawnAreaGrid;
+extern World::worldGrid grid;
 std::pair<int, int> prevActiveRespawnTile;
-static Animations::Indicator smellind;
+AEGfxTexture* respawnDungeon = nullptr;
+static bool hasCarrotSword = false;
 
 
 namespace RespawnArea{
@@ -43,28 +46,34 @@ namespace RespawnArea{
 
 void RespawnArea_Load() {
 
+	SpriteManager::init();
+
+	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
+	grid.initTextureBox();
+
+	respawnDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Respawn.png");
+	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Respawn.txt");
+	indicatorRespawn = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
+
+
 }
 
 
 void RespawnArea_Initialize() {
 	Settings::currentScreen = "RespawnArea.cpp";
 
-	RespawnAreaGrid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
-	RespawnAreaGrid.initMapTexture();
-	RespawnAreaGrid.initTextureBox();
-	RespawnAreaGrid.fillGrid("../../Assets/LevelMaps/DungeonNPCRoom.txt");
-
 	EntityManager::init();
 
-	auto* smelly = EntityManager::getNPC("smelly");
-	smelly->setPosition(200, 300);
-	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/smelly.png"));
+	auto* soroor = EntityManager::getNPC("soroor");
+	soroor->setPosition(200, 300);
+	soroor->setCharName("Soroor");
+	soroor->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 
-	smelly->setDialogLines({
+	soroor->setDialogLines({
 		"Hey you. You're finally awake. You were trying to clear the dungeon, right? Walked right into those enemies. You're lucky you got found on time.",
 		"Well, it's good that you're safe. Told you i'd drag you back to camp!",
-		"Be more careful next time. I'll keep an eye out for you still, but I've got other things to do y'know.",
+		"Be more careful next time. I'll keep an eye out for you still, but i'm afraid you'll be severely damaged after every encounter. Three will be your limit.",
 		"Rest up and gather yourself before you go on your way. You've got a long journey ahead.",
 
 		"@"
@@ -79,8 +88,8 @@ void RespawnArea_Initialize() {
 	switch (RespawnArea::deathcount) {
 
 	case 1:
-		smelly->setIdleLines({
-			"Use your bombs efficiently to defeat groups of enemies!",
+		soroor->setIdleLines({
+			"Use your cherries efficiently to stay alive!",
 
 			"#",
 
@@ -97,21 +106,12 @@ void RespawnArea_Initialize() {
 			"#",
 
 			"Remember to harvest your crops after every dungeon level!",
-
-			"#",
-
-			"Boy do you have a lot of questions.",
-
-			"#",
-
-			"Not to be rude or anything but I have a wife and kids to go home to y'know",
-			"(Not like you'd know, but still)",
 			});
 
 		break;
 
 	case 2:
-		smelly->setIdleLines({
+		soroor->setIdleLines({
 			"Fancy seeing you again! You come here often?",
 
 			"#",
@@ -124,7 +124,7 @@ void RespawnArea_Initialize() {
 	RespawnArea::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	auto* player = EntityManager::getPlayer("player");
-	player->setPosition(-800.0f, 50.0f);
+	player->setPosition(-400.0f, 50.0f);
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(player, gameData);
@@ -137,14 +137,14 @@ void RespawnArea_Initialize() {
 void RespawnArea_Update() {
 
 	auto* player = EntityManager::getPlayer("player");
-	auto* smelly = EntityManager::getNPC("smelly");
+	auto* soroor = EntityManager::getNPC("soroor");
 
-	player->update(RespawnAreaGrid);
+	player->update(grid);
 	inv.update(player);
 	
 	if (RespawnArea::dialogueBox.getIsActive() && RespawnArea::activeSpeaker) {
 
-		if (smelly->getIsIdling()) {
+		if (soroor->getIsIdling()) {
 			RespawnArea::activeSpeaker->idleSpeak(RespawnArea::dialogueBox);
 		}
 		else {
@@ -159,10 +159,10 @@ void RespawnArea_Update() {
 
 	case RespawnArea::SpeakState::SMELLY_CONDOLENCES:
 
-		RespawnArea::activeSpeaker = smelly;
-		smelly->speak(RespawnArea::dialogueBox);
+		RespawnArea::activeSpeaker = soroor;
+		soroor->speak(RespawnArea::dialogueBox);
 
-		if (smelly->getIsPaused()) {
+		if (soroor->getIsPaused()) {
 			RespawnArea::state = RespawnArea::SpeakState::SMELLY_CONIDLENCES;
 		}
 		break;
@@ -171,70 +171,70 @@ void RespawnArea_Update() {
 
 	case RespawnArea::SpeakState::SMELLY_CONIDLENCES:
 
+
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
-			smelly->getX(), smelly->getY(),
+			soroor->getX(), soroor->getY(),
 			75.0f,
-			smelly->getWidth(), smelly->getHeight()
+			soroor->getWidth(), soroor->getHeight()
 		)) {
-			RespawnArea::activeSpeaker = smelly;
-			smelly->setIdling(true);
-			smelly->idleSpeak(RespawnArea::dialogueBox);
+			RespawnArea::activeSpeaker = soroor;
+			soroor->setIdling(true);
+			soroor->idleSpeak(RespawnArea::dialogueBox);
 		}
 
-		RespawnAreaGrid.replacingID(World::Teleporter1, World::TeleporterBlue);
-		World::standOnTile(next, *player, RespawnAreaGrid, GS_TUTDUN, World::TeleporterBlue);
+		grid.replacingID(World::Teleporter1, World::TeleporterBlue);
+		World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterBlue);
 
 		break;
 
 	}
-
-	smellind.x = smelly->getX();
-	smellind.y = smelly->getY();
-	updateIndicator(smellind);
-
-	if (player->getX() < -(AEGfxGetWindowWidth() / 2)) {
-		next = GS_FARM;
-	}
-
 
 }
 
 void RespawnArea_Draw() {
 
 	auto* player = EntityManager::getPlayer("player");
-	auto* smelly = EntityManager::getNPC("smelly");
+	auto* soroor = EntityManager::getNPC("soroor");
 
-	RespawnAreaGrid.drawTexture(RespawnAreaGrid);
-	World::drawTile(prevActiveRespawnTile, RespawnAreaGrid);
-	World::drawTile({ 0,0 }, RespawnAreaGrid);
+	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), respawnDungeon, Shapes::CENTER);
+	grid.drawTexture(grid);
+
 
 	if (showInventory)
 	{
 		inv.draw();
 	}
 
-	EntityManager::draw("smelly");
+	EntityManager::draw("soroor");
 	EntityManager::draw("player");
 
 	RespawnArea::dialogueBox.draw();
-	Animations::drawIndicator(smellind);
+
+
+	Animations::drawCoolerIndicator(soroor->getX(), soroor->getY(), indicatorRespawn);
 
 }
 
 
 void RespawnArea_Free() {
 
-	auto* tutPlayer = EntityManager::getPlayer("player");
-	inv.saveInventory(tutPlayer, gameData);
+	auto* localPlayer = EntityManager::getPlayer("player");
+	inv.saveInventory(localPlayer, gameData);
 	inv.setPlayer(nullptr);
 
-	RespawnAreaGrid.unloadMapTexture();
-	World::freeGrid();
-
+	EntityManager::clear();
 }
+
 
 void RespawnArea_Unload() {
 
+	auto* soroor = EntityManager::getNPC("soroor");
+	if (soroor && soroor->getSprite()) {
+		AEGfxTextureUnload(soroor->getSprite());
+	}
+
+	AEGfxTextureUnload(respawnDungeon);
+	respawnDungeon = nullptr;
 
 }

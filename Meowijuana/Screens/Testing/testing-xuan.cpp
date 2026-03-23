@@ -14,7 +14,7 @@
 extern UI_Elements::PlayerInventory inv;
 extern bool showInventory;
 extern GameData gameData;
-AEGfxTexture* respawnDungeon = nullptr;
+AEGfxTexture* tutorialDungeon = nullptr;
 AEGfxTexture* indicatorCool = nullptr;
 
 // will update with new dialogue once tiletypes and consumables come into play
@@ -52,7 +52,7 @@ void Xuan_Load() {
 	grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	grid.initTextureBox();
 
-	respawnDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Respawn.png");
+	tutorialDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Respawn.png");
 	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Respawn.txt");
 	indicatorCool = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
 
@@ -306,7 +306,7 @@ void Xuan_Draw() {
 
 	/*TileManager::draw();*/
 
-	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), respawnDungeon, Shapes::CENTER);
+	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), tutorialDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
 	World::drawTile(activeTile2, grid);
 
@@ -381,8 +381,8 @@ void Xuan_Unload() {
 	TutorialScreen::activeSpeaker = nullptr;
 	EntityManager::clear();
 
-	AEGfxTextureUnload(respawnDungeon);
-	respawnDungeon = nullptr;
+	AEGfxTextureUnload(tutorialDungeon);
+	tutorialDungeon = nullptr;
 
 	//TileManager::exit();
 } 
