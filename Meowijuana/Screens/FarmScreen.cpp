@@ -254,11 +254,6 @@ void Farm_Update() {
 	}
 
 
-	if (player->getX() > (AEGfxGetWindowWidth()/2)) {
-		next = GS_X;
-
-	}
-
 	// NPC TALKING STUFFS
 
 	if (FarmNPC::dialogueBox.getIsActive() && FarmNPC::activeSpeaker) {

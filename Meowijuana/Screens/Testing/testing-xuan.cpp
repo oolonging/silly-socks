@@ -112,7 +112,7 @@ void Xuan_Initialize() {
 	TutorialScreen::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	auto* player = EntityManager::getPlayer("player");
-	player->setPosition(-800.0f, 50.0f);
+	player->setPosition(-400.0f, 50.0f);
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(player, gameData);
