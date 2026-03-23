@@ -156,6 +156,13 @@ void NewDungeon_Draw() {
 	{
 		inv.draw();
 	}
+
+	// Draw indicator over teleporter when dungeon is cleared
+	if (newDungeonState.cleared)
+	{
+		static Animations::Indicator teleporterIndicator;
+		World::drawIndicatorsOnTileType(grid, World::TeleporterGreen, teleporterIndicator);
+	}
 }
 
 void NewDungeon_Free() {

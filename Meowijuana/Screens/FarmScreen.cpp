@@ -30,6 +30,7 @@ extern World::worldGrid grid;
 bool onGrid = false;
 
 bool firstStartGame = true;
+static bool shownHarvestPopup = false;
 
 float lastposX = 0;
 float lastposY = 0;
@@ -53,6 +54,8 @@ namespace FarmNPC {
 //popup
 static UI_Elements::PopupBox* cropPopup;
 static UI_Elements::PopupBox* inventoryPopup;
+static UI_Elements::PopupBox* harvestPopup;
+static UI_Elements::PopupBox* dungeonPopup;
 
 void Farm_Load() 
 {
@@ -176,6 +179,25 @@ void Farm_Initialize() {
 	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 350.0f, 250.0f, "Planting Crops", "These are crop tiles!", "Press E over one to plant a seed!");
 	cropPopup->setOnDismiss([]() {
 		cropPopup->hide();
+		});
+
+	harvestPopup = UIManager::create<UI_Elements::PopupBox>("harvestPopup", -500.0f, 380.0f, 400.0f, 250.0f, "Harvesting Crops", "Looks like your crops have grown!", "Press E over them to harvest them!");
+	harvestPopup->setOnDismiss([]() {
+		harvestPopup->hide();
+		});
+
+	//show harvest popup only on second visit
+	if (!firstStartGame && !shownHarvestPopup) {
+		harvestPopup->show();
+		shownHarvestPopup = true;
+	}
+	else {
+		harvestPopup->hide();
+	}
+
+	dungeonPopup = UIManager::create<UI_Elements::PopupBox>("dungeonPopup", 300.0f, -100.0f, 400.0f, 250.0f, "Dungeons", "Access the dungeons through", "these teleporters!");
+	dungeonPopup->setOnDismiss([]() {
+		dungeonPopup->hide();
 		});
 
 }
@@ -311,6 +333,7 @@ void Farm_Update() {
 		if (Gerald->dialogueDone()) {
 			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
 			grid.replacingID(World::Teleporter1, World::TeleporterBlue);
+			dungeonPopup->show();
 		}
 
 		break;
@@ -400,7 +423,20 @@ void Farm_Draw() {
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
-			World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, dirt);
+
+			//point to different teleporters depending on cleared
+			if (World::dungeonTracker[1]) {
+				World::drawIndicatorsOnTileType(grid, World::TeleporterRed, dirt);
+			}
+
+			else if (World::dungeonTracker[0]) {
+				World::drawIndicatorsOnTileType(grid, World::TeleporterGreen, dirt);
+			}
+
+			else {
+				World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, dirt);
+			}
+
 			Animations::drawCoolerIndicator(Gerald->getX(), Gerald->getY(), indicator);
 			break;
 
@@ -412,6 +448,8 @@ void Farm_Draw() {
 
 	inventoryPopup->draw();
 	cropPopup->draw();
+	harvestPopup->draw();
+	dungeonPopup->draw();
 	
 }
 

@@ -677,15 +677,49 @@ namespace Animations {
 
 	void drawIndicator(Indicator& ind) {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+		const int pad = 4; //outline
+		const float scale = 1.7f;
+
+		//brown outline triangle
+		Color::fill(128, 70, 20, 255);
+		Shapes::triangle(
+			ind.x, ind.y + 50 * scale - pad + ind.offset,
+			ind.x - 10 * scale - pad, ind.y + 60 * scale + pad + ind.offset,
+			ind.x + 10 * scale + pad, ind.y + 60 * scale + pad + ind.offset
+		);
+
+		//green triangle
 		Color::fill(176, 222, 88, 255);
-		Shapes::triangle(ind.x, ind.y + 50 + ind.offset, ind.x - 10, ind.y + 60 + ind.offset, ind.x + 10, ind.y + 60 + ind.offset);
+		Shapes::triangle(
+			ind.x, ind.y + 50 * scale + ind.offset,
+			ind.x - 10 * scale, ind.y + 60 * scale + ind.offset,
+			ind.x + 10 * scale, ind.y + 60 * scale + ind.offset
+		);
 
 	}
 
 	void drawIndicator(float x, float y, float offset) {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+
+		const int pad = 4; //outline
+		const float scale = 1.7f;
+
+		//brown outline triangle
+		Color::fill(128, 70, 20, 255);
+		Shapes::triangle(
+			x, y + 50 * scale - pad + offset,
+			x - 10 * scale - pad, y + 60 * scale + pad + offset,
+			x + 10 * scale + pad, y + 60 * scale + pad + offset
+		);
+
+		//green triangle
 		Color::fill(176, 222, 88, 255);
-		Shapes::triangle(x, y + 50 + offset, x - 10, y + 60 + offset, x + 10, y + 60 + offset);
+		Shapes::triangle(
+			x, y + 50 * scale + offset,
+			x - 10 * scale, y + 60 * scale + offset,
+			x + 10 * scale, y + 60 * scale + offset
+		);
 	}
 
 	void drawCoolerIndicator(float x, float y, AEGfxTexture* image)

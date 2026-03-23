@@ -183,6 +183,13 @@ void DesertDungeon_Draw() {
 		inv.draw();
 	}
 
+	// Draw indicator over teleporter when dungeon is cleared
+	if (World::dungeonTracker[2])
+	{
+		static Animations::Indicator teleporterIndicator;
+		World::drawIndicatorsOnTileType(grid, World::TeleporterRed, teleporterIndicator);
+	}
+
 }
 
 void DesertDungeon_Free() {
