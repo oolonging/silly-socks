@@ -156,8 +156,8 @@ void TutorialDungeon_Update() {
 
     }
 
-    float halfHeight = AEGfxGetWindowHeight() / 2.0f;
-    float halfWidth = AEGfxGetWindowWidth() / 2.0f;
+    float halfHeight = AEGfxGetWindowHeight() * 0.5f;
+    float halfWidth = AEGfxGetWindowWidth() * 0.5f;
     float savedX = tutPlayer->getX();
     float savedY = tutPlayer->getY();
 
