@@ -106,6 +106,9 @@ namespace EntityManager {
 				x, y, 50.0f, 50.0f, 100.0f, 2.0f, 0.0f 
 			));
 		}
+		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
+
+		weaponEnemies(eWeapon);
 	}
 
 	void clearEnemies() {

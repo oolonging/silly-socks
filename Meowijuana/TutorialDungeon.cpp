@@ -153,13 +153,17 @@ void TutorialDungeon_Update() {
             Death::opacity = 255.0f;
             tutPlayer->isDead = false;
             Death::deathCounter++;
-            next = GS_RESPAWN;
+
+            if (Death::deathCounter >= 3)
+            {
+                next = GS_LOSE;
+            }
+            else {
+                next = GS_X;
+            }
         }
 
-        if (Death::deathCounter >= 3)
-        {
-            next = GS_LOSE;
-        }
+
     }
 
     if (AEInputCheckTriggered(AEVK_F10))

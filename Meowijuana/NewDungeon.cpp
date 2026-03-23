@@ -17,6 +17,9 @@ extern World::worldGrid grid;
 std::pair<int, int> activeGridTile;
 AEGfxTexture* bgDungeon = nullptr;
 
+static Entity::Player* localPlayer;
+static Inventory::Weapon* pWeapon;
+
 bool ifClear;
 
 //namespace Death {
@@ -45,10 +48,22 @@ void NewDungeon_Initialize() {
 
 	EntityManager::init();
 
-	auto* player = EntityManager::getPlayer("player");
+	localPlayer = EntityManager::getPlayer("player");
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
-	inv.loadInventory(player, gameData);
+	inv.loadInventory(localPlayer, gameData);
+
+	// spawn 3 enemies
+	EntityManager::spawnEnemies(2, 400.0f, 400.0f);
+
+	// give the player a weapon
+	pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
+	if (pWeapon) {
+		localPlayer->setWeapon(pWeapon);
+		localPlayer->setAtkSpd(pWeapon->getAttackSpeed());
+	}
+
+
 	
 }
 
@@ -65,6 +80,8 @@ void NewDungeon_Update() {
 
 	grid.replacingID(World::Teleporter1, World::TeleporterBlue);
 	World::standOnTile(next, *player, grid, GS_TUTDUN, World::TeleporterBlue);
+
+	EntityManager::updateEnemies(*localPlayer);
 
 
 	if (player->getHp() <= 0) {
@@ -116,6 +133,7 @@ void NewDungeon_Draw() {
 	World::drawTile({ 0,0 }, grid);
 
 	EntityManager::draw("player");
+	EntityManager::drawEnemies(*localPlayer, grid, false);
 
 	if (showInventory)
 	{
