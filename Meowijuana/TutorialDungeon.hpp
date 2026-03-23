@@ -4,6 +4,7 @@
 namespace Death {
     extern bool dead;
     extern float fade;
+    extern int deathCounter;
     extern float opacity;
 }
 

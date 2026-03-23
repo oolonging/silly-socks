@@ -29,6 +29,7 @@ static UI_Elements::PopupBox* tutPopup;
 namespace Death {
     float opacity = 0.0f;
     bool dead = false;
+    int deathCounter = 0;
     float fade;
 }
 
@@ -151,9 +152,19 @@ void TutorialDungeon_Update() {
         if (Death::opacity >= 255.0f) {
             Death::opacity = 255.0f;
             tutPlayer->isDead = false;
+            Death::deathCounter++;
             next = GS_RESPAWN;
         }
 
+        if (Death::deathCounter >= 3)
+        {
+            next = GS_LOSE;
+        }
+    }
+
+    if (AEInputCheckTriggered(AEVK_F10))
+    {
+        Death::deathCounter = 3;
     }
 
     float halfHeight = AEGfxGetWindowHeight() * 0.5f;

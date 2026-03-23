@@ -17,6 +17,8 @@ extern World::worldGrid grid;
 std::pair<int, int> activeGridTile;
 AEGfxTexture* bgDungeon = nullptr;
 
+bool ifClear;
+
 //namespace Death {
 //	float opacity = 0.0f;
 //	bool dead = false;
@@ -76,10 +78,33 @@ void NewDungeon_Update() {
 		if (Death::opacity >= 255.0f) {
 			Death::opacity = 255.0f;
 			player->isDead = false;
+			Death::deathCounter++;
 			next = GS_RESPAWN;
 		}
 
+		if (Death::deathCounter >= 3)
+		{
+			next = GS_LOSE;
+		}
 	}
+
+	if (AEInputCheckTriggered(AEVK_0))
+	{
+		World::dungeonTracker[1] = true;
+		World::checkNum = 1;
+	}
+
+	if (AEInputCheckTriggered(AEVK_F10))
+	{
+		Death::deathCounter = 3;
+	}
+
+	if (EntityManager::allEnemiesDead())
+	{
+		World::dungeonTracker[1] = true;
+		World::checkNum = 1;
+	}
+
 
 	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterGreen);
 }

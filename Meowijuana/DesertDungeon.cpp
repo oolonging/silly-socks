@@ -79,7 +79,46 @@ void DesertDungeon_Update() {
 		if (Death::opacity >= 255.0f) {
 			Death::opacity = 255.0f;
 			player->isDead = false;
+			Death::deathCounter++;
 			next = GS_RESPAWN;
+		}
+
+		if (Death::deathCounter >= 3)
+		{
+			next = GS_LOSE;
+		}
+	}
+
+	if (EntityManager::allEnemiesDead())
+	{
+		World::dungeonTracker[2] = true;
+		World::checkNum = 2;
+	}
+
+	if (AEInputCheckTriggered(AEVK_0))
+	{
+		World::dungeonTracker[2] = true;
+		World::checkNum = 2;
+	}
+
+	if (AEInputCheckTriggered(AEVK_F10))
+	{
+		Death::deathCounter = 3;
+	}
+
+	if (World::dungeonTracker[World::checkNum])
+	{
+		int count = 0;
+
+		for (int i = 0; i < World::checkNum; i++)
+		{
+			if (World::dungeonTracker[i] == false) break;
+			else count++;
+		}
+
+		if (count == World::checkNum + 1) // if all 3 stages clear, show win page
+		{
+			next = GS_WIN;
 		}
 	}
 

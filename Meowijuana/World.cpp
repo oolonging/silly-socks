@@ -6,8 +6,9 @@ World::worldGrid grid;
 
 namespace World {
 
-	bool dungeonTracker[4] = {false,false,false,false};
+	bool dungeonTracker[3] = {false,false,false};
 	int checkNum = 0;
+	bool restart = false;
 
 	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;

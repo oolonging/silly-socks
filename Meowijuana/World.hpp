@@ -17,8 +17,9 @@ namespace UI_Elements {
 
 namespace World
 {
-	extern bool dungeonTracker[4];
+	extern bool dungeonTracker[3];
 	extern int checkNum;
+	extern bool restart;
 
 	enum behaviourFlag
 	{
