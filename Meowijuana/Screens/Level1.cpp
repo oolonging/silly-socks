@@ -8,8 +8,8 @@
 #include "../UI_Elements/UI_Elements.hpp"
 #include "../Entity.hpp"
 #include "../World.hpp"
-//#include "../Attack.h"
 #include "../PauseMenu.hpp"
+#include "../Settings.hpp"
 
 extern World::worldGrid grid;
 bool drawGrid = false;
@@ -52,6 +52,7 @@ void Level1_Load() {
 
 void Level1_Initialize()
 {
+    Settings::currentScreen = "Level1.cpp";
 
     // Initialize player & enemy (NO redeclaration)
     if (firstTime) {

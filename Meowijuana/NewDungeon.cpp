@@ -6,6 +6,7 @@
 #include "World.hpp"
 #include "NewDungeon.hpp"
 #include "TutorialDungeon.hpp"
+#include "Settings.hpp"
 
 
 extern UI_Elements::PlayerInventory inv;
@@ -38,6 +39,7 @@ void NewDungeon_Load() {
 }
 
 void NewDungeon_Initialize() {
+	Settings::currentScreen = "NewDungeon.cpp";
 
 	EntityManager::init();
 

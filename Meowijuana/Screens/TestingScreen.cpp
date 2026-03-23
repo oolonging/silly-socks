@@ -1,10 +1,10 @@
 ﻿#include "../pch.h"
-#include <iostream>
 
 #include "../Tiles.hpp"
 #include "../Entity.hpp"
 #include "../Managers/EntityManager.hpp"
 #include "../Managers/TileManager.hpp"
+#include "../Settings.hpp"
 
 Entity::NPC* activeSpeaker = nullptr;
 
@@ -37,6 +37,8 @@ void Testing_Load() {
 }
 
 void Testing_Initialize() {
+	Settings::currentScreen = "TestingScreen.cpp";
+
 	// Initialize tile system (this calls World::init() internally)
 	TileManager::init();
 

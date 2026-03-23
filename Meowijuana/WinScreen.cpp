@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "WinScreen.hpp"
+
 #include "GameStateManager.hpp"
 #include "AudioManager.hpp"
+#include "Settings.hpp"
 
 namespace WinScreen {
 
@@ -22,6 +24,8 @@ void Win_Load() {
 }
 
 void Win_Initialize() {
+	Settings::currentScreen = "WinScreen.cpp";
+
 	AEGfxMeshStart();
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,

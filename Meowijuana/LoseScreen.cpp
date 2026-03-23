@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "LoseScreen.hpp"
+
 #include "GameStateManager.hpp"
 #include "Graphics.hpp"
+#include "Settings.hpp"
 
 void Lose_Load() {
 
 }
 
 void Lose_Initialize() {
-
+	Settings::currentScreen = "LoseScreen.cpp";
 }
 
 void Lose_Update() {

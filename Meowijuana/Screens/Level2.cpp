@@ -1,13 +1,12 @@
 ﻿#include "../pch.h"
 #include "../GameStateManager.hpp"
-#include "AEEngine.h"
 
-#include <iostream>
 #include "../Graphics.hpp"
 #include "../UI_Elements/UI_Elements.hpp"
 #include "../Entity.hpp"
 #include "../World.hpp"
 #include "Level1.hpp"
+#include "../Settings.hpp"
 
 // -----------------------------------------------------------------------------
 // Level-scope state (persists while Level1 is active)
@@ -29,6 +28,8 @@ void Level2_Load()
 // Initialize some stuff
 void Level2_Initialize()
 {
+    Settings::currentScreen = "Level2.cpp";
+
     drawGrid = false;
 
     float oriX = testPlayer.getX() - 1600;
