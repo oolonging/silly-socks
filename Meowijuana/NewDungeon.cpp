@@ -49,7 +49,7 @@ void NewDungeon_Initialize() {
 	EntityManager::init();
 
 	localPlayer = EntityManager::getPlayer("player");
-
+	localPlayer->setPosition(500.0f, 300.0f);
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(localPlayer, gameData);
 
