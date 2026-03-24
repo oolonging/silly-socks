@@ -33,13 +33,13 @@ namespace RespawnArea{
 	int deathcount = 0;
 
 	enum class SpeakState {
-		SMELLY_CONDOLENCES,
-		SMELLY_CONIDLENCES,
+		CONDOLENCES,
+		CONIDLENCES,
 		FINISHED
 
 	};
 
-	SpeakState state = SpeakState::SMELLY_CONDOLENCES;
+	SpeakState state = SpeakState::CONDOLENCES;
 
 }
 
@@ -70,24 +70,26 @@ void RespawnArea_Initialize() {
 	soroor->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 
-	soroor->setDialogLines({
-		"Hey you. You're finally awake. You were trying to clear the dungeon, right? Walked right into those enemies. You're lucky you got found on time.",
-		"Well, it's good that you're safe. Told you i'd drag you back to camp!",
-		"Be more careful next time. I'll keep an eye out for you still, but i'm afraid you'll be severely damaged after every encounter. Three will be your limit.",
-		"Rest up and gather yourself before you go on your way. You've got a long journey ahead.",
-
-		"@"
-		});
-
-
 	// check if this works btw
 	RespawnArea::deathcount += 1;
 
-	// TODO: remember to set idlenum to 0 or smth? 
-	// not sure yet lemme check, i may need checkpointing system before this tho
+	
 	switch (RespawnArea::deathcount) {
 
 	case 1:
+
+		soroor->setDialogLines({
+			"Hey you. You're finally awake. You were trying to clear the dungeon, right? Walked right into those enemies. You're lucky you got found on time.",
+			"Well, it's good that you're safe. Told you i'd drag you back to camp!",
+			"Be more careful next time. I'll keep an eye out for you still, but i'm afraid you'll be severely damaged after every encounter. Three will be your limit, so that mean's you'll have this life and one more remaining.",
+			"Rest up and gather yourself before you go on your way. You've got a long journey ahead.",
+
+			"@"
+
+
+			});
+
+
 		soroor->setIdleLines({
 			"Use your cherries efficiently to stay alive!",
 
@@ -111,12 +113,24 @@ void RespawnArea_Initialize() {
 		break;
 
 	case 2:
+
+		soroor->setDialogLines({
+
+			"Worrying to see you back here again! Should you really be exploring the dungeons in this condition?",
+			"Your next death might be your very last.",
+
+			"@"
+
+			});
+
+
 		soroor->setIdleLines({
 			"Fancy seeing you again! You come here often?",
+			"I know cats joke about having 9 lives, but don't be the first to test that theory out.",
 
 			"#",
 
-			"I know we as a species joke about having 9 lives, but maybe don't be the first to test that theory out.",
+			"Make full use of your cherries. If you die once more, that's it.",
 			});
 	}
 
@@ -129,7 +143,7 @@ void RespawnArea_Initialize() {
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(player, gameData);
 
-	RespawnArea::state = RespawnArea::SpeakState::SMELLY_CONDOLENCES;
+	RespawnArea::state = RespawnArea::SpeakState::CONDOLENCES;
 	RespawnArea::activeSpeaker = nullptr;
 
 }
@@ -157,19 +171,19 @@ void RespawnArea_Update() {
 
 	switch (RespawnArea::state) {
 
-	case RespawnArea::SpeakState::SMELLY_CONDOLENCES:
+	case RespawnArea::SpeakState::CONDOLENCES:
 
 		RespawnArea::activeSpeaker = soroor;
 		soroor->speak(RespawnArea::dialogueBox);
 
 		if (soroor->getIsPaused()) {
-			RespawnArea::state = RespawnArea::SpeakState::SMELLY_CONIDLENCES;
+			RespawnArea::state = RespawnArea::SpeakState::CONIDLENCES;
 		}
 		break;
 
 
 
-	case RespawnArea::SpeakState::SMELLY_CONIDLENCES:
+	case RespawnArea::SpeakState::CONIDLENCES:
 
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
