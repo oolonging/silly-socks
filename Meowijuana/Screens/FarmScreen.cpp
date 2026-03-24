@@ -68,6 +68,12 @@ void Farm_Load()
 void Farm_Initialize() {
 	// Set the debug "Current Screen" property
 	Settings::currentScreen = "FarmScreen.cpp";
+	
+	// check if all the dungeons are cleared, if so then naviate to the win screen
+	if (World::dungeonTracker[0] && World::dungeonTracker[1] && World::dungeonTracker[2]) {
+		next = GS_WIN;
+	}
+
 
 	// init Entitymanager
 	EntityManager::init();
@@ -122,7 +128,6 @@ void Farm_Initialize() {
 
 	Gerald->setDialogLines({
 		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.", "@",
-
 		"Good Job! After planting the seeds, it will grow everytime you finish a dungeon level so make sure you make full use of your farm space!",
 		"You can get more seeds while exploring the dungeons so look out for that!", "@"
 	});
