@@ -100,6 +100,12 @@ void DesertDungeon_Update() {
 	player->tickAttackTimer();
 	inv.update(player);
 
+	if (EntityManager::allEnemiesDead()) {
+		World::dungeonTracker[2] = true;
+		desertDungeonState.cleared = true;
+		// teleporter replacing action
+	}
+
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
 		EntityManager::attackEnemies(*player);
 		World::checkCarrotSwordConsume(inv, *player);
