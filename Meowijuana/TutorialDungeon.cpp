@@ -159,7 +159,7 @@ void TutorialDungeon_Update() {
                 next = GS_LOSE;
             }
             else {
-                next = GS_X;
+                next = GS_RESPAWN;
             }
         }
 
