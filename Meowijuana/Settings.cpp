@@ -5,6 +5,7 @@
 #include "Managers/UIManager.hpp"
 #include "Managers/EntityManager.hpp"
 #include "Managers/ParticleManager.hpp"
+#include "TutorialDungeon.hpp"
 
 namespace Settings {
 	//////////////////////
@@ -58,7 +59,8 @@ namespace Settings {
 			"UI Elements: " + std::to_string(UIManager::elements.size()),
 			"Active Entities: " + std::to_string(EntityManager::entities.size()),
 			"Active particles: " + std::to_string(gParticles.getActiveParticleCount()) + "/" + std::to_string(gParticles.getMaxParticles()),
-			"Current room: " + currentScreen
+			"Current room: " + currentScreen,
+			"Player lives: " + std::to_string(3 - Death::deathCounter) + "/3"
 		};
 		int counter = 0;
 		
@@ -89,6 +91,22 @@ namespace Settings {
 
 	///// Testing area
 	bool gHoldingCarrot = false;
+
+	void drawLivesLeft(void) {
+		// black box top right
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Color::fill(Color::Preset::Black);
+		Shapes::rect(800.0f - 125.0f, 450.0f - 25.0f, -250.0f, -50.0f, Shapes::CENTER);
+		std::string livesLeft = "Lives left: ";
+
+		Text::textSize(15.0f);
+		for (int i = 0; i < 3; i++) {
+			if (i >= Death::deathCounter) livesLeft += "+";
+		}
+
+		Color::textFill(Color::Preset::White);
+		Text::text(livesLeft.c_str(), 800.0f - 125.0f, 450.0f - 25.0f, Text::CENTER_H, Text::CENTER_V);
+	}
 }
 
 

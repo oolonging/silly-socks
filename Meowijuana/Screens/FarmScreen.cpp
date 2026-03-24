@@ -387,7 +387,6 @@ void Farm_Update() {
 }
 
 void Farm_Draw() {
-
 	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), bg, Shapes::CENTER);
 
 	// Rendering state
@@ -455,7 +454,8 @@ void Farm_Draw() {
 	cropPopup->draw();
 	harvestPopup->draw();
 	dungeonPopup->draw();
-	
+
+	Settings::drawLivesLeft();
 }
 
 void Farm_Free() 

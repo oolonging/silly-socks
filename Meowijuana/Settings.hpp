@@ -56,6 +56,8 @@ namespace Settings {
 	////////////////
 
 	extern bool gHoldingCarrot;
+
+	void drawLivesLeft(void);
 }
 
 #endif // SETTINGS_HPP
