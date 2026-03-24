@@ -43,6 +43,10 @@ namespace TutorialScreen {
 	TutorialState state = TutorialState::SMELLY_TALK;
 	bool deadDummy = false; // oh no :(
 
+
+	float noWeaponTimer = 0.0f;
+	bool showNoWeaponText = false;
+
 }
 
 void Xuan_Load() {
@@ -83,16 +87,16 @@ void Xuan_Initialize() {
 
 
 	smelly->setDialogLines({
-		"Hey [PLAYER]! Welcome to the dungeons! There's 4 levels to each dungeon, each with increasing levels of difficulty. We're on the first floor, so it's relatively safe for now.",
+		"Welcome to the dungeons! There's 3 levels to a dungeon, each with increasing levels of difficulty. We're on the first floor, so it's relatively safe for now.",
 		"You'll need to learn how to defend yourself. Here! I've taken the liberty to pass you a [CARROT SWORD]. I'll walk you through this floor, and then you'll be on your own for the next few.",
 		"First off, see that [DUMMY] over there? It's supposed to represent enemies.\n This one here won't fight back, but if you encounter real ones in the dungeon, they'll attack on sight.",
-		"Use your [LEFT MOUSE BUTTON] to attack! Go give it a try.",
+		"Equip your weapon and use your [LEFT MOUSE BUTTON] to attack! Go give it a try.",
 
 		"@",
 
-		"Nice! OK, seems like my job here is done. I'm gonna go clock off for the day.",
-		"To get to the next floor, just head to that teleporter over there to continue. They're those white squares on the ground. The next time you come back in, you'll be directed straight to the first floor.",
-		"You can continue in the dungeons if you'd like! I'll cart you out if something bad happens.",
+		"Nice! Well, while you didn't sustain damage this time, if you ever get hurt, press E while hovering over a cherry in your hotbar to restore health.",
+		"To get to the next floor, just head to that teleporter over there to continue. If you ever faint, you'll get sent straight back here.",
+		"You can continue in the dungeons when you feel like it! I'll cart you out if something bad happens.",
 		"See you around!",
 
 		"@"
@@ -180,6 +184,18 @@ void Xuan_Update() {
 
 
 
+	// visual reminder
+
+	if (TutorialScreen::showNoWeaponText) {
+		TutorialScreen::noWeaponTimer -= AEFrameRateControllerGetFrameTime();
+
+		if (TutorialScreen::noWeaponTimer <= 0.0f) {
+			TutorialScreen::showNoWeaponText = false;
+		}
+	}
+
+
+
 	// ========================= Conversations ========================
 
 	if (TutorialScreen::dialogueBox.getIsActive() && TutorialScreen::activeSpeaker) {
@@ -234,11 +250,19 @@ void Xuan_Update() {
 		// attack
 		if (!(TutorialScreen::dialogueBox.getIsActive()) && dummy->isAlive()) {
 
-			if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
+
+			if (AEInputCheckTriggered(AEVK_LBUTTON) && !player->isHoldingWeapon()) {
+				TutorialScreen::showNoWeaponText = true;
+				TutorialScreen::noWeaponTimer = 2.0f;
+			}
+
+
+			else if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
 				player->attack(*dummy);
 				player->resetAttackTimer();
 
 			}
+
 
 			if (dummy->getHp() <= 0) {
 				dummy->setHp(0);
@@ -357,8 +381,15 @@ void Xuan_Draw() {
 
 	EntityManager::draw("player");
 
+
+	if (TutorialScreen::showNoWeaponText) {
+		Text::text("Equip your weapon first!", -120, -250);
+	}
+
+
 	// Draw dialogue box on top of everything
 	TutorialScreen::dialogueBox.draw();
+
 }
 
 void Xuan_Free() {

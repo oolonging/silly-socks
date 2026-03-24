@@ -79,7 +79,7 @@ void Farm_Initialize() {
 	// Initialising NPCs
 	localGerald = EntityManager::getNPC("gerald");
 	auto* gerald = localGerald;
-	gerald->setCharName("gerald");
+	gerald->setCharName("Gerald");
 
 	// check if all the dungeons are cleared, if so then naviate to the win screen
 	if (World::dungeonTracker[0] && World::dungeonTracker[1] && World::dungeonTracker[2]) {
@@ -130,22 +130,25 @@ void Farm_Initialize() {
 	}
 
 	gerald->setDialogLines({
-		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.", "@",
-		"Good Job! After planting the seeds, it will grow everytime you finish a dungeon level so make sure you make full use of your farm space!",
-		"You can get more seeds while exploring the dungeons so look out for that!", "@"
+		"Welcome to Catastrofarm! You must be the newly hired help to clear the dungeons. I assume you don't have any gear right now, but don't worry- We'll suit you up.",
+		"Against the enemies here, your best defense would be a [CARROT SWORD]. The more carrots you have in your inventory, the more damage it deals.",
+		"Cherries give you HP if you're ever low, so stock up on those when you have the time as well.",
+		"I'll pass you some seeds to get you started on your journey. See those raised mounds of dirt? Press E when hovering over an empty crop spot to plant a carrot/cherry.", 
+
+		"@",
+		
+		"After planting, crops will grow every time you finish a dungeon level. So, be sure to plant as many as you can while dungeoning so that you can get the most out of your time.",
+		"Defeated enemies have a chance to drop seeds, so you'll always have a steady supply. Good luck!", 
+		"Head over to the newly opened teleporter on the bottom right whenever you're ready.", 
+		
+		"@"
 		});
 
 	if (!World::dungeonTracker[0])
 		gerald->setIdleLines({
-			"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
+			"You still have seeds on you. Try Planting them before you go off!"
 			});
 
-	else
-		gerald->setIdleLines({
-		"Carrots increase your sword damage!", "@",
-		"Cherries can be used to heal!", "@",
-		"Have fun farming!", "@"
-			});
 
 	// Initialize dialogue box
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
@@ -353,9 +356,8 @@ void Farm_Update() {
 	case FarmNPC::TutorialState::FINISHED:
 
 		gerald->setIdleLines({
-		"Carrots increase your sword damage!", "#",
-		"Cherries can be used to heal!", "#",
-		"Have fun farming!", "#"
+			"Make sure not to faint too many times in the dungeons. It'll have consequences!", "#",
+			"Just in case you blanked out just now- carrots increase your sword damage, and cherries can be used to heal.", "#",
 			});
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(

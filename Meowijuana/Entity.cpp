@@ -603,6 +603,10 @@ namespace Entity {
 
 	}
 
+	bool Player::isHoldingWeapon() {
+		return holdingWeapon;
+	}
+
 
 
 	// -------------------------------------------------------------------------

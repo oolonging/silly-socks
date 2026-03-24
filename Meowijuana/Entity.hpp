@@ -203,6 +203,8 @@ namespace Entity {
 
 		void draw() override;
 
+		bool isHoldingWeapon();
+
 		// Constructors
 		Player(float posX, float posY, float w, float h, float health, float spd, float arm);
 		Player();
