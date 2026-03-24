@@ -5,6 +5,7 @@
 #include "Inventory.hpp"
 #include "../../Managers/SpriteManager.hpp"
 
+
 namespace Entity {
 	class Player;
 	class Entity;
@@ -20,6 +21,7 @@ namespace World
 	extern bool dungeonTracker[3];
 	extern int checkNum;
 	extern bool restart;
+	extern bool firstStartGame;
 
 	enum behaviourFlag
 	{
@@ -73,17 +75,7 @@ namespace World
 		bool drawWall = false;
 
 	public:
-		/*
-		Functions:
-		REDOING EVERYTHING
-
-		-> Initialise 
-
-		-> Get Index (based on real word coordinates and translate that the Grid Tile)
-
-		-> Get Tile ID (changing from array of tile objects to tile ID [lesser memory usage], gets tile ID based on index
-		*/
-
+		
 		worldGrid();
 		~worldGrid();
 
@@ -110,8 +102,9 @@ namespace World
 		int getColumn() const { return column; }
 		float getOffsetX() const { return offsetX; }
 		float getOffsetY() const { return offsetY; }
+		
+		// Interactions with grid
 		void toggleWall() { drawWall = !drawWall; }
-	
 		void drawTexture(const World::worldGrid& Griddy);
 		void initTextureBox();
 		void initMapTextureSprite(const std::string& filename);
@@ -132,8 +125,11 @@ namespace World
 
 	bool useItemOnTile(std::pair<int, int> activeTile, World::worldGrid& grid, UI_Elements::PlayerInventory inven, Entity::Player& user);
 
+	// --- These two can moved to Inventory --- //
 	void useInventoryItem(World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user);
+	
 	void checkCarrotSwordConsume(UI_Elements::PlayerInventory& inven, Entity::Player& user);
+	// --- These two can moved to Inventory --- //
 
 	void drawIndicatorsOnTileType(const World::worldGrid& Griddy, int ID, Animations::Indicator& ind);
 
@@ -142,6 +138,8 @@ namespace World
 
 	// --- Tile Draw Stuff --- //
 	void drawTile(std::pair<int, int> tile, const World::worldGrid& Griddy);
+
+	void ResetAllGameState();
 
 	void drawGrid();
 	void freeGrid();

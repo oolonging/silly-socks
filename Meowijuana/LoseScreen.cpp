@@ -4,6 +4,7 @@
 #include "GameStateManager.hpp"
 #include "Graphics.hpp"
 #include "Settings.hpp"
+#include "World.hpp"
 
 void Lose_Load() {
 
@@ -31,7 +32,9 @@ void Lose_Draw() {
 	// Click anywhere to return to main menu
 	if (AEInputCheckTriggered(AEVK_LBUTTON) || AEInputCheckTriggered(AEVK_E)) {
 		next = GS_MAIN_MENU;
+		World::ResetAllGameState();
 	}
+
 
 }
 

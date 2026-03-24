@@ -4,6 +4,7 @@
 #include "Entity.hpp"
 
 UI_Elements::PlayerInventory inv;
+extern GameData gameData;
 bool showInventory;
 
 namespace Inventory {
@@ -283,6 +284,8 @@ namespace Inventory {
 	{
 		// Then free prototypes + their textures
 		ItemRegistry::cleanup(); 
+		gameData.inventory.clear();
+		gameData.selectedSlot = 0;
 	}
 
 }

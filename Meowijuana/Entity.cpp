@@ -976,6 +976,12 @@ namespace Entity {
 		return idlenum >= idleLines.size();
 	}
 
+	void NPC::restartDialogue()
+	{
+		started = false;
+		linenum = 0;
+	}
+
 	void NPC::restartIdle()
 	{
 		idling = false;

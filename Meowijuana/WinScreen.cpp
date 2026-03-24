@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "WinScreen.hpp"
 
+#include "Managers/ParticleManager.hpp"
 #include "GameStateManager.hpp"
 #include "AudioManager.hpp"
 #include "Settings.hpp"
+#include "World.hpp"
 
 namespace WinScreen {
 
@@ -50,9 +52,12 @@ void Win_Update() {
 
 void Win_Draw() {
 
+	int screenWidth = AEGfxGetWindowWidth();
+	int screenHeight = AEGfxGetWindowHeight();
+
 	AEMtx33 scale, trans, transform;
 
-	AEMtx33Scale(&scale, (f32)AEGfxGetWindowWidth(), (f32)AEGfxGetWindowHeight());
+	AEMtx33Scale(&scale, (f32)screenWidth, (f32)screenHeight);
 	AEMtx33Trans(&trans, 0.0f, 0.0f);
 	AEMtx33Concat(&transform, &trans, &scale);
 
@@ -63,9 +68,19 @@ void Win_Draw() {
 	AEGfxSetTransform(transform.m);
 	AEGfxMeshDraw(WinScreen::mesh, AE_GFX_MDM_TRIANGLES);
 
+	int particleCount = 1 + rand() % 3; // random between 1 and 4
+
+	for (int i = 0; i < particleCount; i++)
+	{
+		int x = (rand() % screenWidth) - screenWidth / 2; 
+		int y = (rand() % screenHeight) - screenHeight / 2;
+		gParticles.spawnExplosion(x, y, 50);
+	}
+
 	// Click anywhere to return to main menu
 	if (AEInputCheckTriggered(AEVK_LBUTTON) || AEInputCheckTriggered(AEVK_E)) {
 		next = GS_MAIN_MENU;
+		World::ResetAllGameState();
 	}
 }
 

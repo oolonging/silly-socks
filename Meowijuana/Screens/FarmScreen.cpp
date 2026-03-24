@@ -57,7 +57,7 @@ static UI_Elements::PopupBox* inventoryPopup;
 static UI_Elements::PopupBox* harvestPopup;
 static UI_Elements::PopupBox* dungeonPopup;
 
-void Farm_Load() 
+void Farm_Load()
 {
 	showInventory = true;
 	grid.initMapTexture();
@@ -68,12 +68,6 @@ void Farm_Load()
 void Farm_Initialize() {
 	// Set the debug "Current Screen" property
 	Settings::currentScreen = "FarmScreen.cpp";
-	
-	// check if all the dungeons are cleared, if so then naviate to the win screen
-	if (World::dungeonTracker[0] && World::dungeonTracker[1] && World::dungeonTracker[2]) {
-		next = GS_WIN;
-	}
-
 
 	// init Entitymanager
 	EntityManager::init();
@@ -81,14 +75,30 @@ void Farm_Initialize() {
 	// Initialising Player
 	localPlayer = EntityManager::getPlayer("player");
 	auto* player = localPlayer;
+
+	// Initialising NPCs
+	localGerald = EntityManager::getNPC("gerald");
+	auto* gerald = localGerald;
+	gerald->setCharName("gerald");
+
+	// check if all the dungeons are cleared, if so then naviate to the win screen
+	if (World::dungeonTracker[0] && World::dungeonTracker[1] && World::dungeonTracker[2]) {
+		next = GS_WIN;
+	}
+
+	// Restart everything after clearing the game
+	if (World::restart)
+	{
+		gerald->restartDialogue();
+		gerald->restartIdle();
+		firstStartGame = true;
+		FarmNPC::state = FarmNPC::TutorialState::GER_TALK;
+	}
+
 	player->setPosition(-800.0f, 50.0f);
 	player->setSpeed(10.f);
 
-
-
-	FarmNPC::dialogueBox.setSpeaker("Gerald");
-
-
+	FarmNPC::dialogueBox.setSpeaker("gerald");
 
 	// Setting position for inventory 
 	float screenWidth = static_cast<float>(AEGfxGetWindowWidth());
@@ -104,7 +114,7 @@ void Farm_Initialize() {
 	// Setting inventory to bottom 
 	inv.setPosition(x, y);
 	inv.setPlayer(EntityManager::getPlayer("player"));
-	
+
 	inv.loadInventory(player, gameData);
 
 	// Set player position
@@ -119,26 +129,19 @@ void Farm_Initialize() {
 		player->setY(lastposY);
 	}
 
-	// Initialising NPCs
-	localGerald = EntityManager::create<Entity::NPC>("Gerald", -50.0f, 100.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
-	auto* Gerald = localGerald;
-	Gerald->setCharName("Gerald"); 
-	Gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png"));
-
-
-	Gerald->setDialogLines({
+	gerald->setDialogLines({
 		"Welcome to Catastrofarm! I heard you are new here so here are some seeds to get you started on your journey! Press E when hovering over a empty crop spot.", "@",
 		"Good Job! After planting the seeds, it will grow everytime you finish a dungeon level so make sure you make full use of your farm space!",
 		"You can get more seeds while exploring the dungeons so look out for that!", "@"
-	});
+		});
 
 	if (!World::dungeonTracker[0])
-	Gerald->setIdleLines({
-		"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
-	});
+		gerald->setIdleLines({
+			"Hey you can't leave without planting those! Try Planting the seeds that I have just given you!"
+			});
 
 	else
-		Gerald->setIdleLines({
+		gerald->setIdleLines({
 		"Carrots increase your sword damage!", "@",
 		"Cherries can be used to heal!", "@",
 		"Have fun farming!", "@"
@@ -148,8 +151,7 @@ void Farm_Initialize() {
 	FarmNPC::dialogueBox = UI_Elements::DialogueBox(0.0f, -300.0f, 1000.0f, 200.0f, "", "", nullptr, Shapes::CENTER);
 
 	// Initialise Grid Stuff
-	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);*/
-	
+
 	if (firstStartGame)
 	{
 		grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Farm.txt");
@@ -210,7 +212,7 @@ void Farm_Initialize() {
 void Farm_Update() {
 
 	auto* player = localPlayer;
-	auto* Gerald = localGerald;
+	auto* gerald = localGerald;
 
 	// Player update
 	player->update(grid);
@@ -237,12 +239,17 @@ void Farm_Update() {
 		World::dungeonTracker[World::checkNum] = true;
 		grid.growPlants(grid);
 	}
-
+	
+	if (AEInputCheckTriggered(AEVK_F8))
+	{
+		for (int i = 0; i < 3; i++)
+			World::dungeonTracker[i] = true;
+	}
 
 	if (AEInputCheckTriggered(AEVK_E))
 	{
 		World::interactTile(activeT, grid, inv, *player);
-		
+
 		if (cropPopup->getVisible())
 		{
 			if (inv.findItemCount(*player, Inventory::ItemID::CARROT_SEEDS) < 3 || inv.findItemCount(*player, Inventory::ItemID::CHERRY_SEEDS) < 6)
@@ -253,7 +260,7 @@ void Farm_Update() {
 	// Makes it so that user is stuck in tutorial area until done w tutorial, it player completed tutorial already, teleporter shld be normal
 	if (firstStartGame)
 	{
-		if (!inv.findItem(*player,Inventory::ItemID::CARROT_SEEDS) && !inv.findItem(*player, Inventory::ItemID::CHERRY_SEEDS))
+		if (!inv.findItem(*player, Inventory::ItemID::CARROT_SEEDS) && !inv.findItem(*player, Inventory::ItemID::CHERRY_SEEDS))
 		{
 			World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
 		}
@@ -262,8 +269,8 @@ void Farm_Update() {
 			std::pair<int, int> currTile = grid.getIndex(player->getX(), player->getY());
 			if (grid.getTileID(currTile.first, currTile.second) == World::Teleporter1)
 			{
-				FarmNPC::activeSpeaker = Gerald;
-				Gerald->idleSpeak(FarmNPC::dialogueBox);
+				FarmNPC::activeSpeaker = gerald;
+				gerald->idleSpeak(FarmNPC::dialogueBox);
 
 			}
 			else
@@ -285,7 +292,7 @@ void Farm_Update() {
 
 	if (FarmNPC::dialogueBox.getIsActive() && FarmNPC::activeSpeaker) {
 
-		if (Gerald->getIsIdling()) {
+		if (gerald->getIsIdling()) {
 			FarmNPC::activeSpeaker->idleSpeak(FarmNPC::dialogueBox);
 		}
 
@@ -300,11 +307,11 @@ void Farm_Update() {
 
 	case FarmNPC::TutorialState::GER_TALK:
 
-		FarmNPC::activeSpeaker = Gerald;
+		FarmNPC::activeSpeaker = gerald;
 
-		Gerald->speak(FarmNPC::dialogueBox);
+		gerald->speak(FarmNPC::dialogueBox);
 
-		if (Gerald->getIsPaused()) {
+		if (gerald->getIsPaused()) {
 			FarmNPC::state = FarmNPC::TutorialState::GER_IDLE;
 			inv.giveItem(*player, Inventory::ItemID::CARROT_SEEDS, 3);
 			inv.giveItem(*player, Inventory::ItemID::CHERRY_SEEDS, 6);
@@ -319,23 +326,23 @@ void Farm_Update() {
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
-			Gerald->getX(), Gerald->getY(),
+			gerald->getX(), gerald->getY(),
 			75.0f,
-			Gerald->getWidth(), Gerald->getHeight()))
+			gerald->getWidth(), gerald->getHeight()))
 		{
-			FarmNPC::activeSpeaker = Gerald;
-			Gerald->idleSpeak(FarmNPC::dialogueBox);
+			FarmNPC::activeSpeaker = gerald;
+			gerald->idleSpeak(FarmNPC::dialogueBox);
 		}
 
 		break;
 
-	// Check if all seeds are planted then next step in dialogue
+		// Check if all seeds are planted then next step in dialogue
 	case FarmNPC::TutorialState::GER_TALK2:
-			
-		FarmNPC::activeSpeaker = Gerald;
-		Gerald->resumeDialogue(FarmNPC::dialogueBox);
-				
-		if (Gerald->dialogueDone()) {
+
+		FarmNPC::activeSpeaker = gerald;
+		gerald->resumeDialogue(FarmNPC::dialogueBox);
+
+		if (gerald->dialogueDone()) {
 			FarmNPC::state = FarmNPC::TutorialState::FINISHED;
 			grid.replacingID(World::Teleporter1, World::TeleporterBlue);
 			dungeonPopup->show();
@@ -344,26 +351,26 @@ void Farm_Update() {
 		break;
 
 	case FarmNPC::TutorialState::FINISHED:
-		
-		Gerald->setIdleLines({
+
+		gerald->setIdleLines({
 		"Carrots increase your sword damage!", "#",
 		"Cherries can be used to heal!", "#",
 		"Have fun farming!", "#"
 			});
-		
+
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
-			Gerald->getX(), Gerald->getY(),
+			gerald->getX(), gerald->getY(),
 			75.0f,
-			Gerald->getWidth(), Gerald->getHeight()
+			gerald->getWidth(), gerald->getHeight()
 		)) {
-			FarmNPC::activeSpeaker = Gerald;
-			Gerald->setIdling(true);
-			Gerald->idleSpeak(FarmNPC::dialogueBox);
-	
-			if (Gerald->idleDone())
+			FarmNPC::activeSpeaker = gerald;
+			gerald->setIdling(true);
+			gerald->idleSpeak(FarmNPC::dialogueBox);
+
+			if (gerald->idleDone())
 			{
-				Gerald->restartIdle();
+				gerald->restartIdle();
 			}
 		}
 
@@ -386,6 +393,7 @@ void Farm_Update() {
 	}
 }
 
+
 void Farm_Draw() {
 	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), bg, Shapes::CENTER);
 
@@ -394,7 +402,7 @@ void Farm_Draw() {
 	Color::textFill(255, 255, 255);
 
 	auto* player = localPlayer;
-	auto* Gerald = localGerald;
+	auto* gerald = localGerald;
 
 	Color::background(Color::Preset::Purple); // The more purple you can see the better, not every single tile should be drawing its own graphic
 	
@@ -406,7 +414,7 @@ void Farm_Draw() {
 	}
 
 	World::drawTile(activeT, grid);
-	EntityManager::draw("Gerald");
+	EntityManager::draw("gerald");
 
 	player->draw();
 
@@ -423,7 +431,7 @@ void Farm_Draw() {
 
 		case FarmNPC::TutorialState::GER_IDLE:
 			World::drawIndicatorsOnTileType(grid, World::EmptyCropTile, dirt);
-			Animations::drawCoolerIndicator(Gerald->getX(), Gerald->getY(), indicator);
+			Animations::drawCoolerIndicator(gerald->getX(), gerald->getY(), indicator);
 			break;
 
 		case FarmNPC::TutorialState::FINISHED:
@@ -441,7 +449,7 @@ void Farm_Draw() {
 				World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, dirt);
 			}
 
-			Animations::drawCoolerIndicator(Gerald->getX(), Gerald->getY(), indicator);
+			Animations::drawCoolerIndicator(gerald->getX(), gerald->getY(), indicator);
 			break;
 
 		}
@@ -463,7 +471,7 @@ void Farm_Free()
 	grid.outWorldMap("../../Assets/LevelMaps/Farm_User_layout.txt");
 
 	auto* player = localPlayer;
-	auto* Gerald = localGerald;
+	auto* gerald = localGerald;
 
 	lastposX = player->getX();
 	lastposY = player->getY();
@@ -492,9 +500,9 @@ void Farm_Unload()
 {
 	/*Inventory::unload();*/
 
-	auto* Gerald = localGerald;
-	if (Gerald && Gerald->getSprite()) {
-		AEGfxTextureUnload(Gerald->getSprite()); // unload sprite
+	auto* gerald = localGerald;
+	if (gerald && gerald->getSprite()) {
+		AEGfxTextureUnload(gerald->getSprite()); // unload sprite
 	}
 
 	AEGfxTextureUnload(indicator);

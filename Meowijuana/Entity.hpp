@@ -279,6 +279,7 @@ namespace Entity {
 		void draw() override;
 
 		void restartIdle();
+		void restartDialogue();
 		bool idleDone();
 		bool dialogueDone();
 

@@ -3,12 +3,21 @@
 #include "Entity.hpp"
 
 World::worldGrid grid;
+extern GameData gameData;
+
+namespace Death {
+	extern bool dead;
+	extern float fade;
+	extern int deathCounter;
+	extern float opacity;
+}
 
 namespace World {
 
 	bool dungeonTracker[3] = {false,false,false};
 	int checkNum = 0;
 	bool restart = false;
+	bool firstStartGame = true;
 
 	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;
@@ -644,5 +653,25 @@ namespace World {
 			tileMesh = nullptr;
 		}
 	}
+
+	void ResetAllGameState()
+	{
+		// Reset flags
+		World::restart = true;
+
+		// Reset inventory
+		gameData.inventory.clear();
+		gameData.selectedSlot = 0;
+
+		// Reset dungeon trackers
+		for (int i = 0; i < 3; i++)
+			World::dungeonTracker[i] = false;
+
+		// Reset death state
+		Death::dead = false;
+		Death::opacity = 0.0f;
+		Death::deathCounter = 0;
+	}
+
 }
 

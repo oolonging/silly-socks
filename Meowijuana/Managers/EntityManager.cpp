@@ -73,13 +73,13 @@ namespace EntityManager {
 		// Initialize NPCs
 		auto* prasanna = EntityManager::create<Entity::NPC>("prasanna", 200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 		auto* soroor = EntityManager::create<Entity::NPC>("soroor", 400.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
-		auto* gerald = EntityManager::create<Entity::NPC>("gerald", 000.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
+		auto* gerald = EntityManager::create<Entity::NPC>("gerald", -50.0f, 100.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 		auto* smelly = EntityManager::create<Entity::NPC>("smelly", -500.0f, 50.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 
 		// Set NPC sprites
 		prasanna->setSprite(AEGfxTextureLoad("Assets/Images/Entities/prasanna.png"));
-		gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/gerald.png"));
-		soroor->setSprite(AEGfxTextureLoad("Assets/Images/Entities/soroor.png"));
+		gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png"));
+		soroor->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
 
 		// Set prasanna dialog
