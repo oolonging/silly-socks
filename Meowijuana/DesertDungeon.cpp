@@ -76,11 +76,13 @@ void DesertDungeon_Initialize() {
 		// Give the boss a weapon
 		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
 		
+		// Make Teleporter Deactivated
+		grid.replacingID(World::TeleporterRed, World::Teleporter3);
 	}
 
 
 	if (!desertDungeonState.visited) {
-
+		
 	}
 
 	// Initialize local player
@@ -104,7 +106,7 @@ void DesertDungeon_Update() {
 	if (EntityManager::allEnemiesDead()) {
 		World::dungeonTracker[2] = true;
 		desertDungeonState.cleared = true;
-		// teleporter replacing action
+		grid.replacingID(World::Teleporter3, World::TeleporterRed);
 	}
 
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {

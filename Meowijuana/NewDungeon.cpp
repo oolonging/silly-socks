@@ -64,7 +64,7 @@ void NewDungeon_Initialize() {
 		localPlayer->setAtkSpd(pWeapon->getAttackSpeed());
 	}
 
-	if (newDungeonState.visited || newDungeonState.cleared) {
+	if (!newDungeonState.cleared) {
 		// disable the way back.
 		grid.replacingID(World::TeleporterGreen, World::Teleporter2);
 	}
