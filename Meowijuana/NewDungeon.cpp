@@ -98,29 +98,6 @@ void NewDungeon_Update() {
 
 	EntityManager::updateEnemies(*localPlayer);
 
-
-	if (localPlayer->getHp() <= 0) {
-		localPlayer->setHp(0);
-
-		Death::dead = true;
-		localPlayer->isDead = true;
-
-		if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
-
-		if (Death::opacity >= 255.0f) {
-			Death::opacity = 255.0f;
-			localPlayer->isDead = false;
-			Death::deathCounter++;
-			next = GS_RESPAWN;
-		}
-
-		if (Death::deathCounter >= 3)
-		{
-			next = GS_LOSE;
-		}
-	}
-	
-
 	if (AEInputCheckTriggered(AEVK_0))
 	{
 		World::dungeonTracker[1] = true;
@@ -149,7 +126,6 @@ void NewDungeon_Draw() {
 	World::drawTile(activeGridTile, grid);
 	World::drawTile({ 0,0 }, grid);
 
-	EntityManager::draw("player");
 	EntityManager::drawEnemies(*localPlayer, grid, false);
 
 	if (showInventory)
@@ -163,15 +139,20 @@ void NewDungeon_Draw() {
 		static Animations::Indicator teleporterIndicator;
 		World::drawIndicatorsOnTileType(grid, World::TeleporterGreen, teleporterIndicator);
 	}
+
+	// draw the local player last
+	localPlayer->draw();
 }
 
 void NewDungeon_Free() {
-	grid.unloadMapTexture();
-	World::freeGrid();
+	//grid.unloadMapTexture();
+	//World::freeGrid();
 
 	inv.saveInventory(localPlayer, gameData);
 	inv.clear(localPlayer);
 	inv.setPlayer(nullptr);
+
+	EntityManager::clear();
 }
 
 void NewDungeon_Unload() {

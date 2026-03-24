@@ -17,15 +17,16 @@ extern World::worldGrid grid;
 std::pair<int, int> desertGridTile;
 AEGfxTexture* desertDungeon = nullptr;
 
-
 struct DesertDungeonState {
 	bool visited = false;
 	bool cleared = false;
 
 	// Entities
-	Entity::Player* localPlayer;
 
 	Inventory::Weapon* pWeapon;
+
+	// local player
+	Entity::Player* localPlayer = nullptr;
 
 
 };
@@ -53,19 +54,19 @@ void DesertDungeon_Load() {
 }
 
 void DesertDungeon_Initialize() {
+	Settings::currentScreen = "DesertDungeon.cpp";
 
 	EntityManager::init();
-	Settings::currentScreen = "TutorialDungeon.cpp";
 
 	/*grid.initGrid(AEGfxGetWindowWidth(), AEGfxGetWindowHeight(), 50);
 	grid.initMapTexture();
 	grid.initTextureBox();*/
 
 	EntityManager::init();
-	auto* tutPlayer = EntityManager::getPlayer("player");
+	desertDungeonState.localPlayer = EntityManager::getPlayer("player");
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
-	inv.loadInventory(tutPlayer, gameData);
+	inv.loadInventory(desertDungeonState.localPlayer, gameData);
 	
 	// Initialize the boss if the room is not cleared yet
 	if (!desertDungeonState.cleared) {
@@ -112,26 +113,6 @@ void DesertDungeon_Update() {
 		player->resetAttackTimer(); // reset once after hitting all enemies
 	}
 
-	if (player->getHp() <= 0) {
-		player->setHp(0);
-
-		Death::dead = true;
-		player->isDead = true;
-
-		if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
-
-		if (Death::opacity >= 255.0f) {
-			Death::opacity = 255.0f;
-			player->isDead = false;
-			Death::deathCounter++;
-			next = GS_RESPAWN;
-		}
-
-		if (Death::deathCounter >= 3)
-		{
-			next = GS_LOSE;
-		}
-	}
 
 	if (EntityManager::allEnemiesDead())
 	{
@@ -181,13 +162,12 @@ void DesertDungeon_Draw() {
 	// draws the boss enemy
 	EntityManager::drawEnemies(*(desertDungeonState.localPlayer), grid, false);
 
-	// Draw the player entity
-	EntityManager::draw("player");
 	
 	if (showInventory)
 	{
 		inv.draw();
 	}
+
 
 	// Draw indicator over teleporter when dungeon is cleared
 	if (World::dungeonTracker[2])
@@ -196,17 +176,19 @@ void DesertDungeon_Draw() {
 		World::drawIndicatorsOnTileType(grid, World::TeleporterRed, teleporterIndicator);
 	}
 
+	// Draw the player entity
+	desertDungeonState.localPlayer->draw();
 }
 
 void DesertDungeon_Free() {
-	auto* player = EntityManager::getPlayer("player");
-	grid.unloadMapTexture();
-	World::freeGrid();
+	//grid.unloadMapTexture();
+	//World::freeGrid();
 
-
-	inv.saveInventory(player, gameData);
-	inv.clear(player);
+	inv.saveInventory(desertDungeonState.localPlayer, gameData);
+	inv.clear(desertDungeonState.localPlayer);
 	inv.setPlayer(nullptr);
+
+	EntityManager::clear();
 }
 
 void DesertDungeon_Unload() {

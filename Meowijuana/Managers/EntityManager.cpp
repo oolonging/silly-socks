@@ -190,10 +190,10 @@ namespace EntityManager {
 		SpriteManager::clear();
 
 		// clear out the boss texture
-		if (bossSprite != nullptr) {
-			AEGfxTextureUnload(bossSprite);
-			bossSprite = nullptr;
-		}
+		//if (bossSprite != nullptr) {
+		//	AEGfxTextureUnload(bossSprite);
+		//	bossSprite = nullptr;
+		//}
 	}
 }
 

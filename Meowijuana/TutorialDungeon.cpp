@@ -23,6 +23,8 @@ extern World::worldGrid grid;
 std::pair<int, int> tutActiveTile;
 int tutorialRoomIndex = 0;
 
+static Entity::Player* localPlayer = nullptr;
+
 static UI_Elements::PopupBox* tutPopup;
 
 //  TODO : CHARACTER DEATH, MAKE ROOMS MORE INTERESTING, ENTITY COLLISION WITH WALL, PARTICLES IF POSSIBLE, KNOCKBACK???????
@@ -84,15 +86,15 @@ void TutorialDungeon_Initialize() {
     grid.initTextureBox();*/
 
     EntityManager::init();
-    auto* tutPlayer = EntityManager::getPlayer("player");
+    localPlayer = EntityManager::getPlayer("player");
 
     inv.setPlayer(EntityManager::getPlayer("player"));
-    inv.loadInventory(tutPlayer, gameData);
+    inv.loadInventory(localPlayer, gameData);
 
     Inventory::Weapon* pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
     if (pWeapon) {
-        tutPlayer->setWeapon(pWeapon);
-        tutPlayer->setAtkSpd(pWeapon->getAttackSpeed());
+        localPlayer->setWeapon(pWeapon);
+        localPlayer->setAtkSpd(pWeapon->getAttackSpeed());
     }
 
     tutPopup = UIManager::create<UI_Elements::PopupBox>("tutPopup", 120.0f, -80.0f, 500.0f, 250.0f, "You have cleared the tutorial!", "You will be on your own now", "Please explore the dungeons and save the world!");
@@ -108,63 +110,38 @@ void TutorialDungeon_Initialize() {
 
 
 void TutorialDungeon_Update() {
-    auto* tutPlayer = EntityManager::getPlayer("player");
 
-    tutActiveTile = World::activeTile(tutPlayer->getX(), tutPlayer->getY(), grid);
+    tutActiveTile = World::activeTile(localPlayer->getX(), localPlayer->getY(), grid);
 
-    tutPlayer->update(grid);
-    tutPlayer->tickAttackTimer();
+    localPlayer->update(grid);
+    localPlayer->tickAttackTimer();
 
-    inv.update(tutPlayer);
+    inv.update(localPlayer);
 
-    EntityManager::updateEnemies(*tutPlayer);
+    EntityManager::updateEnemies(*localPlayer);
 
 
-    if (AEInputCheckTriggered(AEVK_LBUTTON) && tutPlayer->canAttack()) {
-        EntityManager::attackEnemies(*tutPlayer);
-        World::checkCarrotSwordConsume(inv, *tutPlayer);
-        tutPlayer->resetAttackTimer(); // reset once after hitting all enemies
+    if (AEInputCheckTriggered(AEVK_LBUTTON) && localPlayer->canAttack()) {
+        EntityManager::attackEnemies(*localPlayer);
+        World::checkCarrotSwordConsume(inv, *localPlayer);
+        localPlayer->resetAttackTimer(); // reset once after hitting all enemies
     }
 
     if (AEInputCheckTriggered(AEVK_E))
     {
-        World::useInventoryItem(grid, inv, *tutPlayer);
+        World::useInventoryItem(grid, inv, *localPlayer);
     }
 
     if (AEInputCheckTriggered(AEVK_F9))
     {
-        inv.giveItem(*tutPlayer, Inventory::ItemID::CARROT, 10);
-        inv.giveItem(*tutPlayer, Inventory::ItemID::CHERRY, 10);
+        inv.giveItem(*localPlayer, Inventory::ItemID::CARROT, 10);
+        inv.giveItem(*localPlayer, Inventory::ItemID::CHERRY, 10);
     }
 
     if (!tutorialRooms[tutorialRoomIndex].cleared && EntityManager::allEnemiesDead()) {
         tutorialRooms[tutorialRoomIndex].cleared = true;
     }
 
-    if (tutPlayer->getHp() <= 0) {
-        tutPlayer->setHp(0);
-
-        Death::dead = true;
-        tutPlayer->isDead = true;
-
-        if (Death::opacity < 255.0f) Death::opacity += 2.0f;;
-
-        if (Death::opacity >= 255.0f) {
-            Death::opacity = 255.0f;
-            tutPlayer->isDead = false;
-            Death::deathCounter++;
-
-            if (Death::deathCounter >= 3)
-            {
-                next = GS_LOSE;
-            }
-            else {
-                next = GS_RESPAWN;
-            }
-        }
-
-
-    }
 
     if (AEInputCheckTriggered(AEVK_F10))
     {
@@ -173,49 +150,48 @@ void TutorialDungeon_Update() {
 
     float halfHeight = AEGfxGetWindowHeight() * 0.5f;
     float halfWidth = AEGfxGetWindowWidth() * 0.5f;
-    float savedX = tutPlayer->getX();
-    float savedY = tutPlayer->getY();
+    float savedX = localPlayer->getX();
+    float savedY = localPlayer->getY();
 
     if (tutorialRooms[tutorialRoomIndex].cleared && EntityManager::allEnemiesDead()) {
 
-        if (tutPlayer->getY() >= halfHeight && tutorialRoomIndex < 3) {
+        if (localPlayer->getY() >= halfHeight && tutorialRoomIndex < 3) {
             tutorialRoomIndex++;
 
             LoadRoom(tutorialRoomIndex);
             //auto* tutPlayer = EntityManager::getPlayer("player");
-            tutPlayer->setPosition(savedX, -halfHeight + 10.0f);
+            localPlayer->setPosition(savedX, -halfHeight + 10.0f);
         }
 
-        else if (tutPlayer->getY() <= -halfHeight && tutorialRoomIndex > 0) {
+        else if (localPlayer->getY() <= -halfHeight && tutorialRoomIndex > 0) {
             tutorialRoomIndex--;
             LoadRoom(tutorialRoomIndex);
-            tutPlayer->setPosition(savedX, halfHeight - 10.0f);
+            localPlayer->setPosition(savedX, halfHeight - 10.0f);
         }
 
-        if (tutPlayer->getX() >= halfWidth && tutorialRoomIndex < 3) {
+        if (localPlayer->getX() >= halfWidth && tutorialRoomIndex < 3) {
             tutorialRoomIndex--;
             LoadRoom(tutorialRoomIndex);
-            tutPlayer->setPosition(-halfWidth + 10.0f, savedY);
+            localPlayer->setPosition(-halfWidth + 10.0f, savedY);
         }
 
-        else if (tutPlayer->getX() <= -halfWidth && tutorialRoomIndex > 0) {
+        else if (localPlayer->getX() <= -halfWidth && tutorialRoomIndex > 0) {
             tutorialRoomIndex++;
             LoadRoom(tutorialRoomIndex);
-            tutPlayer->setPosition(halfWidth - 10.0f, savedY);
+            localPlayer->setPosition(halfWidth - 10.0f, savedY);
         }
 
         if (tutorialRooms[3].cleared) {
             grid.replacingID(World::Teleporter1, World::TeleporterBlue);
             World::dungeonTracker[World::checkNum] = true;
             tutPopup->show();
-            World::standOnTile(next, *tutPlayer, grid, GS_FARM, World::TeleporterBlue);
+            World::standOnTile(next, *localPlayer, grid, GS_FARM, World::TeleporterBlue);
         }
     }
 }
 
 
 void TutorialDungeon_Draw() {
-    auto* tutPlayer = EntityManager::getPlayer("player");
     grid.drawTexture(grid);
     World::drawTile(tutActiveTile, grid);
 
@@ -228,35 +204,26 @@ void TutorialDungeon_Draw() {
     }
 
     if(Settings::gDebugMode)
-    circle(tutPlayer->getX(), tutPlayer->getY(), attackRange, Shapes::CENTER);
+    circle(localPlayer->getX(), localPlayer->getY(), attackRange, Shapes::CENTER);
 
-    tutPlayer->draw();
 
-    EntityManager::drawEnemies(*tutPlayer, grid, isPaused);
-
-    if (Death::dead) {
-        AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-        Color::fill(255.0f, 255.0f, 255.0f, Death::opacity);
-        Shapes::rect(0, 0, 1600, 900, Shapes::CENTER);
-
-    }
+    EntityManager::drawEnemies(*localPlayer, grid, isPaused);
 
     if (tutorialRooms[3].cleared)
     {
         World::drawIndicatorsOnTileType(grid, World::TeleporterBlue, point);
     }
+
+    // Draw the player last
+    localPlayer->draw();
 }
 
 void TutorialDungeon_Free() {
     //grid.unloadMapTexture();
     //World::freeGrid();
     EntityManager::clearEnemies();
-    Death::dead = false;
-    Death::opacity = 0.0f;
 
-    auto* tutPlayer = EntityManager::getPlayer("player");
-
-    inv.saveInventory(tutPlayer, gameData);
+    inv.saveInventory(localPlayer, gameData);
     inv.setPlayer(nullptr);
     grid.toggleWall();
 

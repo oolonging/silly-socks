@@ -5,6 +5,8 @@
 #include "Managers/ParticleManager.hpp"
 #include "AudioManager.hpp"
 #include "Settings.hpp"
+#include "TutorialDungeon.hpp"
+#include "GameStateManager.hpp"
 
 namespace Entity {
 
@@ -559,6 +561,46 @@ namespace Entity {
 		if (hp < maxHp) {
 			drawHealthBar();
 		}
+
+		// death things
+				// function that handles death
+		if (this->hp <= 0.0f) {
+			this->hp = 0.0f;
+
+			// set vars
+			Death::dead = true;
+			this->isDead = true;
+		}
+
+		if (Death::dead) {
+			if (Death::opacity < 255.0f) Death::opacity += 2.0f;
+			else {
+				Death::opacity = 255.0f;
+
+				this->isDead = false;
+				Death::deathCounter++;
+
+				// reset vars
+				Death::dead = false;
+				Death::opacity = 0.0f;
+
+				if (Death::deathCounter >= 3) {
+					next = GS_LOSE;
+				}
+				else {
+					next = GS_RESPAWN;
+				}
+			}
+		}
+
+		// Does the opacity thing
+		if (Death::dead) {
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			Color::fill(255.0f, 255.0f, 255.0f, Death::opacity);
+			Shapes::rect(0, 0, 1600, 900, Shapes::CENTER);
+
+		}
+
 	}
 
 
