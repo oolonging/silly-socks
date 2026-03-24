@@ -229,6 +229,10 @@ void RespawnArea_Free() {
 
 void RespawnArea_Unload() {
 
+	AEGfxTextureUnload(indicatorRespawn);
+	indicatorRespawn = nullptr;
+
+
 	auto* soroor = EntityManager::getNPC("soroor");
 	if (soroor && soroor->getSprite()) {
 		AEGfxTextureUnload(soroor->getSprite());

@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "Graphics.hpp"
 
+#include "Entity.hpp" 
 #include "Settings.hpp"
 
 namespace Color {
@@ -735,3 +736,24 @@ namespace Animations {
 
 }
 
+namespace Clamping {
+
+	void clamper(Entity::Player* localPlayer) {
+		if (!localPlayer) return;
+
+		float halfW = AEGfxGetWindowWidth() * 0.5f;
+		float halfH = AEGfxGetWindowHeight() * 0.5f;
+
+		float x = localPlayer->getX();
+		float y = localPlayer->getY();
+
+		if (x > halfW) x = halfW;
+		if (x < -halfW) x = -halfW;
+
+		if (y > halfH) y = halfH;
+		if (y < -halfH) y = -halfH;
+
+		localPlayer->setPosition(x, y);
+	}
+
+}

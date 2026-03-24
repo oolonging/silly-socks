@@ -131,4 +131,13 @@ namespace Animations {
 	void drawCoolerIndicator(float x, float y, AEGfxTexture* image);
 }
 
+
+namespace Entity {
+    class Player;
+}
+
+namespace Clamping {
+	void clamper(Entity::Player* localPlayer);
+}
+
 #endif // GRAPHICS_HPP

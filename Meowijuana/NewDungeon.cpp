@@ -118,6 +118,9 @@ void NewDungeon_Update() {
 
 
 	World::standOnTile(next, *localPlayer, grid, GS_FARM, World::TeleporterGreen);
+
+
+	Clamping::clamper(localPlayer);
 }
 
 void NewDungeon_Draw() {

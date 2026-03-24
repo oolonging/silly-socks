@@ -153,6 +153,8 @@ void DesertDungeon_Update() {
 	EntityManager::updateEnemies(*(desertDungeonState.localPlayer));
 
 	World::standOnTile(next, *player, grid, GS_FARM, World::TeleporterRed);
+
+	Clamping::clamper(player);
 }
 
 void DesertDungeon_Draw() {
