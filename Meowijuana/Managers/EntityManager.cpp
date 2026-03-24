@@ -121,6 +121,7 @@ namespace EntityManager {
 			
 			// TODO: streamline
 			if (difficultyMult >= 3.0f) {
+				newEnemy.clean(); // clears the old bat texture that is loaded
 				newEnemy.setSprite(bossSprite);
 			}
 
@@ -177,7 +178,15 @@ namespace EntityManager {
 
 	void clear() {
 		// TODO: one of the memory leaks is here, because the vector isnt cleared of the pointed textures
-		entities.clear();
+		// UPDATE: Enemies have been taken care of, all tahts left is the player and NPCs
+
+		// clear all enemies textures (dead or alive)
+		for (auto& enemy : enemies) {
+			enemy->clean();
+		}
+
+		entities.clear();	// Clear out the vector
+
 		SpriteManager::clear();
 
 		// clear out the boss texture

@@ -108,6 +108,14 @@ namespace Entity {
 			);
 		}
 
+		// memory cleanup on a per-entity basis
+		void clean(void) {
+			if (this->sprite != nullptr) {
+				AEGfxTextureUnload(this->sprite);
+				this->sprite = nullptr;
+			}
+		}
+
 		// Attack
 		void setAtkSpd(float spd);
 		void setAtkCD(float CD);
