@@ -94,10 +94,8 @@ void Xuan_Initialize() {
 
 		"@",
 
-		"Nice! Well, while you didn't sustain damage this time, if you ever get hurt, press E while hovering over a cherry in your hotbar to restore health.",
-		"To get to the next floor, just head to that teleporter over there to continue. If you ever faint, you'll get sent straight back here.",
-		"You can continue in the dungeons when you feel like it! I'll cart you out if something bad happens.",
-		"See you around!",
+		"Nice! To gain access to the next floor, just head to that teleporter over there and clear out the hallways to continue. If you ever faint, you'll get sent straight back here.",
+		"Don't worry. I'll cart you out if something bad happens. See you around!",
 
 		"@"
 	});
@@ -277,12 +275,7 @@ void Xuan_Update() {
 
 	case TutorialScreen::TutorialState::SMELLY_PART2:
 
-		if (TutorialScreen::deadDummy && AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
-			player->getX(), player->getY(),
-			smelly->getX(), smelly->getY(),
-			75.0f,
-			smelly->getWidth(), smelly->getHeight()
-		)) {
+		if (TutorialScreen::deadDummy) {
 			TutorialScreen::activeSpeaker = smelly;
 			smelly->resumeDialogue(TutorialScreen::dialogueBox);
 			TutorialScreen::deadDummy = false; // it gets revived for my code logic ig??
