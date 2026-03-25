@@ -54,7 +54,7 @@ void NewDungeon_Initialize() {
 	inv.loadInventory(localPlayer, gameData);
 
 	// spawn 3 enemies
-	if(!newDungeonState.visited)
+	if(!newDungeonState.cleared)
 	EntityManager::spawnEnemies(2, 400.0f, 200.0f, 1.5f);
 
 	// give the player a weapon
