@@ -381,7 +381,7 @@ namespace SpriteManager {
 	}
 	// --- draw to here ---
 
-
+	// unload spritesheet
 	void unload(const std::string& name) {
 		auto it = spriteSheets.find(name);
 		if (it != spriteSheets.end()) {

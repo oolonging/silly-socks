@@ -55,6 +55,8 @@ namespace EntityManager {
 		/*movementSpritesheet = SpriteManager::loadSpriteSheet("playerSpritesheet", "Assets/Images/SpriteSheets/player_spritesheet.png", 160.0f, 160.0f, 40.0f, 40.0f);*/
 
 		// Initialize player
+
+		//TODO: source of one of the memory leaks since theres no internal check to see if the player already exists, so it makes a new uniqueptr for "player"
 		EntityManager::create<Entity::Player>("player", 0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 5.0f, 5.0f);
 
 		auto* player = EntityManager::getPlayer("player");
@@ -188,6 +190,9 @@ namespace EntityManager {
 		entities.clear();	// Clear out the vector
 
 		SpriteManager::clear();
+
+		// clear the spritesheet "playerAttackSpritesheet"
+		SpriteManager::unload("playerAttackSpritesheet");
 
 		// clear out the boss texture
 		//if (bossSprite != nullptr) {
