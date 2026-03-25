@@ -41,18 +41,18 @@ int creditsCount = sizeof(credits) / sizeof(credits[0]);
 
 void Credits_Load() {
 
-	creditsLogo = AEGfxTextureLoad("Assets/Images/Logos/Digipen_Red.png");
+	creditsLogo = AEGfxTextureLoad("Assets/Images/Logos/Digipen_White.png");
 
 	AEGfxMeshStart();
 	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f
+		-0.5f, -0.5f, 0x00FFFFFF, 0.0f, 1.0f,
+		0.5f, -0.5f, 0x00FFFFFF, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0x00FFFFFF, 0.0f, 0.0f
 	);
 	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f
+		0.5f, -0.5f, 0x00FFFFFF, 1.0f, 1.0f,
+		0.5f, 0.5f, 0x00FFFFFF, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0x00FFFFFF, 0.0f, 0.0f
 	);
 	creditsMesh = AEGfxMeshEnd();
 
@@ -82,16 +82,18 @@ void Credits_Update() {
 
 void Credits_Draw() {
 
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+
 	//draw logo
 	if (creditsLogo) {
-		float imageWidth = 600.0f;
+		float imageWidth = 700.0f;
 		float imageHeight = 200.0f;
 		float imageY = scrollY + (creditsCount * 100.0f) + 150.0f;
 
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxTextureSet(creditsLogo, 0, 0);
 		AEGfxSetTransparency(1.0f);
-		AEGfxSetBlendColor(0, 0, 0, 0);
+		AEGfxSetBlendColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		AEMtx33 transform;
 		AEMtx33Scale(&transform, imageWidth, imageHeight);
