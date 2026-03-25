@@ -127,6 +127,7 @@ void TutorialDungeon_Update() {
         localPlayer->resetAttackTimer(); // reset once after hitting all enemies
     }
 
+    // use item upon pressing E
     if (AEInputCheckTriggered(AEVK_E))
     {
         World::useInventoryItem(grid, inv, *localPlayer);

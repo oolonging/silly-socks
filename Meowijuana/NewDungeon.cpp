@@ -122,6 +122,12 @@ void NewDungeon_Update() {
 		World::checkNum = 1;
 	}
 
+	// use item upon pressing E
+	if (AEInputCheckTriggered(AEVK_E))
+	{
+		World::useInventoryItem(grid, inv, *localPlayer);
+	}
+
 
 	World::standOnTile(next, *localPlayer, grid, GS_FARM, World::TeleporterGreen);
 
