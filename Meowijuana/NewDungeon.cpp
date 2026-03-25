@@ -93,7 +93,6 @@ void NewDungeon_Update() {
 		World::checkCarrotSwordConsume(inv, *localPlayer);
 		localPlayer->resetAttackTimer(); // reset once after hitting all enemies
 	}
-
 	if (AEInputCheckTriggered(AEVK_E))
 	{
 		World::useInventoryItem(grid, inv, *localPlayer);
@@ -120,12 +119,6 @@ void NewDungeon_Update() {
 	{
 		World::dungeonTracker[1] = true;
 		World::checkNum = 1;
-	}
-
-	// use item upon pressing E
-	if (AEInputCheckTriggered(AEVK_E))
-	{
-		World::useInventoryItem(grid, inv, *localPlayer);
 	}
 
 
