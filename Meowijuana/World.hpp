@@ -111,6 +111,7 @@ namespace World
 		void unloadMapTexture();
 		void replacingID(int oldID, int newID);
 		void growPlants(World::worldGrid& Griddy);
+		bool findTile(World::worldGrid& Griddy, int findID);
 	};
 
 	// --- Tiler Helper functions --- //

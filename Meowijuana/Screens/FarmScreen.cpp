@@ -30,7 +30,6 @@ extern World::worldGrid grid;
 bool onGrid = false;
 
 bool firstStartGame = true;
-static bool shownHarvestPopup = false;
 static bool restarted = false;
 
 float lastposX = 0;
@@ -199,9 +198,9 @@ void Farm_Initialize() {
 		});
 
 	//show harvest popup only on second visit
-	if (World::dungeonTracker[0] && !shownHarvestPopup) {
-		harvestPopup->show();
-		shownHarvestPopup = true;
+	// Change this later to find for crop finished tile instead
+	if (World::dungeonTracker[0] && grid.findTile(grid, World::CarrotCropTile)) {
+		harvestPopup->show();;
 	}
 
 	else {

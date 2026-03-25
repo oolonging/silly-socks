@@ -432,6 +432,22 @@ namespace World {
 		}
 	}
 
+	bool worldGrid::findTile(World::worldGrid& Griddy, int findID)
+	{
+		// Basically using global bool array to update based on level clear
+		for (int row = 0; row < Griddy.getHeight(); row++)
+		{
+			for (int col = 0; col < Griddy.getWidth(); col++)
+			{
+				int& tileID = Griddy.pointerToTile(col, row);
+				if (tileID == findID) return true;
+
+			}
+		}
+		
+		return false;	
+	}
+
 	// Returns true if the interaction succeeded
 	bool useItemOnTile(std::pair<int, int> tile, World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user)
 	{
