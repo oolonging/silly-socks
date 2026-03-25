@@ -16,6 +16,7 @@ extern GameData gameData;
 extern World::worldGrid grid;
 std::pair<int, int> desertGridTile;
 AEGfxTexture* desertDungeon = nullptr;
+static bool restarted = false;
 
 struct DesertDungeonState {
 	bool visited = false;
@@ -48,9 +49,6 @@ void DesertDungeon_Load() {
 	desertDungeon = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Desert.png");
 	grid.fillGrid("Assets/LevelMaps/NewDungeons/BackgroundCollisions/Desert.txt");
 
-
-
-
 }
 
 void DesertDungeon_Initialize() {
@@ -67,6 +65,13 @@ void DesertDungeon_Initialize() {
 
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(desertDungeonState.localPlayer, gameData);
+
+	// Temp restart after every win or lose
+	if (World::restart && !restarted)
+	{
+		desertDungeonState.visited = false;
+		desertDungeonState.cleared = false;
+	}
 	
 	// Initialize the boss if the room is not cleared yet
 	if (!desertDungeonState.cleared) {

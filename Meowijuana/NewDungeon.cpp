@@ -19,6 +19,7 @@ AEGfxTexture* bgDungeon = nullptr;
 
 static Entity::Player* localPlayer;
 static Inventory::Weapon* pWeapon;
+static bool restarted = false;
 
 struct NewDungeonState {
 	bool visited = false;
@@ -78,6 +79,12 @@ void NewDungeon_Update() {
 	localPlayer->tickAttackTimer();
 	inv.update(localPlayer);
 
+	// Temp restart after every win or lose
+	if (World::restart && !restarted)
+	{
+		newDungeonState.visited = false;
+		newDungeonState.cleared = false;
+	}
 
 	// sets the room as cleared when all the enemies are dead
 	if (EntityManager::allEnemiesDead()) {

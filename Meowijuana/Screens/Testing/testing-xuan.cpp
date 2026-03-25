@@ -25,7 +25,7 @@ std::pair<int, int> activeTile2;
 static Animations::Indicator smellind;
 static Animations::Indicator dummind;
 static bool hasCarrotSword = false;
-
+static bool restarted = false;
 
 namespace TutorialScreen {
 
@@ -84,7 +84,15 @@ void Xuan_Initialize() {
 	auto* smelly = EntityManager::getNPC("smelly");
 
 	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/smelly.png")); // plus 1 poorly scaled placeholder becauase i dont want my lecturers staring at me while i work
-
+	
+	// Restart everything after clearing the game
+	if (World::restart && !restarted)
+	{
+		smelly->restartDialogue();
+		smelly->restartIdle();
+		TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_TALK;
+		restarted = true;
+	}
 
 	smelly->setDialogLines({
 		"Welcome to the dungeons! There's 3 levels to a dungeon, each with increasing levels of difficulty. We're on the first floor, so it's relatively safe for now.",

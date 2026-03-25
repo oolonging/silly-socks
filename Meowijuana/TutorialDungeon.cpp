@@ -24,7 +24,7 @@ std::pair<int, int> tutActiveTile;
 int tutorialRoomIndex = 0;
 
 static Entity::Player* localPlayer = nullptr;
-
+static bool restarted = false;
 static UI_Elements::PopupBox* tutPopup;
 
 //  TODO : CHARACTER DEATH, MAKE ROOMS MORE INTERESTING, ENTITY COLLISION WITH WALL, PARTICLES IF POSSIBLE, KNOCKBACK???????
@@ -90,6 +90,15 @@ void TutorialDungeon_Initialize() {
 
     inv.setPlayer(EntityManager::getPlayer("player"));
     inv.loadInventory(localPlayer, gameData);
+
+    if (World::restart && !restarted)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            tutorialRooms[i].cleared = false;
+            tutorialRooms[i].visited = false;
+        }
+    }
 
     Inventory::Weapon* pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
     if (pWeapon) {

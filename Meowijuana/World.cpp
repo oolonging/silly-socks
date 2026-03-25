@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "World.hpp"
 #include "Entity.hpp"
+#include "DesertDungeon.hpp"
 
 World::worldGrid grid;
 extern GameData gameData;
@@ -17,7 +18,7 @@ namespace World {
 	bool dungeonTracker[3] = {false,false,false};
 	int checkNum = 0;
 	bool restart = false;
-	bool firstStartGame = true;
+	bool firstStartGame = false;
 
 	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;
@@ -26,6 +27,8 @@ namespace World {
 	worldGrid::worldGrid() : gridWidth(0), gridHeight(0), tileSize(0), offsetX(0.0f), offsetY(0.0f), column(0), row(0) {}
 
 	worldGrid::~worldGrid() {
+		unloadMapTexture();
+		freeGrid();
 	}
 
 	// Initialising all the map textures
@@ -58,6 +61,7 @@ namespace World {
 
 
 	void worldGrid::initMapTextureSprite(const std::string& filename) {
+
 		std::ifstream file(filename);
 		if (!file.is_open()) { return; }
 
@@ -139,6 +143,11 @@ namespace World {
 		{
 			AEGfxMeshFree(gridMesh);
 			gridMesh = nullptr;
+		}
+
+		if (tileMesh) {
+			AEGfxMeshFree(tileMesh);
+			tileMesh = nullptr;
 		}
 
 		AEGfxMeshStart();
@@ -671,7 +680,8 @@ namespace World {
 		Death::dead = false;
 		Death::opacity = 0.0f;
 		Death::deathCounter = 0;
-	}
 
+	}
+	
 }
 

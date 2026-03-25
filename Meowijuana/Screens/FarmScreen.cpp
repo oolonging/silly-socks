@@ -31,6 +31,7 @@ bool onGrid = false;
 
 bool firstStartGame = true;
 static bool shownHarvestPopup = false;
+static bool restarted = false;
 
 float lastposX = 0;
 float lastposY = 0;
@@ -86,13 +87,14 @@ void Farm_Initialize() {
 		next = GS_WIN;
 	}
 
-	// Restart everything after clearing the game
-	if (World::restart)
+	// Restart everything after clearing the game 
+	if (World::restart && !restarted)
 	{
 		gerald->restartDialogue();
 		gerald->restartIdle();
 		firstStartGame = true;
 		FarmNPC::state = FarmNPC::TutorialState::GER_TALK;
+		restarted = true;
 	}
 
 	player->setPosition(-800.0f, 50.0f);
@@ -197,10 +199,11 @@ void Farm_Initialize() {
 		});
 
 	//show harvest popup only on second visit
-	if (!firstStartGame && !shownHarvestPopup) {
+	if (World::dungeonTracker[0] && !shownHarvestPopup) {
 		harvestPopup->show();
 		shownHarvestPopup = true;
 	}
+
 	else {
 		harvestPopup->hide();
 	}
