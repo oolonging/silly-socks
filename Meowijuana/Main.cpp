@@ -127,6 +127,11 @@ void ShutdownSystems(void) {
 	Text::exit();
 	Input::exit();
 	AudioManager::audio.exit();
+
+	// clear out the fonts that went unloaded
+	Text::destroyFont("default");
+	Text::destroyFont("comicsans");
+	Text::destroyFont("impact");
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
