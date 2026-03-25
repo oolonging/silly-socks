@@ -109,10 +109,16 @@ void DesertDungeon_Update() {
 		grid.replacingID(World::Teleporter3, World::TeleporterRed);
 	}
 
+	// Attacking and using of cherry 
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && player->canAttack()) {
 		EntityManager::attackEnemies(*player);
 		World::checkCarrotSwordConsume(inv, *player);
 		player->resetAttackTimer(); // reset once after hitting all enemies
+	}
+
+	if (AEInputCheckTriggered(AEVK_E))
+	{
+		World::useInventoryItem(grid, inv, *player);
 	}
 
 

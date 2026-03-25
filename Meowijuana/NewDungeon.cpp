@@ -87,10 +87,16 @@ void NewDungeon_Update() {
 	}
 
 
+	// Attacking and using of cherry 
 	if (AEInputCheckTriggered(AEVK_LBUTTON) && localPlayer->canAttack()) {
 		EntityManager::attackEnemies(*localPlayer);
 		World::checkCarrotSwordConsume(inv, *localPlayer);
 		localPlayer->resetAttackTimer(); // reset once after hitting all enemies
+	}
+
+	if (AEInputCheckTriggered(AEVK_E))
+	{
+		World::useInventoryItem(grid, inv, *localPlayer);
 	}
 
 	grid.replacingID(World::Teleporter1, World::TeleporterBlue);
