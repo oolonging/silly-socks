@@ -11,6 +11,9 @@ float scrollSpeed;
 
 s32 mouseWheelDelta{};
 
+AEGfxTexture* creditsLogo = nullptr;
+AEGfxVertexList* creditsMesh = nullptr;
+
 const char* credits[] = {
 	"Thank you for playing!",
 	" ",
@@ -19,40 +22,88 @@ const char* credits[] = {
 	"Enchanted Valley | ondrosik",
 	"Audio",
 	" ",
+	"Tommy",
+	"Soroor",
+	"Gerald",
+	"Instructors",
+	" ",
+	"Claude Comair",
+	"President",
+	" ",
 	"Yu Xuan",
 	"Saahil",
 	"Jun",
 	"Andrea",
-	"Silly Socks",
+	"Silly Socks Team Members",
 };
 
 int creditsCount = sizeof(credits) / sizeof(credits[0]);
 
 void Credits_Load() {
+
+	creditsLogo = AEGfxTextureLoad("Assets/Images/Logos/Digipen_Red.png");
+
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f
+	);
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f
+	);
+	creditsMesh = AEGfxMeshEnd();
+
 }
 
 void Credits_Initialize() {
 	Settings::currentScreen = "CreditsScreen.cpp";
 
-	scrollY = -(AEGfxGetWindowHeight() * 0.5f) - (creditsCount * 100.0f);
+	scrollY = -(AEGfxGetWindowHeight() * 0.5f) - (creditsCount * 100.0f) - 300.0f;
 	scrollSpeed = 100.0f;
 }
 
 void Credits_Update() {
+
 	//move upward
 	scrollY += scrollSpeed * static_cast<float>(AEFrameRateControllerGetFrameTime());
 
-	// if the mouse wheel is being scrolled, change the speed
+	//if the mouse wheel is being scrolled, change the speed
 	if (mouseWheelDelta > 0) scrollSpeed = -400.0f;
 	if (mouseWheelDelta < 0) scrollSpeed = 400.0f;
 	if (mouseWheelDelta == 0) scrollSpeed = 100.0f;
 
-	// get mousewheel delta
+	//get mousewheel delta
 	AEInputMouseWheelDelta(&mouseWheelDelta);
 
 }
 
 void Credits_Draw() {
+
+	//draw logo
+	if (creditsLogo) {
+		float imageWidth = 600.0f;
+		float imageHeight = 200.0f;
+		float imageY = scrollY + (creditsCount * 100.0f) + 150.0f;
+
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxTextureSet(creditsLogo, 0, 0);
+		AEGfxSetTransparency(1.0f);
+		AEGfxSetBlendColor(0, 0, 0, 0);
+
+		AEMtx33 transform;
+		AEMtx33Scale(&transform, imageWidth, imageHeight);
+		AEMtx33TransApply(&transform, &transform, 0, imageY);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(creditsMesh, AE_GFX_MDM_TRIANGLES);
+
+		// Restore color mode for text
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		Color::textFill(255, 255, 255);
+	}
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	Color::textFill(255, 255, 255);
@@ -71,8 +122,17 @@ void Credits_Draw() {
 	}
 }
 
-// No assets to clear out yet. TODO: potentially add some images
-void Credits_Free() {}
+void Credits_Free() {
+	if (creditsLogo) {
+		AEGfxTextureUnload(creditsLogo);
+		creditsLogo = nullptr;
+	}
+	if (creditsMesh) {
+		AEGfxMeshFree(creditsMesh);
+		creditsMesh = nullptr;
+	}
+}
+
 void Credits_Unload() {}
 
 
