@@ -64,6 +64,8 @@ namespace UI_Elements {
         Color::fill(style.primaryColor);
         Shapes::rect(this->x, this->y, this->width, this->height, drawMode);
 
+        textStyle.fontSize = 15.0f;
+
         // title bar
         float titleBarHeight = this->height * 0.22f;
         float titleBarY = centerY + this->height * 0.5f - titleBarHeight * 0.5f;
@@ -80,7 +82,7 @@ namespace UI_Elements {
         Color::textFill(textStyle.primaryColor);
         Text::textSize(this->textStyle.fontSize);
         Text::text(message, centerX, messageY, Text::CENTER_H, Text::CENTER_V);
-        Text::text(message2, centerX, messageY - 20.0f, Text::CENTER_H, Text::CENTER_V);
+        Text::text(message2, centerX, messageY - 30.0f, Text::CENTER_H, Text::CENTER_V);
 
         // draw button
         dismissButton.draw();

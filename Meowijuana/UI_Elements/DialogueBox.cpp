@@ -21,7 +21,7 @@ namespace UI_Elements {
 		// Text style for dialogue box
 		textStyle.primaryColor = Color::Preset::Black;
 		textStyle.secondaryColor = Color::Preset::Blue;
-		textStyle.fontSize = 10;
+		textStyle.fontSize = 15;
 		textStyle.fontName = "default";
 	}
 
@@ -195,7 +195,7 @@ namespace UI_Elements {
 		std::vector<std::string> wrappedLines = wrapText(message, textAreaWidth);
 
 		Color::textFill(0, 0, 0, 255); // Black text
-		float lineHeight = 25.0f; // Adjust based on your font size
+		float lineHeight = 30.0f; // Adjust based on your font size
 
 		Color::textFill(this->textStyle.primaryColor);
 		Text::textSize(this->textStyle.fontSize);

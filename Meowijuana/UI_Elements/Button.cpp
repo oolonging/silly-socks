@@ -49,6 +49,7 @@ namespace UI_Elements {
 
 		// set font
 		Text::setFont(this->textStyle.fontName);
+		Text::textSize(17.0f);
 
 		// Draw the label
 		if (drawMode == Shapes::CORNER) {
@@ -65,11 +66,6 @@ namespace UI_Elements {
 
 		// Debug draw test
 		Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
-	}
-
-	//set font size of button
-	void Button::setFontSize(float size) {
-		this->textStyle.fontSize = size;
 	}
 
 	// Ctors

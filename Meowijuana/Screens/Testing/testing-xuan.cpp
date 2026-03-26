@@ -95,15 +95,19 @@ void Xuan_Initialize() {
 	}
 
 	smelly->setDialogLines({
-		"Welcome to the dungeons! There's 3 levels to a dungeon, each with increasing levels of difficulty. We're on the first floor, so it's relatively safe for now.",
-		"You'll need to learn how to defend yourself. Here! I've taken the liberty to pass you a [CARROT SWORD]. I'll walk you through this floor, and then you'll be on your own for the next few.",
-		"First off, see that [DUMMY] over there? It's supposed to represent enemies.\n This one here won't fight back, but if you encounter real ones in the dungeon, they'll attack on sight.",
-		"Equip your weapon and use your [LEFT MOUSE BUTTON] to attack! Go give it a try.",
+		"Welcome to the dungeons! There's 3 levels to a dungeon,\neach with increasing levels of difficulty.",
+		"We're on the first floor, so it's relatively safe for\nnow.",
+		"You'll need to learn how to defend yourself. Here! I've taken\nthe liberty to pass you a [CARROT SWORD].",
+		"I'll walk you through this floor, and then you'll be\non your own for the next few.",
+		"First off, see that [DUMMY] over there?\nIt's supposed to represent enemies.",
+		"This one here won't fight back, but if you\nencounter real ones in the dungeon,\nthey'll attack on sight.",
+		"Equip your weapon and use your [LEFT MOUSE BUTTON]\nto attack! Go give it a try.",
 
 		"@",
 
-		"Nice! To gain access to the next floor, just head to that teleporter over there and clear out the hallways to continue. If you ever faint, you'll get sent straight back here.",
-		"Don't worry. I'll cart you out if something bad happens. See you around!",
+		"Nice! To gain access to the next floor,\njust head to that teleporter over there\nand clear out the hallways to continue.",
+		"If you ever faint, you'll get sent straight back here.",
+		"Don't worry. I'll cart you out if something bad happens.\nSee you around!",
 
 		"@"
 	});
@@ -114,7 +118,8 @@ void Xuan_Initialize() {
 
 		"#",
 
-		"If it makes you feel any better- or, er- less guilty, You'll need to get rid of enemies while you traverse the dungeons anyway. Might as well give it a try?"
+		"If it makes you feel any better- or, er- less guilty,\nYou'll need to get rid of enemies while you traverse\nthe dungeons anyway.",
+		"Might as well give it a try?"
 	});
 
 

@@ -131,23 +131,26 @@ void Farm_Initialize() {
 	}
 
 	gerald->setDialogLines({
-		"Welcome to Catastrofarm! You must be the newly hired help to clear the dungeons. I assume you don't have any gear right now, but don't worry- We'll suit you up.",
-		"Against the enemies here, your best defense would be a [CARROT SWORD]. The more carrots you have in your inventory, the more damage it deals.",
-		"Cherries give you HP if you're ever low, so stock up on those when you have the time as well.",
-		"I'll pass you some seeds to get you started on your journey. See those raised mounds of dirt? Press E when hovering over an empty crop spot to plant a carrot/cherry.", 
+		"Welcome to Catastrofarm! You must be the newly hired help\nto clear the dungeons.",
+		"I assume you don't have any gear right now, but don't worry-\nWe'll suit you up.",
+		"Against the enemies here, your best defense would be a\n[CARROT SWORD].",
+		"The more carrots you have in your inventory, the more damage\nit deals.",
+		"Cherries give you HP if you're ever low, so stock up on those\nwhen you have the time as well.",
+		"I'll pass you some seeds to get you started on your\njourney.", 
 
 		"@",
 		
-		"After planting, crops will grow every time you finish a dungeon level. So, be sure to plant as many as you can while dungeoning so that you can get the most out of your time.",
-		"Defeated enemies have a chance to drop seeds, so you'll always have a steady supply. Good luck!", 
-		"Head over to the newly opened teleporter on the bottom right whenever you're ready.", 
+		"After planting, crops will grow every time you finish\na dungeon level.",
+		"So, be sure to plant as many as you can while dungeoning\nso that you can get the most out of your time.",
+		"Defeated enemies have a chance to drop seeds,\nso you'll always have a steady supply. Good\nluck!", 
+		"Head over to the newly opened teleporter on the bottom right\nwhenever you're ready.", 
 		
 		"@"
 		});
 
 	if (!World::dungeonTracker[0])
 		gerald->setIdleLines({
-			"You still have seeds on you. Try Planting them before you go off!"
+			"You still have seeds on you. Try\nPlanting them before you go off!"
 			});
 
 
@@ -181,18 +184,18 @@ void Farm_Initialize() {
 	grid.growPlants(grid);
 
 	//tutorial popup boxes
-	inventoryPopup = UIManager::create<UI_Elements::PopupBox>("inventoryPopup", 120.0f, -80.0f, 500.0f, 250.0f, "Inventory", "This is your inventory.", "Access your items with your keyboard numbers!");
+	inventoryPopup = UIManager::create<UI_Elements::PopupBox>("inventoryPopup", 100.0f, -80.0f, 500.0f, 250.0f, "Inventory", "Access your items", "with your keyboard numbers!");
 	inventoryPopup->setOnDismiss([]() {
 		inventoryPopup->hide();
 		cropPopup->show();
 		});
 
-	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 350.0f, 250.0f, "Planting Crops", "These are crop tiles!", "Press E over one to plant a seed!");
+	cropPopup = UIManager::create<UI_Elements::PopupBox>("cropPopup", -400.0f, 380.0f, 450.0f, 250.0f, "Planting Crops", "Press E over a crop tile", "to plant a seed!");
 	cropPopup->setOnDismiss([]() {
 		cropPopup->hide();
 		});
 
-	harvestPopup = UIManager::create<UI_Elements::PopupBox>("harvestPopup", -500.0f, 380.0f, 400.0f, 250.0f, "Harvesting Crops", "Looks like your crops have grown!", "Press E over them to harvest them!");
+	harvestPopup = UIManager::create<UI_Elements::PopupBox>("harvestPopup", -500.0f, 380.0f, 400.0f, 250.0f, "Harvesting Crops", "Press E over your crops", "to harvest them!");
 	harvestPopup->setOnDismiss([]() {
 		harvestPopup->hide();
 		});
@@ -207,7 +210,7 @@ void Farm_Initialize() {
 		harvestPopup->hide();
 	}
 
-	dungeonPopup = UIManager::create<UI_Elements::PopupBox>("dungeonPopup", 300.0f, -100.0f, 400.0f, 250.0f, "Dungeons", "Access the dungeons through", "these teleporters!");
+	dungeonPopup = UIManager::create<UI_Elements::PopupBox>("dungeonPopup", 300.0f, -100.0f, 450.0f, 250.0f, "Dungeons", "Access the dungeons through", "these teleporters!");
 	dungeonPopup->setOnDismiss([]() {
 		dungeonPopup->hide();
 		});
@@ -358,8 +361,8 @@ void Farm_Update() {
 	case FarmNPC::TutorialState::FINISHED:
 
 		gerald->setIdleLines({
-			"Make sure not to faint too many times in the dungeons. It'll have consequences!", "#",
-			"Just in case you blanked out just now- carrots increase your sword damage, and cherries can be used to heal.", "#",
+			"Make sure not to faint too many times in the dungeons.\nIt'll have consequences!", "#",
+			"Just in case you blanked out just now- carrots increase your\nsword damage, and cherries can be used to heal.", "#",
 			});
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
