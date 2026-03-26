@@ -93,6 +93,7 @@ namespace UI_Elements {
 
 		// Draw override
 		void draw(void) override;					// Render the button
+		void setFontSize(float size);
 
 		// Ctors
 		Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode = Shapes::CORNER);

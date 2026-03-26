@@ -67,6 +67,11 @@ namespace UI_Elements {
 		Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
 	}
 
+	//set font size of button
+	void Button::setFontSize(float size) {
+		this->textStyle.fontSize = size;
+	}
+
 	// Ctors
 	Button::Button(float x, float y, float width, float height, char const* msg, Shapes::SHAPE_MODE mode)
 		: UI_Element(x, y, width, height, mode), msg(msg), onClick(nullptr) {

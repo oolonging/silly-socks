@@ -498,6 +498,8 @@ void Farm_Free()
 	inv.saveInventory(player, gameData);
 	inv.clear(player);
 	inv.setPlayer(nullptr);
+
+	UIManager::clear();
 }
 
 void Farm_Unload() 
