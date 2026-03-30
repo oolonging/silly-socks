@@ -2,8 +2,6 @@
 #include "ParticleManager.hpp"
 
 #define _USE_MATH_DEFINES
-#include <cmath>
-#include <cstdlib>
 
 // init gParticles
 ParticleSystem gParticles(1000);

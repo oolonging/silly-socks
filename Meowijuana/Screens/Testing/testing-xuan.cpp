@@ -198,7 +198,7 @@ void Xuan_Update() {
 	// visual reminder
 
 	if (TutorialScreen::showNoWeaponText) {
-		TutorialScreen::noWeaponTimer -= AEFrameRateControllerGetFrameTime();
+		TutorialScreen::noWeaponTimer -= static_cast<float>(AEFrameRateControllerGetFrameTime());
 
 		if (TutorialScreen::noWeaponTimer <= 0.0f) {
 			TutorialScreen::showNoWeaponText = false;

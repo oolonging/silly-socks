@@ -72,8 +72,8 @@ void Win_Draw() {
 
 	for (int i = 0; i < particleCount; i++)
 	{
-		int x = (rand() % screenWidth) - screenWidth / 2; 
-		int y = (rand() % screenHeight) - screenHeight / 2;
+		float x = (rand() % screenWidth) - screenWidth * 0.5f; 
+		float y = (rand() % screenHeight) - screenHeight * 0.5f;
 		gParticles.spawnExplosion(x, y, 50);
 	}
 

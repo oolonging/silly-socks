@@ -1,7 +1,6 @@
 #ifndef LEVELSYSTEM_HPP
 #define LEVELSYSTEM_HPP
 
-#include <vector>
 
 namespace LevelSystem {
 

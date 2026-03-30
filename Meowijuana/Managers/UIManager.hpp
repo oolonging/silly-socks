@@ -2,9 +2,6 @@
 #define UI_MANAGER_HPP
 
 #include "../UI_Elements/UI_Elements.hpp"
-#include <unordered_map>
-#include <memory>
-#include <string>
 
 namespace UIManager {
 	// storage for all UI Elements

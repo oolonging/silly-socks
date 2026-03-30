@@ -1,7 +1,6 @@
 ﻿#include "../pch.h"
 #include "SpriteManager.hpp"
-#include <iostream>
-#include <../../World.hpp>
+#include "../../World.hpp"
 #include "../Graphics.hpp"
 
 

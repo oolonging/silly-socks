@@ -1,11 +1,7 @@
 #ifndef TILEMANAGER_HPP
 #define TILEMANAGER_HPP
 
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include "../Tiles.hpp"
-#include "AEEngine.h"
 
 namespace TileManager {
 	// TileObject registry - store different tile types
