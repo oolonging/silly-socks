@@ -7,9 +7,19 @@ namespace EntityManager {
 	// Entity storage (Entities go here)
 	extern std::unordered_map<std::string, std::unique_ptr<Entity::Entity>> entities;
 
+	// hoisted get
+	Entity::Entity* get(const std::string& name);
+
 	// Template function to create and register entities
 	template<typename T>
 	T* create(const std::string& name, float x, float y, float width, float height, float hp, float speed, float armor) {
+		// check if the NPC with the specified name exists. if it does then dont make a new one with a unique ptr since the old one will be abandoned and dangling 
+		auto* existing = get(name);
+		if (existing != nullptr) {
+			printf("YOU TRIED TO MAKE AN NPC THAT ALREADY EXISTS\n");
+			return dynamic_cast<T*>(existing);
+		}
+
 		auto entity = std::make_unique<T>(x, y, width, height, hp, speed, armor);
 		T* ptr = entity.get();
 		entities[name] = std::move(entity);
@@ -17,7 +27,7 @@ namespace EntityManager {
 	}
 
 	// Get entity by name
-	Entity::Entity* get(const std::string& name);
+	//Entity::Entity* get(const std::string& name);
 
 	// Type-safe getters (just in case)
 	Entity::Player* getPlayer(const std::string& name);

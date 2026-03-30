@@ -73,30 +73,15 @@ namespace EntityManager {
 
 
 		// Initialize NPCs
-		auto* prasanna = EntityManager::create<Entity::NPC>("prasanna", 200.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
+		// TODO: another source of memory leaks since this function is called multiple times and creates a unique version of the NPC's everytime you call it
 		auto* soroor = EntityManager::create<Entity::NPC>("soroor", 400.0f, 200.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 		auto* gerald = EntityManager::create<Entity::NPC>("gerald", -50.0f, 100.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 		auto* smelly = EntityManager::create<Entity::NPC>("smelly", -500.0f, 50.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
 
 		// Set NPC sprites
-		prasanna->setSprite(AEGfxTextureLoad("Assets/Images/Entities/prasanna.png"));
 		gerald->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Gerald_Stationary.png"));
 		soroor->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
 
-
-		// Set prasanna dialog
-		prasanna->setDialogLines({
-			"Hey there, I'm Prasanna! Welcome to Meowijuana!",
-			"Feel free to explore around and talk to everyone!",
-			"Also, if you need any help, just ask me!"
-			});
-
-		// Set soroor dialog
-		soroor->setDialogLines({
-			"Sup, I'm Soroor. I heard you just got here.",
-			"You should talk to Prasanna if you need any help, he's a cool dude.",
-			"Anyway, I'm just chillin here, so have fun exploring!"
-			});
 	}
 
 
