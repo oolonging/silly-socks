@@ -80,10 +80,11 @@ void NewDungeon_Update() {
 	inv.update(localPlayer);
 
 	// Temp restart after every win or lose
-	if (World::restart && !restarted)
+	if (World::restartLevels[3])
 	{
 		newDungeonState.visited = false;
 		newDungeonState.cleared = false;
+		World::restartLevels[3] = false;
 	}
 
 	// sets the room as cleared when all the enemies are dead
@@ -138,8 +139,7 @@ void NewDungeon_Update() {
 void NewDungeon_Draw() {
 	Graphics::image(0, 0, 1600.0f, 900.0f, bgDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
-	World::drawTile(activeGridTile, grid);
-	World::drawTile({ 0,0 }, grid);
+	//World::drawTile(activeGridTile, grid);
 
 	EntityManager::drawEnemies(*localPlayer, grid, false);
 

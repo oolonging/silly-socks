@@ -20,8 +20,7 @@ namespace World
 {
 	extern bool dungeonTracker[3];
 	extern int checkNum;
-	extern bool restart;
-	extern bool firstStartGame;
+	extern bool restartLevels[5];
 
 	enum behaviourFlag
 	{

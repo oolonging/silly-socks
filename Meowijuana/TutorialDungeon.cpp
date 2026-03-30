@@ -91,13 +91,11 @@ void TutorialDungeon_Initialize() {
     inv.setPlayer(EntityManager::getPlayer("player"));
     inv.loadInventory(localPlayer, gameData);
 
-    if (World::restart && !restarted)
+    if (World::restartLevels[2])
     {
-        for (int i = 0; i < 4; i++)
-        {
-            tutorialRooms[i].cleared = false;
-            tutorialRooms[i].visited = false;
-        }
+        std::fill(std::begin(tutorialRooms), std::end(tutorialRooms), TutorialRoomState{});
+        tutorialRoomIndex = 0;
+        World::restartLevels[2] = false;
     }
 
     Inventory::Weapon* pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
@@ -203,7 +201,7 @@ void TutorialDungeon_Update() {
 
 void TutorialDungeon_Draw() {
     grid.drawTexture(grid);
-    World::drawTile(tutActiveTile, grid);
+    /*World::drawTile(tutActiveTile, grid);*/
 
     // debug: show weapon attack range
     float attackRange = 170; // i put 170 since i put it as i believe 85 as range?

@@ -30,7 +30,6 @@ extern World::worldGrid grid;
 bool onGrid = false;
 
 bool firstStartGame = true;
-static bool restarted = false;
 
 float lastposX = 0;
 float lastposY = 0;
@@ -87,13 +86,13 @@ void Farm_Initialize() {
 	}
 
 	// Restart everything after clearing the game 
-	if (World::restart && !restarted)
+	if (World::restartLevels[0])
 	{
 		gerald->restartDialogue();
 		gerald->restartIdle();
 		firstStartGame = true;
 		FarmNPC::state = FarmNPC::TutorialState::GER_TALK;
-		restarted = true;
+		World::restartLevels[0] = false;
 	}
 
 	player->setPosition(-800.0f, 50.0f);
@@ -254,7 +253,7 @@ void Farm_Update() {
 			World::dungeonTracker[i] = true;
 	}
 
-	if (AEInputCheckTriggered(AEVK_E))
+	if ((AEInputCheckTriggered(AEVK_E) || AEInputCheckTriggered(AEVK_LBUTTON)) && !inv.isEmpty(*player))
 	{
 		World::interactTile(activeT, grid, inv, *player);
 

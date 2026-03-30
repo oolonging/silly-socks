@@ -200,19 +200,21 @@ UI_Elements::PlayerInventory::~PlayerInventory() {
 
 void UI_Elements::PlayerInventory::giveItem(Entity::Player& player, int itemID, int itemCount)
 {
+	// First pass: try to stack onto existing item
 	for (int i = 0; i < player.getInventorySize(); i++)
 	{
-		if (player.getInventoryItem(i) != nullptr)
+		Inventory::Item* item = player.getInventoryItem(i);
+		if (item != nullptr && item->getID() == itemID)
 		{
-			if (player.getInventoryItem(i)->getID() == itemID)
-			{
-				int count = player.getInventoryItem(i)->getCount();
-				player.getInventoryItem(i)->setCount(count += itemCount);
-				return;
-			}
+			item->setCount(item->getCount() + itemCount);
+			return;
 		}
+	}
 
-		else
+	// Second pass: no existing stack found, place in first empty slot
+	for (int i = 0; i < player.getInventorySize(); i++)
+	{
+		if (player.getInventoryItem(i) == nullptr)
 		{
 			Inventory::Item* item = Inventory::ItemRegistry::createItem(itemID);
 			item->setCount(itemCount);
@@ -220,6 +222,8 @@ void UI_Elements::PlayerInventory::giveItem(Entity::Player& player, int itemID, 
 			return;
 		}
 	}
+
+	// Inventory is full - handle if needed
 }
 
 bool UI_Elements::PlayerInventory::findItem(Entity::Player& player, int check)

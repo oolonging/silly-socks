@@ -17,8 +17,9 @@ namespace World {
 
 	bool dungeonTracker[3] = {false,false,false};
 	int checkNum = 0;
-	bool restart = false;
-	bool firstStartGame = false;
+
+	// Farm, Tutorial, Dungeon 1, Dungeon 2, Dungeon 3
+	bool restartLevels[5] = { false, false, false, false, false }; \
 
 	// Meshes stored in the world namespace
 	AEGfxVertexList* gridMesh = nullptr;
@@ -681,16 +682,15 @@ namespace World {
 
 	void ResetAllGameState()
 	{
-		// Reset flags
-		World::restart = true;
-
+		// Change all levels false
+		std::fill(std::begin(World::restartLevels), std::end(World::restartLevels), true);
+	
 		// Reset inventory
 		gameData.inventory.clear();
 		gameData.selectedSlot = 0;
 
 		// Reset dungeon trackers
-		for (int i = 0; i < 3; i++)
-			World::dungeonTracker[i] = false;
+		std::fill(std::begin(World::dungeonTracker), std::end(World::dungeonTracker), false);
 
 		// Reset death state
 		Death::dead = false;

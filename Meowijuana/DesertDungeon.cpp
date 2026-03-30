@@ -66,11 +66,11 @@ void DesertDungeon_Initialize() {
 	inv.setPlayer(EntityManager::getPlayer("player"));
 	inv.loadInventory(desertDungeonState.localPlayer, gameData);
 
-	// Temp restart after every win or lose
-	if (World::restart && !restarted)
+	if (World::restartLevels[4])
 	{
 		desertDungeonState.visited = false;
 		desertDungeonState.cleared = false;
+		World::restartLevels[4] = false;
 	}
 	
 	// Initialize the boss if the room is not cleared yet
@@ -171,7 +171,7 @@ void DesertDungeon_Update() {
 void DesertDungeon_Draw() {
 	Graphics::image(0, 0, 1600.0f, 900.0f, desertDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
-	World::drawTile(desertGridTile, grid);
+	/*World::drawTile(desertGridTile, grid);*/
 
 
 	// draws the boss enemy
