@@ -7,6 +7,7 @@
 #include "Settings.hpp"
 #include "TutorialDungeon.hpp"
 #include "GameStateManager.hpp"
+#include "Managers/EntityManager.hpp"
 
 namespace Entity {
 
@@ -999,6 +1000,9 @@ namespace Entity {
 	}
 
 	void NPC::draw() {
+		// attempt to retrieve a pointer to the player
+		Player* player{ EntityManager::getPlayer("player") };
+
 		bool graphicalDraw = (this->sprite != nullptr);
 
 		if (graphicalDraw) {
@@ -1015,6 +1019,19 @@ namespace Entity {
 			Shapes::rect(x, y, width, height, Shapes::CENTER);
 		}
 
+		// If there is a player, then check its distance from me, and show a prompt that indicates that I can be spoken to
+		if (player != nullptr) {
+			// check distance
+			float dy = this->y - player->getY();
+			float dx = this->x - player->getX();
+			float dist = sqrt(dy * dy + dx * dx);
+			if (dist <= 100.0f) {
+				Color::textFill(Color::Preset::White);
+				Text::textSize(15.0f);
+				Text::text("Press E to talk", 0.0f, -250.0f, Text::CENTER_H, Text::CENTER_V);
+			}
+
+		}
 
 		// NPCs typically don't show health bars unless damaged
 		if (hp < maxHp) {
