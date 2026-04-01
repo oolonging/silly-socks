@@ -10,8 +10,6 @@
 #include "../../Settings.hpp"
 #include "../../Managers/SpriteManager.hpp"
 
-// idle lines are broken rn but i'll have to fix after playtest
-
 
 // Externs for Inventory
 extern UI_Elements::PlayerInventory inv;
@@ -79,10 +77,11 @@ void RespawnArea_Initialize() {
 	case 1:
 
 		soroor->setDialogLines({
-			"Hey you. You're finally awake. You were trying to clear the dungeon, right? Walked right into those enemies. You're lucky you got found on time.",
-			"Well, it's good that you're safe. Told you i'd drag you back to camp!",
-			"Be more careful next time. I'll keep an eye out for you still, but i'm afraid you'll be severely damaged after every encounter. Three will be your limit, so that mean's you'll have this life and one more remaining.",
-			"Rest up and gather yourself before you go on your way. You've got a long journey ahead.",
+			"Hey you. You're finally awake. You were trying to clear \nthe dungeon, right? Walked right into those enemies. \nYou're lucky you got found on time.",
+			"Well, it's good that you're safe. Told you i'd drag you \nback to camp!",
+			"Be more careful next time. I'll keep an eye out for you \nstill, but i'm afraid you'll be severely damaged after \nevery encounter.", 
+			"Three will be your limit, so that mean's you'll have this \nlife and one more remaining.",
+			"Rest up and gather yourself before you go on your way. \nYou've got a long journey ahead.",
 
 			"@"
 
@@ -95,11 +94,11 @@ void RespawnArea_Initialize() {
 
 			"#",
 
-			"Did you know you can't access teleporters before rooms are fully cleared?",
+			"Did you know you can't access teleporters before rooms \nare fully cleared?",
 
 			"#",
 
-			"Doors get locked whenever you enter active combat in the dungeons. Such is the way of life...",
+			"Doors get locked whenever you enter active combat in the \ndungeons. Such is the way of life...",
 
 			"#",
 
@@ -116,7 +115,7 @@ void RespawnArea_Initialize() {
 
 		soroor->setDialogLines({
 
-			"Worrying to see you back here again! Should you really be exploring the dungeons in this condition?",
+			"Worrying to see you back here again! Should you really be \nexploring the dungeons in this condition?",
 			"Your next death might be your very last.",
 
 			"@"
@@ -126,11 +125,11 @@ void RespawnArea_Initialize() {
 
 		soroor->setIdleLines({
 			"Fancy seeing you again! You come here often?",
-			"I know cats joke about having 9 lives, but don't be the first to test that theory out.",
+			"I know cats joke about having 9 lives, but don't be the \nfirst to test that theory out.",
 
 			"#",
 
-			"Make full use of your cherries. If you die once more, that's it.",
+			"Make full use of your cherries. \nIf you die once more, that's it.",
 			});
 	}
 
