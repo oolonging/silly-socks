@@ -9,6 +9,7 @@
 void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
+void exitGame(void) { next = GS_QUIT; }
 
 namespace {
 	// Group everything into a state struct to isolate variables per game state
@@ -16,6 +17,7 @@ namespace {
 		UI_Elements::Button* creditsButton;
 		UI_Elements::Button* playButton;
 		UI_Elements::Button* settingsButton;
+		UI_Elements::Button* quitButton;
 
 		// Pointer to background for Main menu
 		AEGfxTexture* CatastropheLogo = nullptr;
@@ -40,11 +42,13 @@ void Mainmenu_Initialize()
 	state->creditsButton = UIManager::create<UI_Elements::Button>("creditsButton", -300.0f, -200.0f, 200.0f, 100.0f, "Credits", Shapes::CENTER);
 	state->playButton = UIManager::create<UI_Elements::Button>("playButton", 0.0f, -200.0f, 200.0f, 100.0f, "Play", Shapes::CENTER);
 	state->settingsButton = UIManager::create<UI_Elements::Button>("settingsButton", 300.0f, -200.0f, 200.0f, 100.0f, "Settings", Shapes::CENTER);
-	
+	state->quitButton = UIManager::create<UI_Elements::Button>("quitButton", 0.0f, -350.0f, 200.0f, 100.0f, "Quit", Shapes::CENTER);
+
 	// set the button functions
 	state->playButton->setOnClick(navigateToGame);
 	state->creditsButton->setOnClick(navigateToCredits);
 	state->settingsButton->setOnClick(navigateToSettings);
+	state->quitButton->setOnClick(exitGame);
 }
 
 void Mainmenu_Update() {
@@ -62,8 +66,7 @@ void Mainmenu_Draw()
 	UIManager::drawAll();
 }
 
-void Mainmenu_Free() {
-}
+void Mainmenu_Free() {}
 
 void Mainmenu_Unload()
 {
