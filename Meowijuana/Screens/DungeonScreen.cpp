@@ -52,8 +52,8 @@ void Dungeon_Update() {
     bool moved = false;
     Room::Direction dir = Room::Direction::North; // default, gets overwritten
 
-    float hw = AEGfxGetWindowWidth() / 2.0f;
-    float hh = AEGfxGetWindowHeight() / 2.0f;
+    float hw = AEGfxGetWindowWidth() * 0.5f;
+    float hh = AEGfxGetWindowHeight() * 0.5f;
 
     dungeonActiveTile = World::activeTile(player->getX(), player->getY(), DungeonGrid);
 

@@ -31,8 +31,8 @@ void Andrea_Initialize()
 	float invWidth = inven.getSlotSize() * 9 + user.getInventorySize() * 8;
 	float offset = 10.0f;
 
-	float x = -invWidth / 2.0f;         // centered horizontally
-	float y = -(screenHeight / 2.0f) + inven.getSlotSize() + offset; // near the bottom 
+	float x = -invWidth * 0.5f;         // centered horizontally
+	float y = -(screenHeight * 0.5f) + inven.getSlotSize() + offset; // near the bottom 
 
 	inven.setPosition(x, y);
 	inven.setPlayer(&user);

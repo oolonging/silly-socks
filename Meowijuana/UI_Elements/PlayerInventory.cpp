@@ -70,7 +70,7 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 	// Draw slot number above the slot
 	Color::textFill(255, 255, 255);
 	Text::text(std::to_string(slotIndex + 1).c_str(),
-		slotX + slotSize / 2.0f,
+		slotX + slotSize * 0.5f,
 		slotY + slotSize * 0.5f); // above the slot
 
 	// Draw item icon if slot has an item
@@ -85,8 +85,8 @@ void UI_Elements::PlayerInventory::drawSlot(int slotIndex, float slotX, float sl
 
 			// Adjust position based on draw mode
 			if (drawMode == Shapes::CORNER) {
-				iconX += slotSize / 2.0f;
-				iconY -= slotSize / 2.0f;
+				iconX += slotSize * 0.5f;
+				iconY -= slotSize * 0.5f;
 			}
 
 			AEMtx33Scale(&transform, slotSize * 0.8f, slotSize * 0.8f); // Scale icon to 80% of slot size

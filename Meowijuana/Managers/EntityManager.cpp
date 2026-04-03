@@ -100,8 +100,8 @@ namespace EntityManager {
 		for (int i = 0; i < count; i++) {
 
 			// random position within room bounds, with some padding
-			float x = AERandFloat() * areaW - (areaW / 2.0f);
-			float y = AERandFloat() * areaH - (areaH / 2.0f);
+			float x = AERandFloat() * areaW - (areaW * 0.5f);
+			float y = AERandFloat() * areaH - (areaH * 0.5f);
 
 			float newArmor = 0.0f;
 			if (difficultyMult >= 3.0f) {

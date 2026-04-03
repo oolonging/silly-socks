@@ -107,8 +107,8 @@ void Farm_Initialize() {
 	float invWidth = inv.getSlotSize() * 9 + player->getInventorySize() * 8;
 	float offset = 10.0f;
 
-	float x = -invWidth / 2.0f;         // centered horizontally
-	float y = -(screenHeight / 2.0f) + inv.getSlotSize() + offset; // near the bottom 
+	float x = -invWidth * 0.5f;         // centered horizontally
+	float y = -(screenHeight * 0.5f) + inv.getSlotSize() + offset; // near the bottom 
 
 	indicator = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
 

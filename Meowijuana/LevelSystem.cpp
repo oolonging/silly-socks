@@ -130,8 +130,8 @@ namespace LevelSystem {
 
 				float tileSize = 100.0f;
 
-				float worldX = (x - WIDTH / 2.0f + 0.5f);
-				float worldY = (HEIGHT / 2.0f - y - 0.5f);
+				float worldX = (x - WIDTH * 0.5f + 0.5f);
+				float worldY = (HEIGHT * 0.5f - y - 0.5f);
 
 				AEMtx33 transform;
 				AEMtx33Identity(&transform);

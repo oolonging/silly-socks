@@ -66,8 +66,8 @@ namespace Entity {
 		healthBar.setValue(hp);
 
 		// Position health bar above entity
-		float barX = x - width / 2.0f;
-		float barY = y + height / 2.0f + 10.0f;
+		float barX = x - width * 0.5f;
+		float barY = y + height * 0.5f + 10.0f;
 
 		// ProgressBar::draw() now uses its internal position, 
 		// but we need to update position dynamically
@@ -278,8 +278,8 @@ namespace Entity {
 		float newPositionY = y + deltaY;
 
 		// Entity is rendered from center, so check all four corners
-		float halfWidth = width / 2.0f;
-		float halfHeight = height / 2.0f;
+		float halfWidth = width * 0.5f;
+		float halfHeight = height * 0.5f;
 
 		// Check all four corners of the entity's bounding box
 		bool canMove = true;
@@ -384,8 +384,8 @@ namespace Entity {
 		}
 
 		const float epsilon = 20.f;
-		float halfWidth = (width / 2.0f) - epsilon;
-		float halfHeight = (height / 2.0f) - epsilon;
+		float halfWidth = (width * 0.5f) - epsilon;
+		float halfHeight = (height * 0.5f) - epsilon;
 
 		// Test X independently
 		float newX = x + deltaX;
@@ -687,8 +687,8 @@ namespace Entity {
 		}
 
 		// Grid collision — same corner-check pattern as Player
-		float halfWidth = width / 2.0f;
-		float halfHeight = height / 2.0f;
+		float halfWidth = width * 0.5f;
+		float halfHeight = height * 0.5f;
 
 		// Test X independently
 		float newX = x + deltaX;

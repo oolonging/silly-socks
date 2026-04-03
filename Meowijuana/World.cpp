@@ -105,7 +105,7 @@ namespace World {
 		{
 			AEGfxMeshStart();
 
-			float half = tileSize / 2.0f;
+			float half = tileSize * 0.5f;
 
 			// 2 triangles (square centered at origin)
 			AEGfxVertexAdd(-half, -half, 0xFFFFFFFF, 0.f, 1.f);
@@ -128,8 +128,8 @@ namespace World {
 		tileSize = size;
 
 		// Calculate offset to center the grid on screen
-		offsetX = -AEGfxGetWindowWidth() / 2.0f;
-		offsetY = AEGfxGetWindowHeight() / 2.0f;
+		offsetX = -AEGfxGetWindowWidth() * 0.5f;
+		offsetY = AEGfxGetWindowHeight() * 0.5f;
 
 		tilesID.resize(gridHeight, std::vector<int>(gridWidth, 0));
 
@@ -279,8 +279,8 @@ namespace World {
 		mouseX = max(0, min(mouseX, (int)AEGfxGetWindowWidth()));
 		mouseY = max(0, min(mouseY, (int)AEGfxGetWindowHeight()));
 
-		float worldMouseX = mouseX - AEGfxGetWindowWidth() / 2.0f;
-		float worldMouseY = AEGfxGetWindowHeight() / 2.0f - mouseY;
+		float worldMouseX = mouseX - AEGfxGetWindowWidth() * 0.5f;
+		float worldMouseY = AEGfxGetWindowHeight() * 0.5f - mouseY;
 
 		auto mouseTile = Griddy.getIndex(worldMouseX, worldMouseY);
 		
@@ -319,11 +319,11 @@ namespace World {
 
 		float X = Griddy.getOffsetX()
 			+ tile.first * tileSize
-			+ tileSize / 2.0f;
+			+ tileSize * 0.5f;
 
 		float Y = Griddy.getOffsetY()
 			- tile.second * tileSize
-			- tileSize / 2.0f;
+			- tileSize * 0.5f;
 
 		return { X, Y };
 	}
