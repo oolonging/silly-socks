@@ -145,8 +145,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 
-	int gGameRunning = 1;
-
 	// Create a 1600 x 900 windowed application at 60 FPS
 	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
 	AESysSetWindowTitle("Silly Socks | Meowijuana");

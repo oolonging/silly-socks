@@ -76,7 +76,7 @@ namespace Inventory {
 		int getCount() const { return count; }
 
 		// Setters
-		void setID(int id) { this->id = id; }
+		void setID(int _id) { this->id = _id; }
 		void setName(const std::string& _name) { this->name = _name; }
 		void setDescription(const std::string& _description) { this->description = _description; }
 		void setValue(float _value) { this->value = _value; }
@@ -172,7 +172,7 @@ namespace Inventory {
 
 		// Setters
 		void setAmmoCapacity(int _ammoCapacity) { this->ammoCapacity = _ammoCapacity; }
-		void setProjectileSpeed(float projectileSpeed) { this->projectileSpeed = projectileSpeed; }
+		void setProjectileSpeed(float _projectileSpeed) { this->projectileSpeed = _projectileSpeed; }
 
 		// Ctors
 		RangedWeapon()
@@ -200,8 +200,8 @@ namespace Inventory {
 		float getFuseTime() const { return this->fuseTime; }
 
 		// Setters
-		void setExplosionRadius(float explosionRadius) { this->explosionRadius = explosionRadius; }
-		void setFuseTime(float fuseTime) { this->fuseTime = fuseTime; }
+		void setExplosionRadius(float _explosionRadius) { this->explosionRadius = _explosionRadius; }
+		void setFuseTime(float _fuseTime) { this->fuseTime = _fuseTime; }
 
 		// Ctors
 		PlaceableWeapon()

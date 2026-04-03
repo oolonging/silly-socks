@@ -156,7 +156,7 @@ namespace Entity {
 	private:
 		bool movingDirections[4];
 		int selectedInventorySlot = 0; // 0-8
-		int weaponSwungCount;
+		int weaponSwungCount = 0;
 		void handleMovement();
 		// Testing Movement ref the grid
 		void handleMovement(World::worldGrid& Griddy);

@@ -20,8 +20,8 @@ namespace World {
 		this->gridY = y;
 	}
 
-	void Tile::setTileObject(TileObject* pTileObject) {
-		this->pTileObject = pTileObject;
+	void Tile::setTileObject(TileObject* _pTileObject) {
+		this->pTileObject = _pTileObject;
 	}
 
 	void Tile::draw(void) {

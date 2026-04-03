@@ -159,7 +159,7 @@ namespace SpriteManager {
 			0.5f, -0.5f, 0xFFFFFFFF, uScale, vScale,
 			0.5f, 0.5f, 0xFFFFFFFF, uScale, 0.0f,
 			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-		AEGfxVertexList* mesh = AEGfxMeshEnd();
+		AEGfxVertexList* _mesh = AEGfxMeshEnd();
 
 		// Set transform matrix
 		AEMtx33 transform;
@@ -174,10 +174,10 @@ namespace SpriteManager {
 		AEMtx33Concat(&transform, &translate, &transform);
 
 		AEGfxSetTransform(transform.m);
-		AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(_mesh, AE_GFX_MDM_TRIANGLES);
 
 		// Free the mesh
-		AEGfxMeshFree(mesh);
+		AEGfxMeshFree(_mesh);
 	}
 	
 

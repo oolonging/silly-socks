@@ -66,16 +66,16 @@ namespace World {
 		std::ifstream file(filename);
 		if (!file.is_open()) { return; }
 
-		int id, col, row;
+		int _id, _col, _row;
 		std::string name;
 
-		while (file >> id >> name >> col >> row) {
+		while (file >> _id >> name >> _col >> _row) {
 			tileObject tile;
-			tile.objID = id;
+			tile.objID = _id;
 			tile.name = name;
-			tile.sprite = SpriteManager::createSprite("dungeon", col, row);
+			tile.sprite = SpriteManager::createSprite("dungeon", _col, _row);
 			tile.useSprite = true;
-			tileDatabase[id] = tile;
+			tileDatabase[_id] = tile;
 		}
 		file.close();
 	}
@@ -410,11 +410,11 @@ namespace World {
 		// Basically using global bool array to update based on level clear
 		if (dungeonTracker[checkNum])
 		{
-			for (int row = 0; row < Griddy.getHeight(); row++)
+			for (int _row = 0; _row < Griddy.getHeight(); _row++)
 			{
 				for (int col = 0; col < Griddy.getWidth(); col++)
 				{
-					int& tileID = Griddy.pointerToTile(col, row);
+					int& tileID = Griddy.pointerToTile(col, _row);
 					switch (tileID)
 					{
 					case PlantedCarrotCropTile:
@@ -436,11 +436,11 @@ namespace World {
 	bool worldGrid::findTile(World::worldGrid& Griddy, int findID)
 	{
 		// Basically using global bool array to update based on level clear
-		for (int row = 0; row < Griddy.getHeight(); row++)
+		for (int _row = 0; _row < Griddy.getHeight(); _row++)
 		{
 			for (int col = 0; col < Griddy.getWidth(); col++)
 			{
-				int& tileID = Griddy.pointerToTile(col, row);
+				int& tileID = Griddy.pointerToTile(col, _row);
 				if (tileID == findID) return true;
 
 			}

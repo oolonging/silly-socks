@@ -139,8 +139,8 @@ void Xuan_Initialize() {
 	{
 		player->setWeapon(weapon);
 		player->setAtkSpd(weapon->getAttackSpeed());
-		Inventory::Item* item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
-		Inventory::Weapon* weapon = dynamic_cast<Inventory::Weapon*>(item);
+		item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
+		weapon = dynamic_cast<Inventory::Weapon*>(item);
 	}
 	// check if player already has it
 	for (int i = 0; i < player->getInventorySize(); i++)

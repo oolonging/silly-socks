@@ -477,7 +477,9 @@ void Farm_Free()
 	grid.outWorldMap("../../Assets/LevelMaps/Farm_User_layout.txt");
 
 	auto* player = localPlayer;
-	auto* gerald = localGerald;
+	
+	// TODO: unreferenced so can just be removed, leaving a comment first in case I was wrong and its being used somewhere 
+	//auto* gerald = localGerald;
 
 	lastposX = player->getX();
 	lastposY = player->getY();
