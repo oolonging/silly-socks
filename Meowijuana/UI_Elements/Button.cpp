@@ -14,7 +14,6 @@ namespace UI_Elements {
 	void Button::draw(void) {
 		bool hovering = this->isHovering();
 		bool graphicalDraw = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
-		bool drawStroke = (this->style.strokeColor.alpha > 0.0f) && (this->style.strokeWeight >= 0);
 
 		if (graphicalDraw) {
 			// Prepare to draw graphics

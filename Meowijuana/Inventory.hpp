@@ -171,7 +171,7 @@ namespace Inventory {
 		float getProjectileSpeed() const { return this->projectileSpeed; }
 
 		// Setters
-		void setAmmoCapacity(int ammoCapacity) { this->ammoCapacity = ammoCapacity; }
+		void setAmmoCapacity(int _ammoCapacity) { this->ammoCapacity = _ammoCapacity; }
 		void setProjectileSpeed(float projectileSpeed) { this->projectileSpeed = projectileSpeed; }
 
 		// Ctors
@@ -229,8 +229,8 @@ namespace Inventory {
 		float getDurability() const { return this->durability; }
 
 		// Setters
-		void setBlockAmount(float blockAmount) { this->blockAmount = blockAmount; }
-		void setDurability(float durability) { this->durability = durability; }
+		void setBlockAmount(float _blockAmount) { this->blockAmount = _blockAmount; }
+		void setDurability(float _durability) { this->durability = _durability; }
 
 		// Ctors
 		DefensiveWeapon()

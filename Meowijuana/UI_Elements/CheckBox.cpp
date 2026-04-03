@@ -52,7 +52,6 @@ namespace UI_Elements {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 		// Check if checkbox area is hovered (just the box, not the label)
-		bool boxHovered = isHovering();
 		bool hovering = isHovering();
 		bool graphicalRender = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
 

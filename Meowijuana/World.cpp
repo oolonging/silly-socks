@@ -492,6 +492,7 @@ namespace World {
 
 	void useInventoryItem(World::worldGrid& Griddy, UI_Elements::PlayerInventory inven, Entity::Player& user)
 	{
+		UNREFERENCED_PARAMETER(Griddy);
 		
 		int slot = inven.getSelectedSlot();
 		if (user.getInventoryItem(slot) == nullptr) return;
@@ -518,6 +519,8 @@ namespace World {
 
 	void checkCarrotSwordConsume(UI_Elements::PlayerInventory& inven, Entity::Player& user)
 	{
+		UNREFERENCED_PARAMETER(inven);
+
 		// only check if equipped weapon is carrot sword
 		if (user.getSwingCount() >= 3)
 		{

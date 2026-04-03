@@ -72,13 +72,11 @@ void Settings_Initialize() {
 void Settings_Update() {
 
 	//bgm slider update
-	float newbgVolume = bgVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
 	if (!state->bgmMuteCheckbox->getChecked()) {
 		AudioManager::audio.setBGMVolume(bgVolume / 100.0f);
 	}
 
 	//sfx slider update
-	float newsfxVolume = sfxVolume / 100.0f; // Map slider value (0-100) to volume range (0.0-1.0)
 	if (!state->sfxMuteCheckbox->getChecked()) {
 		AudioManager::audio.setSFXVolume(sfxVolume / 100.0f);
 	}
