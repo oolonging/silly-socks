@@ -89,10 +89,10 @@ namespace Entity {
 			);
 		}
 
-		void setWalkAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
+		void setWalkAnimation(std::string name, std::string sheetName, int _x, int _y, int count, float duration, bool loop = true) {
 			this->walkAnimation = SpriteManager::createAnimationFromRange(
 				name, sheetName,
-				x, y, count,
+				_x, _y, count,
 				duration, loop
 			);
 
@@ -100,10 +100,10 @@ namespace Entity {
 				this->walkAnimation = SpriteManager::getAnimation(name);
 		}
 
-		void setAttackAnimation(std::string name, std::string sheetName, int x, int y, int count, float duration, bool loop = true) {
+		void setAttackAnimation(std::string name, std::string sheetName, int _x, int _y, int count, float duration, bool loop = true) {
 			this->attackAnimation = SpriteManager::createAnimationFromRange(
 				name, sheetName,
-				x, y, count,
+				_x, _y, count,
 				duration, loop
 			);
 		}

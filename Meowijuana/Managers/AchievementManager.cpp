@@ -7,8 +7,8 @@ AchievementManager& AchievementManager::get() {
 	return instance;
 }
 
-void AchievementManager::init(const std::string& saveFilepath) {
-	this->saveFilepath = saveFilepath;
+void AchievementManager::init(const std::string& _saveFilepath) {
+	this->saveFilepath = _saveFilepath;
 	
 	//TODO: add some achievements here
 	achievements.insert(std::pair<std::string, Achievement>(

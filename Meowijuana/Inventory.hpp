@@ -77,9 +77,9 @@ namespace Inventory {
 
 		// Setters
 		void setID(int id) { this->id = id; }
-		void setName(const std::string& name) { this->name = name; }
-		void setDescription(const std::string& description) { this->description = description; }
-		void setValue(float value) { this->value = value; }
+		void setName(const std::string& _name) { this->name = _name; }
+		void setDescription(const std::string& _description) { this->description = _description; }
+		void setValue(float _value) { this->value = _value; }
 		void setIcon(AEGfxTexture* iconTexture) { this->icon = iconTexture; }
 		void setCount(int c) { count = c; }
 
@@ -115,10 +115,10 @@ namespace Inventory {
 		Rarity getRarity() const { return this->rarity; }
 
 		// Setters
-		void setDamage(float damage) { this->damage = damage; }
-		void setAttackSpeed(float attackSpeed) { this->attackSpeed = attackSpeed; }
-		void setRange(float range) { this->range = range; }
-		void setRarity(Rarity rarity) { this->rarity = rarity; }
+		void setDamage(float _damage) { this->damage = _damage; }
+		void setAttackSpeed(float _attackSpeed) { this->attackSpeed = _attackSpeed; }
+		void setRange(float _range) { this->range = _range; }
+		void setRarity(Rarity _rarity) { this->rarity = _rarity; }
 
 
 		// Ctors
@@ -144,7 +144,7 @@ namespace Inventory {
 		float getKnockback() const { return this->knockback; }
 
 		// Setters
-		void setKnockback(float knockback) { this->knockback = knockback; }
+		void setKnockback(float _knockback) { this->knockback = _knockback; }
 
 		// Ctors
 		MeleeWeapon()
@@ -260,9 +260,9 @@ namespace Inventory {
 		float getEffectDuration() const { return this->effectDuration; }
 
 		// Setters
-		void setType(ConsumableType type) { this->type = type; }
-		void setEffectAmount(float effectAmount) { this->effectAmount = effectAmount; }
-		void setEffectDuration(float effectDuration) { this->effectDuration = effectDuration; }
+		void setType(ConsumableType _type) { this->type = _type; }
+		void setEffectAmount(float _effectAmount) { this->effectAmount = _effectAmount; }
+		void setEffectDuration(float _effectDuration) { this->effectDuration = _effectDuration; }
 
 		// Ctors
 		Consumable()
