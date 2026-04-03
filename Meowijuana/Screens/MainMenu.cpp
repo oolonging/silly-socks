@@ -9,7 +9,7 @@
 void navigateToGame(void) { next = GS_FARM; }
 void navigateToSettings(void) { next = GS_SETTINGS; }
 void navigateToCredits(void) { next = GS_CREDITS; }
-void exitGame(void) { next = GS_QUIT; }
+
 
 namespace {
 	// Group everything into a state struct to isolate variables per game state
@@ -19,6 +19,9 @@ namespace {
 		UI_Elements::Button* settingsButton;
 		UI_Elements::Button* quitButton;
 
+		// popup box to confirm on quitting game
+		UI_Elements::PopupBox* quitConfirmPopup;
+
 		// Pointer to background for Main menu
 		AEGfxTexture* CatastropheLogo = nullptr;
 	};
@@ -26,6 +29,13 @@ namespace {
 	// Unique pointer to manage the state's lifetime strictly between Load and Unload
 	std::unique_ptr<MainMenuState> state;
 }
+
+// On leaving the game
+void confirmExit(void) { state->quitConfirmPopup->show(); }
+void hidePopup(void) { state->quitConfirmPopup->hide(); }
+
+void exitGame(void) { next = GS_QUIT; }
+
 
 void Mainmenu_Load() {
 	state = std::make_unique<MainMenuState>();
@@ -44,11 +54,24 @@ void Mainmenu_Initialize()
 	state->settingsButton = UIManager::create<UI_Elements::Button>("settingsButton", 300.0f, -200.0f, 200.0f, 100.0f, "Settings", Shapes::CENTER);
 	state->quitButton = UIManager::create<UI_Elements::Button>("quitButton", 0.0f, -350.0f, 200.0f, 100.0f, "Quit", Shapes::CENTER);
 
+	// Set the confirm popup box
+	state->quitConfirmPopup = UIManager::create<UI_Elements::PopupBox>(
+		"quitPopup",
+		0.0f, 0.0f, 400.0f, 400.0f,
+		"Are you sure?",
+		"Press confirm to exit",
+		"or close to stay"
+	);
+
 	// set the button functions
 	state->playButton->setOnClick(navigateToGame);
 	state->creditsButton->setOnClick(navigateToCredits);
 	state->settingsButton->setOnClick(navigateToSettings);
-	state->quitButton->setOnClick(exitGame);
+	state->quitButton->setOnClick(confirmExit);
+
+	// Set the buttons for the confirm popup
+	state->quitConfirmPopup->setOnconfirm(exitGame);
+	state->quitConfirmPopup->setOnDismiss(hidePopup);
 }
 
 void Mainmenu_Update() {

@@ -337,8 +337,10 @@ namespace UI_Elements {
 		char const* message2;
 		float width;
 		float height;
-		void (*onDismiss)(void);
-		Button dismissButton;
+		void (*onDismiss)(void) = nullptr;
+		void (*onConfirm)(void) = nullptr;
+		Button* confirmButton;
+		Button* dismissButton;
 
 	public:
 		void draw(void) override;
@@ -348,7 +350,10 @@ namespace UI_Elements {
 		void setVisible(bool visible);
 		void setTitle(char const* title);
 		void setMessage(char const* message);
+
+		// functions for the buttons
 		void setOnDismiss(void (*func)(void));
+		void setOnconfirm(void (*func)(void));
 
 		// Constructors
 		PopupBox(float x, float y, float width, float height, char const* title, char const* message, char const* message2, bool initialState = false, Shapes::SHAPE_MODE mode = Shapes::CORNER);

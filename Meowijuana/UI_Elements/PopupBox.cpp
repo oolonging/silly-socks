@@ -19,7 +19,8 @@ namespace UI_Elements {
         float btnHeight = height * 0.18f;
         float btnY = centerY - height * 0.5f + btnHeight;
 
-        dismissButton = Button(centerX + btnWidth * 0.1f, btnY, btnWidth, btnHeight, "Close", Shapes::CENTER);
+        dismissButton = new Button(centerX + btnWidth * 0.5f, btnY, btnWidth, btnHeight, "Close", Shapes::CENTER);
+        confirmButton = new Button(centerX - btnWidth * 0.5f, btnY, btnWidth, btnHeight, "Confirm", Shapes::CENTER);
     }
 
     //default
@@ -47,7 +48,12 @@ namespace UI_Elements {
     }
     void PopupBox::setOnDismiss(void (*func)(void)) {
         onDismiss = func;
-        dismissButton.setOnClick(func);
+        dismissButton->setOnClick(func);
+    }
+
+    void PopupBox::setOnconfirm(void (*func)(void)) {
+        onConfirm = func;
+        confirmButton->setOnClick(func);
     }
 
     void PopupBox::draw(void) {
@@ -85,7 +91,8 @@ namespace UI_Elements {
         Text::text(message2, centerX, messageY - 30.0f, Text::CENTER_H, Text::CENTER_V);
 
         // draw button
-        dismissButton.draw();
+        if(onDismiss != nullptr) dismissButton->draw();
+        if(onConfirm != nullptr) confirmButton->draw();
 
         // debug
         Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
