@@ -52,7 +52,9 @@ namespace UI_Elements {
 
 		// Check if checkbox area is hovered (just the box, not the label)
 		bool hovering = isHovering();
-		bool graphicalRender = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
+
+		// Future implementation: Probably add nicer graphics for the checkbox instead of a plain box
+		//bool graphicalRender = (this->texture.primaryTexture != nullptr) && (this->texture.secondaryTexture != nullptr);
 
 		// Handle click
 		if (hovering && AEInputCheckTriggered(AEVK_LBUTTON)) {

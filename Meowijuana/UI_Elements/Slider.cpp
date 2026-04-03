@@ -28,7 +28,6 @@ namespace UI_Elements {
 
 	void Slider::updateValue(void) {
 		float worldX = Input::getMouseX();
-		float worldY = Input::getMouseY();
 
 		float relativeX = (drawMode == Shapes::CENTER) ?
 			(worldX - this->x + (this->width / 2)) :

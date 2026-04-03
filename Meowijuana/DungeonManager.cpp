@@ -87,10 +87,14 @@ namespace Room {
 	void DungeonManager::resetDungeon(RoomNode* node) {
 		// while not nptr, find node->(whicheverdirection) >> delete >> move down the sllist (gotta check if this works)
 		while (node) {
-			RoomNode* next = node->north ? node->north : node->east ? node->east : node->west;
+			RoomNode* next;
 
-			delete node;
-			node = next;
+			if (node != nullptr) {
+				next = node->north ? node->north : node->east ? node->east : node->west;
+				delete node;
+
+				node = next;
+			}
 		}
 	}
 

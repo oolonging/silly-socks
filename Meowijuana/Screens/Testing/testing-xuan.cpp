@@ -80,6 +80,9 @@ void Xuan_Initialize() {
 	EntityManager::init();
 
 	auto* dummy = EntityManager::create<Entity::Enemy>("dummy", -100.0f, 50.0f, 50.0f, 50.0f, 100.0f, 0.0f, 5.0f);
+
+	UNREFERENCED_PARAMETER(dummy);
+
 	auto* smelly = EntityManager::getNPC("smelly");
 
 	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/smelly.png")); // plus 1 poorly scaled placeholder becauase i dont want my lecturers staring at me while i work

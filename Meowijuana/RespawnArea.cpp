@@ -219,14 +219,12 @@ void RespawnArea_Draw() {
 		inv.draw();
 	}
 
-	EntityManager::draw("soroor");
-	EntityManager::draw("player");
+	player->draw();
+	soroor->draw();
 
 	RespawnArea::dialogueBox.draw();
 
-
 	Animations::drawCoolerIndicator(soroor->getX(), soroor->getY(), indicatorRespawn);
-
 }
 
 

@@ -105,7 +105,6 @@ void Dungeon_Draw() {
 
     // ---------- ENTITIES  (gotta figure out entity spawning) ------------------
 
-    auto* player = EntityManager::getPlayer("player");
     EntityManager::draw("player");
 }
 

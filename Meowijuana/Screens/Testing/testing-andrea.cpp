@@ -27,7 +27,6 @@ void Andrea_Initialize()
 	Inventory::init();
 
 	// Setting position for inventory
-	float screenWidth = static_cast<float>(AEGfxGetWindowWidth());
 	float screenHeight = static_cast<float>(AEGfxGetWindowHeight());
 	float invWidth = inven.getSlotSize() * 9 + user.getInventorySize() * 8;
 	float offset = 10.0f;

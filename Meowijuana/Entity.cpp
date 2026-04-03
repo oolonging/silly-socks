@@ -643,8 +643,8 @@ namespace Entity {
 			player.getWidth(), player.getHeight()
 		);
 
-		float deltaX = 0.0f;
-		float deltaY = 0.0f;
+		this->deltaX = 0.0f;
+		this->deltaY = 0.0f;
 
 		if (!playerSpotted) {
 			// Wander behavior

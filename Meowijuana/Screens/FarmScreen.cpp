@@ -101,8 +101,9 @@ void Farm_Initialize() {
 	FarmNPC::dialogueBox.setSpeaker("gerald");
 
 	// Setting position for inventory 
-	float screenWidth = static_cast<float>(AEGfxGetWindowWidth());
+
 	float screenHeight = static_cast<float>(AEGfxGetWindowHeight());
+
 	float invWidth = inv.getSlotSize() * 9 + player->getInventorySize() * 8;
 	float offset = 10.0f;
 

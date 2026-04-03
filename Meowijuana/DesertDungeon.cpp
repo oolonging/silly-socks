@@ -24,12 +24,10 @@ struct DesertDungeonState {
 
 	// Entities
 
-	Inventory::Weapon* pWeapon;
+	Inventory::Weapon* pWeapon{};
 
 	// local player
 	Entity::Player* localPlayer = nullptr;
-
-
 };
 
 DesertDungeonState desertDungeonState;
@@ -79,7 +77,8 @@ void DesertDungeon_Initialize() {
 		EntityManager::spawnEnemies(1, 10.0f, 10.0f, 3);
 
 		// Give the boss a weapon
-		Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
+		// TODO: commented it out cause supposedly unreferenced, ill see if this breaks the boss then remove it if so
+		//Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
 		
 		// Make Teleporter Deactivated
 		grid.replacingID(World::TeleporterRed, World::Teleporter3);
