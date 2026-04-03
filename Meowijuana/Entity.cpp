@@ -890,6 +890,10 @@ namespace Entity {
 		}
 
 		if (dialogueBox.getIsActive()) {
+			if (AEInputCheckTriggered(AEVK_Q) && linenum > 0) {
+				--linenum;
+			}
+
 			if (AEInputCheckTriggered(AEVK_E) || AEInputCheckTriggered(AEVK_LBUTTON)) {
 				++linenum;
 
@@ -906,10 +910,8 @@ namespace Entity {
 					dialogueBox.dismiss();
 					return;
 				}
-
-				dialogueBox.setText(dialogLines[linenum]);
-				
 			}
+				dialogueBox.setText(dialogLines[linenum]);
 
 			return;
 		}
