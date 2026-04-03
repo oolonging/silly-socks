@@ -10,7 +10,7 @@ AchievementManager& AchievementManager::get() {
 void AchievementManager::init(const std::string& _saveFilepath) {
 	this->saveFilepath = _saveFilepath;
 	
-	//TODO: add some achievements here
+	// Future Implementation: add some achievements here
 	achievements.insert(std::pair<std::string, Achievement>(
 		"Start the game",
 		Achievement("0001", "Start the game", "Run the game for the first time", false)
@@ -70,10 +70,9 @@ void AchievementManager::draw() {
 		// range from (0.0f - 1.0f)
 		float percentageLeft = popupTimer / POPUP_DURATION;
 
-		// TODO: play a sound
-		
+		// Future implementation: play a sound when an achievement is earned
 
-		// TODO: show an animation
+		// Future implementation: show an animation
 		// Placeholder rectangular overlay for now
 		Color::fill(255.0f, 0.0f, 0.0f, percentageLeft);
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);

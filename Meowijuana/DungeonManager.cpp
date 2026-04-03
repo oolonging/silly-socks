@@ -118,7 +118,6 @@ namespace Room {
 
 	}
 
-	// lock n unlock for doors (TODO cause enemy spawn)
 	void DungeonManager::lockDoors() { doorsLocked = true; }
 	void DungeonManager::unlockDoors() { doorsLocked = false; }
 

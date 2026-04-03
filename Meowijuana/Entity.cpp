@@ -186,15 +186,6 @@ namespace Entity {
 		}
 	}
 
-	// TODO: will remove after ive made sure it didnt break anything
-	//Player::Player()
-	//	: Entity(), movingDirections{ false, false, false, false }, selectedInventorySlot(0) {
-	//	// Initialize inventory slots to nullptr
-	//	for (int i = 0; i < 9; ++i) {
-	//		inventory[i] = nullptr;
-	//	}
-	//}
-
 	Player::Player(void)
 		: Player(0.0f, 0.0f, 50.0f, 50.0f, 100.0f, 1.0f, 0.0f) {}
 

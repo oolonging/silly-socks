@@ -13,8 +13,7 @@ namespace UI_Elements {
 		this->style = getDefaultStyle();
 		this->textStyle = getDefaultTextStyle();
 
-		// Default textures
-		// TODO: maybe add default textures?
+		// Default textures (None present so this UI Element will be rendered without graphics)
 		//this->texture.primaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Checkbox/primary.png");
 		//this->texture.secondaryTexture = AEGfxTextureLoad("Assets/Images/UI_Elements/Checkbox/secondary.png");
 	}
@@ -86,7 +85,7 @@ namespace UI_Elements {
 		float labelY = (drawMode == Shapes::CORNER) ? this->y : this->y + (this->height * 0.5f);
 
 		// draw the debug material
-		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V); // TODO: rewire the text draw so that the align points to the anchor point
+		Text::text(label, labelX + 5.0f, labelY - (this->boxSize * 0.5f), Text::LEFT, Text::CENTER_V);
 
 		Shapes::debugRect(this->x, this->y, this->width, this->height, this->drawMode);
 	}
