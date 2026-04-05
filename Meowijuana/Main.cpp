@@ -146,7 +146,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 	// Create a 1600 x 900 windowed application at 60 FPS
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, false, NULL);
+	AESysInit(hInstance, nCmdShow, 1600, 900, 0, 60, false, NULL);
 	AESysSetWindowTitle("Silly Socks | Meowijuana");
 
 	// reset the system modules
