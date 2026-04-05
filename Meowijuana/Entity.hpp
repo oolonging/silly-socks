@@ -1,3 +1,9 @@
+/**
+ * @file	 Entity.hcpp
+ * @author	 Yu Xuan (barebones by Saahil)
+ * @brief	 hpp for the structs/classes of entities
+ */
+
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 

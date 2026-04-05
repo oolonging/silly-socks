@@ -1,3 +1,9 @@
+/**
+ * @file	 DesertDungeon.hpp
+ * @author	 Yu Xuan 
+ * @brief	 hpp file for desertdungeon
+ */
+
 #ifndef DESERT_DUNGEON_HPP
 #define DESERT_DUNGEON_HPP
 

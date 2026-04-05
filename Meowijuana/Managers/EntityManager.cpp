@@ -1,4 +1,11 @@
-﻿#include "../pch.h"
+﻿/**
+ * @file	 EntityManager.cpp
+ * @author	 Yu Xuan (Saahil for sprites and animations)
+ * @brief	 Used to manage Entities and their spawning/drawing/getting, etc
+ */
+
+
+#include "../pch.h"
 #include "EntityManager.hpp"
 
 namespace EntityManager {

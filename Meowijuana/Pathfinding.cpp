@@ -1,4 +1,10 @@
-﻿#include "pch.h"
+﻿/**
+ * @file	 Pathfinding.cpp
+ * @author	 Yu Xuan
+ * @brief	 Source code for random enemy pathfinding
+ */
+
+#include "pch.h"
 #include "Pathfinding.hpp"
 
 namespace Path {

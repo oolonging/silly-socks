@@ -1,4 +1,10 @@
-﻿#include "pch.h"
+﻿/**
+ * @file	 Collision.cpp
+ * @author	 Yu Xuan & Saahil
+ * @brief	 Functions for commonly used collisions throughout the game
+ */
+
+#include "pch.h"
 #include "Collision.hpp"
 
 // okay its a little messy rn but i'll clean it up eventually... i think

@@ -1,3 +1,10 @@
+/**
+ * @file	 DesertDungeon.cpp
+ * @author	 Yu Xuan
+ * @brief	 Sand dungeon area code
+ */
+
+
 #include "../../pch.h"
 #include "../../GameStateManager.hpp"
 #include "../../Graphics.hpp"
@@ -7,7 +14,6 @@
 #include "../../Settings.hpp"
 #include "World.hpp"
 #include "NewDungeon.hpp"
-#include "PauseMenu.hpp"
 #include "TutorialDungeon.hpp"
 
 extern UI_Elements::PlayerInventory inv;

@@ -1,3 +1,9 @@
+/**
+ * @file	 EntityManager.hpp
+ * @author	 Yu Xuan (Saahil for sprites and animations)
+ * @brief	 hpp file to manage Entities and their spawning/drawing/getting, etc
+ */
+
 #ifndef ENTITY_MANAGER_HPP
 #define ENTITY_MANAGER_HPP
 

@@ -1,4 +1,11 @@
-﻿#include "pch.h"
+﻿/**
+ * @file	 Entity.cpp
+ * @author	 Yu Xuan (barebones by Saahil)
+ * @brief	 Entities and their derived classes
+ */
+
+
+#include "pch.h"
 #include "Entity.hpp"
 #include "Collision.hpp"
 #include "Tiles.hpp"

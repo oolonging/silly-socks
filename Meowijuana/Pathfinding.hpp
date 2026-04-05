@@ -1,3 +1,9 @@
+/**
+ * @file	 Pathfinding.hpp
+ * @author	 Yu Xuan
+ * @brief	 For enemy pathfinding (was supposed to be more types)
+ */
+
 #ifndef PATHFINDING_HPP
 #define PATHFINDING_HPP
 

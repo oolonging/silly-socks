@@ -1,3 +1,9 @@
+/**
+ * @file	 Collision.hpp
+ * @author	 Yu Xuan & Saahil
+ * @brief	 hpp for collision 
+ */
+
 #ifndef COLLISION_HPP
 #define COLLISION_HPP
 

@@ -1,3 +1,9 @@
+/**
+ * @file	 RespawnArea.hpp
+ * @author	 Yu Xuan
+ * @brief	 hpp for RespawnArea
+ */
+
 #ifndef RESPAWN_AREA_HPP
 #define RESPAWN_AREA_HPP
 

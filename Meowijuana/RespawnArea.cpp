@@ -1,3 +1,10 @@
+/**
+ * @file	 RespawnArea.cpp
+ * @author	 Yu Xuan 
+ * @brief	 CCode for respawn room when player dies, leads back to the farm. 
+ */
+
+
 #include "../../pch.h"
 #include "RespawnArea.hpp"
 
