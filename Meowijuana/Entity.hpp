@@ -229,6 +229,8 @@ namespace Entity {
 	public:
 		void movement(const Player& player, float deltaTime, World::worldGrid& Griddy);
 
+		void checkDeath(Player& player);
+
 		// Draw that takes player reference for AI
 		void draw(Player& player, World::worldGrid& Griddy, bool pause);
 

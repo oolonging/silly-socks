@@ -123,7 +123,7 @@ void TutorialDungeon_Update() {
     EntityManager::updateEnemies(*localPlayer);
 
 
-    if (AEInputCheckTriggered(AEVK_LBUTTON) && localPlayer->canAttack()) {
+    if (AEInputCheckTriggered(AEVK_LBUTTON) && localPlayer&& localPlayer->canAttack()) {
         EntityManager::attackEnemies(*localPlayer);
         World::checkCarrotSwordConsume(inv, *localPlayer);
         localPlayer->resetAttackTimer(); // reset once after hitting all enemies
