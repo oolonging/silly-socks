@@ -74,7 +74,7 @@ void DesertDungeon_Initialize() {
 	// Initialize the boss if the room is not cleared yet
 	if (!desertDungeonState.cleared) {
 		// summon the boss enemy
-		EntityManager::spawnEnemies(1, 10.0f, 10.0f, 3);
+		EntityManager::spawnEnemies(1, 10.0f, 10.0f, 3.0f);
 
 		// Give the boss a weapon
 		// TODO: commented it out cause supposedly unreferenced, ill see if this breaks the boss then remove it if so

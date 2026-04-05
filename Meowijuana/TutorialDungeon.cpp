@@ -61,13 +61,8 @@ void LoadRoom(int roomIndex) {
         tutorialRooms[roomIndex].visited = true;
 
         if (roomIndex != 0) {
-            EntityManager::spawnEnemies(2, 800.0f, 600.0f);
-
-            Inventory::Weapon* eWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::WOODEN_SWORD));
-            if (eWeapon) {
-                EntityManager::weaponEnemies(eWeapon);
-                std::cout << "has weapon";
-            }
+            // Spawns 3 enemies per room
+            EntityManager::spawnEnemies(3, 800.0f, 600.0f, 1.0f + 0.1f * roomIndex);
         }
     }
 

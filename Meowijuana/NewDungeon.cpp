@@ -56,7 +56,7 @@ void NewDungeon_Initialize() {
 
 	// spawn 3 enemies
 	if(!newDungeonState.cleared)
-	EntityManager::spawnEnemies(2, 400.0f, 200.0f, 1.5f);
+	EntityManager::spawnEnemies(3, 400.0f, 200.0f, 2.0f);
 
 	// give the player a weapon
 	pWeapon = dynamic_cast<Inventory::Weapon*>(Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD));
