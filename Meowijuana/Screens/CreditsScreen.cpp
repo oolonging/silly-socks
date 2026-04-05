@@ -23,6 +23,12 @@ AEGfxVertexList* creditsMesh = nullptr;
 const char* credits[] = {
 	"Thank you for playing!",
 	" ",
+	"All available at https://www.kenney.nl/",
+	"pixel-platformer  || KENNEY",
+	"tiny-dungeon      || KENNEY",
+	"tiny-town         || KENNEY",
+	"Graphics",
+	" ",
 	"piglevelwin2 | Tuudurt (FreeSound)",
 	"Pixel Sound Effect #4 | hmmm101 (FreeSound)",
 	"Enchanted Valley | ondrosik",
