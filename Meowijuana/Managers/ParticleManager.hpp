@@ -1,8 +1,18 @@
+/**
+ * @file ParticleManager.hpp
+ * @author Saahil
+ * @brief Particle system manager for spawning and managing visual particle effects.
+ */
+
 #ifndef PARTICLE_MANAGER_HPP
 #define PARTICLE_MANAGER_HPP
 
 #include "../GraphicsTypes.hpp"
 
+ /**
+  * @enum ParticleShape
+  * @brief Defines the available shapes for rendering particles.
+  */
 enum class ParticleShape {
 	SQUARE,
 	DIAMOND,
@@ -10,11 +20,20 @@ enum class ParticleShape {
 	TEXT
 };
 
+/**
+ * @enum ParticleRenderMode
+ * @brief Defines how a particle is rendered.
+ */
+
 enum class ParticleRenderMode {
 	SOLID_COLOR,
 	TEXTURED
 };
 
+/**
+ * @struct Particle
+ * @brief Represents a single particle with position, velocity, lifetime, and visual properties.
+ */
 struct Particle {
 	float x, y;				// Position
 	float vx, vy;			// Velocity 
@@ -34,7 +53,10 @@ struct Particle {
 	}
 };
 
-// Particle system configuration
+/**
+ * @struct ParticleConfig
+ * @brief Configuration for spawning particles, including shape, velocity, lifetime, and visual parameters.
+ */
 struct ParticleConfig {
 	ParticleShape shape;
 	ParticleRenderMode renderMode;
@@ -86,7 +108,10 @@ struct ParticleConfig {
 	}
 };
 
-// Main particle system class
+/**
+ * @class ParticleSystem
+ * @brief Manages a pool of particles, handling spawning, updating, and rendering.
+ */
 class ParticleSystem {
 public:
 	// temporary while i rewire some stuff
@@ -106,37 +131,91 @@ private:
 	Particle* getInactiveParticle(void);
 
 public:
-	// Ctor
-	ParticleSystem(size_t maxCount = 1000);		// defaults to 1000 particles which hopefully wont be too laggy
+	/**
+	 * @brief Constructs a ParticleSystem with the given pool size.
+	 * @param maxCount Maximum number of particles (defaults to 1000).
+	 */
+	ParticleSystem(size_t maxCount = 1000);
 
-	// Dtor
+	/**
+	 * @brief Destructor. Frees all cached meshes.
+	 */
 	~ParticleSystem(void);
 
-	// Initialization - MUST call this after AESysInit and AESysReset
+	/**
+	 * @brief Initializes the particle system. MUST be called after AESysInit and AESysReset.
+	 */
 	void init(void);
 
-	// core functions
+	/**
+	 * @brief Updates all active particles (lifetime, position, rotation, alpha).
+	 * @param dt Delta time in seconds. Defaults to AEFrameRateControllerGetFrameTime().
+	 */
 	void update(f64 dt = AEFrameRateControllerGetFrameTime());
+
+	/**
+	 * @brief Draws all active particles to the screen.
+	 */
 	void draw(void);
+
+	/**
+	 * @brief Deactivates all particles in the pool.
+	 */
 	void clear(void);
 
-	// Spawn function
-	void spawnParticle(const ParticleConfig& config);	// TODO: potentially add a default config
+	/**
+	 * @brief Spawns a single particle using the given configuration.
+	 * @param config The ParticleConfig describing spawn parameters.
+	 */
+	void spawnParticle(const ParticleConfig& config);
+
+	/**
+	 * @brief Spawns multiple particles using the given configuration.
+	 * @param config The ParticleConfig describing spawn parameters.
+	 * @param count Number of particles to spawn.
+	 */
 	void spawnParticles(const ParticleConfig& config, int count);
 
-	// Preset spawners (TODO: test later)
+	/**
+	 * @brief Spawns an explosion burst of particles at the given position.
+	 * @param x X-coordinate of the explosion center.
+	 * @param y Y-coordinate of the explosion center.
+	 * @param count Number of particles to spawn (defaults to 50).
+	 */
 	void spawnExplosion(float x, float y, int count = 50);
+
+	/**
+	 * @brief Spawns a trail of particles at the given position.
+	 * @param x X-coordinate of the trail origin.
+	 * @param y Y-coordinate of the trail origin.
+	 * @param count Number of particles to spawn (defaults to 5).
+	 */
 	void spawnTrail(float x, float y, int count = 5);
+
+	/**
+	 * @brief Spawns damage number particles at the given position.
+	 * @param x X-coordinate of the damage location.
+	 * @param y Y-coordinate of the damage location.
+	 * @param count Number of particles to spawn (defaults to 20).
+	 */
 	void spawnDamageNumbers(float x, float y, int count = 20);
 
-	// Getters
+	/**
+	 * @brief Returns the number of currently active particles.
+	 * @return Count of active particles.
+	 */
 	int getActiveParticleCount(void) const;
+
+	/**
+	 * @brief Returns the maximum number of particles in the pool.
+	 * @return Maximum particle count.
+	 */
 	int getMaxParticles(void) const {
 		return static_cast<int>(this->maxParticles);
 	}
 };
 
-// extern particles
+/// @brief Global particle system instance.
 extern ParticleSystem gParticles;
 
 

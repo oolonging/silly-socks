@@ -1,9 +1,16 @@
-﻿#include "../pch.h"
+﻿/**
+ * @file Particlemanager.cpp
+ * @author Saahil
+ * @brief Implementation of the ParticleSystem class for managing particle effects.
+ * @date 2026-04-05
+ */
+
+#include "../pch.h"
 #include "ParticleManager.hpp"
 
 #define _USE_MATH_DEFINES
 
-// init gParticles
+ /// @brief Global particle system instance with a pool of 1000 particles.
 ParticleSystem gParticles(1000);
 
 // Ctors and Dtor
@@ -280,4 +287,3 @@ int ParticleSystem::getActiveParticleCount() const {
 	}
 	return count;
 }
-
