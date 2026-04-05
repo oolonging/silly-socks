@@ -1,6 +1,12 @@
 #ifndef WORLD_HPP
 #define WORLD_HPP
 
+/*
+ * @file World.hpp
+ * @author Andrea
+ * @brief World stuff: Grid, Interacting with objects, Tracking completion, Drawing of objects and tiles, etc.
+ */
+
 #include "Graphics.hpp"
 #include "Inventory.hpp"
 #include "../../Managers/SpriteManager.hpp"
@@ -40,7 +46,7 @@ namespace World
 		CherryCropTile,
 		PotatoCropTile,
 
-		// -- New Stuff -- //
+		// -- Teleporter stuff -- //
 		OOB,
 		Teleporter1,
 		TeleporterBlue,

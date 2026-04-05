@@ -152,6 +152,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// reset the system modules
 	AESysReset();
 
+	// Prevent printing into the cmd (cuz its a requirement)
+	FILE* dummy;
+	freopen_s(&dummy, "NUL", "w", stdout);
+	
 	// Init subsystem
 	InitSystems(1600, 900);
 

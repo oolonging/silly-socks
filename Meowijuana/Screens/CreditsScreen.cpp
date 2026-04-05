@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/*
+ * @file CreditsScreen.cpp
+ * @author Jun
+ * @brief Credit Screen
+ */
+
+#include "../pch.h"
 #include "CreditsScreen.hpp"
 
 #include "../Graphics.hpp"

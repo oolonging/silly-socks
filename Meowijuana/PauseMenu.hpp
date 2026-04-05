@@ -1,3 +1,9 @@
+/*
+ * @file PauseMenu.hpp
+ * @author Jun
+ * @brief Pause menu for every main screen
+ */
+
 #ifndef PAUSE_MENU_HPP
 #define PAUSE_MENU_HPP
 

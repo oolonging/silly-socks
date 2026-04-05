@@ -1,3 +1,9 @@
+/*
+ * @file PopupBox.cpp
+ * @author Jun
+ * @brief Pop up box functions
+ */
+
 #include "../pch.h"
 #include "UI_Elements.hpp"
 #include "../InputManager.hpp"

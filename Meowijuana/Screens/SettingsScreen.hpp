@@ -1,3 +1,9 @@
+/*
+ * @file SettingScreen.hpp
+ * @author Jun
+ * @brief Settings menu
+ */
+
 #ifndef SETTINGS_SCREEN_HPP
 #define SETTINGS_SCREEN_HPP
 

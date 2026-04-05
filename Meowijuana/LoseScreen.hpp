@@ -1,3 +1,9 @@
+/*
+ * @file LoseScreen.hpp
+ * @author Jun
+ * @brief Lose Screen after dying 
+ */
+
 #ifndef LOSE_SCREEN_HPP
 #define LOSE_SCREEN_HPP
 

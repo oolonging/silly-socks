@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/*
+ * @file MainMenu.cpp
+ * @author Jun
+ * @brief Main Screen
+ */
+
+#include "../pch.h"
 #include "MainMenu.hpp"
 
 #include "../Managers/UIManager.hpp"

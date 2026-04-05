@@ -1,3 +1,8 @@
+/*
+ * @file PauseMenu.cpp
+ * @author Jun
+ * @brief Pause menu for every main screen
+ */
 
 #include "AEEngine.h"
 #include "PauseMenu.hpp"

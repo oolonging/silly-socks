@@ -1,3 +1,9 @@
+/*
+ * @file FarmScreen.hpp
+ * @author Andrea
+ * @brief Main farm screen
+ */
+
 #ifndef FARM_SCREEN_HPP
 #define FARM_SCREEN_HPP
 

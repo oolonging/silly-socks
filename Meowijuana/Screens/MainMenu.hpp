@@ -1,3 +1,9 @@
+/*
+ * @file MainMenu.hpp
+ * @author Jun
+ * @brief Main Screen
+ */
+
 #ifndef MAINMENU_SCREEN_HPP
 #define MAINMENU_SCREEN_HPP
 

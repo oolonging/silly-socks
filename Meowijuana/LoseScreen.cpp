@@ -1,3 +1,9 @@
+/*
+ * @file LoseScreen.cpp
+ * @author Jun
+ * @brief Lose Screen after dying
+ */
+
 #include "pch.h"
 #include "LoseScreen.hpp"
 

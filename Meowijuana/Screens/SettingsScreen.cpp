@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/*
+ * @file SettingScreen.cpp
+ * @author Jun
+ * @brief Settings menu
+ */
+
+#include "../pch.h"
 
 #include "../../GameStateManager.hpp"
 #include "../Graphics.hpp"

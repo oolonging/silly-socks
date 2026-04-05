@@ -1,4 +1,9 @@
 ﻿#include "pch.h"
+/*
+ * @file World.cpp
+ * @author Andrea
+ * @brief World stuff: Grid, Interacting with objects, Tracking completion, Drawing of objects and tiles, etc.
+ */
 #include "World.hpp"
 #include "Entity.hpp"
 #include "DesertDungeon.hpp"

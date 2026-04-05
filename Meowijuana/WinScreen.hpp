@@ -1,3 +1,9 @@
+/*
+ * @file Winscreen.hpp
+ * @author Jun
+ * @brief Win Screen
+ */
+
 #ifndef WIN_SCREEN_HPP
 #define WIN_SCREEN_HPP
 

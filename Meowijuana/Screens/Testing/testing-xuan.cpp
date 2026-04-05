@@ -349,13 +349,13 @@ void Xuan_Draw() {
 		inv.draw();
 	}
 
-	if (!dummy->dead()) {
+	if (dummy->getHp() > 0) {
 		dummy->draw(*player, grid, false);
 	}
-	else {
-		// placaeholder here for now but hopefully switch to sprite of destroyed dummy
-		/*dummy->draw(*player, grid, false);*/
-	}
+	//else {
+	//	// placaeholder here for now but hopefully switch to sprite of destroyed dummy
+	//	/*dummy->draw(*player, grid, false);*/
+	//}
 
 
 	if (!TutorialScreen::dialogueBox.getIsActive()) {

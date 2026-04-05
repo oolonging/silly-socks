@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/*
+ * @file FarmScreen.cpp
+ * @author Andrea
+ * @brief Main farm screen 
+ */
+
+#include "../pch.h"
 #include "../GameStateManager.hpp"
 
 #include "../Graphics.hpp"

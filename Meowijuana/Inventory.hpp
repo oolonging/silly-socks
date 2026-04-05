@@ -1,3 +1,9 @@
+/*
+ * @file Inventory.hpp
+ * @author Andrea & Saahil
+ * @brief Inventory Items
+ */
+
 #ifndef INVENTORY_HPP
 #define INVENTORY_HPP
 

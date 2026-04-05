@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/*
+ * @file PlayerInventory.cpp
+ * @author Andrea & Saahil
+ * @brief Player Inventory System
+ */
+
+#include "../pch.h"
 #include "UI_Elements.hpp"
 
 #include "../Entity.hpp"

@@ -1,3 +1,9 @@
+/*
+ * @file CreditsScreen.hpp
+ * @author Jun
+ * @brief Credit Screen
+ */
+
 #ifndef CREDITS_SCREEN_HPP
 #define CREDITS_SCREEN_HPP
 
