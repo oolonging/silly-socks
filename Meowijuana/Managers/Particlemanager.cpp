@@ -2,7 +2,6 @@
  * @file Particlemanager.cpp
  * @author Saahil
  * @brief Implementation of the ParticleSystem class for managing particle effects.
- * @date 2026-04-05
  */
 
 #include "../pch.h"

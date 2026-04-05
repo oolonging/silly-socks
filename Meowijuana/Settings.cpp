@@ -1,4 +1,10 @@
-﻿#include "pch.h"
+﻿/**
+ * @file Settings.cpp
+ * @author Saahil
+ * @brief Global game settings including color, text, sound, and debug configuration.
+ */
+
+#include "pch.h"
 #include "Settings.hpp"
 
 #include "InputManager.hpp"

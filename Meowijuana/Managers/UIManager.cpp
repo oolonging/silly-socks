@@ -1,4 +1,10 @@
-﻿#include "../pch.h"
+﻿/**
+ * @file UIManager.cpp
+ * @author Saahil
+ * @brief Manages creation, retrieval, rendering, and cleanup of all UI elements.
+ */
+
+#include "../pch.h"
 #include "UIManager.hpp"
 
 namespace UIManager {

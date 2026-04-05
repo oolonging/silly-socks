@@ -1,3 +1,9 @@
+/**
+ * @file AchievementManager.cpp
+ * @author Saahil
+ * @brief Manages game achievements including registration, unlocking, persistence, and popup display.
+ */
+
 #include "AchievementManager.hpp"
 
 #include "../Graphics.hpp"

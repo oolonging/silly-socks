@@ -1,14 +1,16 @@
-﻿#include "pch.h"
+﻿/**
+ * @file Graphics.cpp
+ * @author Saahil
+ * @brief Core graphics API providing color, shape, text, image, and animation utilities.
+ */
+
+#include "pch.h"
 #include "Graphics.hpp"
 
 #include "Entity.hpp" 
 #include "Settings.hpp"
 
 namespace Color {
-	// TODO: missing
-	// Create color with HSL
-	// separate text color (decide if its needed or not)
-
 	// Create colors
 	Color createColorRGB(float red, float green, float blue, float alpha) {
 		return { red, green, blue, alpha };
