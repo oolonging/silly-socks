@@ -131,6 +131,7 @@ namespace EntityManager {
 
 	void updateEnemies(Entity::Player& player) {
 		for (auto& e : enemies) {
+			e->checkDeath(player);
 			if (e->isAlive()) {
 				e->tickAttackTimer();
 				if (e->canAttack()) {

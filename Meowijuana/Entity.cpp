@@ -737,6 +737,23 @@ namespace Entity {
 		setPosition(x, y);
 	}
 
+	void Enemy::checkDeath(Player& player) {
+		if (this->getHp() <= 0 && !this->isDead)
+		{
+			this->isDead = true;
+			gParticles.spawnExplosion(this->getX(), this->getY(), 40);
+			AudioManager::audio.playSFX(1.0f);
+
+			// Random seed drop
+			int droppedSeed = (rand() % 2 == 0)
+				? Inventory::ItemID::CARROT_SEEDS
+				: Inventory::ItemID::CHERRY_SEEDS;
+
+			int dropAmount = 1;
+
+			player.giveItem(droppedSeed, dropAmount);
+		}
+	}
 
 
 
@@ -768,21 +785,6 @@ namespace Entity {
 		else {
 			Color::fill(Color::Preset::White);
 			Graphics::image(this->x, this->y, this->width, this->height, this->sprite, Shapes::CENTER);
-		}
-		if (this->getHp() <= 0 && !this->isDead)
-		{
-			this->isDead = true;
-			gParticles.spawnExplosion(this->getX(), this->getY(), 40);
-			AudioManager::audio.playSFX(1.0f);
-
-			// Random seed drop
-			int droppedSeed = (rand() % 2 == 0)
-				? Inventory::ItemID::CARROT_SEEDS
-				: Inventory::ItemID::CHERRY_SEEDS;
-
-			int dropAmount = 1;
-
-			player.giveItem(droppedSeed, dropAmount);
 		}
 
 		// Always draw health bar for enemies
