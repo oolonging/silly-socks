@@ -7,6 +7,7 @@
 #include "../../Settings.hpp"
 #include "World.hpp"
 #include "NewDungeon.hpp"
+#include "PauseMenu.hpp"
 #include "TutorialDungeon.hpp"
 
 extern UI_Elements::PlayerInventory inv;
@@ -174,7 +175,7 @@ void DesertDungeon_Draw() {
 
 
 	// draws the boss enemy
-	EntityManager::drawEnemies(*(desertDungeonState.localPlayer), grid, false);
+	EntityManager::drawEnemies(*(desertDungeonState.localPlayer), grid, isPaused);
 
 	
 	if (showInventory)

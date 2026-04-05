@@ -6,6 +6,7 @@
 #include "World.hpp"
 #include "NewDungeon.hpp"
 #include "TutorialDungeon.hpp"
+#include "PauseMenu.hpp"
 #include "Settings.hpp"
 
 
@@ -141,7 +142,7 @@ void NewDungeon_Draw() {
 	grid.drawTexture(grid);
 	//World::drawTile(activeGridTile, grid);
 
-	EntityManager::drawEnemies(*localPlayer, grid, false);
+	EntityManager::drawEnemies(*localPlayer, grid, isPaused);
 
 	if (showInventory)
 	{

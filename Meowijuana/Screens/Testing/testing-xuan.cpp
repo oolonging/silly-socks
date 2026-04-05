@@ -32,14 +32,14 @@ namespace TutorialScreen {
 	UI_Elements::DialogueBox dialogueBox;
 
 	enum class TutorialState {
-		SMELLY_TALK,
-		SMELLY_IDLE,
-		SMELLY_PART2,
+		SORAWR_TALK,
+		SORAWR_IDLE,
+		SORAWR_PART2,
 		FINISHED
 
 	};
 
-	TutorialState state = TutorialState::SMELLY_TALK;
+	TutorialState state = TutorialState::SORAWR_TALK;
 	bool deadDummy = false; // oh no :(
 
 
@@ -83,20 +83,19 @@ void Xuan_Initialize() {
 
 	UNREFERENCED_PARAMETER(dummy);
 
-	auto* smelly = EntityManager::getNPC("smelly");
-
-	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/smelly.png")); // plus 1 poorly scaled placeholder becauase i dont want my lecturers staring at me while i work
+	auto* SORAWR = EntityManager::getNPC("soroor");
 	
 	// Restart everything after clearing the game
 	if (World::restartLevels[1])
 	{
-		smelly->restartDialogue();
-		smelly->restartIdle();
-		TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_TALK;
+		SORAWR->restartDialogue();
+		SORAWR->restartIdle();
+		TutorialScreen::state = TutorialScreen::TutorialState::SORAWR_TALK;
 		World::restartLevels[1] = true;
+		hasCarrotSword = false;
 	}
 
-	smelly->setDialogLines({
+	SORAWR->setDialogLines({
 		"Welcome to the dungeons! There's 3 levels to a dungeon,\neach with increasing levels of difficulty.",
 		"We're on the first floor, so it's relatively safe for\nnow.",
 		"You'll need to learn how to defend yourself. Here! I've taken\nthe liberty to pass you a [CARROT SWORD].",
@@ -114,7 +113,7 @@ void Xuan_Initialize() {
 		"@"
 	});
 
-	smelly->setIdleLines({
+	SORAWR->setIdleLines({
 		"Go on! Don't feel bad!",
 		"The dummy can't grow arms and kill itself y'know...",
 
@@ -145,6 +144,7 @@ void Xuan_Initialize() {
 		item = Inventory::ItemRegistry::createItem(Inventory::ItemID::CARROT_SWORD);
 		weapon = dynamic_cast<Inventory::Weapon*>(item);
 	}
+
 	// check if player already has it
 	for (int i = 0; i < player->getInventorySize(); i++)
 	{
@@ -162,8 +162,8 @@ void Xuan_Initialize() {
 		inv.giveItem(*player, Inventory::ItemID::CARROT_SWORD_INV, 1);
 	}
 
-	smelly->setCharName("Soroor");
-	smelly->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));
+	SORAWR->setCharName("Soroor");
+	/*SORAWR->setSprite(AEGfxTextureLoad("Assets/Images/Entities/Soroor_Stationary.png"));*/
 
 }
 
@@ -171,7 +171,7 @@ void Xuan_Initialize() {
 void Xuan_Update() {
 
 	auto* player = EntityManager::getPlayer("player");
-	auto* smelly = EntityManager::getNPC("smelly");
+	auto* SORAWR = EntityManager::getNPC("soroor");
 	auto* dummy = EntityManager::getEnemy("dummy");
 
 	activeTile2 = World::activeTile(player->getX(), player->getY(), grid);
@@ -186,8 +186,8 @@ void Xuan_Update() {
 	player->update(grid);
 	player->tickAttackTimer();
 
-	smellind.x = smelly->getX();
-	smellind.y = smelly->getY();
+	smellind.x = SORAWR->getX();
+	smellind.y = SORAWR->getY();
 
 	dummind.x = dummy->getX();
 	dummind.y = dummy->getY();
@@ -213,7 +213,7 @@ void Xuan_Update() {
 
 	if (TutorialScreen::dialogueBox.getIsActive() && TutorialScreen::activeSpeaker) {
 
-		if (smelly->getIsIdling()) {
+		if (SORAWR->getIsIdling()) {
 			TutorialScreen::activeSpeaker->idleSpeak(TutorialScreen::dialogueBox);
 		}
 		else {
@@ -227,36 +227,36 @@ void Xuan_Update() {
 
 	switch (TutorialScreen::state) {
 
-	case TutorialScreen::TutorialState::SMELLY_TALK:
+	case TutorialScreen::TutorialState::SORAWR_TALK:
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
-			smelly->getX(), smelly->getY(),
+			SORAWR->getX(), SORAWR->getY(),
 			75.0f,
-			smelly->getWidth(), smelly->getHeight()
+			SORAWR->getWidth(), SORAWR->getHeight()
 		)) {
-			TutorialScreen::activeSpeaker = smelly;
-			smelly->speak(TutorialScreen::dialogueBox);
+			TutorialScreen::activeSpeaker = SORAWR;
+			SORAWR->speak(TutorialScreen::dialogueBox);
 		}
 
-		if (smelly->getIsPaused()) {
-			TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_IDLE;
+		if (SORAWR->getIsPaused()) {
+			TutorialScreen::state = TutorialScreen::TutorialState::SORAWR_IDLE;
 		}
 
 		break;
 
 
 
-	case TutorialScreen::TutorialState::SMELLY_IDLE:
+	case TutorialScreen::TutorialState::SORAWR_IDLE:
 
 		if (AEInputCheckTriggered(AEVK_E) && Collision::collidedWith(
 			player->getX(), player->getY(),
-			smelly->getX(), smelly->getY(),
+			SORAWR->getX(), SORAWR->getY(),
 			75.0f,
-			smelly->getWidth(), smelly->getHeight()
+			SORAWR->getWidth(), SORAWR->getHeight()
 		)) {
-			TutorialScreen::activeSpeaker = smelly;
-			smelly->idleSpeak(TutorialScreen::dialogueBox);
+			TutorialScreen::activeSpeaker = SORAWR;
+			SORAWR->idleSpeak(TutorialScreen::dialogueBox);
 		}
 
 
@@ -280,7 +280,7 @@ void Xuan_Update() {
 			if (dummy->getHp() <= 0) {
 				dummy->setHp(0);
 				TutorialScreen::deadDummy = true;
-				TutorialScreen::state = TutorialScreen::TutorialState::SMELLY_PART2;
+				TutorialScreen::state = TutorialScreen::TutorialState::SORAWR_PART2;
 			}
 		}
 
@@ -288,11 +288,11 @@ void Xuan_Update() {
 
 
 
-	case TutorialScreen::TutorialState::SMELLY_PART2:
+	case TutorialScreen::TutorialState::SORAWR_PART2:
 
 		if (TutorialScreen::deadDummy) {
-			TutorialScreen::activeSpeaker = smelly;
-			smelly->resumeDialogue(TutorialScreen::dialogueBox);
+			TutorialScreen::activeSpeaker = SORAWR;
+			SORAWR->resumeDialogue(TutorialScreen::dialogueBox);
 			TutorialScreen::deadDummy = false; // it gets revived for my code logic ig??
 			return;
 		}
@@ -318,6 +318,7 @@ void Xuan_Update() {
 		next = GS_FARM;
 	}
 
+	// Clear all dungeons
 	if (AEInputCheckTriggered(AEVK_F10))
 	{
 		World::dungeonTracker[World::checkNum] = true;
@@ -331,7 +332,7 @@ void Xuan_Draw() {
 
 	auto* player = EntityManager::getPlayer("player");
 	auto* dummy = EntityManager::getEnemy("dummy");
-	auto* smelly = EntityManager::getNPC("smelly");
+	auto* SORAWR = EntityManager::getNPC("soroor");
 
 	//Color::background(Color::Preset::White);
 	//Color::fill(Color::Preset::Blue);
@@ -340,9 +341,8 @@ void Xuan_Draw() {
 
 	Graphics::image(0, 0, static_cast<float>(AEGfxGetWindowWidth()), static_cast<float>(AEGfxGetWindowHeight()), tutorialDungeon, Shapes::CENTER);
 	grid.drawTexture(grid);
-	World::drawTile(activeTile2, grid);
 
-	EntityManager::draw("smelly");
+	EntityManager::draw("soroor");
 	
 	if (showInventory)
 	{
@@ -362,20 +362,20 @@ void Xuan_Draw() {
 
 		switch (TutorialScreen::state) {
 
-			case TutorialScreen::TutorialState::SMELLY_TALK:
+			case TutorialScreen::TutorialState::SORAWR_TALK:
 				if (smellind.active == 1) {
-					Animations::drawCoolerIndicator(smelly->getX(), smelly->getY(), indicatorCool);
+					Animations::drawCoolerIndicator(SORAWR->getX(), SORAWR->getY(), indicatorCool);
 				}
 				break;
 
 
-			case TutorialScreen::TutorialState::SMELLY_IDLE:
+			case TutorialScreen::TutorialState::SORAWR_IDLE:
 				Animations::drawIndicator(dummind);
 				break;
 
-			case TutorialScreen::TutorialState::SMELLY_PART2:
+			case TutorialScreen::TutorialState::SORAWR_PART2:
 				if (smellind.active == 1) {
-					Animations::drawCoolerIndicator(smelly->getX(), smelly->getY(), indicatorCool);
+					Animations::drawCoolerIndicator(SORAWR->getX(), SORAWR->getY(), indicatorCool);
 				}
 				break;
 
@@ -412,9 +412,9 @@ void Xuan_Free() {
 }
 
 void Xuan_Unload() {
-	auto* smelly = EntityManager::getNPC("smelly");
-	if (smelly && smelly->getSprite()) {
-		AEGfxTextureUnload(smelly->getSprite()); // unload sprite
+	auto* SORAWR = EntityManager::getNPC("SORAWR");
+	if (SORAWR && SORAWR->getSprite()) {
+		AEGfxTextureUnload(SORAWR->getSprite()); // unload sprite
 	}
 
 	TutorialScreen::activeSpeaker = nullptr;

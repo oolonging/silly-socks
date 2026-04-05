@@ -17,10 +17,16 @@ namespace UI_Elements {
 
         float btnWidth = width * 0.35f;
         float btnHeight = height * 0.18f;
-        float btnY = centerY - height * 0.5f + btnHeight;
 
-        dismissButton = new Button(centerX + btnWidth * 0.5f, btnY, btnWidth, btnHeight, "Close", Shapes::CENTER);
+        // In constructor, or recalculate in draw when only one button exists
+        float btnY = centerY - height * 0.5f + btnHeight * 0.8f;
+
+        // If only dismiss button (no confirm), center it
+        dismissButton = new Button(centerX, btnY, btnWidth, btnHeight, "Close", Shapes::CENTER);
+
+        // Only offset both if confirm is also used
         confirmButton = new Button(centerX - btnWidth * 0.5f, btnY, btnWidth, btnHeight, "Confirm", Shapes::CENTER);
+
     }
 
     //default

@@ -172,7 +172,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			current == GS_DUNGEON ||
 			current == GS_FARM ||
 			current == GS_TUTDUN ||
-			current == GS_TUTORIAL
+			current == GS_TUTORIAL ||
+			current == GS_NEW ||
+			current == GS_DESERT
 			);
 
 		// Level loop

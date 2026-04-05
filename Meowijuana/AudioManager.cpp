@@ -69,6 +69,7 @@ namespace AudioManager {
 	void Audio::exit() {
 		AEAudioUnloadAudio(bgMusic);
 		AEAudioUnloadAudio(soundEffect);
+		AEAudioUnloadAudio(hitSFX);
 		AEAudioUnloadAudioGroup(bgm);
 		AEAudioUnloadAudioGroup(sfx);
 	}

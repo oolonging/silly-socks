@@ -59,16 +59,21 @@ static UI_Elements::PopupBox* dungeonPopup;
 void Farm_Load()
 {
 	showInventory = true;
+
 	grid.initMapTexture();
 	grid.initTextureBox();
+
 	bg = AEGfxTextureLoad("Assets/LevelMaps/NewDungeons/Backgrounds/Farm.png");
+	indicator = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
 }
 
-void Farm_Initialize() {
+void Farm_Initialize() 
+{
 	// Set the debug "Current Screen" property
 	Settings::currentScreen = "FarmScreen.cpp";
 
 	// init Entitymanager
+	EntityManager::clear();
 	EntityManager::init();
 
 	// Initialising Player
@@ -110,7 +115,6 @@ void Farm_Initialize() {
 	float x = -invWidth * 0.5f;         // centered horizontally
 	float y = -(screenHeight * 0.5f) + inv.getSlotSize() + offset; // near the bottom 
 
-	indicator = AEGfxTextureLoad("Assets/Indicators/SpeechBubble.png");
 
 	// Setting inventory to bottom 
 	inv.setPosition(x, y);
@@ -289,10 +293,31 @@ void Farm_Update() {
 	}
 
 	else
-	{
-		World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
-		World::standOnTile(next, *player, grid, GS_NEW, World::TeleporterGreen);
-		World::standOnTile(next, *player, grid, GS_DESERT, World::TeleporterRed);
+	{	
+		// Basically checking if not cleared then able to go to level 1, 2 and 3 respectively
+		if (!World::dungeonTracker[0])
+			World::standOnTile(next, *player, grid, GS_X, World::TeleporterBlue);
+
+		if (!World::dungeonTracker[1])
+			World::standOnTile(next, *player, grid, GS_NEW, World::TeleporterGreen);
+		
+		if (!World::dungeonTracker[2])
+			World::standOnTile(next, *player, grid, GS_DESERT, World::TeleporterRed);
+
+		// Making sure that prev level closes to prevent most bugs
+		if (World::dungeonTracker[0] && !World::dungeonTracker[1])
+		{
+			grid.replacingID(World::TeleporterBlue, World::Teleporter1);
+			grid.replacingID(World::Teleporter2, World::TeleporterGreen);
+
+		}
+
+		if (World::dungeonTracker[1])
+		{
+			grid.replacingID(World::TeleporterGreen, World::Teleporter2);
+			grid.replacingID(World::Teleporter3, World::TeleporterRed);
+		}
+
 	}
 
 
@@ -388,16 +413,6 @@ void Farm_Update() {
 		FarmNPC::state = FarmNPC::TutorialState::GER_TALK2;
 	}
 
-	if (World::dungeonTracker[0])
-	{
-		grid.replacingID(World::Teleporter2, World::TeleporterGreen);
-
-	}
-
-	if (World::dungeonTracker[1])
-	{
-		grid.replacingID(World::Teleporter3, World::TeleporterRed);
-	}
 }
 
 
@@ -492,8 +507,7 @@ void Farm_Free()
 		lastposY = newCords.second + 20.0f;
 	}
 
-	/*grid.unloadMapTexture();
-	Inventory::ItemRegistry::cleanup();*/
+	/*Inventory::ItemRegistry::cleanup();*/
 
 	firstStartGame = false;
 
@@ -501,21 +515,25 @@ void Farm_Free()
 	inv.clear(player);
 	inv.setPlayer(nullptr);
 
-	UIManager::clear();
-}
-
-void Farm_Unload() 
-{
-	/*Inventory::unload();*/
 
 	auto* gerald = localGerald;
 	if (gerald && gerald->getSprite()) {
 		AEGfxTextureUnload(gerald->getSprite()); // unload sprite
 	}
 
-	AEGfxTextureUnload(indicator);
+	UIManager::clear();
+	EntityManager::clear();
+}
+
+void Farm_Unload()
+{
+	/*Inventory::unload();*/
 
 	FarmNPC::activeSpeaker = nullptr;
-	EntityManager::clear();
 
+	AEGfxTextureUnload(indicator);
+	AEGfxTextureUnload(bg);
+
+	bg = nullptr;
+	/*grid.unloadMapTexture();*/
 }

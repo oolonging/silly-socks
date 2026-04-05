@@ -54,7 +54,7 @@ namespace World
 
 	struct tileObject
 	{
-		int objID;
+		int objID = 0;
 		std::string name;
 		std::string description;
 		AEGfxTexture* image = nullptr;
@@ -111,6 +111,7 @@ namespace World
 		void replacingID(int oldID, int newID);
 		void growPlants(World::worldGrid& Griddy);
 		bool findTile(World::worldGrid& Griddy, int findID);
+		size_t getTileDatabaseSize() const { return tileDatabase.size(); }
 	};
 
 	// --- Tiler Helper functions --- //
