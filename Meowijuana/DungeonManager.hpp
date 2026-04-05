@@ -1,3 +1,5 @@
+// --------- NOT BEING USED IN FINAL PRODUCT ---------------
+
 #ifndef DUNGEON_MANAGER_HPP
 #define DUNGEON_MANAGER_HPP
 

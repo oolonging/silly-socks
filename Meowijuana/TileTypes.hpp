@@ -1,3 +1,5 @@
+// --------- NOT BEING USED IN FINAL PRODUCT ---------------
+
 
 namespace TileTypes {
 

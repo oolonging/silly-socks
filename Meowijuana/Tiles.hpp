@@ -1,3 +1,5 @@
+// --------- NOT BEING USED IN FINAL PRODUCT ---------------
+
 #ifndef TILES_HPP
 #define TILES_HPP
 

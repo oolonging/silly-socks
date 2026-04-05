@@ -1,3 +1,5 @@
+// --------- NOT BEING USED IN FINAL PRODUCT ---------------
+
 #ifndef TILEMANAGER_HPP
 #define TILEMANAGER_HPP
 
