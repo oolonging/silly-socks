@@ -2,12 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Pathfinding.hpp">
-      <Filter>Header files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.hpp">
-      <Filter>Header files</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -309,6 +303,12 @@
     </ClInclude>
     <ClInclude Include="DesertDungeon.hpp">
       <Filter>Header files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.hpp">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

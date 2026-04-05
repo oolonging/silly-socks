@@ -107,7 +107,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Collision.hpp" />
+    <ClInclude Include="Collision.hpp" />
     <ClCompile Include="DesertDungeon.cpp" />
     <ClCompile Include="LoseScreen.cpp" />
     <ClCompile Include="NewDungeon.cpp" />
@@ -127,7 +127,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
     <ClCompile Include="Managers\TileManager.cpp" />
     <ClCompile Include="Managers\UIManager.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
-    <ClCompile Include="Pathfinding.hpp" />
+    <ClInclude Include="Pathfinding.hpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
