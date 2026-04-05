@@ -116,7 +116,7 @@ namespace Entity {
 	}
 
 	bool Entity::canAttack() {
-		return atkCD <= 0.0f;
+		return atkCD <= 0.0f && !(this->isDead);
 	}
 
 	void Entity::resetAttackTimer() {
@@ -523,7 +523,7 @@ namespace Entity {
 			);
 
 
-		if (AEInputCheckTriggered(AEVK_LBUTTON))
+		if (AEInputCheckTriggered(AEVK_LBUTTON) && !(this->isDead))
 		{
 			int currSlot = this->getSelectedInventorySlot(); // make sure you're actually calling this
 			Inventory::Item* selectedItem = this->getInventoryItem(currSlot);
