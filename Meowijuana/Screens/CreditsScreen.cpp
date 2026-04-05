@@ -115,7 +115,7 @@ void Credits_Draw() {
 	// Draw each line
 	for (int i = 0; i < creditsCount; i++) {
 		float yPos = scrollY + i * 100; //spacing between lines
-		Text::text(credits[i], 0, yPos);
+		Text::text(credits[i], 0, yPos, Text::CENTER_H, Text::CENTER_V);
 	}
 
 	// Click anywhere to return to main menu
