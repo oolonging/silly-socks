@@ -1,6 +1,11 @@
-﻿#include "pch.h"
-#include "Inventory.hpp"
+﻿/*
+ * @file Inventory.cpp
+ * @author Andrea & Saahil
+ * @brief Player Inventory System
+ */
 
+#include "pch.h"
+#include "Inventory.hpp"
 #include "Entity.hpp"
 
 UI_Elements::PlayerInventory inv;
