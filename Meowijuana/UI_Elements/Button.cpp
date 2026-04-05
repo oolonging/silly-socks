@@ -84,6 +84,11 @@ namespace UI_Elements {
 
 	Button::Button(void)
 		: Button(0.0f, 0.0f, 100.0f, 50.0f, "Button", Shapes::CORNER) {}
+
+	void Button::setPosition(float newX, float newY) {
+		x = newX;
+		y = newY;
+	}
 }
 
 

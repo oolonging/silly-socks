@@ -52,14 +52,38 @@ namespace UI_Elements {
     void PopupBox::setMessage(char const* msg) {
         message = msg;
     }
+   
     void PopupBox::setOnDismiss(void (*func)(void)) {
         onDismiss = func;
         dismissButton->setOnClick(func);
+        repositionButtons();
     }
 
     void PopupBox::setOnconfirm(void (*func)(void)) {
         onConfirm = func;
         confirmButton->setOnClick(func);
+        repositionButtons();
+    }
+
+
+    void PopupBox::repositionButtons() {
+        float centerX = (drawMode == Shapes::CORNER) ? (x + width * 0.5f) : x;
+        float centerY = (drawMode == Shapes::CORNER) ? (y - height * 0.5f) : y;
+        float btnWidth = width * 0.35f;
+        float btnHeight = height * 0.18f;
+        float btnY = centerY - height * 0.5f + btnHeight;
+
+        bool hasBoth = (onDismiss != nullptr && onConfirm != nullptr);
+
+        if (hasBoth) {
+            // if theres two buttons in popup
+            confirmButton->setPosition(centerX - btnWidth * 0.6f, btnY);
+            dismissButton->setPosition(centerX + btnWidth * 0.6f, btnY);
+        }
+        else {
+            // else only one button, center it
+            dismissButton->setPosition(centerX, btnY);
+        }
     }
 
     void PopupBox::draw(void) {

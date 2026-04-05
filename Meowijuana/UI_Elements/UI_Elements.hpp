@@ -90,6 +90,7 @@ namespace UI_Elements {
 
 	public:
 		void setOnClick(void (*func)(void));		// Set what to do when clicked
+		void setPosition(float newX, float newY);
 
 		// Draw override
 		void draw(void) override;					// Render the button
@@ -350,10 +351,12 @@ namespace UI_Elements {
 		void setVisible(bool visible);
 		void setTitle(char const* title);
 		void setMessage(char const* message);
+		void setPosition(float x, float y);
 
 		// functions for the buttons
 		void setOnDismiss(void (*func)(void));
 		void setOnconfirm(void (*func)(void));
+		void repositionButtons();
 
 		// Constructors
 		PopupBox(float x, float y, float width, float height, char const* title, char const* message, char const* message2, bool initialState = false, Shapes::SHAPE_MODE mode = Shapes::CORNER);
